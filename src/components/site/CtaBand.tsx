@@ -1,14 +1,14 @@
 import type { ReactNode } from "react";
 import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { Button } from "@/components/ui/Button";
+import { ContactSales } from "@/components/ui/ContactSales";
 import { ContourField } from "@/components/visuals/ContourField";
 import { site } from "@/lib/site";
 
-/** Site-wide closing call to action — a navy band. Reused at the foot of pages. */
+/** Site-wide closing call to action, a navy band. Reused at the foot of pages. */
 export function CtaBand({
   title,
-  sub = "See Tenure on your organization's real handoff. A short demo — we'll show you exactly what carries forward.",
+  sub = "See Tenure on your organization's real handoff. A short walkthrough: we'll show you exactly what carries forward.",
 }: {
   title?: ReactNode;
   sub?: string;
@@ -53,9 +53,7 @@ export function CtaBand({
         </Reveal>
         <Reveal delay={0.14}>
           <div className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
-            <Button href={site.bookingUrl} size="lg" arrow>
-              Book a demo
-            </Button>
+            <ContactSales size="lg" arrow />
             <a
               href={`mailto:${site.email}`}
               className="text-[0.97rem] text-paper/70 underline-offset-4 transition-colors hover:text-paper hover:underline"

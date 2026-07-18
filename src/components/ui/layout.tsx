@@ -15,7 +15,7 @@ export function Container({
   );
 }
 
-/** The "registrar" label — a mono eyebrow with an optional record index. */
+/** The "registrar" label, a mono eyebrow with an optional record index. */
 export function Eyebrow({
   children,
   index,
@@ -34,7 +34,7 @@ export function Eyebrow({
   );
 }
 
-/** A hairline rule with a faint brass bleed — a ledger line. */
+/** A hairline rule with a faint brass bleed, a ledger line. */
 export function Rule({ className }: { className?: string }) {
   return <div aria-hidden className={cn("h-px w-full bg-line", className)} />;
 }

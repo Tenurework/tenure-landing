@@ -9,7 +9,7 @@ const SHAPES: Shape[] = [
   { className: "left-[7%] top-[26%] h-7 w-7 rotate-[18deg] rounded-[7px] bg-coral/85", dy: -14, dur: 7 },
   { className: "right-[9%] top-[20%] h-5 w-5 rotate-45 rounded-[4px] bg-violet/80", dy: 12, dur: 8.5 },
   {
-    className: "left-[14%] top-[52%] text-gold",
+    className: "left-[47%] top-[11%] text-gold",
     dy: -10,
     dur: 9,
     content: (
@@ -34,7 +34,7 @@ const SHAPES: Shape[] = [
 export function HeroShapes() {
   const reduce = useReducedMotion();
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 hidden sm:block">
+    <div aria-hidden className="pointer-events-none absolute inset-0 hidden lg:block">
       {SHAPES.map((s, i) => (
         <motion.div
           key={i}

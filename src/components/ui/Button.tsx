@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "light";
-type Size = "sm" | "md" | "lg";
+export type Variant = "primary" | "secondary" | "ghost" | "light" | "outline";
+export type Size = "sm" | "md" | "lg";
 
 const base =
-  "group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium leading-none " +
+  "sheen group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-medium leading-none " +
   "transition-[background,border-color,color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-grove " +
   "disabled:pointer-events-none disabled:opacity-50";
@@ -14,10 +14,12 @@ const base =
 const variants: Record<Variant, string> = {
   primary:
     "bg-grove text-cloud hover:bg-grove-bright active:translate-y-px " +
-    "shadow-[0_10px_26px_-12px_rgba(28,140,90,0.65)] hover:shadow-[0_14px_30px_-12px_rgba(37,169,109,0.7)]",
+    "shadow-[0_12px_30px_-12px_rgba(28,140,90,0.7)] hover:shadow-[0_18px_40px_-14px_rgba(37,169,109,0.75)]",
   secondary:
     "bg-cloud text-ink border border-line hover:border-ink/20 hover:bg-sand/60 " +
     "shadow-[0_1px_2px_rgba(12,30,51,0.05)]",
+  outline:
+    "border border-grove/30 text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove/50",
   light:
     "bg-cloud/10 text-paper border border-paper/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-paper/40",
   ghost: "text-ink-soft hover:text-ink",
@@ -29,6 +31,15 @@ const sizes: Record<Size, string> = {
   lg: "h-[3.25rem] px-7 text-[1rem]",
 };
 
+/** Shared class builder so ContactSales / other custom triggers match Button 1:1. */
+export function buttonClasses(
+  variant: Variant = "primary",
+  size: Size = "md",
+  className?: string,
+) {
+  return cn(base, variants[variant], sizes[size], className);
+}
+
 type ButtonProps = {
   href?: string;
   variant?: Variant;
@@ -38,7 +49,7 @@ type ButtonProps = {
   children: ReactNode;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "className" | "children">;
 
-function Arrow() {
+export function Arrow() {
   return (
     <svg
       width="15"
@@ -68,12 +79,12 @@ export function Button({
   children,
   ...rest
 }: ButtonProps) {
-  const cls = cn(base, variants[variant], sizes[size], className);
+  const cls = buttonClasses(variant, size, className);
   const inner = (
-    <>
+    <span className="relative z-10 inline-flex items-center gap-2">
       {children}
       {arrow && <Arrow />}
-    </>
+    </span>
   );
 
   if (href) {

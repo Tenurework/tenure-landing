@@ -75,14 +75,14 @@ export function Problem() {
           <Reveal delay={0.12}>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
               A year of relationships, vendor deals, budgets, and playbooks walks
-              out the door — and the next person spends a semester relearning what
+              out the door, and the next person spends a semester relearning what
               the organization already knew.
             </p>
           </Reveal>
         </div>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
-          {/* Without Tenure — the cold handoff. */}
+          {/* Without Tenure, the cold handoff. */}
           <Reveal delay={0.16}>
             <div className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)] sm:p-7">
               <div className="flex items-baseline justify-between gap-3">
@@ -105,7 +105,7 @@ export function Problem() {
             </div>
           </Reveal>
 
-          {/* With Tenure — the seat remembers. */}
+          {/* With Tenure, the seat remembers. */}
           <Reveal delay={0.22}>
             <div className="h-full rounded-2xl border border-grove/25 bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(20,99,63,0.28)] sm:p-7">
               <div className="flex items-baseline justify-between gap-3">

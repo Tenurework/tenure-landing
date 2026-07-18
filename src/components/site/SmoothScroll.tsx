@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 /**
- * Buttery momentum scrolling (Lenis). Enabled only for real users — disabled
+ * Buttery momentum scrolling (Lenis). Enabled only for real users, disabled
  * under automation (navigator.webdriver) and reduced-motion so screenshots and
  * accessibility behave with native scroll.
  */

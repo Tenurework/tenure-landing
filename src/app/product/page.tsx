@@ -2,16 +2,16 @@ import type { ReactNode } from "react";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
+import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { ToolLogos } from "@/components/visuals/ToolLogos";
-import { site } from "@/lib/site";
 
 export const metadata = {
   title: "Product",
   description:
-    "One system for your organization's finance, events, members, and memory — with an AI that gets each new leader productive in days, not a semester.",
+    "One system for your organization's finance, events, members, and memory, with an AI that gets each new leader productive in days, not a semester.",
 };
 
 const svgProps = {
@@ -29,7 +29,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
   {
     n: "01",
     t: "Contacts & relationships",
-    d: "Sponsors, partners, and alumni — with the warm intro and the last conversation kept behind each name.",
+    d: "Sponsors, partners, and alumni, with the warm intro and the last conversation kept behind each name.",
     icon: (
       <svg {...svgProps} aria-hidden>
         <rect x="3" y="4" width="7" height="6" rx="1.5" />
@@ -41,7 +41,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
   {
     n: "02",
     t: "Deals & numbers",
-    d: "Vendors, pricing, and budgets — the real terms the board agreed to, not a number someone half-remembers.",
+    d: "Vendors, pricing, and budgets, the real terms the board agreed to, not a number someone half-remembers.",
     icon: (
       <svg {...svgProps} aria-hidden>
         <path d="M3 21h18" />
@@ -65,7 +65,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
   {
     n: "04",
     t: "Files & playbooks",
-    d: "Decks, timelines, and run-of-show checklists — the documents that actually carried the work, not a dead folder.",
+    d: "Decks, timelines, and run-of-show checklists, the documents that actually carried the work, not a dead folder.",
     icon: (
       <svg {...svgProps} aria-hidden>
         <path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
@@ -79,11 +79,11 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
 const POINTS: { t: string; d: string }[] = [
   {
     t: "Ready on day one",
-    d: "The AI has already read the seat's full history, so a brand-new officer's first question gets a real answer.",
+    d: "Tenure AI answers from the seat's full record from day one, so a brand-new officer's first question gets a real answer.",
   },
   {
     t: "Every answer cites its sources",
-    d: "Responses link straight back to the records, files, and decisions they came from — nothing invented.",
+    d: "Responses link straight back to the records, files, and decisions they came from, nothing invented.",
   },
   {
     t: "The knowledge stays with the seat",
@@ -94,12 +94,12 @@ const POINTS: { t: string; d: string }[] = [
 const QA: { q: string; a: string; src: string }[] = [
   {
     q: "How do we file a reimbursement?",
-    a: "Submit receipts in the Finance module within 14 days; the VP Finance approves, then the org account pays out — the same flow the last three treasurers ran.",
+    a: "Submit receipts in the Finance module within 14 days; the VP Finance approves, then the org account pays out, the same flow the last three treasurers ran.",
     src: "2 sources",
   },
   {
     q: "Why did we drop the fall mixer last year?",
-    a: "The board moved that budget to the gala after low turnout — see the October decision log and the vote behind it.",
+    a: "The board moved that budget to the gala after low turnout. See the October decision log and the vote behind it.",
     src: "2 sources",
   },
 ];
@@ -115,17 +115,15 @@ export default function ProductPage() {
             <span className="text-grove">runs</span>.
           </>
         }
-        intro="Tenure runs your finances, events, members, and institutional memory in one place — then an AI that has learned everything the role has done gets each new leader productive in days, not a semester."
+        intro="Tenure runs your finances, events, members, and institutional memory in one place, then Tenure AI turns everything the role has recorded into instant, sourced answers, getting each new leader productive in days, not a semester."
       >
-        <Button href={site.bookingUrl} size="lg" arrow>
-          Book a demo
-        </Button>
+        <ContactSales size="lg" arrow />
         <Button href="/pilot" variant="secondary" size="lg">
           Join the pilot
         </Button>
       </PageHeader>
 
-      {/* 1 — The workspace */}
+      {/* 1, The workspace */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <div className="mx-auto max-w-2xl text-center">
@@ -136,7 +134,7 @@ export default function ProductPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-                Finance, events, members, and memory —{" "}
+                Finance, events, members, and memory, {" "}
                 <span className="text-grove">one screen</span>.
               </h2>
             </Reveal>
@@ -155,7 +153,7 @@ export default function ProductPage() {
         </Container>
       </section>
 
-      {/* 2 — What it captures */}
+      {/* 2, What it captures */}
       <section className="relative border-t border-line bg-sand py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -172,7 +170,7 @@ export default function ProductPage() {
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
                 No one writes the handoff doc at the end of the year. Tenure keeps
                 four kinds of record current as the work happens, so the next
-                board inherits the real thing — not a scramble of screenshots and
+                board inherits the real thing, not a scramble of screenshots and
                 a shared drive no one can navigate.
               </p>
             </Reveal>
@@ -204,7 +202,7 @@ export default function ProductPage() {
         </Container>
       </section>
 
-      {/* 3 — Onboarding, handled */}
+      {/* 3, Onboarding, handled */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-16">
           <div className="max-w-xl">
@@ -220,9 +218,9 @@ export default function ProductPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
                 When a leader leaves and the next one takes the seat, they
-                don&rsquo;t start from zero. They ask Tenure in plain language —
-                and an AI that has learned everything the role has done answers
-                from the seat&rsquo;s own history.
+                don&rsquo;t start from zero. They ask Tenure in plain language, 
+                and Tenure AI answers instantly from the seat&rsquo;s own record,
+                citing exactly where each answer came from.
               </p>
             </Reveal>
 

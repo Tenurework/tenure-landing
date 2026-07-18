@@ -2,38 +2,38 @@ import { Ribbons } from "@/components/visuals/Ribbons";
 import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
-import { site } from "@/lib/site";
+import { ContactSalesLink } from "@/components/ui/ContactSales";
 
 const ITEMS: { q: string; a: string }[] = [
   {
     q: "Does Tenure replace our Google Drive, Slack, or Notion?",
-    a: "No — Tenure fits around the tools you already use and pulls what matters into one system of record. The files, threads, and decisions that define how the org runs stop living in someone's personal account and start belonging to the role.",
+    a: "No, Tenure fits around the tools you already use and pulls what matters into one system of record. The files, threads, and decisions that define how the organization runs stop living in someone's personal account and start belonging to the role.",
+  },
+  {
+    q: "Is Tenure only for universities?",
+    a: "No. It's built for any organization where people rotate faster than knowledge transfers, student clubs, university offices, companies, nonprofits, and volunteer boards. The seat model is identical everywhere: knowledge stays with the role, not the person who holds it this term.",
   },
   {
     q: "Who owns the data?",
-    a: "The organization does. Access passes cleanly to the next board at every transition, and nothing leaves with an individual when they graduate or move on.",
+    a: "The organization does. Access passes cleanly to the next occupant at every transition, and nothing leaves with an individual when they graduate, resign, or roll off the board. Export everything, anytime.",
   },
   {
     q: "How fast is onboarding, really?",
-    a: "Days instead of a semester. Because the memory stays with the seat, an AI that has learned everything the role has done answers from the role's own history — budgets, vendors, past events, the reasons behind decisions.",
+    a: "Days instead of a semester. Because the memory stays with the seat, Tenure AI answers instantly from the role's own record, budgets, vendors, past events, and the reasons behind decisions. It doesn't train a model on your data; it surfaces and explains what's already in your record.",
   },
   {
-    q: "Is it for administrators or students?",
-    a: "Both. Student organizations run their day-to-day — finance, events, members, documents — while administrations get the oversight and continuity that keep every org healthy across leadership changes.",
-  },
-  {
-    q: "Is student data handled responsibly?",
-    a: "Yes. Tenure runs on least-access by default, and the organization owns its records — not Tenure, not any individual. See our Privacy page for the details.",
+    q: "Is sensitive data handled responsibly?",
+    a: "Yes. Tenure runs least-access by default, isolates each organization's data at the query layer, and logs every action to an immutable audit trail. The organization owns its records, not Tenure, not any individual. For schools, that includes FERPA-aligned handling.",
   },
   {
     q: "What does it cost?",
-    a: "We're setting pilot pricing with the Fall 2026 organizations directly, so it fits a real student-org and administration budget. Book a demo and we'll walk you through it.",
+    a: "We're setting pilot pricing with the founding Fall 2026 organizations directly, so it fits a real budget. Contact sales and we'll walk you through it.",
   },
 ];
 
 export function Faq() {
   return (
-    <section className="relative overflow-hidden border-t border-line bg-paper py-24 sm:py-32">
+    <section className="relative overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
       {/* vibrant flowing ribbons cutting in from the top-right (no background) */}
       <div
         aria-hidden
@@ -74,13 +74,10 @@ export function Faq() {
           </div>
 
           <p className="mt-8 text-ink-soft">
-            Still deciding whether Tenure fits your org?{" "}
-            <a
-              href={site.bookingUrl}
-              className="font-medium text-grove underline-offset-4 transition-colors hover:text-grove-deep hover:underline"
-            >
-              Book a demo
-            </a>
+            Still deciding whether Tenure fits your organization?{" "}
+            <ContactSalesLink className="font-medium text-grove underline-offset-4 transition-colors hover:text-grove-deep hover:underline">
+              Contact sales
+            </ContactSalesLink>
             .
           </p>
         </div>

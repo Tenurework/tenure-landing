@@ -37,7 +37,7 @@ const MODULES: Module[] = [
   {
     name: "Events",
     tag: "On the calendar",
-    desc: "Planning, vendors, and run-of-show — every detail in one place, not a group chat.",
+    desc: "Planning, vendors, and run-of-show, every detail in one place, not a group chat.",
     icon: (
       <svg {...svg}>
         <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
@@ -49,7 +49,7 @@ const MODULES: Module[] = [
   {
     name: "Members",
     tag: "Who's who",
-    desc: "Roster, roles, and contacts — so you always know who does what and who to reach.",
+    desc: "Roster, roles, and contacts, so you always know who does what and who to reach.",
     icon: (
       <svg {...svg}>
         <rect x="3.5" y="5" width="17" height="14" rx="2.5" />
@@ -73,7 +73,7 @@ const MODULES: Module[] = [
   {
     name: "Memory",
     tag: "The record",
-    desc: "The institutional record — decisions, context, and know-how that survives every turnover.",
+    desc: "The institutional record, decisions, context, and know-how that survives every turnover.",
     icon: (
       <svg {...svg}>
         <path d="M12 3.5l8.5 4.5-8.5 4.5L3.5 8z" />
@@ -85,7 +85,7 @@ const MODULES: Module[] = [
   {
     name: "Tenure AI",
     tag: "Ask anything",
-    desc: "Ask anything about the role and get a sourced answer — onboarding in days, not a semester.",
+    desc: "Ask anything about the role and get a sourced answer, onboarding in days, not a semester.",
     icon: (
       <svg {...svg}>
         <path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z" />
@@ -112,7 +112,7 @@ export function Modules() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Finance, events, members, documents — the operations a club or
+              Finance, events, members, documents, the operations a club or
               office juggles across spreadsheets, inboxes, and a dozen logins,
               unified into one record that every transition inherits.
             </p>

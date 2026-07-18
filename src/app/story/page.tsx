@@ -7,7 +7,7 @@ import { site } from "@/lib/site";
 export const metadata = {
   title: "Story",
   description:
-    "How Tenure began at Simon Business School — and why institutional memory shouldn't reset every time a student organization changes hands.",
+    "How Tenure began at Simon Business School, and why institutional memory shouldn't reset every time a student organization changes hands.",
 };
 
 const RECORD: { label: string; value: string }[] = [
@@ -41,13 +41,13 @@ export default function StoryPage() {
         intro={
           <>
             Tenure began at {site.origin.school}, out of a pattern impossible to
-            unsee — every year, capable teams inherit almost nothing and rebuild
+            unsee: every year, capable teams inherit almost nothing and rebuild
             what already existed.
           </>
         }
       />
 
-      {/* 1 — Why Tenure exists */}
+      {/* 1, Why Tenure exists */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -64,8 +64,8 @@ export default function StoryPage() {
             <Reveal delay={0.12}>
               <p className="mt-7 text-lg leading-relaxed text-ink-soft">
                 At Simon, we watched it up close. A capable board spends a year
-                building real things &mdash; sponsor relationships, an events
-                playbook, a budget that finally works &mdash; then hands all of
+                building real things, sponsor relationships, an events
+                playbook, a budget that finally works, then hands all of
                 it off in a shared drive and a single coffee chat. Whatever
                 doesn&rsquo;t fit in that hour leaves with them.
               </p>
@@ -74,7 +74,7 @@ export default function StoryPage() {
               <p className="mt-5 text-lg leading-relaxed text-ink-soft">
                 So the next team starts from memory and guesswork. Sponsor
                 contacts go cold because no one knew they existed. The same
-                mistakes get repeated &mdash; not from carelessness, but because
+                mistakes get repeated, not from carelessness, but because
                 the lesson left with the person who learned it. An organization
                 can be years old and still wake up every fall with no record of
                 itself.
@@ -84,7 +84,7 @@ export default function StoryPage() {
               <p className="mt-5 text-lg leading-relaxed text-ink-soft">
                 None of that is a people problem. It&rsquo;s a memory problem.
                 Institutional knowledge shouldn&rsquo;t depend on whether one
-                person remembered to write it down on the way out &mdash; it
+                person remembered to write it down on the way out. It
                 should accumulate on its own, as the work happens, and stay with
                 the seat.
               </p>
@@ -100,7 +100,7 @@ export default function StoryPage() {
         </Container>
       </section>
 
-      {/* 2 — Founders */}
+      {/* 2, Founders */}
       <section className="relative border-t border-line bg-sand py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -139,7 +139,7 @@ export default function StoryPage() {
         </Container>
       </section>
 
-      {/* 3 — Mission */}
+      {/* 3, Mission */}
       <section className="relative overflow-hidden border-t border-line-dark bg-ink py-24 text-paper sm:py-32">
         <div
           aria-hidden
@@ -162,7 +162,7 @@ export default function StoryPage() {
               <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper/70">
                 We start with student clubs, where the reset is sharpest and the
                 leadership changes every spring. The same record is built for
-                boards, chapters, and committees &mdash; anywhere the calendar
+                boards, chapters, and committees, anywhere the calendar
                 changes the people but not the work.
               </p>
             </Reveal>
@@ -170,7 +170,7 @@ export default function StoryPage() {
         </Container>
       </section>
 
-      {/* 4 — Where it stands */}
+      {/* 4, Where it stands */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container className="grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
           <div className="max-w-xl">
@@ -185,7 +185,7 @@ export default function StoryPage() {
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-                Here is exactly where things stand &mdash; and where they go this
+                Here is exactly where things stand, and where they go this
                 fall, with the first organizations putting Tenure to work
                 alongside Simon&rsquo;s Office of Student Engagement.
               </p>

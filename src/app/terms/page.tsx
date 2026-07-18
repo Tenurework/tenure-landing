@@ -42,10 +42,10 @@ export default function TermsPage() {
 
           <h2>The service</h2>
           <p>
-            Tenure is an early-stage ERP for university administrations and
+            Tenure is an early-stage ERP for organizations where leadership turns over faster than knowledge does, starting with university administrations and
             student organizations, offered through a pilot and early access. It
-            keeps an organization&rsquo;s operations &mdash; finance, events,
-            members, documents, and institutional memory &mdash; in one place, so
+            keeps an organization&rsquo;s operations, finance, events,
+            members, documents, and institutional memory, in one place, so
             the role persists even as the people in it rotate. Because the
             product is still being built alongside the organizations who use it,
             features may change, appear, or be removed as we learn what actually
@@ -66,7 +66,7 @@ export default function TermsPage() {
 
           <h2>Acceptable use</h2>
           <p>
-            Use Tenure for its purpose &mdash; running your organization and
+            Use Tenure for its purpose, running your organization and
             passing on its record. Please don&rsquo;t:
           </p>
           <ul>
@@ -81,7 +81,7 @@ export default function TermsPage() {
             The record belongs to the organization, not to any one person who
             held a seat. When leadership changes hands, access passes to the
             inheriting board. Individuals who created entries don&rsquo;t take the
-            record with them when their term ends &mdash; keeping the knowledge
+            record with them when their term ends. Keeping the knowledge
             with the seat is the whole point. We&rsquo;ll work with an
             organization&rsquo;s current leadership to manage access and
             transfers.

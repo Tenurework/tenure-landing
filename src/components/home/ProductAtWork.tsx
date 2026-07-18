@@ -37,7 +37,7 @@ function FinanceCard() {
 
       <div className="mt-5 space-y-2">
         {[
-          { who: "Print order — D. Reyes", amt: "$240" },
+          { who: "Print order, D. Reyes", amt: "$240" },
           { who: "Gala venue deposit", amt: "$1,500" },
         ].map((r, i) => (
           <div
@@ -155,7 +155,7 @@ const FEATURES: Feature[] = [
         Every dollar, tracked and <span className="text-grove">approved in place</span>.
       </>
     ),
-    body: "Budgets, dues, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role — so next year's treasurer sees exactly what things cost and who signed off.",
+    body: "Budgets, dues, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role, so next year's treasurer sees exactly what things cost and who signed off.",
     visual: <FinanceCard />,
   },
   {
@@ -165,14 +165,14 @@ const FEATURES: Feature[] = [
         Records cross the term with their <span className="text-grove">history intact</span>.
       </>
     ),
-    body: "When leadership rotates, the work doesn't reset. Deals, contacts, and playbooks move to the incoming board with the context that made them matter — who built them, what they cost, and why.",
+    body: "When leadership rotates, the work doesn't reset. Deals, contacts, and playbooks move to the incoming board with the context that made them matter, who built them, what they cost, and why.",
     visual: <HandoffCard />,
   },
 ];
 
 export function ProductAtWork() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-line py-24 sm:py-32">
+    <section className="relative isolate overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
       <SectionContour place="cr" seed={6} className="text-grove/[0.06]" />
       <Container>
         <div className="max-w-2xl">

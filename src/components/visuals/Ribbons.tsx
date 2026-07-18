@@ -1,7 +1,7 @@
 import { cn } from "@/lib/cn";
 
 /**
- * Vibrant, flowing green ribbons on a transparent canvas — the organic accent
+ * Vibrant, flowing green ribbons on a transparent canvas, the organic accent
  * that bleeds into a section's body (no background block), à la Flank.
  */
 export function Ribbons({ className }: { className?: string }) {

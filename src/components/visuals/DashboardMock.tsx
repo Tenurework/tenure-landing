@@ -1,18 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
-type ModuleKey = "Finance" | "Events" | "Members" | "Memory";
-const NAV: ModuleKey[] = ["Finance", "Events", "Members", "Memory"];
+type ModuleKey = "Finance" | "Calendar" | "Approvals" | "Members" | "Memory";
+const NAV: ModuleKey[] = ["Finance", "Calendar", "Approvals", "Members", "Memory"];
 
 const ICONS: Record<ModuleKey, string> = {
   Finance: "M3 21h18M5 21V11m4 10V7m4 14V9m4 12V5",
-  Events: "M4 6h16v14H4zM4 9h16M8 3v4M16 3v4",
+  Calendar: "M4 6h16v14H4zM4 9h16M8 3v4M16 3v4",
+  Approvals: "M4 5h16v14H4zM8 12l2.5 2.5L16 9",
   Members:
     "M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM3 20a6 6 0 0 1 12 0M17 11a3 3 0 1 0 0-6M16 20a6 6 0 0 1 5-3",
   Memory: "M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5",
@@ -20,7 +21,8 @@ const ICONS: Record<ModuleKey, string> = {
 
 const ASKS: Record<ModuleKey, string[]> = {
   Finance: ["Are we on budget this term?", "What did the gala cost last year?"],
-  Events: ["Which venues have we used before?", "Who is our catering contact?"],
+  Calendar: ["Which venues have we used before?", "Any conflicts next week?"],
+  Approvals: ["What's stuck in OSE review?", "Under which policy was this approved?"],
   Members: ["Who handled sponsorship last year?", "How do we run elections?"],
   Memory: ["Why did we drop the fall mixer?", "Which sponsors should we renew?"],
 };
@@ -30,17 +32,25 @@ function Stat({ k, v, sub }: { k: string; v: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-paper/40 px-3 py-2.5">
       <p className="label-mono text-[0.54rem]">{k}</p>
-      <p className="mt-1 font-mono text-base font-semibold text-ink">{v}</p>
+      <p className="mt-1 font-mono text-base font-semibold tnum text-ink">{v}</p>
       {sub && <p className="text-[0.64rem] text-grove">{sub}</p>}
     </div>
   );
 }
-function Badge({ children, tone = "grove" }: { children: string; tone?: "grove" | "amber" }) {
+function Badge({
+  children,
+  tone = "grove",
+}: {
+  children: string;
+  tone?: "grove" | "amber" | "coral";
+}) {
   return (
     <span
       className={cn(
         "rounded-full px-1.5 py-0.5 font-mono text-[0.56rem] font-medium",
-        tone === "grove" ? "bg-grove-soft text-grove-deep" : "bg-gold/15 text-[#9a6a12]",
+        tone === "grove" && "bg-grove-soft text-grove-deep",
+        tone === "amber" && "bg-gold/15 text-[#9a6a12]",
+        tone === "coral" && "bg-coral/12 text-[#b23a1f]",
       )}
     >
       {children}
@@ -91,9 +101,9 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
     { label: "Reserve", pct: 22, color: "#c9d2cc" },
   ];
   const rows = [
-    { t: "Membership dues — 28 paid", a: "+$840", d: "Sep 14", up: true },
-    { t: "Aramark — fall sponsorship", a: "+$4,000", d: "Oct 2", up: true },
-    { t: "Rochester Print — banners", a: "−$240", d: "Oct 9", up: false },
+    { t: "Membership dues, 28 paid", a: "+$840", d: "Sep 14", up: true },
+    { t: "Aramark, fall sponsorship", a: "+$4,000", d: "Oct 2", up: true },
+    { t: "Rochester Print, banners", a: "−$240", d: "Oct 9", up: false },
     { t: "Gala venue deposit", a: "−$1,500", d: "Oct 18", up: false },
   ];
   return (
@@ -102,7 +112,7 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
         <div className="flex items-end justify-between">
           <div>
             <p className="label-mono text-[0.54rem]">Treasury balance</p>
-            <p className="mt-1 font-mono text-2xl font-semibold text-ink">$12,400</p>
+            <p className="mt-1 font-mono text-2xl font-semibold tnum text-ink">$12,400</p>
             <p className="text-[0.7rem] font-medium text-grove">▲ $1,300 · 11.7% this month</p>
           </div>
           <span className="rounded-md border border-line bg-cloud px-2 py-0.5 font-mono text-[0.6rem] text-ink-soft">$18,000 budget</span>
@@ -129,7 +139,7 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
         {rows.map((r, i) => (
           <div key={r.t} className={cn("flex items-center gap-2 px-3 py-2 text-[0.74rem]", i > 0 && "border-t border-line")}>
             <span className="flex-1 truncate text-ink-soft">{r.t}</span>
-            <span className={cn("font-mono", r.up ? "text-grove" : "text-ink")}>{r.a}</span>
+            <span className={cn("font-mono tnum", r.up ? "text-grove" : "text-ink")}>{r.a}</span>
             <span className="w-10 text-right font-mono text-[0.6rem] text-ink-faint">{r.d}</span>
           </div>
         ))}
@@ -138,22 +148,31 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
   );
 }
 
-function EventsView() {
+function CalendarView({ reduce }: { reduce: boolean | null }) {
   const events = [
-    { t: "Spring Gala", d: "Apr 12", v: "Memorial Art Gallery", b: "$4,200", s: "Confirmed", tone: "grove" as const },
-    { t: "Alumni Stock Pitch", d: "Feb 20", v: "Schlegel Hall 207", b: "$600", s: "Planning", tone: "amber" as const },
-    { t: "Sponsor Mixer", d: "Mar 8", v: "Simon Atrium", b: "$900", s: "Confirmed", tone: "grove" as const },
+    { t: "Spring Gala", d: "Apr 12 · 7:00p", v: "Memorial Art Gallery", s: "Confirmed", tone: "grove" as const },
+    { t: "Alumni Stock Pitch", d: "Feb 20 · 5:30p", v: "Schlegel Hall 207", s: "Room conflict", tone: "coral" as const },
+    { t: "Sponsor Mixer", d: "Mar 8 · 6:00p", v: "Simon Atrium", s: "Soft overlap", tone: "amber" as const },
   ];
   return (
     <>
       <div className="grid grid-cols-3 gap-2">
-        <Stat k="Upcoming" v="3" />
+        <Stat k="Upcoming" v="7" />
         <Stat k="RSVPs" v="142" sub="+38 this week" />
-        <Stat k="Attendance" v="86%" sub="last term" />
+        <Stat k="Conflicts" v="2" sub="auto-flagged" />
       </div>
       <div className="mt-3 space-y-2">
-        {events.map((e) => (
-          <div key={e.t} className="rounded-xl border border-line bg-paper/40 p-3">
+        {events.map((e, i) => (
+          <motion.div
+            key={e.t}
+            className={cn(
+              "rounded-xl border bg-paper/40 p-3",
+              e.tone === "coral" ? "border-coral/40" : "border-line",
+            )}
+            initial={reduce ? false : { opacity: 0, x: 8 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: reduce ? 0 : 0.4, delay: 0.1 + i * 0.08, ease: EASE }}
+          >
             <div className="flex items-center justify-between">
               <span className="text-[0.86rem] font-medium text-ink">{e.t}</span>
               <Badge tone={e.tone}>{e.s}</Badge>
@@ -161,8 +180,77 @@ function EventsView() {
             <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[0.66rem] text-ink-soft">
               <span>📅 {e.d}</span>
               <span className="text-ink-faint">{e.v}</span>
-              <span className="text-ink">{e.b}</span>
             </div>
+            {e.tone === "coral" && (
+              <p className="mt-1.5 flex items-center gap-1 text-[0.64rem] font-medium text-[#b23a1f]">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-coral" />
+                Hard conflict, Schlegel 207 double-booked 5:00–6:30p
+              </p>
+            )}
+          </motion.div>
+        ))}
+      </div>
+    </>
+  );
+}
+
+const APPROVAL_STEPS = ["Draft", "Officer", "Advisor", "OSE", "Approved"];
+function ApprovalsView({ reduce }: { reduce: boolean | null }) {
+  const active = 3; // "OSE" pending
+  const queue = [
+    { t: "Spring Gala, $4,200 budget", tag: "budget", at: "OSE review", tone: "amber" as const },
+    { t: "Aramark, vendor renewal", tag: "vendor", at: "Approved", tone: "grove" as const },
+    { t: "All-campus email blast", tag: "comms", at: "Returned", tone: "coral" as const },
+  ];
+  return (
+    <>
+      <div className="rounded-xl border border-line bg-paper/40 p-3.5">
+        <div className="flex items-center justify-between">
+          <p className="label-mono text-[0.54rem]">Spring Gala · approval chain</p>
+          <Badge tone="amber">Pending OSE</Badge>
+        </div>
+        <div className="mt-3.5 flex items-center">
+          {APPROVAL_STEPS.map((s, i) => (
+            <div key={s} className="flex flex-1 items-center last:flex-none">
+              <div className="flex flex-col items-center gap-1">
+                <motion.span
+                  className={cn(
+                    "flex h-6 w-6 items-center justify-center rounded-full border text-[0.58rem] font-semibold",
+                    i < active && "border-grove bg-grove text-cloud",
+                    i === active && "border-gold bg-gold/15 text-[#9a6a12]",
+                    i > active && "border-line bg-cloud text-ink-faint",
+                  )}
+                  initial={reduce ? false : { scale: 0.6, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: reduce ? 0 : 0.3, delay: 0.1 + i * 0.12 }}
+                >
+                  {i < active ? "✓" : i + 1}
+                </motion.span>
+                <span className="text-[0.52rem] text-ink-faint">{s}</span>
+              </div>
+              {i < APPROVAL_STEPS.length - 1 && (
+                <div className="mx-1 h-[2px] flex-1 overflow-hidden rounded-full bg-line">
+                  <motion.span
+                    className="block h-full bg-grove"
+                    initial={{ width: "0%" }}
+                    animate={{ width: i < active ? "100%" : "0%" }}
+                    transition={{ duration: reduce ? 0 : 0.5, delay: 0.2 + i * 0.12, ease: EASE }}
+                  />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <p className="mt-3 rounded-lg border border-line bg-cloud px-2.5 py-1.5 font-mono text-[0.6rem] text-ink-soft">
+          🔒 policy v4 · frozen 2026-09-12 · append-only snapshot
+        </p>
+      </div>
+      <div className="mt-3 space-y-1.5">
+        {queue.map((q) => (
+          <div key={q.t} className="flex items-center gap-2 rounded-lg border border-line bg-paper/40 px-3 py-2 text-[0.74rem]">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.5rem] uppercase text-ink-faint">{q.tag}</span>
+            <span className="flex-1 truncate text-ink">{q.t}</span>
+            <Badge tone={q.tone}>{q.at}</Badge>
           </div>
         ))}
       </div>
@@ -172,23 +260,23 @@ function EventsView() {
 
 function MembersView() {
   const roster = [
-    { n: "Aisha Khan", r: "President", y: "Senior" },
-    { n: "Dev Patel", r: "Treasurer", y: "Junior" },
-    { n: "Sam Rivera", r: "VP Events", y: "Senior" },
-    { n: "Leah Cohen", r: "Sponsorship", y: "Sophomore" },
+    { n: "Aisha Khan", r: "President", seat: "PRES-01", y: "Active" },
+    { n: "Dev Patel", r: "Treasurer", seat: "FIN-01", y: "Active" },
+    { n: "Sam Rivera", r: "VP Events", seat: "EVT-01", y: "Active" },
+    { n: "Leah Cohen", r: "Sponsorship", seat: "SPON-01", y: "Shadow" },
   ];
   return (
     <>
       <div className="grid grid-cols-3 gap-2">
         <Stat k="Members" v="84" sub="+9 this term" />
-        <Stat k="Officers" v="12" />
-        <Stat k="Committees" v="6" />
+        <Stat k="Seats" v="12" sub="durable roles" />
+        <Stat k="Shadowing" v="3" sub="onboarding" />
       </div>
       <div className="mt-3 overflow-hidden rounded-xl border border-line">
         <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-[0.58rem] uppercase tracking-wide text-ink-faint">
           <span className="flex-1">Member</span>
-          <span className="w-24">Role</span>
-          <span className="w-16">Year</span>
+          <span className="w-20">Seat</span>
+          <span className="w-16">Status</span>
         </div>
         {roster.map((m, i) => (
           <div key={m.n} className={cn("flex items-center gap-2 px-3 py-2 text-[0.76rem]", i > 0 && "border-t border-line")}>
@@ -196,8 +284,8 @@ function MembersView() {
               {m.n.split(" ").map((p) => p[0]).join("")}
             </span>
             <span className="flex-1 truncate text-ink">{m.n}</span>
-            <span className="w-24 text-ink-soft">{m.r}</span>
-            <span className="w-16 text-ink-faint">{m.y}</span>
+            <span className="w-20 font-mono text-[0.62rem] text-ink-soft">{m.seat}</span>
+            <span className={cn("w-16", m.y === "Shadow" ? "text-gold" : "text-grove")}>{m.y}</span>
           </div>
         ))}
       </div>
@@ -207,10 +295,10 @@ function MembersView() {
 
 function MemoryView() {
   const recs = [
-    { tag: "Deal", t: "Aramark — sponsorship renewal", from: "Maya Chen · 2023–24" },
-    { tag: "Playbook", t: "Spring Gala — run of show", from: "Priya Nair · 2024–25" },
-    { tag: "Vendor", t: "Rochester Print — 15% club rate", from: "Jordan Lee · 2024–25" },
-    { tag: "Bylaw", t: "Election procedure v3", from: "Board · 2022–23" },
+    { tag: "Deal", t: "Aramark, sponsorship renewal", from: "Maya Chen · 2023–24" },
+    { tag: "Playbook", t: "Spring Gala, run of show", from: "Priya Nair · 2024–25" },
+    { tag: "Vendor", t: "Rochester Print, 15% club rate", from: "Jordan Lee · 2024–25" },
+    { tag: "Lesson", t: "Why we moved the fall mixer", from: "Board · 2022–23" },
   ];
   return (
     <>
@@ -235,7 +323,8 @@ function MemoryView() {
 
 const VIEWS: Record<ModuleKey, (p: { reduce: boolean | null }) => React.ReactNode> = {
   Finance: FinanceView,
-  Events: () => <EventsView />,
+  Calendar: CalendarView,
+  Approvals: ApprovalsView,
   Members: () => <MembersView />,
   Memory: () => <MemoryView />,
 };
@@ -244,20 +333,36 @@ const VIEWS: Record<ModuleKey, (p: { reduce: boolean | null }) => React.ReactNod
 export function DashboardMock({
   className,
   tilt = false,
+  auto = false,
   initialModule = "Finance",
 }: {
   className?: string;
   tilt?: boolean;
+  auto?: boolean;
   initialModule?: ModuleKey;
 }) {
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModuleKey>(initialModule);
+  const [paused, setPaused] = useState(false);
   const View = VIEWS[active];
 
+  // Auto-advance through modules (hero surface); paused on hover, off for reduced motion.
+  useEffect(() => {
+    if (!auto || reduce || paused) return;
+    const id = setInterval(() => {
+      setActive((cur) => NAV[(NAV.indexOf(cur) + 1) % NAV.length]);
+    }, 4200);
+    return () => clearInterval(id);
+  }, [auto, reduce, paused]);
+
   return (
-    <div className={cn(tilt && "[perspective:2200px]", className)}>
+    <div
+      className={cn(tilt && "[perspective:2200px]", className)}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <motion.div
-        className="overflow-hidden rounded-2xl border border-line bg-cloud shadow-[0_50px_140px_-50px_rgba(12,30,51,0.5)] ring-1 ring-ink/[0.03]"
+        className="overflow-hidden rounded-2xl border border-line bg-cloud shadow-[0_1px_2px_rgba(12,30,51,0.05),0_50px_140px_-50px_rgba(12,30,51,0.5)] ring-1 ring-ink/[0.03]"
         style={tilt ? { transformStyle: "preserve-3d", transformOrigin: "50% 50%" } : undefined}
         initial={tilt ? { rotateX: 7, rotateY: -12, y: 36, opacity: 0 } : { opacity: 0, y: 16 }}
         whileInView={tilt ? { rotateX: 2, rotateY: -5, y: 0, opacity: 1 } : { opacity: 1, y: 0 }}
@@ -289,7 +394,7 @@ export function DashboardMock({
               <button
                 key={n}
                 type="button"
-                onClick={() => setActive(n)}
+                onClick={() => { setActive(n); setPaused(true); }}
                 aria-pressed={n === active}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[0.8rem] transition-colors",
@@ -305,11 +410,13 @@ export function DashboardMock({
             <span className="px-2 text-[0.74rem] text-ink-soft">2025–26 · Fall</span>
           </aside>
 
-          {/* main — animates on module switch */}
-          <div className="min-h-[18.5rem] p-4 sm:p-5">
+          {/* main, animates on module switch */}
+          <div className="min-h-[19.5rem] p-4 sm:p-5">
             <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-display text-lg font-semibold text-ink">{active}</h3>
-              <span className="font-mono text-[0.62rem] text-ink-faint">click a module ↗</span>
+              <p className="font-display text-lg font-semibold text-ink">{active}</p>
+              <span className="font-mono text-[0.62rem] text-ink-faint">
+                {auto && !reduce ? "auto-touring ↺" : "click a module ↗"}
+              </span>
             </div>
             <AnimatePresence mode="wait">
               <motion.div
@@ -324,7 +431,7 @@ export function DashboardMock({
             </AnimatePresence>
           </div>
 
-          {/* AI panel — contextual to the active module */}
+          {/* AI panel, contextual to the active module */}
           <aside className="hidden flex-col gap-3 border-l border-line bg-grove-soft/30 p-4 lg:flex">
             <div className="flex items-center gap-2">
               <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-cloud shadow-[0_1px_2px_rgba(12,30,51,0.08)]">

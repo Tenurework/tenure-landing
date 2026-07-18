@@ -14,7 +14,7 @@ export function Wordmark({
     // Plain anchor (not next/link) so clicking the logo does a full page refresh.
     <a
       href={href}
-      aria-label="Tenure — home"
+      aria-label="Tenure, home"
       className={cn("group inline-flex items-center gap-2.5", className)}
     >
       <Logo className="h-[1.7rem] w-[1.7rem] text-grove transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-90" />

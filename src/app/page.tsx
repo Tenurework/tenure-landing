@@ -1,11 +1,15 @@
 import { Hero } from "@/components/home/Hero";
-import { SupporterStrip } from "@/components/site/SupporterStrip";
+import { TrustStrip } from "@/components/home/TrustStrip";
 import { Problem } from "@/components/home/Problem";
+import { SeatMechanism } from "@/components/home/SeatMechanism";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { Modules } from "@/components/home/Modules";
+import { MetricsBand } from "@/components/home/MetricsBand";
+import { Platform } from "@/components/home/Platform";
 import { ProductAtWork } from "@/components/home/ProductAtWork";
 import { AiOnboarding } from "@/components/home/AiOnboarding";
+import { Governance } from "@/components/home/Governance";
 import { WhoFor } from "@/components/home/WhoFor";
+import { Integrations } from "@/components/home/Integrations";
 import { Faq } from "@/components/home/Faq";
 import { CtaBand } from "@/components/site/CtaBand";
 
@@ -13,13 +17,17 @@ export default function HomePage() {
   return (
     <>
       <Hero />
-      <SupporterStrip />
+      <TrustStrip />
       <Problem />
+      <SeatMechanism />
       <HowItWorks />
-      <Modules />
+      <MetricsBand />
+      <Platform />
       <ProductAtWork />
       <AiOnboarding />
+      <Governance />
       <WhoFor />
+      <Integrations />
       <Faq />
       <CtaBand />
     </>

@@ -9,12 +9,12 @@ type Step = {
   icon: ReactNode;
 };
 
-/** Honest, real sequence — the work becomes the record, the record onboards the next leader. */
+/** Honest, real sequence, the work becomes the record, the record onboards the next leader. */
 const STEPS: Step[] = [
   {
     n: "01",
     title: "Run it in Tenure",
-    body: "Finances, events, members, and decisions get logged as the work happens — no separate wiki anyone has to remember to update.",
+    body: "Finances, events, members, and decisions get logged as the work happens, no separate wiki anyone has to remember to update.",
     icon: (
       <svg
         width="20"
@@ -35,7 +35,7 @@ const STEPS: Step[] = [
   {
     n: "02",
     title: "It stays with the seat",
-    body: "Knowledge belongs to the role, not the student who held it — so nothing walks out the door at term’s end.",
+    body: "Knowledge belongs to the role, not the person who held it, so nothing walks out the door at term’s end.",
     icon: (
       <svg
         width="20"
@@ -56,7 +56,7 @@ const STEPS: Step[] = [
   {
     n: "03",
     title: "AI onboards the next leader",
-    body: "They ask Tenure anything and get answers from everything the role has ever done — productive in days, not a semester.",
+    body: "They ask Tenure anything and get answers from everything the role has ever done, productive in days, not a semester.",
     icon: (
       <svg
         width="20"
@@ -100,7 +100,7 @@ export function HowItWorks() {
   return (
     <section
       id="how"
-      className="relative scroll-mt-24 border-t border-line py-24 sm:py-32"
+      className="relative scroll-mt-24 border-t border-line bg-sand py-24 sm:py-32"
     >
       <Container>
         <div className="mx-auto max-w-2xl text-center">
@@ -118,7 +118,7 @@ export function HowItWorks() {
           <Reveal delay={0.12}>
             <p className="mx-auto mt-5 text-lg leading-relaxed text-ink-soft">
               Tenure isn&rsquo;t a binder someone hands over on their way out.
-              The work itself becomes the record — so every transition starts
+              The work itself becomes the record, so every transition starts
               from everything that came before, not a blank page.
             </p>
           </Reveal>

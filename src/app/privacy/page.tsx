@@ -21,10 +21,10 @@ export default function PrivacyPage() {
         <div className="legal max-w-2xl pb-24">
           <h2>Overview</h2>
           <p>
-            Tenure is an early-stage ERP for university administrations and
+            Tenure is an early-stage ERP for organizations where leadership turns over faster than knowledge does, starting with university administrations and
             student organizations. The platform holds an organization&rsquo;s
-            operations and institutional memory — finance, events, members,
-            documents, and the decisions behind them — so the record stays with
+            operations and institutional memory, finance, events, members,
+            documents, and the decisions behind them, so the record stays with
             the seat when the people in it rotate. This page explains, in plain
             terms, what information we collect, how we use it, and the choices you
             have. We&rsquo;ll keep it honest and update it as the product grows.
@@ -33,16 +33,16 @@ export default function PrivacyPage() {
           <h2>Information we collect</h2>
           <ul>
             <li>
-              <strong>Account details you provide</strong> — things like your
+              <strong>Account details you provide</strong>, things like your
               name, email, role, and the organization you belong to.
             </li>
             <li>
-              <strong>The organizational records you choose to store</strong> —
+              <strong>The organizational records you choose to store</strong>, 
               the finances, events, members, documents, notes, and history your
               organization decides to keep in Tenure.
             </li>
             <li>
-              <strong>Basic usage data</strong> — the operational information we
+              <strong>Basic usage data</strong>, the operational information we
               need to run the service reliably and keep it secure.
             </li>
           </ul>
@@ -50,8 +50,8 @@ export default function PrivacyPage() {
           <h2>How we use it</h2>
           <p>
             We use the information to run Tenure, support your organization, and
-            power AI onboarding — so when a leader leaves a seat, the AI that has
-            learned what the role has done can get the next person productive in
+            power AI onboarding, so when a leader leaves a seat, an AI grounded in
+            everything the role has recorded can get the next person productive in
             days instead of a semester. We do not sell personal information. We
             use it to deliver the service you&rsquo;re asking for, not to build a
             business out of your data.
@@ -68,8 +68,8 @@ export default function PrivacyPage() {
               organization by default.
             </li>
             <li>
-              <strong>Service providers we rely on</strong> to operate Tenure —
-              for example, hosting and infrastructure — under confidentiality
+              <strong>Service providers we rely on</strong> to operate Tenure, 
+              for example, hosting and infrastructure, under confidentiality
               obligations, and only as needed to run the service.
             </li>
           </ul>
@@ -79,7 +79,7 @@ export default function PrivacyPage() {
             The organization owns its record. That&rsquo;s the whole point of
             Tenure: the role persists while the people rotate, so knowledge
             belongs to the seat, not the person who held it. Individuals do not
-            take the record with them when their term ends — it carries forward to
+            take the record with them when their term ends. It carries forward to
             whoever inherits the role.
           </p>
 
@@ -87,7 +87,7 @@ export default function PrivacyPage() {
           <p>
             We treat student information on a least-access basis: people see what
             their role needs, and no more. The institution or organization owns
-            its records — not Tenure, and not the individuals who pass through a
+            its records, not Tenure, and not the individuals who pass through a
             seat. We aim to support FERPA-conscious handling of education records,
             and we&rsquo;ll work with your administration on the policies and
             controls that fit your institution.
@@ -97,7 +97,7 @@ export default function PrivacyPage() {
           <p>
             We use reasonable safeguards to protect the information in Tenure. No
             method of storing or transmitting data is perfectly secure, and we
-            can&rsquo;t promise absolute security — but we take the trust your
+            can&rsquo;t promise absolute security, but we take the trust your
             organization places in us seriously and work to earn it.
           </p>
 

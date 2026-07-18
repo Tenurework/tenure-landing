@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Wordmark } from "@/components/brand/Wordmark";
-import { Button } from "@/components/ui/Button";
+import { ContactSales } from "@/components/ui/ContactSales";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
@@ -19,6 +19,14 @@ export function SiteHeader() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   return (
@@ -58,9 +66,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center md:flex">
-          <Button href={site.bookingUrl} size="sm" arrow>
-            Book a demo
-          </Button>
+          <ContactSales size="sm" arrow />
         </div>
 
         <button
@@ -68,6 +74,7 @@ export function SiteHeader() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
           className="-mr-2 flex h-10 w-10 items-center justify-center text-ink md:hidden"
         >
           <span className="relative block h-3 w-5">
@@ -96,6 +103,7 @@ export function SiteHeader() {
       <AnimatePresence>
         {open && (
           <motion.div
+            id="mobile-menu"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -114,9 +122,7 @@ export function SiteHeader() {
                 </Link>
               ))}
               <div className="mt-3 px-2">
-                <Button href={site.bookingUrl} size="md" arrow className="w-full">
-                  Book a demo
-                </Button>
+                <ContactSales size="md" arrow className="w-full" />
               </div>
             </nav>
           </motion.div>

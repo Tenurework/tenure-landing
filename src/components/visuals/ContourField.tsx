@@ -111,7 +111,7 @@ function buildContours(seed: number): string[] {
 }
 
 /**
- * A faint topographic contour field — iso-lines over a field of peaks and ridges,
+ * A faint topographic contour field, iso-lines over a field of peaks and ridges,
  * the way a real contour map reads. Inherits color via currentColor. Decorative.
  */
 export function ContourField({

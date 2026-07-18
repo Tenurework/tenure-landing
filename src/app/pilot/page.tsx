@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
+import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
 import { site } from "@/lib/site";
@@ -91,17 +92,17 @@ const INCLUDED: { icon: ReactNode; t: string; d: string }[] = [
   {
     icon: <FolderIcon />,
     t: "Hands-on setup from your existing folder",
-    d: "We start from what you already have — the shared drive, the half-finished handoff doc, the contacts buried in someone's inbox — and stand up your first system of record together.",
+    d: "We start from what you already have, the shared drive, the half-finished handoff doc, the contacts buried in someone's inbox, and stand up your first system of record together.",
   },
   {
     icon: <SeatsIcon />,
     t: "A workspace for every role",
-    d: "President, treasurer, sponsorship, events — each seat gets its own space where money, decisions, members, and documents are captured as the work actually happens.",
+    d: "President, treasurer, sponsorship, events: each seat gets its own space where money, decisions, members, and documents are captured as the work actually happens.",
   },
   {
     icon: <SparkIcon />,
     t: "AI onboarding for the next board",
-    d: "When leadership turns over, an AI that has learned everything the role has done walks the next person through it — productive in days, not a semester.",
+    d: "When leadership turns over, Tenure AI walks the next person through everything the role has recorded, answering in plain language, productive in days, not a semester.",
   },
   {
     icon: <LineIcon />,
@@ -113,7 +114,7 @@ const INCLUDED: { icon: ReactNode; t: string; d: string }[] = [
 const WHO: string[] = [
   "Leadership that turns over every year or semester.",
   "An existing drive or folder of knowledge that's worth keeping.",
-  "A board that wants the next one to start ahead — not from zero.",
+  "A board that wants the next one to start ahead, not from zero.",
 ];
 
 const STEPS: { n: string; t: string; d: string }[] = [
@@ -125,17 +126,17 @@ const STEPS: { n: string; t: string; d: string }[] = [
   {
     n: "02",
     t: "Run the term in Tenure",
-    d: "Through the fall, finances, events, members, and decisions get logged in context — one system of record instead of a dozen scattered tools.",
+    d: "Through the fall, finances, events, members, and decisions get logged in context: one system of record instead of a dozen scattered tools.",
   },
   {
     n: "03",
     t: "Hand off cleanly at term's end",
-    d: "When leaders rotate out, Tenure assembles an organized handoff instead of a cold start — the role keeps everything it learned.",
+    d: "When leaders rotate out, Tenure assembles an organized handoff instead of a cold start. The role keeps everything it learned.",
   },
   {
     n: "04",
     t: "The next board starts on day one",
-    d: "The incoming team opens a full history and an AI that already knows the seat — productive from the very first meeting.",
+    d: "The incoming team opens a full history and a Tenure AI copilot that answers from the seat, productive from the very first meeting.",
   },
 ];
 
@@ -153,14 +154,12 @@ export default function PilotPage() {
         intro={
           <>
             This fall, Tenure runs a hands-on pilot with six student
-            organizations and {site.origin.partner} — standing up the first year
+            organizations and {site.origin.partner}, standing up the first year
             of each org&rsquo;s system of record together.
           </>
         }
       >
-        <Button href={site.bookingUrl} size="lg" arrow>
-          Book a demo
-        </Button>
+        <ContactSales size="lg" arrow />
         <Button
           href={`mailto:${site.email}?subject=Tenure%20pilot`}
           variant="secondary"
@@ -170,7 +169,7 @@ export default function PilotPage() {
         </Button>
       </PageHeader>
 
-      {/* 1 — What the pilot includes */}
+      {/* 1, What the pilot includes */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -186,7 +185,7 @@ export default function PilotPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
                 Six organizations, one term, hands-on the whole way. No waiting
-                list and no placeholder accounts — here is what every pilot org
+                list and no placeholder accounts. Here is what every pilot org
                 gets.
               </p>
             </Reveal>
@@ -210,7 +209,7 @@ export default function PilotPage() {
         </Container>
       </section>
 
-      {/* 2 — Who it's for */}
+      {/* 2, Who it's for */}
       <section className="relative border-t border-line bg-sand py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -252,7 +251,7 @@ export default function PilotPage() {
         </Container>
       </section>
 
-      {/* 3 — How it runs */}
+      {/* 3, How it runs */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <div className="max-w-2xl">
@@ -296,7 +295,7 @@ export default function PilotPage() {
         </Container>
       </section>
 
-      {/* 4 — For institutions */}
+      {/* 4, For institutions */}
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <Reveal>
@@ -323,13 +322,11 @@ export default function PilotPage() {
                 <p className="mt-6 text-lg leading-relaxed text-paper/70">
                   {site.origin.partner} is part of this pilot. If your office
                   stewards dozens of organizations, Tenure gives each one a memory
-                  that survives turnover — so the knowledge you fund every year
+                  that survives turnover, so the knowledge you fund every year
                   stops walking out the door with the students who built it.
                 </p>
                 <div className="mt-9">
-                  <Button href={site.bookingUrl} size="lg" arrow>
-                    Book a demo
-                  </Button>
+                  <ContactSales size="lg" arrow />
                 </div>
               </div>
             </div>

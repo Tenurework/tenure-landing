@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/Logo";
 import { Wordmark } from "@/components/brand/Wordmark";
+import { ContactSalesLink } from "@/components/ui/ContactSales";
 import { site } from "@/lib/site";
 
 export function SiteFooter() {
@@ -40,20 +41,15 @@ export function SiteFooter() {
             <p className="label-mono">Get started</p>
             <ul className="mt-4 space-y-3">
               <li>
-                <a
-                  href={site.bookingUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-1.5 text-[0.95rem] text-paper transition-colors hover:text-grove-bright"
-                >
-                  Book a demo
+                <ContactSalesLink className="group inline-flex items-center gap-1.5 text-[0.95rem] text-paper transition-colors hover:text-grove-bright">
+                  Contact Sales
                   <span
                     aria-hidden
                     className="text-grove-bright transition-transform duration-300 group-hover:translate-x-0.5"
                   >
                     ↗
                   </span>
-                </a>
+                </ContactSalesLink>
               </li>
               <li>
                 <a
@@ -110,7 +106,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      {/* giant embossed bloom + wordmark — at the very end, bleeding off the bottom */}
+      {/* giant embossed bloom + wordmark, at the very end, bleeding off the bottom */}
       <div
         aria-hidden
         className="pointer-events-none relative z-0 mt-12 flex select-none items-center justify-center gap-[2.5vw] overflow-hidden"

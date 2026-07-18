@@ -5,7 +5,7 @@ import { SectionContour } from "@/components/visuals/SectionContour";
 const POINTS = [
   "Answers cite the real records and people behind them",
   "No more “ask the person who left”",
-  "Every term it only gets smarter",
+  "The seat's record grows richer every term",
 ];
 
 type Exchange = {
@@ -66,7 +66,7 @@ export function AiOnboarding() {
       />
 
       <Container className="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-        {/* LEFT — copy */}
+        {/* LEFT, copy */}
         <div>
           <Reveal>
             <Eyebrow>Tenure AI</Eyebrow>
@@ -81,8 +81,8 @@ export function AiOnboarding() {
 
           <Reveal delay={0.12}>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-paper/70">
-              Ask Tenure anything &mdash; how a deal was closed, where the budget
-              stands, why a decision was made &mdash; and get an answer grounded in
+              Ask Tenure anything (how a deal was closed, where the budget
+              stands, why a decision was made) and get an answer grounded in
               the role&rsquo;s own history. A semester of ramp becomes a few days,
               and the time you save is real money back to the organization.
             </p>
@@ -103,7 +103,7 @@ export function AiOnboarding() {
           </Reveal>
         </div>
 
-        {/* RIGHT — chat card */}
+        {/* RIGHT, chat card */}
         <Reveal delay={0.12}>
           <div className="rounded-2xl border border-line-dark bg-ink-raised p-5 shadow-[0_40px_120px_-50px_rgba(0,0,0,0.7)]">
             {/* card header */}

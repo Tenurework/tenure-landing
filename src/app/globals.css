@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   TENURE — light, warm, geometric. (Frankli × Endex × Crescent)
-   ERP for university administrations + student organizations.
+   TENURE — light, warm, geometric, and premium.
+   The university operating system. Institutional memory that outlives turnover.
    ============================================================================ */
 
 @theme {
@@ -10,9 +10,11 @@
   --color-paper: #fbf9f5;        /* warm white base                        */
   --color-sand: #f1ece2;         /* cream alt sections                     */
   --color-cloud: #ffffff;        /* pure white cards                       */
+  --color-mist: #f6f3ec;         /* faint warm fill                        */
 
   /* ----- Ink (deep navy) ------------------------------------------------ */
   --color-ink: #0c1e33;          /* primary text + dark sections           */
+  --color-ink-deep: #081726;     /* deepest navy, footer/void              */
   --color-ink-raised: #122a44;   /* raised dark surfaces                   */
   --color-ink-soft: #46586c;     /* secondary text on light                */
   --color-ink-faint: #8a97a4;    /* captions, labels                       */
@@ -26,22 +28,32 @@
   --color-grove: #1c8c5a;
   --color-grove-deep: #14633f;
   --color-grove-bright: #25a96d;
+  --color-grove-glow: #37c07e;
   --color-grove-soft: #e4f1e9;   /* tint fill                              */
+  --color-grove-mist: #f1f8f4;   /* faintest tint                          */
 
-  /* ----- Playful secondaries (Frankli shapes) --------------------------- */
+  /* ----- Playful secondaries (geometric shapes) ------------------------- */
   --color-coral: #ed6a4a;
   --color-gold: #e8b04b;
   --color-sky: #3e7cb1;
-  --color-violet: #6c4cf1;       /* nods to Startup Wednesday              */
+  --color-violet: #6c4cf1;
 
   /* ----- Radius (friendly, rounded) ------------------------------------- */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 26px;
+  --radius-2xl: 32px;
 
   /* ----- Motion --------------------------------------------------------- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ----- Custom animation utilities (Tailwind v4 generates animate-*) ---- */
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-marquee-slow: marquee 64s linear infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-float-slow: floaty 9s ease-in-out infinite;
+  --animate-pulse-soft: pulseSoft 2.6s ease-in-out infinite;
 }
 
 @theme inline {
@@ -94,6 +106,12 @@
   .font-display {
     letter-spacing: -0.025em;
   }
+
+  /* Tabular figures for data / numbers */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1, "cv01" 1;
+  }
 }
 
 /* ----- Utilities ---------------------------------------------------------- */
@@ -108,6 +126,35 @@
   color: var(--color-ink-faint);
 }
 
+/* Grove gradient text — for the highlighted phrase in headlines */
+@utility text-gradient {
+  background: linear-gradient(102deg, var(--color-grove-deep) 0%, var(--color-grove) 42%, var(--color-grove-bright) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Premium card surface on light */
+@utility card {
+  background: var(--color-cloud);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 1px 2px rgba(12, 30, 51, 0.04), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+/* Fine ledger grid, tuned per background via currentColor */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Elevated hover-lift transition */
+@utility lift {
+  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.3s var(--ease-out);
+}
+
 /* Giant embossed wordmark for the navy footer */
 .wordmark-giant {
   font-family: var(--font-general), sans-serif;
@@ -120,6 +167,73 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Subtle film grain — layer over sections for texture. Decorative. */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+.grain-dark::after {
+  mix-blend-mode: screen;
+  opacity: 0.06;
+}
+
+/* Marquee track: duplicate children inside, animate -50% */
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes aurora {
+  0%, 100% { transform: translate3d(-4%, -2%, 0) scale(1.05); opacity: 0.9; }
+  33% { transform: translate3d(3%, 3%, 0) scale(1.15); opacity: 1; }
+  66% { transform: translate3d(2%, -3%, 0) scale(1.08); opacity: 0.85; }
+}
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@keyframes shimmer {
+  from { background-position: -160% 0; }
+  to { background-position: 260% 0; }
+}
+
+/* Sheen sweep for primary buttons on hover */
+.sheen {
+  position: relative;
+  overflow: hidden;
+}
+.sheen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.35) 48%, transparent 66%);
+  background-size: 220% 100%;
+  background-position: -160% 0;
+  transition: none;
+  pointer-events: none;
+}
+.sheen:hover::before {
+  animation: shimmer 0.9s ease-out;
 }
 
 /* ----- Legal / long-form prose ------------------------------------------- */
@@ -177,6 +291,15 @@
     color: var(--color-ink);
     font-weight: 600;
   }
+}
+
+/* ----- Calendly overrides — match the brand -------------------------------- */
+.calendly-badge-widget .calendly-badge-content {
+  font-family: var(--font-general), system-ui, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em !important;
+  box-shadow: 0 14px 34px -12px rgba(20, 99, 63, 0.6) !important;
+  border-radius: 999px !important;
 }
 
 /* ----- Lenis smooth scroll ----------------------------------------------- */
