@@ -83,7 +83,7 @@ const POINTS: { t: string; d: string }[] = [
   },
   {
     t: "Every answer cites its sources",
-    d: "Responses link straight back to the records, files, and decisions they came from, nothing invented.",
+    d: "Responses link straight back to the records, files, and decisions they came from, and the model is only ever given records you're already allowed to see.",
   },
   {
     t: "The knowledge stays with the seat",
@@ -93,8 +93,8 @@ const POINTS: { t: string; d: string }[] = [
 
 const QA: { q: string; a: string; src: string }[] = [
   {
-    q: "How do we file a reimbursement?",
-    a: "Submit receipts in the Finance module within 14 days; the VP Finance approves, then the org account pays out, the same flow the last three treasurers ran.",
+    q: "Why did we move the gala off finals week?",
+    a: "The board moved it after the October attendance review, and the new date cleared OSE the same week. See the decision card and the approval behind it.",
     src: "2 sources",
   },
   {
@@ -115,7 +115,7 @@ export default function ProductPage() {
             <span className="text-grove">runs</span>.
           </>
         }
-        intro="Tenure runs your finances, events, members, and institutional memory in one place, then Tenure AI turns everything the role has recorded into instant, sourced answers, getting each new leader productive in days, not a semester."
+        intro="Tenure runs your finances, events, members, and institutional memory in one place, then Tenure AI turns everything the role has recorded into sourced answers, getting each new leader productive in days, not a semester."
       >
         <ContactSales size="lg" arrow />
         <Button href="/pilot" variant="secondary" size="lg">
@@ -146,7 +146,7 @@ export default function ProductPage() {
 
           <Reveal delay={0.08} className="mt-12">
             <div className="flex flex-col items-center gap-4">
-              <p className="label-mono">Built to fit around the tools you already use</p>
+              <p className="label-mono">Import the spreadsheets you keep. Subscribe your calendar.</p>
               <ToolLogos className="mt-1 max-w-3xl" />
             </div>
           </Reveal>
@@ -218,9 +218,9 @@ export default function ProductPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
                 When a leader leaves and the next one takes the seat, they
-                don&rsquo;t start from zero. They ask Tenure in plain language, 
-                and Tenure AI answers instantly from the seat&rsquo;s own record,
-                citing exactly where each answer came from.
+                don&rsquo;t start from zero. They ask Tenure in their own words
+                and get the sources back, with an answer whenever Tenure can
+                ground one in the seat&rsquo;s own record.
               </p>
             </Reveal>
 

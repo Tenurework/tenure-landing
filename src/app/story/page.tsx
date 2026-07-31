@@ -186,8 +186,9 @@ export default function StoryPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
                 Here is exactly where things stand, and where they go this
-                fall, with the first organizations putting Tenure to work
-                alongside Simon&rsquo;s Office of Student Engagement.
+                fall. Every organization Simon&rsquo;s Office of Student
+                Engagement stewards puts Tenure to work, and so does the office
+                itself.
               </p>
             </Reveal>
           </div>

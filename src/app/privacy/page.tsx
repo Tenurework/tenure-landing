@@ -56,6 +56,18 @@ export default function PrivacyPage() {
             use it to deliver the service you&rsquo;re asking for, not to build a
             business out of your data.
           </p>
+          <p>
+            One piece of that deserves saying plainly, because a security review
+            will ask. Tenure AI answers from records the person asking already
+            has permission to see, and it shows its sources. To turn those
+            sources into an answer, the relevant record text is sent to
+            Anthropic&rsquo;s API, the model provider we use. So some of your
+            record does leave our infrastructure at the moment someone asks a
+            question, and you should hear that from us rather than find it later.
+            Your records are never used to train any model, by us or by
+            Anthropic. We do not train or fine-tune models on customer data, and
+            we have no pipeline that could.
+          </p>
 
           <h2>Who can see it</h2>
           <ul>
@@ -69,8 +81,9 @@ export default function PrivacyPage() {
             </li>
             <li>
               <strong>Service providers we rely on</strong> to operate Tenure, 
-              for example, hosting and infrastructure, under confidentiality
-              obligations, and only as needed to run the service.
+              for example, hosting, infrastructure, and the AI provider
+              described above, under confidentiality obligations, and only as
+              needed to run the service.
             </li>
           </ul>
 
@@ -95,8 +108,15 @@ export default function PrivacyPage() {
 
           <h2>Security</h2>
           <p>
-            We use reasonable safeguards to protect the information in Tenure. No
-            method of storing or transmitting data is perfectly secure, and we
+            The database and the files you upload, documents and images, are
+            encrypted at rest. Documents are never served from a raw file URL:
+            every download goes through a signed link that expires in ten
+            minutes.
+          </p>
+          <p>
+            Beyond that, we use reasonable safeguards to protect the information
+            in Tenure. No method of storing or transmitting data is perfectly
+            secure, and we
             can&rsquo;t promise absolute security, but we take the trust your
             organization places in us seriously and work to earn it.
           </p>

@@ -167,8 +167,8 @@ export function SeatMechanism() {
                   </svg>
                 </span>
                 <div>
-                  <p className="font-display text-[1.05rem] font-semibold text-ink">Treasurer</p>
-                  <p className="font-mono text-[0.66rem] text-ink-faint">durable seat · FIN-01</p>
+                  <p className="font-display text-[1.05rem] font-semibold text-ink">VP Finance &amp; Operations</p>
+                  <p className="font-mono text-[0.66rem] text-ink-faint">durable seat · SCC-VP-FINA-OPER</p>
                 </div>
               </div>
               <div className="flex items-center gap-1.5">

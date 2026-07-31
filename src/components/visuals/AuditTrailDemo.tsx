@@ -14,14 +14,14 @@ type Row = {
 };
 
 const POOL: Omit<Row, "id" | "when">[] = [
-  { actor: "FIN-01", action: "budget.approved", target: "Spring Gala · $4,200", result: "allow" },
-  { actor: "EVT-01", action: "event.conflict_overridden", target: "Schlegel 207", result: "allow" },
+  { actor: "SCC-VP-FINA-OPER", action: "budget.approved", target: "Spring Gala · $4,200", result: "allow" },
+  { actor: "SCC-VP-EVEN-PART", action: "event.conflict_overridden", target: "Schlegel 207", result: "allow" },
   { actor: "MEMBER", action: "budget.delete", target: "Q3 ledger", result: "deny" },
-  { actor: "OSE-DIR", action: "policy.snapshot_created", target: "policy v4", result: "allow" },
-  { actor: "PRES-01", action: "roster.role_reassigned", target: "SPON-01", result: "allow" },
-  { actor: "SPON-01", action: "message.sensitivity_raised", target: "Aramark thread", result: "allow" },
-  { actor: "ALUMNI", action: "documents.read", target: "contracts/", result: "deny" },
-  { actor: "EVT-01", action: "vendor.created", target: "Prestige Catering", result: "allow" },
+  { actor: "OSE_DIRECTOR", action: "approval.override", target: "All-campus email blast", result: "allow" },
+  { actor: "SCC-PRES", action: "roster.role_reassigned", target: "SCC-VP-SPON", result: "allow" },
+  { actor: "SCC-VP-MARK-COMM", action: "message.broadcast_sent", target: "All-board channel", result: "allow" },
+  { actor: "OSE_ADVISOR", action: "content.override", target: "Aramark contract", result: "deny" },
+  { actor: "SCC-VP-EVEN-PART", action: "vendor.created", target: "Prestige Catering", result: "allow" },
 ];
 
 /**
@@ -83,7 +83,7 @@ export function AuditTrailDemo({ className }: { className?: string }) {
       </div>
 
       {/* column header */}
-      <div className="grid grid-cols-[1fr_1.4fr_1.3fr_auto] gap-3 border-b border-line px-4 py-2 font-mono text-[0.56rem] uppercase tracking-wide text-ink-faint sm:px-5">
+      <div className="grid grid-cols-[1.4fr_1.2fr_0px_auto] gap-3 border-b border-line px-4 py-2 font-mono text-[0.56rem] uppercase tracking-wide text-ink-faint sm:grid-cols-[1.25fr_1.15fr_1.1fr_auto] sm:px-5">
         <span>Actor</span>
         <span>Action</span>
         <span className="hidden sm:block">Target</span>
@@ -104,11 +104,11 @@ export function AuditTrailDemo({ className }: { className?: string }) {
               animate={{ opacity: 1, y: 0, backgroundColor: "rgba(228,241,233,0)" }}
               exit={reduce ? undefined : { opacity: 0 }}
               transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="grid grid-cols-[1fr_1.4fr_1.3fr_auto] items-center gap-3 px-4 py-2.5 text-[0.72rem] sm:px-5"
+              className="grid grid-cols-[1.4fr_1.2fr_0px_auto] items-center gap-3 px-4 py-2.5 text-[0.72rem] sm:grid-cols-[1.25fr_1.15fr_1.1fr_auto] sm:px-5"
             >
-              <span className="flex items-center gap-1.5 font-mono text-ink-soft">
-                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="text-ink-faint"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-                {r.actor}
+              <span className="flex min-w-0 items-center gap-1.5 font-mono text-[0.66rem] text-ink-soft sm:text-[0.72rem]">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="shrink-0 text-ink-faint"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                <span className="truncate">{r.actor}</span>
               </span>
               <span className={cn("truncate font-mono", r.result === "deny" ? "text-[#b23a1f]" : "text-grove-deep")}>
                 {r.action}

@@ -55,8 +55,8 @@ const STEPS: Step[] = [
   },
   {
     n: "03",
-    title: "AI onboards the next leader",
-    body: "They ask Tenure anything and get answers from everything the role has ever done, productive in days, not a semester.",
+    title: "The next leader inherits it",
+    body: "They open a handoff packet assembled from the record itself, current the day they arrive, then ask Tenure AI about anything in it.",
     icon: (
       <svg
         width="20"

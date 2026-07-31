@@ -20,10 +20,10 @@ const ICONS: Record<ModuleKey, string> = {
 };
 
 const ASKS: Record<ModuleKey, string[]> = {
-  Finance: ["Are we on budget this term?", "What did the gala cost last year?"],
-  Calendar: ["Which venues have we used before?", "Any conflicts next week?"],
-  Approvals: ["What's stuck in OSE review?", "Under which policy was this approved?"],
-  Members: ["Who handled sponsorship last year?", "How do we run elections?"],
+  Finance: ["Why was the gala budget returned?", "What did the board decide about dues?"],
+  Calendar: ["Which venues have we used before?", "When did we last hold the gala?"],
+  Approvals: ["What's stuck in OSE review?", "Which vendor requests did OSE return?"],
+  Members: ["What did this seat hand over last term?", "Which roster changes did OSE approve?"],
   Memory: ["Why did we drop the fall mixer?", "Which sponsors should we renew?"],
 };
 
@@ -260,10 +260,10 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
 
 function MembersView() {
   const roster = [
-    { n: "Aisha Khan", r: "President", seat: "PRES-01", y: "Active" },
-    { n: "Dev Patel", r: "Treasurer", seat: "FIN-01", y: "Active" },
-    { n: "Sam Rivera", r: "VP Events", seat: "EVT-01", y: "Active" },
-    { n: "Leah Cohen", r: "Sponsorship", seat: "SPON-01", y: "Shadow" },
+    { n: "Aisha Khan", r: "President", seat: "RFC-PRES", y: "Active" },
+    { n: "Dev Patel", r: "VP Finance & Operations", seat: "RFC-VP-FINA-OPER", y: "Active" },
+    { n: "Sam Rivera", r: "VP Events & Partnerships", seat: "RFC-VP-EVEN-PART", y: "Active" },
+    { n: "Leah Cohen", r: "VP Sponsorship", seat: "RFC-VP-SPON", y: "Shadow" },
   ];
   return (
     <>
@@ -275,7 +275,7 @@ function MembersView() {
       <div className="mt-3 overflow-hidden rounded-xl border border-line">
         <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-[0.58rem] uppercase tracking-wide text-ink-faint">
           <span className="flex-1">Member</span>
-          <span className="w-20">Seat</span>
+          <span className="w-24">Seat</span>
           <span className="w-16">Status</span>
         </div>
         {roster.map((m, i) => (
@@ -284,7 +284,7 @@ function MembersView() {
               {m.n.split(" ").map((p) => p[0]).join("")}
             </span>
             <span className="flex-1 truncate text-ink">{m.n}</span>
-            <span className="w-20 font-mono text-[0.62rem] text-ink-soft">{m.seat}</span>
+            <span className="w-24 truncate font-mono text-[0.58rem] text-ink-soft">{m.seat}</span>
             <span className={cn("w-16", m.y === "Shadow" ? "text-gold" : "text-grove")}>{m.y}</span>
           </div>
         ))}
@@ -447,7 +447,7 @@ export function DashboardMock({
               ))}
             </div>
             <div className="mt-auto rounded-lg border border-grove/25 bg-cloud p-2.5">
-              <p className="text-[0.7rem] leading-relaxed text-ink-soft">Answers cite the real records, people, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
+              <p className="text-[0.7rem] leading-relaxed text-ink-soft">Answers link the records, files, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
             </div>
           </aside>
         </div>

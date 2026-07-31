@@ -6,7 +6,7 @@ import { site } from "@/lib/site";
 const CHIPS = [
   "Every org OSE stewards",
   "Hard + soft conflict detection",
-  "6-step OSE approval chain",
+  "2-gate approval chain, 7 request types",
   "Immutable audit trail",
 ];
 

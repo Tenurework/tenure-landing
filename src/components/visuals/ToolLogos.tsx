@@ -1,39 +1,65 @@
 /* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/cn";
 
-const TOOLS: { src: string; name: string }[] = [
-  { src: "/logos/tools/google-drive.svg", name: "Google Drive" },
-  { src: "/logos/tools/gmail.svg", name: "Gmail" },
-  { src: "/logos/tools/google-calendar.svg", name: "Google Calendar" },
-  { src: "/logos/tools/slack-icon.svg", name: "Slack" },
-  { src: "/logos/tools/notion-icon.svg", name: "Notion" },
-  { src: "/logos/tools/microsoft-teams.svg", name: "Microsoft Teams" },
-  { src: "/logos/tools/outlook.svg", name: "Outlook" },
-  { src: "/logos/tools/excel.svg", name: "Excel" },
-  { src: "/logos/tools/zoom-icon.svg", name: "Zoom" },
-  { src: "/logos/tools/dropbox.svg", name: "Dropbox" },
-  { src: "/logos/tools/discord-icon.svg", name: "Discord" },
-  { src: "/logos/tools/box.svg", name: "Box" },
+type Mark = { src: string; name: string };
+type Lane = { title: string; tag: string; body: string; marks: Mark[] };
+
+const LANES: Lane[] = [
+  {
+    title: "Excel, Word, PowerPoint, PDF",
+    tag: "Open in Tenure",
+    body: "Contracts, decks, and spreadsheets open in the app, PowerPoint with its speaker notes. Spreadsheets and text files edit in place, versioned.",
+    marks: [{ src: "/logos/tools/excel.svg", name: "Excel" }],
+  },
+  {
+    title: "Outlook, Google, Apple Calendar",
+    tag: "Subscribe, one link",
+    body: "One signed link, no account connection and no password shared. It carries only what your seat may see. One-way today, Tenure fills your calendar and does not read it back.",
+    marks: [
+      { src: "/logos/tools/outlook.svg", name: "Outlook" },
+      { src: "/logos/tools/google-calendar.svg", name: "Google Calendar" },
+    ],
+  },
+  {
+    title: "Your existing budget spreadsheet",
+    tag: "Imported, columns matched",
+    body: "Upload it as you keep it. Tenure works out which column is which, drops subtotal rows so nothing double-counts, and shows what it read before anything is saved.",
+    marks: [{ src: "/logos/tools/excel.svg", name: "Excel" }],
+  },
 ];
 
 export function ToolLogos({ className }: { className?: string }) {
   return (
-    <div className={cn("flex flex-wrap justify-center gap-2.5", className)}>
-      {TOOLS.map((t) => (
-        <span
-          key={t.name}
-          className="group inline-flex items-center gap-2 rounded-xl border border-line bg-cloud px-3 py-2 shadow-[0_1px_2px_rgba(12,30,51,0.04)] transition-shadow hover:shadow-[0_8px_20px_-12px_rgba(12,30,51,0.3)]"
+    <div className={cn("grid w-full gap-3 sm:grid-cols-3", className)}>
+      {LANES.map((l) => (
+        <div
+          key={l.title}
+          className="lift flex h-full flex-col rounded-xl border border-line bg-cloud p-4 shadow-[0_1px_2px_rgba(12,30,51,0.04)] hover:shadow-[0_8px_20px_-12px_rgba(12,30,51,0.3)]"
         >
-          <img
-            src={t.src}
-            alt=""
-            width={20}
-            height={20}
-            className="h-5 w-5 object-contain"
-            loading="lazy"
-          />
-          <span className="text-[0.82rem] font-medium text-ink-soft">{t.name}</span>
-        </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {l.marks.map((m) => (
+              <span
+                key={`${l.title}-${m.name}`}
+                className="inline-flex items-center gap-2 rounded-lg border border-line bg-paper/60 px-2.5 py-1.5"
+              >
+                <img
+                  src={m.src}
+                  alt=""
+                  width={18}
+                  height={18}
+                  className="h-[18px] w-[18px] object-contain"
+                  loading="lazy"
+                />
+                <span className="whitespace-nowrap text-[0.78rem] font-medium text-ink-soft">
+                  {m.name}
+                </span>
+              </span>
+            ))}
+          </div>
+          <span className="label-mono mt-4 block">{l.tag}</span>
+          <h3 className="mt-1.5 text-[0.98rem] font-medium leading-snug text-ink">{l.title}</h3>
+          <p className="mt-2 text-[0.86rem] leading-relaxed text-ink-soft">{l.body}</p>
+        </div>
       ))}
     </div>
   );

@@ -7,7 +7,7 @@ import { ContactSalesLink } from "@/components/ui/ContactSales";
 const ITEMS: { q: string; a: string }[] = [
   {
     q: "Does Tenure replace our Google Drive, Slack, or Notion?",
-    a: "No, Tenure fits around the tools you already use and pulls what matters into one system of record. The files, threads, and decisions that define how the organization runs stop living in someone's personal account and start belonging to the role.",
+    a: "No. Tenure doesn't connect to them, it's where the record itself lives. Bring your spreadsheets, decks, and documents in, subscribe your calendar to Tenure's, and the files and decisions that define how the organization runs stop living in someone's personal account and start belonging to the role.",
   },
   {
     q: "Is Tenure only for universities?",
@@ -15,15 +15,15 @@ const ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "Who owns the data?",
-    a: "The organization does. Access passes cleanly to the next occupant at every transition, and nothing leaves with an individual when they graduate, resign, or roll off the board. Export everything, anytime.",
+    a: "The organization does. Access passes cleanly to the next occupant at every transition, and nothing leaves with an individual when they graduate, resign, or roll off the board.",
   },
   {
     q: "How fast is onboarding, really?",
-    a: "Days instead of a semester. Because the memory stays with the seat, Tenure AI answers instantly from the role's own record, budgets, vendors, past events, and the reasons behind decisions. It doesn't train a model on your data; it surfaces and explains what's already in your record.",
+    a: "Days instead of a semester. Because the memory stays with the seat, Tenure AI answers from the role's own record, budgets, vendors, past events, and the reasons behind decisions. It doesn't train a model on your data; it surfaces and explains what's already in your record.",
   },
   {
     q: "Is sensitive data handled responsibly?",
-    a: "Yes. Tenure runs least-access by default, isolates each organization's data at the query layer, and logs every action to an immutable audit trail. The organization owns its records, not Tenure, not any individual. For schools, that includes FERPA-aligned handling.",
+    a: "Yes. Tenure runs least-access by default, isolates each organization's data at the query layer, and logs every action to an immutable audit trail. The organization owns its records, not Tenure, not any individual. Documents are encrypted at rest and only ever served through short-lived signed links, never a raw file URL.",
   },
   {
     q: "What does it cost?",

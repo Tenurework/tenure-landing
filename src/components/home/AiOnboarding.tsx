@@ -3,8 +3,9 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionContour } from "@/components/visuals/SectionContour";
 
 const POINTS = [
-  "Answers cite the real records and people behind them",
+  "Every answer links back to the record it came from",
   "No more “ask the person who left”",
+  "If the model is unavailable, you still get the ranked, permission-scoped sources, and Tenure tells you which happened",
   "The seat's record grows richer every term",
 ];
 
@@ -18,7 +19,7 @@ const EXCHANGES: Exchange[] = [
   {
     ask: "What's our sponsorship pipeline?",
     answer:
-      "Three live: Aramark renewal ($6k, sent), M&T Bank (intro from Maya ’24, awaiting reply), and Rochester Print at a standing 15% rate.",
+      "From last term’s sponsorship cards: Aramark renewal sent, M&T Bank a warm intro from Maya ’24 awaiting reply, Rochester Print at a standing 15% rate.",
     sources: "3 sources",
   },
   {
@@ -74,17 +75,19 @@ export function AiOnboarding() {
 
           <Reveal delay={0.06}>
             <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-paper sm:text-[2.5rem] lg:text-[2.8rem]">
-              New leader Monday.{" "}
-              <span className="text-grove-bright">Up to speed by Wednesday.</span>
+              They read the seat{" "}
+              <span className="text-grove-bright">before they sit in it.</span>
             </h2>
           </Reveal>
 
           <Reveal delay={0.12}>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-paper/70">
-              Ask Tenure anything (how a deal was closed, where the budget
-              stands, why a decision was made) and get an answer grounded in
-              the role&rsquo;s own history. A semester of ramp becomes a few days,
-              and the time you save is real money back to the organization.
+              Ask Tenure in your own words (how a deal was closed, what the
+              last board decided, why a decision was made) and get an answer
+              grounded in the seat&rsquo;s own record, with every source
+              linked. The incoming officer gets read-only access to that
+              record before their term begins, so the first week isn&rsquo;t
+              spent reconstructing the last one.
             </p>
           </Reveal>
 

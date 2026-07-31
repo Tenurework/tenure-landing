@@ -83,6 +83,44 @@ const MODULES: Module[] = [
     ),
   },
   {
+    name: "Approvals & oversight",
+    tag: "Who signs off",
+    desc: "Seven kinds of request, two gates, president then office, and every decision names the seat that made it.",
+    icon: (
+      <svg {...svg}>
+        <rect x="3.5" y="4" width="17" height="6.5" rx="2" />
+        <rect x="3.5" y="13.5" width="17" height="6.5" rx="2" />
+        <path d="M7 7.2l1.3 1.3L11 5.9" />
+        <path d="M7 16.7l1.3 1.3L11 15.4" />
+      </svg>
+    ),
+  },
+  {
+    name: "Deliverables & deadlines",
+    tag: "What's due",
+    desc: "The office publishes a deadline once, it reaches every org, and the seat that owns it gets reminded.",
+    icon: (
+      <svg {...svg}>
+        <path d="M9.5 4.75H7.25A1.25 1.25 0 0 0 6 6v13.25a1.25 1.25 0 0 0 1.25 1.25h9.5A1.25 1.25 0 0 0 18 19.25V6a1.25 1.25 0 0 0-1.25-1.25H14.5" />
+        <rect x="9.5" y="3" width="5" height="3.5" rx="1.2" />
+        <path d="M9 13l2 2 4-4.5" />
+      </svg>
+    ),
+  },
+  {
+    name: "Administration console",
+    tag: "For the office",
+    desc: "Every organization the office stewards in one place, what's pending, what's vacant, what got denied.",
+    icon: (
+      <svg {...svg}>
+        <rect x="3.5" y="4.5" width="17" height="15" rx="2.5" />
+        <path d="M3.5 9h17" />
+        <path d="M9.5 9v10.5" />
+        <path d="M12.75 12.5h5M12.75 15.5h3" />
+      </svg>
+    ),
+  },
+  {
     name: "Tenure AI",
     tag: "Ask anything",
     desc: "Ask anything about the role and get a sourced answer, onboarding in days, not a semester.",
@@ -112,9 +150,9 @@ export function Modules() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Finance, events, members, documents, the operations a club or
-              office juggles across spreadsheets, inboxes, and a dozen logins,
-              unified into one record that every transition inherits.
+              Finance, events, members, documents, approvals, the operations a
+              club or office juggles across spreadsheets, inboxes, and a dozen
+              logins, unified into one record that every transition inherits.
             </p>
           </Reveal>
         </div>

@@ -114,9 +114,9 @@ export function Platform() {
               />
               <Title>Tenure AI</Title>
               <Desc>
-                Instant recall over the seat&rsquo;s entire record. Ask in plain
-                language; every answer cites the real records, people, and decisions
-                behind it. Nothing invented, and no model trained on your data.
+                Ask in your own words across everything the seat can see, plus the
+                seat&rsquo;s own private memory. Every answer links the records,
+                files, and decisions it came from. No model is trained on your data.
               </Desc>
               <div className="mt-5 space-y-2">
                 <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.76rem] text-ink-soft">
@@ -135,7 +135,7 @@ export function Platform() {
               <div className="mt-auto pt-5">
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/50 px-2.5 py-1.5 text-[0.72rem] text-ink-faint">
                   <span className="h-1.5 w-1.5 rounded-full bg-grove" />
-                  Grounded · never invented
+                  Grounded in your records · sources shown
                 </span>
               </div>
             </Cell>
@@ -155,14 +155,14 @@ export function Platform() {
                 just who said yes.
               </Desc>
               <div className="mt-4 flex items-center gap-1">
-                {["Draft", "Officer", "Advisor", "OSE", "Done"].map((s, idx) => (
+                {["Draft", "President", "OSE", "Approved"].map((s, idx) => (
                   <div key={s} className="flex flex-1 items-center last:flex-none">
-                    <span className={cn("h-2 w-2 rounded-full", idx < 3 ? "bg-grove" : idx === 3 ? "bg-gold" : "bg-line")} />
-                    {idx < 4 && <span className={cn("mx-0.5 h-px flex-1", idx < 3 ? "bg-grove" : "bg-line")} />}
+                    <span className={cn("h-2 w-2 rounded-full", idx < 2 ? "bg-grove" : idx === 2 ? "bg-gold" : "bg-line")} />
+                    {idx < 3 && <span className={cn("mx-0.5 h-px flex-1", idx < 2 ? "bg-grove" : "bg-line")} />}
                   </div>
                 ))}
               </div>
-              <Tags items={["event", "budget", "vendor", "comms", "document", "roster"]} />
+              <Tags items={["event", "budget", "vendor", "comms", "document", "roster", "exception"]} />
             </Cell>
           </Reveal>
 
@@ -205,7 +205,7 @@ export function Platform() {
               <div className="mt-4 rounded-lg border border-coral/30 bg-coral/[0.06] px-2.5 py-1.5">
                 <p className="flex items-center gap-1.5 text-[0.7rem] font-medium text-[#b23a1f]">
                   <span className="h-1.5 w-1.5 rounded-full bg-coral" />
-                  Hard conflict, Schlegel 207, 5:00–6:30p
+                  Hard conflict, Schlegel 207, 5:00 to 6:30p
                 </p>
               </div>
             </Cell>
@@ -256,10 +256,12 @@ export function Platform() {
               />
               <Title>Documents</Title>
               <Desc>
-                Contracts, decks, and signed agreements, versioned, permissioned, and
-                summarized by AI so the next officer finds what matters fast.
+                Contracts, decks, and spreadsheets open in Tenure: PDF, Word, Excel,
+                and PowerPoint with speaker notes. Text files and spreadsheets can be
+                edited in place, versioned, and Tenure warns you if someone else saved
+                first.
               </Desc>
-              <Tags items={["versioned", "AI summary", "sensitivity-tagged"]} />
+              <Tags items={["versioned", "opens in-app", "edit in place"]} />
             </Cell>
           </Reveal>
 
@@ -272,11 +274,12 @@ export function Platform() {
               />
               <Title>Immutable audit trail</Title>
               <Desc>
-                Every allow and every deny, hash-chained and append-only. Nothing is
-                silently editable: reconstruct exactly who did what, and when.
+                Every allow and every deny, append-only. Denials are logged too, so you
+                can prove nobody did something. Rows are only ever created, never
+                updated or deleted.
               </Desc>
               <p className="mt-4 rounded-lg border border-line bg-ink px-2.5 py-1.5 font-mono text-[0.6rem] text-paper/70">
-                <span className="text-grove-bright">budget.approved</span> · FIN-01 · allow
+                <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
               </p>
             </Cell>
           </Reveal>
@@ -325,7 +328,7 @@ export function Platform() {
                 Roll spending, participation, and continuity into board-ready reports, 
                 and search the entire record in one box, scoped to what you can see.
               </Desc>
-              <Tags items={["board-ready", "instant", "RBAC-scoped"]} />
+              <Tags items={["board-ready", "RBAC-scoped", "sources linked"]} />
             </Cell>
           </Reveal>
         </div>

@@ -69,6 +69,25 @@ function SparkIcon() {
     </svg>
   );
 }
+function ConsoleIcon() {
+  return (
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <path d="M3 9h18M9 9v11" />
+      <path d="M12.5 13h5.5M12.5 16h3" />
+    </svg>
+  );
+}
 function LineIcon() {
   return (
     <svg
@@ -101,8 +120,13 @@ const INCLUDED: { icon: ReactNode; t: string; d: string }[] = [
   },
   {
     icon: <SparkIcon />,
-    t: "AI onboarding for the next board",
-    d: "When leadership turns over, Tenure AI walks the next person through everything the role has recorded, answering in plain language, productive in days, not a semester.",
+    t: "A handoff packet that's already written",
+    d: "When leadership turns over, the incoming officer opens a packet assembled from the record itself, who held each seat, how to reach them, what's pending, where the budget stands, and asks Tenure AI on top of it.",
+  },
+  {
+    icon: <ConsoleIcon />,
+    t: "A console for the office itself",
+    d: "One place for every organization OSE stewards: what's pending, what's vacant, what got denied. Three staff levels, so an advisor sees advising and a director sees everything, and an override lands on the record like every other decision.",
   },
   {
     icon: <LineIcon />,
@@ -179,15 +203,16 @@ export default function PilotPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-                Four things every org{" "}
-                <span className="text-grove">walks away with</span>.
+                What every org gets. And what the{" "}
+                <span className="text-grove">office gets</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
                 One term, hands-on the whole way. No waiting list, no
                 application, and no placeholder accounts. If OSE stewards your
-                organization, you&rsquo;re in. Here is what every org gets.
+                organization, you&rsquo;re in. Here&rsquo;s what lands on both
+                sides of the record.
               </p>
             </Reveal>
           </div>
