@@ -119,7 +119,7 @@ export default function ProductPage() {
       >
         <ContactSales size="lg" arrow />
         <Button href="/pilot" variant="secondary" size="lg">
-          Join the pilot
+          See the pilot
         </Button>
       </PageHeader>
 

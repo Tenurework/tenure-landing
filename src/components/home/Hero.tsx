@@ -65,12 +65,11 @@ export function Hero() {
           {/* LEFT, editorial copy */}
           <div className="relative z-10 max-w-xl text-center lg:text-left">
             <motion.p
-              className="label-mono inline-flex items-center gap-2"
+              className="label-mono"
               initial={reduce ? { opacity: 1 } : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: EASE }}
             >
-              <span aria-hidden className="h-px w-6 bg-grove/60" />
               The operating system for organizational memory
             </motion.p>
 

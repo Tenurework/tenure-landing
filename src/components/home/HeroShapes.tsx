@@ -38,7 +38,9 @@ export function HeroShapes() {
       {SHAPES.map((s, i) => (
         <motion.div
           key={i}
-          className={`absolute ${s.className}`}
+          // transform-gpu keeps the perpetual float on the compositor so the
+          // shape's edges don't re-rasterize (and shimmer) every frame.
+          className={`absolute transform-gpu will-change-transform ${s.className}`}
           initial={{ y: 0 }}
           animate={reduce ? undefined : { y: [0, s.dy, 0] }}
           transition={

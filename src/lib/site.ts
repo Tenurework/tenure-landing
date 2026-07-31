@@ -31,9 +31,16 @@ export const site = {
     partner: "Simon's Office of Student Engagement",
   },
 
+  /**
+   * The pilot is not a hand-picked cohort. OSE is standing Tenure up across
+   * every organization it stewards *and* for its own administrators, so the
+   * org-side record and the office-side oversight run on one system from day
+   * one. `scope` is the short form used in stat rows and chips.
+   */
   pilot: {
     season: "Fall 2026",
-    orgCount: 6,
+    scope: "Every org OSE stewards, plus OSE itself",
+    scopeShort: "Every org OSE stewards",
   },
 
   nav: [
@@ -52,18 +59,29 @@ export const site = {
     x: "https://x.com/tenurework",
   },
 
+  /**
+   * Partner marks. `displayHeight` is the rendered lockup height, tuned per mark
+   * so the row reads optically level: the Startup Wednesday PNG carries ~20% of
+   * transparent padding, while the Simon lockup is cropped tight, so equal CSS
+   * heights would make Simon read oversized.
+   */
   supporters: [
     {
       name: "Startup Wednesday",
       src: "/logos/startup-wednesday.png",
       width: 2000,
       height: 563,
+      displayHeight: "2.25rem",
     },
     {
       name: "Simon Business School",
-      src: "/logos/simon-business-school.png",
-      width: 1000,
-      height: 625,
+      // Official University of Rochester horizontal lockup (navy RGB). The
+      // vertical variant ships alongside it at
+      // /logos/simon-business-school-vertical.png for stacked placements.
+      src: "/logos/simon-business-school-horizontal.png",
+      width: 1054,
+      height: 339,
+      displayHeight: "2.15rem",
     },
   ],
 

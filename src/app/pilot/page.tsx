@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 export const metadata = {
   title: "Pilot",
   description:
-    "A hands-on Fall 2026 pilot with six student organizations and Simon's Office of Student Engagement, standing up the first year of each org's system of record together.",
+    "A hands-on Fall 2026 pilot with Simon's Office of Student Engagement, standing Tenure up across every organization the office stewards and for OSE's own administrators.",
 };
 
 /* ---- icons (geometric, currentColor, no full circles) -------------------- */
@@ -115,18 +115,19 @@ const WHO: string[] = [
   "Leadership that turns over every year or semester.",
   "An existing drive or folder of knowledge that's worth keeping.",
   "A board that wants the next one to start ahead, not from zero.",
+  "And the office above it, approving, funding, and answering for all of it.",
 ];
 
 const STEPS: { n: string; t: string; d: string }[] = [
   {
     n: "01",
-    t: "Onboard your existing knowledge",
-    d: "We bring in your current drive and folders and organize the first version of your record around the roles your org actually runs on.",
+    t: "Onboard the knowledge that exists",
+    d: "We bring in each org's current drive and folders, and OSE's own oversight seats alongside them, and organize the first version of the record around the roles people actually run on.",
   },
   {
     n: "02",
     t: "Run the term in Tenure",
-    d: "Through the fall, finances, events, members, and decisions get logged in context: one system of record instead of a dozen scattered tools.",
+    d: "Through the fall, finances, events, members, and decisions get logged in context, and the approvals that used to sit in email run through the same record: one system instead of a dozen scattered tools.",
   },
   {
     n: "03",
@@ -147,15 +148,15 @@ export default function PilotPage() {
         eyebrow="Fall 2026 pilot"
         title={
           <>
-            Six organizations. One{" "}
-            <span className="text-grove">founding year</span>.
+            Every org. And the office that{" "}
+            <span className="text-grove">stewards them</span>.
           </>
         }
         intro={
           <>
-            This fall, Tenure runs a hands-on pilot with six student
-            organizations and {site.origin.partner}, standing up the first year
-            of each org&rsquo;s system of record together.
+            This fall, {site.origin.partner} is standing Tenure up across the
+            organizations it stewards and for its own administrators, so the
+            record below and the oversight above finally run on one system.
           </>
         }
       >
@@ -165,7 +166,7 @@ export default function PilotPage() {
           variant="secondary"
           size="lg"
         >
-          Ask about joining
+          Ask about the pilot
         </Button>
       </PageHeader>
 
@@ -178,15 +179,15 @@ export default function PilotPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-                Four things every founding org{" "}
+                Four things every org{" "}
                 <span className="text-grove">walks away with</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-                Six organizations, one term, hands-on the whole way. No waiting
-                list and no placeholder accounts. Here is what every pilot org
-                gets.
+                One term, hands-on the whole way. No waiting list, no
+                application, and no placeholder accounts. If OSE stewards your
+                organization, you&rsquo;re in. Here is what every org gets.
               </p>
             </Reveal>
           </div>
@@ -218,14 +219,15 @@ export default function PilotPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-                Who the first six are{" "}
-                <span className="text-grove">built for</span>.
+                Both sides of the{" "}
+                <span className="text-grove">same record</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-                We&rsquo;re keeping the founding cohort small and close. A strong
-                fit looks like this.
+                The pilot runs the whole portfolio at once, every organization
+                the office stewards, and the office&rsquo;s own seats alongside
+                them. Odds are this already sounds like you.
               </p>
             </Reveal>
           </div>
@@ -320,7 +322,9 @@ export default function PilotPage() {
                   <span className="text-grove-bright">steward</span>.
                 </h2>
                 <p className="mt-6 text-lg leading-relaxed text-paper/70">
-                  {site.origin.partner} is part of this pilot. If your office
+                  {site.origin.partner} isn&rsquo;t sponsoring this pilot from
+                  the sidelines, it&rsquo;s running on Tenure too, with its own
+                  seats for approvals, spending, and compliance. If your office
                   stewards dozens of organizations, Tenure gives each one a memory
                   that survives turnover, so the knowledge you fund every year
                   stops walking out the door with the students who built it.

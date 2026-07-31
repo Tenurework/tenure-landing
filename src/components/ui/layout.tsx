@@ -27,7 +27,6 @@ export function Eyebrow({
 }) {
   return (
     <span className={cn("inline-flex items-center gap-2.5 label-mono", className)}>
-      <span aria-hidden className="h-px w-6 bg-grove/60" />
       {index && <span className="text-grove">{index}</span>}
       <span>{children}</span>
     </span>

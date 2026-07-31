@@ -21,7 +21,11 @@ export function HeroFloatingCards() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.div {...float(-7, 6.5, 0)}>
+        {/* transform-gpu + will-change promotes this to its own compositor
+            layer, so the perpetual float moves an already-rasterized layer
+            instead of re-rendering the text every frame (which reads as the
+            words shimmering). */}
+        <motion.div className="transform-gpu will-change-transform" {...float(-7, 6.5, 0)}>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-coral/12 text-[#b23a1f]">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 8v5M12 16.5v.5" strokeLinecap="round" /><path d="M10.3 3.9 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
@@ -41,7 +45,11 @@ export function HeroFloatingCards() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
-        <motion.div {...float(8, 7.5, 0.6)}>
+        {/* transform-gpu + will-change promotes this to its own compositor
+            layer, so the perpetual float moves an already-rasterized layer
+            instead of re-rendering the text every frame (which reads as the
+            words shimmering). */}
+        <motion.div className="transform-gpu will-change-transform" {...float(8, 7.5, 0.6)}>
           <div className="flex items-center gap-2">
             <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-grove-soft text-grove-deep">
               <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>

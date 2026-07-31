@@ -24,12 +24,20 @@ const POOL: Omit<Row, "id" | "when">[] = [
   { actor: "EVT-01", action: "vendor.created", target: "Prestige Catering", result: "allow" },
 ];
 
+/**
+ * Seeded at the full ROW_COUNT. The list must never change row count: this demo
+ * sits in normal document flow, so a container that grows or shrinks by a row
+ * shoves every section below it (and the footer) up and down on a loop.
+ */
+const ROW_COUNT = 6;
+
 const SEED: Row[] = [
   { id: 0, ...POOL[0], when: "2m" },
   { id: 1, ...POOL[2], when: "6m" },
   { id: 2, ...POOL[3], when: "11m" },
   { id: 3, ...POOL[5], when: "18m" },
   { id: 4, ...POOL[6], when: "24m" },
+  { id: 5, ...POOL[7], when: "31m" },
 ];
 
 export function AuditTrailDemo({ className }: { className?: string }) {
@@ -45,7 +53,7 @@ export function AuditTrailDemo({ className }: { className?: string }) {
         const next: Row = { id: n++, ...POOL[p % POOL.length], when: "just now" };
         p += 1;
         const aged = cur.map((r) => ({ ...r, when: r.when === "just now" ? "1m" : r.when }));
-        return [next, ...aged].slice(0, 6);
+        return [next, ...aged].slice(0, ROW_COUNT);
       });
     }, 3600);
     return () => clearInterval(id);
@@ -84,7 +92,10 @@ export function AuditTrailDemo({ className }: { className?: string }) {
 
       {/* rows */}
       <div className="divide-y divide-line">
-        <AnimatePresence initial={false}>
+        {/* popLayout takes the exiting row out of flow immediately, so the
+            container stays exactly ROW_COUNT tall instead of briefly holding
+            seven rows while the last one fades. */}
+        <AnimatePresence initial={false} mode="popLayout">
           {rows.map((r) => (
             <motion.div
               key={r.id}

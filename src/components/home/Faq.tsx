@@ -27,7 +27,7 @@ const ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "What does it cost?",
-    a: "We're setting pilot pricing with the founding Fall 2026 organizations directly, so it fits a real budget. Contact sales and we'll walk you through it.",
+    a: "We're setting pilot pricing with Simon's Office of Student Engagement directly, at the level of the whole portfolio it stewards rather than per club, so it fits a real budget. Contact sales and we'll walk you through it.",
   },
 ];
 

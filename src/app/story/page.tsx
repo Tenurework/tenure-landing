@@ -21,7 +21,7 @@ const RECORD: { label: string; value: string }[] = [
   },
   {
     label: "Pilot",
-    value: `${site.pilot.season} · ${site.pilot.orgCount} organizations`,
+    value: `${site.pilot.season} · ${site.pilot.scope}`,
   },
   { label: "Partner", value: site.origin.partner },
   { label: "Supported by", value: "Startup Wednesday" },

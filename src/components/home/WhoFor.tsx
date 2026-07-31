@@ -4,22 +4,27 @@ import { Reveal } from "@/components/ui/Reveal";
 import { SectionContour } from "@/components/visuals/SectionContour";
 import { site } from "@/lib/site";
 
+/**
+ * One distinct scene per audience. Keep these visually unlike each other, in
+ * subject, palette, camera angle, and group size: four frames from the same
+ * shoot read as stock filler and flatten the four audiences into one.
+ */
 const PHOTO: Record<string, { src: string; alt: string }> = {
   "University organizations": {
     src: "/photos/students-laptop.jpg",
-    alt: "Student organization members gathered around a laptop on campus",
+    alt: "Student organization members gathered around a laptop in a lecture hall",
   },
   "University administrations": {
-    src: "/photos/students-hall.jpg",
-    alt: "Students walking through a university hall",
+    src: "/photos/admin-boardroom.jpg",
+    alt: "Administrators seated at a formal governing-body table with microphones",
   },
   "SMEs & growing teams": {
-    src: "/photos/team-meeting.jpg",
-    alt: "A small team meeting around a table",
+    src: "/photos/small-business.jpg",
+    alt: "Two small-business owners packing and labelling orders in their studio",
   },
   "Nonprofits, chapters & boards": {
     src: "/photos/team-charts.jpg",
-    alt: "A board reviewing plans and charts together",
+    alt: "A board reviewing plans and charts together, seen from above",
   },
 };
 

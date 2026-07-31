@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/lib/site";
 
 const CHIPS = [
-  "6 founding orgs",
+  "Every org OSE stewards",
   "Hard + soft conflict detection",
   "6-step OSE approval chain",
   "Immutable audit trail",
@@ -28,7 +28,7 @@ export function TrustStrip() {
                   width={s.width}
                   height={s.height}
                   className="w-auto object-contain opacity-90 mix-blend-multiply"
-                  style={{ height: s.name === "Simon Business School" ? "3rem" : "2rem" }}
+                  style={{ height: s.displayHeight }}
                 />
               ))}
             </div>
