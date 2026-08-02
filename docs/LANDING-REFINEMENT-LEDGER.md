@@ -213,29 +213,56 @@ twice — once in the DOM and again in the RSC flight payload — for a backgrou
 
 ## Phase 5 — Test and performance system
 
+**Gate: all suites pass locally; no production deployment as a side effect.** — **FAIL** (2 tests)
+
 | Item | Status | Evidence |
 |---|---|---|
-| Playwright functional suite | *pending* | `e2e/nav.spec.ts`, `e2e/interaction.spec.ts` |
-| Accessibility suite | *pending* | `e2e/a11y.spec.ts` |
-| SEO suite | *pending* | `e2e/seo.spec.ts` |
-| Claims ratchet | *pending* | `e2e/claims.spec.ts` |
-| Visual baselines | *pending* | `e2e/visual.spec.ts` |
-| Internal link checker | PASS | `scripts/check-links.mjs` — 111 links, 0 broken |
-| Contrast gate | PASS | `scripts/check-contrast.mjs` — 72/72 |
-| CI workflow, pinned actions, least privilege | *pending* | |
-| Performance budgets | *pending* | |
+| Playwright functional suite | PASS | ,  — 64 passed, 0 failed |
+| SEO suite | PASS |  — 69 tests |
+| Claims ratchet | PASS |  — 42 tests |
+| Accessibility suite | FAIL |  — 18 of 20 defects fixed; 2 remain on /product |
+| Visual baselines | PASS | 74 snapshots, 4 projects, stable on a second run |
+| Internal link checker | PASS | 111 links, 0 broken |
+| Contrast gate | PASS | 72/72 across both themes |
+| CI workflow, pinned actions, least privilege | PASS | SHA-pinned, , never deploys |
+| Performance budgets | FAIL | Payload cut 29% and the cause identified, but no Lighthouse measurement taken |
+
+**Full suite, four projects: 1,030 passed · 2 failed · 16 skipped.**
+
+The 2 failures are on /product inside , a decorative mock whose card
+transitions opacity; the contrast walk catches it mid-transition. Recorded rather than silenced.
+
+### What the suite caught that nothing else did
+
+The a11y suite found a defect the contrast gate structurally could not: resolved to the navy **surface** token, because Tailwind generates  from every
+ entry. 61 usages across 13 files were painting navy text on navy at **1.00:1**.
+The token gate validates PAIRS; this was a NAMING collision. Both layers were needed.
 
 ---
 
 ## Phase 6 — Adversarial review
 
-*pending*
+**Gate: resolve every P0/P1 or record a named external blocker.** — **FAIL — did not run**
+
+Eight persona reviews were launched (university IT, OSE director, incoming treasurer,
+procurement/legal, enterprise ops, keyboard/low-vision, slow mobile, investor). All eight were
+terminated by a session limit before producing findings. **This mandatory gate is not
+satisfied**, and no persona finding informed the current state of the site.
 
 ---
 
 ## Phase 7 — Release evidence and handoff
 
-*pending*
+**PASS** — see [](EVIDENCE-REPORT.md).
+
+| Item | Status |
+|---|---|
+| Lint, typecheck, contrast, links, build | PASS |
+| Test suites run and reported honestly | PASS |
+| Before/after measurements | PASS |
+| No secrets or personal data in the diff | PASS |
+| Committed to the working branch | PASS — 6 commits, head  |
+| Not merged, not deployed | PASS |
 
 ---
 
