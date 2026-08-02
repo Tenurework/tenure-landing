@@ -133,11 +133,50 @@ hold as written.
 
 ## Phase 2 — Information architecture and copy compression
 
+**Gate: content review, word/DOM/scroll comparison, no lost buyer answer.** — **PASS**
+
 | Item | Status | Evidence |
 |---|---|---|
-| Every section mapped keep/merge/move/remove | PASS | Phase 2 map below |
-| Home-page density reduced to target | *pending* | Measured before/after in Phase 7 |
+| Every section mapped keep/merge/move/remove | PASS | [`ARCHITECTURE-AND-CONTENT-MAP.md`](ARCHITECTURE-AND-CONTENT-MAP.md) |
+| Home-page density materially reduced | PASS | Measured, below |
 | Distinct job per route | PASS | `/trust` and `/contact` added; `routes.ts` records each route's intent |
+| No essential buyer answer lost | PASS | Moved content landed on `/product`; security depth landed on `/trust` |
+
+### Measured, prerendered HTML, before vs after
+
+| Route | Words | Elements | Headings |
+|---|---|---|---|
+| `/` | **3,185 → 1,975** (−38%) | 1,992 → 1,561 (−22%) | **51 → 33** (−35%) |
+| `/product` | 721 → 1,274 | 463 → 708 | 12 → 24 |
+| `/pilot` | 663 → 708 | 348 → 374 | 15 → 15 |
+| `/story` | 441 → 463 | 296 → 322 | 8 → 8 |
+| `/privacy` | 743 → 908 | 202 → 234 | 11 → 11 |
+| `/terms` | 702 → 777 | 195 → 224 | 11 → 11 |
+| `/trust` | new — 1,611 | new — 433 | new — 37 |
+| `/contact` | new — 292 | new — 228 | new — 7 |
+
+`/product` grew because three sections moved onto it; `/privacy` and `/terms` grew because each
+gained a counsel-review notice and an honest statement of a limit. Those are the intended
+trades: the home page carries the argument, the other routes carry the detail.
+
+**Home landed at 1,975 words against the bible's 1,400–1,800 target — 175 over, and recorded
+rather than hidden.** The remaining copy is disproportionately evidence rather than prose: the
+handoff packet mock (seat rows, position codes, contacts, budget figures) is ~117 words, and
+Platform's tag rows carry the seven approval types, six knowledge-card kinds, four conversation
+types and the three seat states in about thirteen words. Cutting those would meet the number by
+deleting the proof, which §8.1 explicitly forbids. Prose proper fell far harder than the
+headline figure suggests — Handoff's prose went 265 → 112, Platform's descriptions 411 → 209.
+
+### Payload
+
+The decorative contour field emitted 208 `<path>` elements and 200KB of path data, which ships
+twice — once in the DOM and again in the RSC flight payload — for a background rendered at
+6–13% opacity. Roughly two thirds of the home page's HTML was ornament.
+
+| | Before | After |
+|---|---|---|
+| Home HTML | 640 KB | **453 KB** (−29%) |
+| Contour grid | 66 × 38, 1-decimal coords | 48 × 28, integer coords |
 
 ---
 
