@@ -30,7 +30,7 @@ export const routes = [
     path: "/",
     title: "Tenure",
     description:
-      "People move on, the know-how stays. Tenure attaches an organization's money, decisions, files and context to the durable seat, so the next leader inherits the record instead of rebuilding it.",
+      "People move on, the know-how stays. Tenure attaches an organization's money, decisions, files and context to the durable seat, not the person in it.",
     priority: 1.0,
     changeFrequency: "monthly",
     indexable: true,
@@ -39,7 +39,7 @@ export const routes = [
     path: "/product",
     title: "Product",
     description:
-      "How the durable seat works: finance, events, approvals, members, documents and memory in one governed record, plus the handoff packet the next officer inherits.",
+      "How the durable seat works: finance, events, approvals, members and memory in one governed record, plus the handoff packet the next officer inherits.",
     priority: 0.9,
     changeFrequency: "monthly",
     indexable: true,
@@ -57,7 +57,7 @@ export const routes = [
     path: "/trust",
     title: "Trust & security",
     description:
-      "Tenant isolation, seat-based access, audit behaviour, encryption, our AI subprocessor and what is live versus planned — written for university IT and procurement review.",
+      "Tenant isolation, seat-based access, audit behaviour, encryption, our AI subprocessor, and what is live versus planned. Written for security review.",
     priority: 0.8,
     changeFrequency: "monthly",
     indexable: true,

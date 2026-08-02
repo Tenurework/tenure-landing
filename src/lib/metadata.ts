@@ -53,9 +53,14 @@ export function pageMetadata(path: string): Metadata {
       description: route.description,
       images: [
         {
+          // The real pixel dimensions of public/og.png. These were declared as
+          // 1200x630 while the file is a 2x render at the same 1.91:1 ratio.
+          // Crawlers lay the card out from the declared size before downloading
+          // the image, so a mismatch produces a card sized for an image that
+          // never arrives.
           url: "/og.png",
-          width: 1200,
-          height: 630,
+          width: 2400,
+          height: 1260,
           alt: `${site.name}, ${site.tagline}`,
         },
       ],
