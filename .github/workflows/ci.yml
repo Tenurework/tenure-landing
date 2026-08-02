@@ -87,7 +87,18 @@ jobs:
       # One failing suite should not hide the others.
       fail-fast: false
       matrix:
-        suite: [nav, interaction, a11y, seo, claims, visual]
+        # `visual` is deliberately absent. Playwright names snapshots per
+        # platform, and the committed baselines were generated on Windows
+        # (`-win32`), so this Ubuntu runner would compare against files that do
+        # not exist and fail every run. Shipping a job that is red by
+        # construction trains people to ignore CI.
+        #
+        # To add it: run the suite inside the official Playwright container so
+        # font rasterisation matches the runner, commit the resulting `-linux`
+        # baselines alongside the Windows ones, then add `visual` here.
+        #   docker run --rm -v "$PWD":/w -w /w mcr.microsoft.com/playwright:v1.61.1-jammy \
+        #     npx playwright test visual.spec.ts --update-snapshots
+        suite: [nav, interaction, a11y, seo, claims]
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

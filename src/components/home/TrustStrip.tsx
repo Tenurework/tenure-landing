@@ -3,8 +3,11 @@ import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { site } from "@/lib/site";
 
+// The scope chip reads from site.pilot, which is the governed source for pilot
+// phrasing (C-021: verbally agreed, NOT contracted). "Every org OSE stewards"
+// stated a settled scope; scopeShort states a proposed one.
 const CHIPS = [
-  "Every org OSE stewards",
+  site.pilot.scopeShort,
   "Hard + soft conflict detection",
   "2-gate approval chain, 7 request types",
   "Immutable audit trail",
@@ -17,7 +20,7 @@ export function TrustStrip() {
         <Reveal className="flex flex-col items-center gap-7 lg:flex-row lg:justify-between lg:gap-10">
           <div className="flex flex-col items-center gap-5 sm:flex-row sm:gap-10">
             <p className="label-mono shrink-0 text-center">
-              Founding {site.pilot.season} pilot
+              Planned {site.pilot.season} pilot
             </p>
             <div className="flex items-center gap-9 sm:gap-12">
               {site.supporters.map((s) => (

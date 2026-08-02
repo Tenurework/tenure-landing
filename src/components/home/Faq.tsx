@@ -1,33 +1,48 @@
+import Link from "next/link";
+import type { ReactNode } from "react";
 import { Ribbons } from "@/components/visuals/Ribbons";
 import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { ContactSalesLink } from "@/components/ui/ContactSales";
 
-const ITEMS: { q: string; a: string }[] = [
+const LINK = "whitespace-nowrap font-medium text-grove-deep underline underline-offset-4";
+
+const ITEMS: { q: string; a: ReactNode }[] = [
   {
-    q: "Does Tenure replace our Google Drive, Slack, or Notion?",
-    a: "No. Tenure doesn't connect to them, it's where the record itself lives. Bring your spreadsheets, decks, and documents in, subscribe your calendar to Tenure's, and the files and decisions that define how the organization runs stop living in someone's personal account and start belonging to the role.",
+    q: "Does Tenure replace the tools we already use?",
+    a: (
+      <>
+        No, and it connects to none of them. Tenure is where the record lives: your budget
+        spreadsheet imports with whatever the columns were called, and PDF, Word, Excel and
+        PowerPoint open in place.{" "}
+        <Link href="/product" className={LINK}>
+          What&rsquo;s built &rarr;
+        </Link>
+      </>
+    ),
   },
   {
-    q: "Is Tenure only for universities?",
-    a: "No. It's built for any organization where people rotate faster than knowledge transfers, student clubs, university offices, companies, nonprofits, and volunteer boards. The seat model is identical everywhere: knowledge stays with the role, not the person who holds it this term.",
-  },
-  {
-    q: "Who owns the data?",
-    a: "The organization does. Access passes cleanly to the next occupant at every transition, and nothing leaves with an individual when they graduate, resign, or roll off the board.",
-  },
-  {
-    q: "How fast is onboarding, really?",
-    a: "Days instead of a semester. Because the memory stays with the seat, Tenure AI answers from the role's own record, budgets, vendors, past events, and the reasons behind decisions. It doesn't train a model on your data; it surfaces and explains what's already in your record.",
+    q: "Who owns the record?",
+    a: "The organization does; access attaches to the seat, not the person. An incoming officer gets read-only access to the seat's record and knowledge cards before their term begins, and an outgoing one keeps the record and loses access.",
   },
   {
     q: "Is sensitive data handled responsibly?",
-    a: "Each organization's data is isolated at the query layer by the database client itself, and privileged actions append to a create-only audit trail that records refusals as well as approvals. The organization owns its records, not Tenure and not any individual. Documents are encrypted at rest and only ever served through short-lived signed links, never a raw file URL. What is not yet true is listed on the trust page — including that institution staff currently see every organization they steward.",
+    a: (
+      <>
+        Isolation is enforced at the query layer by the database client itself, and privileged
+        actions append to a create-only audit trail that records refusals as well as approvals.
+        Documents are encrypted at rest and served through signed links that expire in ten
+        minutes.{" "}
+        <Link href="/trust" className={LINK}>
+          What isn&rsquo;t built &rarr;
+        </Link>
+      </>
+    ),
   },
   {
     q: "What does it cost?",
-    a: "We're setting pilot pricing with Simon's Office of Student Engagement directly, at the level of the whole portfolio it stewards rather than per club, so it fits a real budget. Contact sales and we'll walk you through it.",
+    a: "Pricing is per portfolio, not per club: one budget line for every organization an office stewards. The Fall 2026 pilot with Simon's Office of Student Engagement is planned, not contracted.",
   },
 ];
 
@@ -74,7 +89,7 @@ export function Faq() {
           </div>
 
           <p className="mt-8 text-ink-soft">
-            Still deciding whether Tenure fits your organization?{" "}
+            Something we haven&rsquo;t answered?{" "}
             <ContactSalesLink className="font-medium text-grove underline-offset-4 transition-colors hover:text-grove-deep hover:underline">
               Contact sales
             </ContactSalesLink>

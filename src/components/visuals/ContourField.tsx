@@ -24,10 +24,23 @@ function field(x: number, y: number, seed: number): number {
   return v;
 }
 
-/** Marching-squares iso-contours → one path string per elevation level. */
+/**
+ * Marching-squares iso-contours → one path string per elevation level.
+ *
+ * Grid resolution and coordinate precision are both deliberately modest. This
+ * runs on the server, so every emitted character ships twice: once in the DOM
+ * and again in the RSC flight payload. At 66x38x8 levels with one-decimal
+ * coordinates the contours alone were 200KB of path data and roughly two thirds
+ * of the home page's 640KB of HTML — for a background that renders between 6%
+ * and 13% opacity.
+ *
+ * 48x28 with integer coordinates is visually indistinguishable at those
+ * opacities (the field is smooth, and the viewBox is scaled to fill a section
+ * so a half-unit is well under a device pixel) and costs about a third as much.
+ */
 function buildContours(seed: number): string[] {
-  const COLS = 66;
-  const ROWS = 38;
+  const COLS = 48;
+  const ROWS = 28;
   const g: number[][] = [];
   let min = Infinity;
   let max = -Infinity;
@@ -67,7 +80,7 @@ function buildContours(seed: number): string[] {
         const bottom = (): [number, number] => [lerp(x0, x1, bl, br, lv), y1];
         const left = (): [number, number] => [x0, lerp(y0, y1, tl, bl, lv)];
         const seg = (a: [number, number], b: [number, number]) => {
-          d += `M${a[0].toFixed(1)} ${a[1].toFixed(1)}L${b[0].toFixed(1)} ${b[1].toFixed(1)}`;
+          d += `M${a[0].toFixed(0)} ${a[1].toFixed(0)}L${b[0].toFixed(0)} ${b[1].toFixed(0)}`;
         };
         switch (idx) {
           case 1:

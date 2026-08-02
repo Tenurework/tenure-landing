@@ -71,7 +71,7 @@ export function MetricsBand() {
             <span className="text-grove-bright">knowledge survived</span>.
           </h2>
           <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-inverse/55">
-            What the seat model is built to deliver, {site.pilot.season} pilot targets.
+            Every number here is counted, not projected.
           </p>
         </div>
 

@@ -2,20 +2,23 @@ import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionContour } from "@/components/visuals/SectionContour";
 
-/* What today's cold handoff costs. */
+/* What today's cold handoff costs. Three rows, not four: "weeks of ramp before
+   anyone is useful" was the paragraph's "spends a semester relearning" again,
+   and disagreed with it on the duration. No vendor is named — a shared drive
+   folder is the habit, not a connector (C-029). */
 const lost = [
-  "A cold handoff through a shared Drive folder",
-  "Sponsor and vendor relationships go quiet",
-  "The same mistakes repeat every single year",
-  "Weeks of ramp before anyone is useful",
+  "A cold handoff through a shared folder",
+  "Sponsors and vendors go quiet",
+  "The same mistakes repeat every year",
 ];
 
-/* What the seat keeps with Tenure. */
+/* What the seat keeps, answering each loss in order. "The next leader is
+   productive in days" was an outcome nothing measures; shadow access before the
+   term starts is the mechanism that was meant by it. */
 const kept = [
-  "One living system of record for the org",
-  "The seat keeps its own institutional memory",
-  "An AI that answers straight from history",
-  "The next leader is productive in days",
+  "A handoff packet assembled from the record",
+  "Vendors, contacts and deals stay on the seat",
+  "The next leader reads the seat before day one",
 ];
 
 function CrossMark() {
@@ -74,9 +77,9 @@ export function Problem() {
 
           <Reveal delay={0.12}>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-              A year of relationships, vendor deals, budgets, and playbooks walks
+              A year of relationships, vendor deals, budgets and playbooks walks
               out the door, and the next person spends a semester relearning what
-              the organization already knew.
+              the org already knew.
             </p>
           </Reveal>
         </div>

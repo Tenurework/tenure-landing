@@ -89,7 +89,7 @@ type Power = { title: string; body: string; chips: string[]; icon: ReactNode };
 const POWERS: Power[] = [
   {
     title: "Three staff levels",
-    body: "A director inherits everything staff can do, and staff inherit everything an advisor can do. So an advisor sees advising and a director sees everything, without anybody maintaining a permissions spreadsheet.",
+    body: "A director inherits everything staff can do, and staff everything an advisor can do.",
     chips: ["Advisor", "Staff", "Director"],
     icon: (
       <svg {...svg}>
@@ -100,8 +100,8 @@ const POWERS: Power[] = [
   },
   {
     title: "Sixteen named powers",
-    body: "Publish or cancel an event, archive or restore a document or a memory card, adjust a budget, read the audit log. The console builds its own navigation from those powers, so nobody is shown a tab that would only turn them away.",
-    chips: ["16 powers", "capability-derived nav"],
+    body: "Publish an event, adjust a budget, read the audit log; navigation follows what your seat holds.",
+    chips: ["16 powers", "3 tiers"],
     icon: (
       <svg {...svg}>
         <path d="M14.5 4.5l5 5-8.5 8.5H6v-5z" />
@@ -111,8 +111,8 @@ const POWERS: Power[] = [
   },
   {
     title: "Overrides, on the record",
-    body: "Force-approve and force-reject work institution-wide and bypass both gates. Then they land in the audit log exactly like every other action, naming the seat that used them and when.",
-    chips: ["force approve", "force reject", "audited"],
+    body: "Each writes an append-only audit row naming the seat, whether it approved or rejected.",
+    chips: ["force approve", "force reject"],
     icon: (
       <svg {...svg}>
         <path d="M12 3.5l8 3v6c0 4-3.2 6.8-8 9-4.8-2.2-8-5-8-9v-6z" />
@@ -133,31 +133,30 @@ type Step = { n: string; title: string; chip: string; tone: keyof typeof CHIP; b
 const SUCCESSION: Step[] = [
   {
     n: "01",
-    title: "The director names a successor",
+    title: "You name a successor",
     chip: "Authority held",
     tone: "held",
-    body: "Nothing moves yet. The outgoing director keeps every power they had a minute ago.",
+    body: "Nothing moves yet.",
   },
   {
     n: "02",
-    title: "The successor accepts",
+    title: "They accept",
     chip: "Awaiting accept",
     tone: "pending",
-    body: "Until they accept, the transfer does not exist. Nobody is half in, and nobody is holding a login that belongs to someone else.",
+    body: "No transfer exists yet.",
   },
   {
     n: "03",
     title: "One move, both sides",
     chip: "Transferred",
     tone: "done",
-    body: "The grant and the step-down commit together, so the office is never without somebody who can approve.",
+    body: "Grant and step-down commit together.",
   },
 ];
 
 const NO = [
-  "No coverage gap between one director and the next",
-  "No shared password, and no account handed down",
-  "No week where nobody in the office can approve anything",
+  "No shared password, no account handed down",
+  "No gap where nobody can approve",
 ];
 
 export function OfficeConsole() {
@@ -177,10 +176,8 @@ export function OfficeConsole() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              The pilot runs on both sides of the record at once: every
-              organization the office stewards, and the office&rsquo;s own
-              administrators. One console across all of them, what is pending,
-              what is vacant, and what got denied.
+              Every organization you steward on one screen: who holds which
+              seat, what is pending, what got denied.
             </p>
           </Reveal>
         </div>
@@ -194,7 +191,7 @@ export function OfficeConsole() {
                   Administration console
                 </p>
                 <p className="font-mono text-[0.66rem] text-ink-faint">
-                  Office of Student Engagement · every organization it stewards
+                  Office of Student Engagement
                 </p>
               </div>
               <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-cloud px-2.5 py-1.5 font-mono text-[0.62rem] text-ink-faint">
@@ -268,14 +265,14 @@ export function OfficeConsole() {
                       Force reject
                     </span>
                     <span className="self-center text-[0.72rem] text-ink-faint">
-                      both gates bypassed, both outcomes logged
+                      both gates bypassed
                     </span>
                   </div>
                 </div>
 
                 <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-inverse/70">
                   <span className="text-grove-bright">approval.force_approved</span>{" "}
-                  · Director, Office of Student Engagement · allow
+                  · Director · allow
                 </p>
               </div>
             </div>
@@ -320,9 +317,7 @@ export function OfficeConsole() {
               <span className="text-grove">too</span>.
             </h3>
             <p className="mt-5 text-[1rem] leading-relaxed text-ink-soft">
-              The outgoing director keeps their authority until the named
-              successor accepts. Then the grant and the step-down happen
-              together, in one move.
+              You keep every power until your named successor accepts.
             </p>
             <ul className="mt-6 space-y-3.5">
               {NO.map((n) => (

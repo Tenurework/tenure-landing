@@ -46,10 +46,14 @@ const STEPS: Step[] = [
   },
 ];
 
+/* Each line is a mechanism, not a restatement of the heading. The two that used
+   to say "knowledge attaches to the position" and "the record never resets"
+   were the h2 again in other words; the lifecycle they were gesturing at
+   (SHADOW -> ACTIVE -> ALUMNI) is the actual argument, so it is stated. */
 const AFFIRMATIONS = [
-  "Knowledge attaches to the position, not the student who held it",
-  "Occupants rotate through the seat; the record never resets",
-  "That growing record is what Tenure AI draws on to bring the next leader up to speed",
+  "The next officer shadows the seat before their term starts — read-only, knowledge cards included",
+  "The outgoing officer becomes alumni: the record stays on the seat, the access does not",
+  "Tenure AI answers from that record, with its sources linked",
 ];
 
 function Occupant({
@@ -130,10 +134,10 @@ export function SeatMechanism() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-              Every other tool models people and rosters that wipe clean each year.
-              Tenure models a durable <span className="font-medium text-ink">seat</span>, 
-              a position that keeps its money, contacts, playbooks, and decisions no
-              matter who is sitting in it this term.
+              Other tools model people, and the roster wipes clean every year.
+              Tenure models a durable <span className="font-medium text-ink">seat</span>:
+              a position that keeps its money, contacts, playbooks and decisions no
+              matter who holds it.
             </p>
           </Reveal>
 
@@ -179,11 +183,22 @@ export function SeatMechanism() {
                     aria-label={`Term ${s.term}`}
                     aria-pressed={idx === i}
                     onClick={() => { setI(idx); setPaused(true); }}
-                    className={cn(
-                      "h-1.5 rounded-full transition-all",
-                      idx === i ? "w-6 bg-grove" : "w-1.5 bg-line hover:bg-grove/40",
-                    )}
-                  />
+                    // The dot stays 6px; the TARGET is 24x24. These measured
+                    // 6x6 CSS px against the WCAG 2.2 SC 2.5.8 minimum of
+                    // 24x24 — the smallest interactive controls on the site,
+                    // and the ones a touch user is most likely to miss.
+                    className="group/dot flex h-6 min-w-6 items-center justify-center"
+                  >
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "block h-1.5 rounded-full transition-all",
+                        idx === i
+                          ? "w-6 bg-grove"
+                          : "w-1.5 bg-line group-hover/dot:bg-grove/40",
+                      )}
+                    />
+                  </button>
                 ))}
               </div>
             </div>
@@ -210,7 +225,7 @@ export function SeatMechanism() {
                   ))}
                   {step.alumni.length > 1 && (
                     <p className="pl-1 font-mono text-[0.6rem] text-ink-faint">
-                      + {step.alumni.length - 1} more alumni on the seat&rsquo;s rail
+                      + {step.alumni.length - 1} more alumni on this seat
                     </p>
                   )}
                 </motion.div>
@@ -247,10 +262,11 @@ export function SeatMechanism() {
             <div className="mt-4 rounded-2xl border border-line bg-paper/50 p-3.5">
               <div className="flex items-center gap-2">
                 <Logo className="h-4 w-4 text-grove" />
-                <span className="text-[0.74rem] font-semibold text-ink">Ask this seat anything</span>
+                {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
+                <span className="text-[0.74rem] font-semibold text-ink">Ask this seat</span>
               </div>
               <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-[0.78rem] text-ink-soft ring-1 ring-line">
-                Who&rsquo;s our banquet caterer, and what did we overpay last year?
+                Who&rsquo;s our caterer, and what did we overpay last year?
               </p>
               <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-[0.78rem] leading-relaxed text-ink">
                 Prestige Catering. The &rsquo;25 gala ran <span className="font-medium">$1,240 over</span>, Marcus

@@ -97,9 +97,7 @@ export function Platform() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Finance, scheduling, approvals, members, documents, messaging, and
-              memory: the dozen tools an organization juggles across spreadsheets
-              and logins, unified into one record that every transition inherits.
+              Work happens here, so the record writes itself.
             </p>
           </Reveal>
         </div>
@@ -114,9 +112,7 @@ export function Platform() {
               />
               <Title>Tenure AI</Title>
               <Desc>
-                Ask in your own words across everything the seat can see, plus the
-                seat&rsquo;s own private memory. Every answer links the records,
-                files, and decisions it came from. No model is trained on your data.
+                Answers drawn only from records your seat can already see.
               </Desc>
               <div className="mt-5 space-y-2">
                 <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.76rem] text-ink-soft">
@@ -124,8 +120,7 @@ export function Platform() {
                 </p>
                 <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
                   <p className="text-[0.76rem] leading-relaxed text-ink">
-                    Nominations open week 10, two-week window, ranked-choice ballot in
-                    the Members module.
+                    Nominations open week 10, two-week window, ranked-choice ballot.
                   </p>
                   <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
                     Bylaws §4 · 2 records ↗
@@ -135,7 +130,7 @@ export function Platform() {
               <div className="mt-auto pt-5">
                 <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/50 px-2.5 py-1.5 text-[0.72rem] text-ink-faint">
                   <span className="h-1.5 w-1.5 rounded-full bg-grove" />
-                  Grounded in your records · sources shown
+                  Sources linked, even when the model is down
                 </span>
               </div>
             </Cell>
@@ -150,9 +145,7 @@ export function Platform() {
               />
               <Title>Approvals & oversight</Title>
               <Desc>
-                Two-gate approval chains, routed by seat. Every decision permanently
-                records the deciding seat, the transition, and the reason, not
-                just who said yes.
+                Two gates, President then Office, routed by seat.
               </Desc>
               <div className="mt-4 flex items-center gap-1">
                 {["Draft", "President", "OSE", "Approved"].map((s, idx) => (
@@ -175,8 +168,7 @@ export function Platform() {
               />
               <Title>Finance</Title>
               <Desc>
-                Budgets, dues, reimbursements, and vendors in one ledger. Request,
-                approve, and reconcile in place, with the full history kept by seat.
+                Budgets, dues, reimbursements and vendors, one ledger.
               </Desc>
               <div className="mt-4">
                 <div className="flex items-baseline justify-between">
@@ -199,8 +191,7 @@ export function Platform() {
               />
               <Title>Conflict-aware calendar</Title>
               <Desc>
-                Plan events, vendors, and run-of-show. Tenure catches hard and soft
-                scheduling conflicts before they become a double-booked room.
+                Hard and soft conflicts caught before publishing.
               </Desc>
               <div className="mt-4 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-1.5">
                 <p className="flex items-center gap-1.5 text-[0.7rem] font-medium text-danger">
@@ -220,8 +211,7 @@ export function Platform() {
               />
               <Title>Institutional memory</Title>
               <Desc>
-                The living record, decisions, context, and know-how that survives
-                every turnover instead of leaving in someone&rsquo;s head.
+                Decisions and know-how filed as work happens.
               </Desc>
               <Tags items={["Contact", "Playbook", "Vendor", "Lesson", "Credential", "Deadline"]} />
             </Cell>
@@ -236,8 +226,8 @@ export function Platform() {
               />
               <Title>Members & durable seats</Title>
               <Desc>
-                Roster, roles, and contacts, organized around positions that persist.
-                Access follows the seat and revokes itself at graduation.
+                Access follows the seat: read-only before the term, revoked after
+                it, record kept.
               </Desc>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.56rem] font-medium text-grove-deep">ACTIVE</span>
@@ -256,12 +246,9 @@ export function Platform() {
               />
               <Title>Documents</Title>
               <Desc>
-                Contracts, decks, and spreadsheets open in Tenure: PDF, Word, Excel,
-                and PowerPoint with speaker notes. Text files and spreadsheets can be
-                edited in place, versioned, and Tenure warns you if someone else saved
-                first.
+                PDF, Word, Excel and PowerPoint open inside Tenure.
               </Desc>
-              <Tags items={["versioned", "opens in-app", "edit in place"]} />
+              <Tags items={["versioned", "edit in place", "save-conflict check"]} />
             </Cell>
           </Reveal>
 
@@ -272,11 +259,10 @@ export function Platform() {
                 cluster="Govern"
                 icon={<svg {...svg}><path d="M12 3l7 3v6c0 4-3 6.5-7 9-4-2.5-7-5-7-9V6z" /><path d="M9.5 12l1.8 1.8L15 10" /></svg>}
               />
-              <Title>Immutable audit trail</Title>
+              <Title>Append-only audit trail</Title>
               <Desc>
-                Every allow and every deny, append-only. Denials are logged too, so you
-                can prove nobody did something. Rows are only ever created, never
-                updated or deleted.
+                Denials recorded as permanently as approvals; rows are only ever
+                created.
               </Desc>
               <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] text-inverse/70">
                 <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
@@ -293,9 +279,7 @@ export function Platform() {
               />
               <Title>Messages</Title>
               <Desc>
-                Four conversation types &mdash; direct, board channel, approval
-                thread and office broadcast &mdash; each with its own read and post
-                rules, threaded to the work they&rsquo;re about.
+                Read and post rules differ by conversation type.
               </Desc>
               <Tags items={["DM", "board channel", "approval thread", "broadcast"]} />
             </Cell>
@@ -310,10 +294,9 @@ export function Platform() {
               />
               <Title>Cross-org collaboration</Title>
               <Desc>
-                A shared feed where teams co-host and partner. Every cross-org
-                request is gated and audited by whoever oversees them.
+                Co-hosting between orgs, same approval path.
               </Desc>
-              <Tags items={["feed", "co-host", "approved & audited"]} />
+              <Tags items={["feed", "co-host", "gated & audited"]} />
             </Cell>
           </Reveal>
 
@@ -326,10 +309,9 @@ export function Platform() {
               />
               <Title>Reports & search</Title>
               <Desc>
-                Roll spending, participation, and continuity into board-ready reports, 
-                and search the entire record in one box, scoped to what you can see.
+                Spending, participation and continuity, one report.
               </Desc>
-              <Tags items={["board-ready", "RBAC-scoped", "sources linked"]} />
+              <Tags items={["board-ready", "seat-scoped search"]} />
             </Cell>
           </Reveal>
         </div>

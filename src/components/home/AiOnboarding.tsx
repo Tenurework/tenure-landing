@@ -1,12 +1,11 @@
+import Link from "next/link";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionContour } from "@/components/visuals/SectionContour";
 
 const POINTS = [
-  "Every answer links back to the record it came from",
   "No more “ask the person who left”",
-  "If the model is unavailable, you still get the ranked, permission-scoped sources, and Tenure tells you which happened",
-  "The seat's record grows richer every term",
+  "If the model is unavailable, the ranked sources still come back",
 ];
 
 type Exchange = {
@@ -19,13 +18,13 @@ const EXCHANGES: Exchange[] = [
   {
     ask: "What's our sponsorship pipeline?",
     answer:
-      "From last term’s sponsorship cards: Aramark renewal sent, M&T Bank a warm intro from Maya ’24 awaiting reply, Rochester Print at a standing 15% rate.",
+      "From last term’s sponsorship cards: Aramark renewal sent, M&T Bank awaiting reply after Maya ’24’s intro, Rochester Print at a standing 15% rate.",
     sources: "3 sources",
   },
   {
     ask: "How do we run elections?",
     answer:
-      "Nominations open week 10, two-week window, ranked-choice ballot in the Members module. Last cycle’s timeline and the bylaws clause are attached.",
+      "Nominations open week 10, two-week window, ranked-choice ballot in the Members module.",
     sources: "Bylaws §4 · 2 records",
   },
 ];
@@ -82,12 +81,10 @@ export function AiOnboarding() {
 
           <Reveal delay={0.12}>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-inverse/70">
-              Ask Tenure in your own words (how a deal was closed, what the
-              last board decided, why a decision was made) and get an answer
-              grounded in the seat&rsquo;s own record, with every source
-              linked. The incoming officer gets read-only access to that
-              record before their term begins, so the first week isn&rsquo;t
-              spent reconstructing the last one.
+              The incoming officer gets read-only access to the seat&rsquo;s
+              record before their term begins, then asks it questions in plain
+              language &mdash; answers built from what past holders recorded as
+              they worked.
             </p>
           </Reveal>
 
@@ -188,6 +185,26 @@ export function AiOnboarding() {
               </span>
             </div>
           </div>
+        </Reveal>
+
+        {/* The AI provider disclosure. It previously lived in the Governance
+            section; when that merged away this was the only place on the home
+            page naming the subprocessor, and a security reviewer should not
+            have to reach /trust to find it. */}
+        <Reveal delay={0.1}>
+          <p className="mx-auto mt-12 max-w-2xl text-center text-[0.88rem] leading-relaxed text-inverse/60">
+            Tenure AI is given only records you can already open, and every
+            answer links its sources. To compose an answer, the retrieved text
+            is sent to Anthropic&rsquo;s API &mdash; part of your record does
+            leave our infrastructure when someone asks. We do not train models
+            on it, and no pipeline exists that could.{" "}
+            <Link
+              href="/trust"
+              className="whitespace-nowrap font-medium text-grove-bright underline underline-offset-4"
+            >
+              What is and isn&rsquo;t built &rarr;
+            </Link>
+          </p>
         </Reveal>
       </Container>
     </section>

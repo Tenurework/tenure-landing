@@ -121,19 +121,19 @@ const STAGES: Stage[] = [
     tone: "shadow",
     label: "Shadow",
     when: "Before the term begins",
-    body: "The incoming officer is added to the seat with read-only access to everything it knows: past decisions, vendor terms, and the reasons behind them.",
+    body: "Read-only access to everything the seat knows, including the knowledge cards counted above.",
   },
   {
     tone: "active",
     label: "Active",
     when: "Day one",
-    body: "The same access becomes write access. Nothing is copied over and nothing is rebuilt, the seat simply changes hands.",
+    body: "The same access becomes write access. Nothing is copied, nothing is rebuilt.",
   },
   {
     tone: "alumni",
     label: "Alumni",
     when: "After the term",
-    body: "The outgoing officer keeps their record and loses the keys. A seat that carries history is retired, never deleted, so the record stays where the work happened.",
+    body: "The outgoing officer keeps the record and loses the keys. Seats carrying history are retired, never deleted.",
   },
 ];
 
@@ -168,11 +168,8 @@ export function Handoff() {
           </Reveal>
           <Reveal delay={0.12}>
             <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Every seat, side by side: who holds it now, who held it last term
-              and how to reach them, how many knowledge cards are attached, and
-              who is shadowing in. It isn&rsquo;t a document someone remembered
-              to write on their way out. It is assembled from the record, so it
-              is current the day you open it.
+              Tenure assembles it from the database when you open it. No AI, and
+              nothing for the outgoing officer to remember.
             </p>
           </Reveal>
         </div>
@@ -194,7 +191,7 @@ export function Handoff() {
                     Handoff packet
                   </p>
                   <p className="font-mono text-[0.66rem] text-ink-faint">
-                    Student Culture Council · every seat, as of today
+                    Student Culture Council · every seat
                   </p>
                 </div>
               </div>
@@ -282,13 +279,6 @@ export function Handoff() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.06}>
-          <p className="mx-auto mt-4 max-w-2xl text-center text-[0.86rem] text-ink-faint">
-            No departing officer writes this. Tenure assembles it from the seats,
-            the approvals, the deliverables, and the ledger already on file.
-          </p>
-        </Reveal>
-
         {/* shadow access */}
         <div className="mt-16 grid items-center gap-10 rounded-3xl border border-line bg-cloud p-7 sm:p-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
@@ -298,15 +288,8 @@ export function Handoff() {
               <span className="text-grove">sit in it</span>.
             </h3>
             <p className="mt-5 text-[1rem] leading-relaxed text-ink-soft">
-              There is no first day where somebody opens an empty account.
               Access attaches to the seat, so a handoff is a change of status,
-              not a transfer of files, passwords, and folders somebody has to
-              remember to send.
-            </p>
-            <p className="mt-6 rounded-xl border border-line bg-paper/50 px-4 py-3 text-[0.86rem] leading-relaxed text-ink-soft">
-              <span className="font-medium text-ink">What the incoming officer sees:</span>{" "}
-              everything the seat can see, read-only, from the day they are named
-              to the day their term starts.
+              not a transfer of files, passwords and folders.
             </p>
           </Reveal>
 
