@@ -6,12 +6,9 @@ import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Pilot",
-  description:
-    "A hands-on Fall 2026 pilot with Simon's Office of Student Engagement, standing Tenure up across every organization the office stewards and for OSE's own administrators.",
-};
+export const metadata = pageMetadata("/pilot");
 
 /* ---- icons (geometric, currentColor, no full circles) -------------------- */
 function FolderIcon() {
@@ -178,9 +175,11 @@ export default function PilotPage() {
         }
         intro={
           <>
-            This fall, {site.origin.partner} is standing Tenure up across the
-            organizations it stewards and for its own administrators, so the
-            record below and the oversight above finally run on one system.
+            We are planning a {site.pilot.season} pilot with{" "}
+            {site.origin.office}, covering the organizations it stewards and the
+            office&rsquo;s own administrators, so the record below and the
+            oversight above run on one system. Scope and timing are proposed,
+            not contracted.
           </>
         }
       >
@@ -220,7 +219,7 @@ export default function PilotPage() {
           <ul className="mt-14 grid gap-6 sm:grid-cols-2">
             {INCLUDED.map((f, i) => (
               <Reveal as="li" key={f.t} delay={(i % 2) * 0.06} className="h-full">
-                <div className="group h-full rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)]">
+                <div className="group h-full rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
                   <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-grove-soft text-grove">
                     {f.icon}
                   </div>
@@ -326,33 +325,33 @@ export default function PilotPage() {
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <Reveal>
-            <div className="relative overflow-hidden rounded-2xl bg-ink p-8 text-paper sm:p-12">
+            <div className="relative overflow-hidden rounded-2xl bg-inverse p-8 text-inverse sm:p-12">
               <div
                 aria-hidden
-                className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_70%_at_85%_15%,rgba(37,169,109,0.16),transparent_65%)]"
+                className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_70%_at_85%_15%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_65%)]"
               />
               {/* angular accents */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute right-[8%] top-[18%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-coral/70 sm:block"
+                className="pointer-events-none absolute right-[8%] top-[18%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-brand-coral/70 sm:block"
               />
               <div
                 aria-hidden
-                className="pointer-events-none absolute right-[16%] bottom-[20%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-violet/70 sm:block"
+                className="pointer-events-none absolute right-[16%] bottom-[20%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-brand-violet/70 sm:block"
               />
               <div className="relative max-w-2xl">
                 <p className="label-mono text-grove-bright">For institutions</p>
-                <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-paper sm:text-[2.5rem]">
+                <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.5rem]">
                   Support every org you{" "}
                   <span className="text-grove-bright">steward</span>.
                 </h2>
-                <p className="mt-6 text-lg leading-relaxed text-paper/70">
-                  {site.origin.partner} isn&rsquo;t sponsoring this pilot from
-                  the sidelines, it&rsquo;s running on Tenure too, with its own
-                  seats for approvals, spending, and compliance. If your office
-                  stewards dozens of organizations, Tenure gives each one a memory
-                  that survives turnover, so the knowledge you fund every year
-                  stops walking out the door with the students who built it.
+                <p className="mt-6 text-lg leading-relaxed text-inverse/70">
+                  The proposed scope puts the office on Tenure too, not just the
+                  organizations it stewards &mdash; with its own seats for
+                  approvals, spending and compliance. If your office stewards
+                  dozens of organizations, Tenure gives each one a memory that
+                  survives turnover, so the knowledge you fund every year stops
+                  walking out the door with the students who built it.
                 </p>
                 <div className="mt-9">
                   <ContactSales size="lg" arrow />

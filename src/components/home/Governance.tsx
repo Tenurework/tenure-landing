@@ -20,8 +20,8 @@ const svg = {
 const PILLARS: Pillar[] = [
   {
     title: "Oversight without micromanagement",
-    body: "Multi-step approval chains routed by role. Every decision snapshots the exact policy in force, so you can always prove the rules, not just who said yes.",
-    proof: "event · budget · vendor · comms · document · roster",
+    body: "Two-gate approval chains routed by seat. Every decision permanently records who decided, the seat they held at that moment, what it moved from and to, and when a backup approver acted on someone's behalf.",
+    proof: "event · budget · vendor · comms · document · roster · exception",
     icon: <svg {...svg}><path d="M12 3l2 4 4 .5-3 3 .8 4L12 16.5 8.2 14.5 9 10.5 6 7.5 10 7z" /><path d="M6 20h12" /></svg>,
   },
   {
@@ -61,22 +61,22 @@ function BoundaryDiagram() {
   return (
     <svg viewBox="0 0 320 200" className="h-auto w-full" role="img" aria-label="Tenant isolation boundary diagram">
       {/* outer tenant boundary */}
-      <rect x="10" y="18" width="220" height="168" rx="18" fill="none" stroke="#1c8c5a" strokeWidth="1.6" strokeDasharray="6 5" />
-      <text x="24" y="40" fontFamily="var(--font-mono)" fontSize="9" fill="#14633f" letterSpacing="1">YOUR ORGANIZATION · TENANT BOUNDARY</text>
+      <rect x="10" y="18" width="220" height="168" rx="18" fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeDasharray="6 5" />
+      <text x="24" y="40" fontFamily="var(--font-mono)" fontSize="9" fill="var(--accent-text)" letterSpacing="1">YOUR ORGANIZATION · TENANT BOUNDARY</text>
       {/* inner units */}
       {[0, 1, 2].map((i) => (
         <g key={i}>
-          <rect x={28 + i * 66} y={62} width="54" height="42" rx="10" fill="#e4f1e9" stroke="#1c8c5a" strokeWidth="1.2" />
-          <rect x={38 + i * 66} y={112} width="34" height="8" rx="4" fill="#c9d2cc" />
+          <rect x={28 + i * 66} y={62} width="54" height="42" rx="10" fill="var(--accent-subtle)" stroke="var(--accent)" strokeWidth="1.2" />
+          <rect x={38 + i * 66} y={112} width="34" height="8" rx="4" fill="var(--border-strong)" />
         </g>
       ))}
-      <text x="120" y="150" textAnchor="middle" fontFamily="var(--font-general)" fontSize="10" fill="#46586c">teams · clubs · offices</text>
+      <text x="120" y="150" textAnchor="middle" fontFamily="var(--font-general)" fontSize="10" fill="var(--text-secondary)">teams · clubs · offices</text>
       {/* gated arch to the outside */}
-      <path d="M230 100 h34" stroke="#1c8c5a" strokeWidth="1.6" strokeDasharray="4 4" />
-      <rect x="262" y="80" width="48" height="40" rx="12" fill="#ffffff" stroke="#e7e0d4" strokeWidth="1.4" />
-      <path d="M279 100 l7 -7 7 7" fill="none" stroke="#1c8c5a" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-      <text x="286" y="136" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="7.5" fill="#8a97a4">approved</text>
-      <text x="286" y="146" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="7.5" fill="#8a97a4">+ audited</text>
+      <path d="M230 100 h34" stroke="var(--accent)" strokeWidth="1.6" strokeDasharray="4 4" />
+      <rect x="262" y="80" width="48" height="40" rx="12" fill="var(--surface)" stroke="var(--border)" strokeWidth="1.4" />
+      <path d="M279 100 l7 -7 7 7" fill="none" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <text x="286" y="136" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="7.5" fill="var(--text-muted)">approved</text>
+      <text x="286" y="146" textAnchor="middle" fontFamily="var(--font-mono)" fontSize="7.5" fill="var(--text-muted)">+ audited</text>
     </svg>
   );
 }
@@ -117,7 +117,7 @@ export function Governance() {
         <div className="mt-16 grid gap-5 sm:grid-cols-2">
           {PILLARS.map((p, i) => (
             <Reveal as="div" key={p.title} delay={0.05 * i}>
-              <div className="lift flex h-full flex-col rounded-3xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.04)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[0_24px_54px_-30px_rgba(12,30,51,0.4)] sm:p-7">
+              <div className="lift flex h-full flex-col rounded-3xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[var(--shadow-lg)] sm:p-7">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-grove-soft text-grove">
                   {p.icon}
                 </span>

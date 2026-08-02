@@ -1,7 +1,14 @@
 /**
- * Calendly loader, single source for the scheduling widget. The floating badge
- * (initialized once in CalendlyBadge) and every inline "Contact Sales" CTA
- * (which opens a popup) both route through here, so the assets load exactly once.
+ * Calendly loader.
+ *
+ * Previously this ran on every page: a global floating badge in the root layout
+ * called it on mount, so calendly.com's script, stylesheet and cookie panel
+ * loaded on all seven routes — including the 404 — before any user had asked to
+ * schedule anything.
+ *
+ * It is now called from exactly one place: the scheduler on /contact, and only
+ * after an explicit click. Every path that reaches Calendly also has a plain
+ * <a href> fallback that works when this never loads.
  */
 const CALENDLY_CSS = "https://assets.calendly.com/assets/external/widget.css";
 const CALENDLY_JS = "https://assets.calendly.com/assets/external/widget.js";
@@ -9,21 +16,19 @@ const CALENDLY_JS = "https://assets.calendly.com/assets/external/widget.js";
 declare global {
   interface Window {
     Calendly?: {
-      initBadgeWidget: (opts: {
+      initInlineWidget: (opts: {
         url: string;
-        text: string;
-        color: string;
-        textColor: string;
-        branding: boolean;
+        parentElement: HTMLElement;
+        prefill?: Record<string, unknown>;
+        utm?: Record<string, unknown>;
       }) => void;
-      initPopupWidget: (opts: { url: string }) => void;
     };
   }
 }
 
 let loadPromise: Promise<void> | null = null;
 
-/** Idempotently inject Calendly's stylesheet + script; resolves when ready. */
+/** Idempotently inject Calendly's stylesheet + script; rejects if either fails. */
 export function loadCalendly(): Promise<void> {
   if (typeof window === "undefined") return Promise.resolve();
   if (window.Calendly) return Promise.resolve();
@@ -41,8 +46,10 @@ export function loadCalendly(): Promise<void> {
     const existing = document.querySelector<HTMLScriptElement>("script[data-calendly]");
     if (existing) {
       if (window.Calendly) resolve();
-      else existing.addEventListener("load", () => resolve());
-      existing.addEventListener("error", () => reject(new Error("calendly")));
+      else {
+        existing.addEventListener("load", () => resolve());
+        existing.addEventListener("error", () => reject(new Error("calendly")));
+      }
       return;
     }
 
@@ -52,6 +59,7 @@ export function loadCalendly(): Promise<void> {
     script.setAttribute("data-calendly", "");
     script.addEventListener("load", () => resolve());
     script.addEventListener("error", () => {
+      // Reset so a retry can re-attempt rather than resolving from a dead cache.
       loadPromise = null;
       reject(new Error("calendly"));
     });
@@ -59,14 +67,4 @@ export function loadCalendly(): Promise<void> {
   });
 
   return loadPromise;
-}
-
-/** Open the Calendly scheduling popup; falls back to a new tab if blocked. */
-export function openCalendlyPopup(url: string): void {
-  loadCalendly()
-    .then(() => {
-      if (window.Calendly) window.Calendly.initPopupWidget({ url });
-      else window.open(url, "_blank", "noopener,noreferrer");
-    })
-    .catch(() => window.open(url, "_blank", "noopener,noreferrer"));
 }

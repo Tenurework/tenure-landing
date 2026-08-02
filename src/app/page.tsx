@@ -14,6 +14,9 @@ import { WhoFor } from "@/components/home/WhoFor";
 import { Integrations } from "@/components/home/Integrations";
 import { Faq } from "@/components/home/Faq";
 import { CtaBand } from "@/components/site/CtaBand";
+import { pageMetadata } from "@/lib/metadata";
+
+export const metadata = pageMetadata("/");
 
 export default function HomePage() {
   return (

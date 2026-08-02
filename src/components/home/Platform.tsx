@@ -51,7 +51,7 @@ function Cell({
   return (
     <article
       className={cn(
-        "lift group flex flex-col rounded-3xl border border-line bg-cloud p-5 shadow-[0_1px_2px_rgba(12,30,51,0.04),0_18px_44px_-30px_rgba(12,30,51,0.35)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[0_28px_60px_-30px_rgba(12,30,51,0.4)] sm:p-6",
+        "lift group flex flex-col rounded-3xl border border-line bg-cloud p-5 shadow-[var(--shadow-sm),var(--shadow-md)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[var(--shadow-lg)] sm:p-6",
         className,
       )}
     >
@@ -150,14 +150,14 @@ export function Platform() {
               />
               <Title>Approvals & oversight</Title>
               <Desc>
-                Multi-step approval chains, routed by seat. Every decision snapshots
-                the exact policy in force, so you can always prove the rules, not
+                Two-gate approval chains, routed by seat. Every decision permanently
+                records the deciding seat, the transition, and the reason, not
                 just who said yes.
               </Desc>
               <div className="mt-4 flex items-center gap-1">
                 {["Draft", "President", "OSE", "Approved"].map((s, idx) => (
                   <div key={s} className="flex flex-1 items-center last:flex-none">
-                    <span className={cn("h-2 w-2 rounded-full", idx < 2 ? "bg-grove" : idx === 2 ? "bg-gold" : "bg-line")} />
+                    <span className={cn("h-2 w-2 rounded-full", idx < 2 ? "bg-grove" : idx === 2 ? "bg-brand-gold" : "bg-line")} />
                     {idx < 3 && <span className={cn("mx-0.5 h-px flex-1", idx < 2 ? "bg-grove" : "bg-line")} />}
                   </div>
                 ))}
@@ -202,9 +202,9 @@ export function Platform() {
                 Plan events, vendors, and run-of-show. Tenure catches hard and soft
                 scheduling conflicts before they become a double-booked room.
               </Desc>
-              <div className="mt-4 rounded-lg border border-coral/30 bg-coral/[0.06] px-2.5 py-1.5">
-                <p className="flex items-center gap-1.5 text-[0.7rem] font-medium text-[#b23a1f]">
-                  <span className="h-1.5 w-1.5 rounded-full bg-coral" />
+              <div className="mt-4 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-1.5">
+                <p className="flex items-center gap-1.5 text-[0.7rem] font-medium text-danger">
+                  <span className="h-1.5 w-1.5 rounded-full bg-brand-coral" />
                   Hard conflict, Schlegel 207, 5:00 to 6:30p
                 </p>
               </div>
@@ -241,7 +241,7 @@ export function Platform() {
               </Desc>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.56rem] font-medium text-grove-deep">ACTIVE</span>
-                <span className="rounded-md bg-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-[#9a6a12]">SHADOW</span>
+                <span className="rounded-md bg-brand-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">SHADOW</span>
                 <span className="rounded-md bg-line/60 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-ink-faint">ALUMNI</span>
               </div>
             </Cell>
@@ -278,7 +278,7 @@ export function Platform() {
                 can prove nobody did something. Rows are only ever created, never
                 updated or deleted.
               </Desc>
-              <p className="mt-4 rounded-lg border border-line bg-ink px-2.5 py-1.5 font-mono text-[0.6rem] text-paper/70">
+              <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] text-inverse/70">
                 <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
               </p>
             </Cell>
@@ -293,10 +293,11 @@ export function Platform() {
               />
               <Title>Messages</Title>
               <Desc>
-                Role-aware conversations with sensitivity levels and delivery across
-                in-app, email, and push, threaded to the work they&rsquo;re about.
+                Four conversation types &mdash; direct, board channel, approval
+                thread and office broadcast &mdash; each with its own read and post
+                rules, threaded to the work they&rsquo;re about.
               </Desc>
-              <Tags items={["RBAC", "sensitivity", "in-app · email · push"]} />
+              <Tags items={["DM", "board channel", "approval thread", "broadcast"]} />
             </Cell>
           </Reveal>
 

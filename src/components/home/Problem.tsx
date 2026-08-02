@@ -22,7 +22,7 @@ function CrossMark() {
   return (
     <span
       aria-hidden
-      className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] bg-coral/90 text-cloud"
+      className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] bg-brand-coral/90 text-on-accent"
     >
       <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
         <path
@@ -84,12 +84,12 @@ export function Problem() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {/* Without Tenure, the cold handoff. */}
           <Reveal delay={0.16}>
-            <div className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)] sm:p-7">
+            <div className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] sm:p-7">
               <div className="flex items-baseline justify-between gap-3">
                 <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
                   Without Tenure
                 </h3>
-                <span className="label-mono text-coral">The handoff today</span>
+                <span className="label-mono text-brand-coral">The handoff today</span>
               </div>
               <ul className="mt-6 space-y-3.5">
                 {lost.map((item) => (
@@ -107,7 +107,7 @@ export function Problem() {
 
           {/* With Tenure, the seat remembers. */}
           <Reveal delay={0.22}>
-            <div className="h-full rounded-2xl border border-grove/25 bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(20,99,63,0.28)] sm:p-7">
+            <div className="h-full rounded-2xl border border-grove/25 bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_color-mix(in_oklab,var(--accent)_28%,transparent)] sm:p-7">
               <div className="flex items-baseline justify-between gap-3">
                 <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
                   With Tenure

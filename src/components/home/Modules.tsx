@@ -160,7 +160,7 @@ export function Modules() {
         <ul className="mt-12 grid grid-cols-1 gap-5 sm:mt-16 sm:grid-cols-2 lg:grid-cols-3">
           {MODULES.map((m, i) => (
             <Reveal as="li" key={m.name} delay={i * 0.05}>
-              <article className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)]">
+              <article className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)]">
                 <div className="flex items-center justify-between gap-3">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-grove-soft text-grove">
                     {m.icon}

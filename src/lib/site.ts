@@ -10,13 +10,21 @@ export const site = {
 
   tagline: "The operating system that keeps the memory when the people change.",
   description:
-    "Tenure is the system of record for any organization where people rotate faster than knowledge transfers, student clubs, university offices, teams, nonprofits, and growing companies. Finance, events, approvals, members, documents, and institutional memory live in one governed system of record, and Tenure AI turns that record into grounded, sourced answers, getting each new leader productive in days, not a semester.",
+    "Tenure is the system of record for organizations where people rotate faster than knowledge transfers. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next leader inherits the record instead of rebuilding it.",
 
-  // Scheduling, Calendly. The floating badge + every "Contact Sales" CTA opens this.
+  /**
+   * Scheduling. Reached only from /contact, after an explicit click — never
+   * loaded globally. Every path to it also has a plain-anchor fallback, because
+   * calendly.com is routinely blocked on university networks.
+   */
   calendlyUrl: "https://calendly.com/satvikwithtenure",
   // Back-compat alias used by older links; points at the same scheduler.
   bookingUrl: "https://calendly.com/satvikwithtenure",
-  ctaLabel: "Contact Sales",
+  /**
+   * One conversion phrase, used everywhere. "Contact Sales" oversold a
+   * two-founder company and set the wrong expectation for who picks up.
+   */
+  ctaLabel: "Book a walkthrough",
 
   email: "hello@tenurework.com",
 
@@ -28,25 +36,39 @@ export const site = {
   origin: {
     school: "Simon Business School",
     university: "University of Rochester",
-    partner: "Simon's Office of Student Engagement",
+    /**
+     * The office Tenure was built with. Referred to as the institution the
+     * work originated with — never as a partner, sponsor, customer or
+     * endorser. See `pilot.status`.
+     */
+    office: "Simon's Office of Student Engagement",
   },
 
   /**
-   * The pilot is not a hand-picked cohort. OSE is standing Tenure up across
-   * every organization it stewards *and* for its own administrators, so the
-   * org-side record and the office-side oversight run on one system from day
-   * one. `scope` is the short form used in stat rows and chips.
+   * PILOT LANGUAGE IS GOVERNED. As of 2026-08-02 the Fall 2026 pilot is
+   * verbally agreed and NOT contracted. Nothing on the site may state it as
+   * settled fact, imply procurement is complete, or describe the office as a
+   * partner, sponsor or customer.
+   *
+   * Permitted: "planned", "targeting Fall 2026", "proposed scope".
+   * Forbidden: "partner", "customer", "is rolling out", "will deploy",
+   *            "sponsored by", any university endorsement.
+   *
+   * `claims.spec.ts` fails the build if a forbidden phrase reappears.
+   * Revisit only when a written agreement exists.
    */
   pilot: {
+    status: "planned" as const,
     season: "Fall 2026",
-    scope: "Every org OSE stewards, plus OSE itself",
-    scopeShort: "Every org OSE stewards",
+    scope: "Proposed: every organization the office stewards, and the office itself",
+    scopeShort: "Proposed across the office's organizations",
   },
 
   nav: [
     { label: "Product", href: "/product" },
-    { label: "Story", href: "/story" },
     { label: "Pilot", href: "/pilot" },
+    { label: "Trust", href: "/trust" },
+    { label: "Story", href: "/story" },
   ],
 
   legal: [
@@ -86,14 +108,44 @@ export const site = {
   ],
 
   /**
-   * Honest, upsell-grade outcomes, "we don't measure engagement, we measure
-   * whether the knowledge survived." Animated counters in the metrics band.
+   * Every number here is counted from the deploying repository, not estimated,
+   * and each names a MECHANISM rather than an outcome. That rule exists because
+   * the pilot has not run: there is no telemetry measuring onboarding time, so
+   * a "3-day onboarding" counter was theatre. A behaviour you can verify beats
+   * a number nobody measured.
+   *
+   * `claimId` links each to its row in docs/PUBLIC-CLAIMS-REGISTER.md, and
+   * claims.spec.ts fails if a metric appears without one.
    */
   metrics: [
-    { value: 3, suffix: "-day", label: "seat onboarding", sub: "the incoming officer gets read-only access to the seat's record before their term begins", was: "a semester" },
-    { value: 0, suffix: "", label: "knowledge lost at graduation", sub: "everything stays attached to the seat, not the person" },
-    { value: 2, suffix: "-gate", label: "approval chain, 7 request types", sub: "every decision appends a permanent step naming the seat that made it" },
-    { value: 100, suffix: "%", label: "of actions logged", sub: "immutable, RBAC-scoped, nothing silently editable" },
+    {
+      value: 26,
+      suffix: "",
+      label: "organizations modelled",
+      sub: "209 seats, built from the office's own leadership roster rather than invented for a demo",
+      claimId: "C-014",
+    },
+    {
+      value: 2,
+      suffix: "-gate",
+      label: "approval chain, 7 request types",
+      sub: "every decision appends a permanent step naming the seat that made it",
+      claimId: "C-006",
+    },
+    {
+      value: 0,
+      suffix: "",
+      label: "records deleted at offboarding",
+      sub: "a seat carrying history refuses deletion — access is revoked, the record is not",
+      claimId: "C-011",
+    },
+    {
+      value: 132,
+      suffix: "",
+      label: "end-to-end tests",
+      sub: "run against a real database on every build, alongside 292 unit tests",
+      claimId: "C-015",
+    },
   ],
 
   /**

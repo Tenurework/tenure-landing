@@ -49,21 +49,21 @@ function Check() {
 
 export function AiOnboarding() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-line-dark bg-ink py-24 text-paper sm:py-32">
-      <SectionContour place="br" seed={11} className="text-paper/[0.07]" />
+    <section className="relative isolate overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-32">
+      <SectionContour place="br" seed={11} className="text-inverse/[0.07]" />
       {/* soft grove glow */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_55%_at_72%_30%,rgba(37,169,109,0.18),transparent_68%)]"
+        className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_55%_at_72%_30%,color-mix(in_oklab,var(--accent)_18%,transparent),transparent_68%)]"
       />
       {/* angular accents */}
       <div
         aria-hidden
-        className="pointer-events-none absolute left-[8%] top-[18%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-coral/70 sm:block"
+        className="pointer-events-none absolute left-[8%] top-[18%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-brand-coral/70 sm:block"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute bottom-[16%] right-[10%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-violet/70 sm:block"
+        className="pointer-events-none absolute bottom-[16%] right-[10%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-brand-violet/70 sm:block"
       />
 
       <Container className="relative grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -74,14 +74,14 @@ export function AiOnboarding() {
           </Reveal>
 
           <Reveal delay={0.06}>
-            <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-paper sm:text-[2.5rem] lg:text-[2.8rem]">
+            <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-inverse sm:text-[2.5rem] lg:text-[2.8rem]">
               They read the seat{" "}
               <span className="text-grove-bright">before they sit in it.</span>
             </h2>
           </Reveal>
 
           <Reveal delay={0.12}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-paper/70">
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-inverse/70">
               Ask Tenure in your own words (how a deal was closed, what the
               last board decided, why a decision was made) and get an answer
               grounded in the seat&rsquo;s own record, with every source
@@ -96,7 +96,7 @@ export function AiOnboarding() {
               {POINTS.map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-3 text-[0.97rem] leading-relaxed text-paper/80"
+                  className="flex items-start gap-3 text-[0.97rem] leading-relaxed text-inverse/80"
                 >
                   <Check />
                   <span>{point}</span>
@@ -108,7 +108,7 @@ export function AiOnboarding() {
 
         {/* RIGHT, chat card */}
         <Reveal delay={0.12}>
-          <div className="rounded-2xl border border-line-dark bg-ink-raised p-5 shadow-[0_40px_120px_-50px_rgba(0,0,0,0.7)]">
+          <div className="rounded-2xl border border-line-dark bg-inverse-raised p-5 shadow-[var(--shadow-lg)]">
             {/* card header */}
             <div className="flex items-center justify-between gap-3 border-b border-line-dark pb-4">
               <div className="flex items-center gap-2.5">
@@ -121,11 +121,11 @@ export function AiOnboarding() {
                     />
                   </svg>
                 </span>
-                <span className="font-display text-sm font-semibold text-paper">
+                <span className="font-display text-sm font-semibold text-inverse">
                   Ask Tenure
                 </span>
               </div>
-              <span className="label-mono text-[0.6rem] text-paper/40">
+              <span className="label-mono text-[0.6rem] text-inverse/40">
                 Treasurer seat
               </span>
             </div>
@@ -136,14 +136,14 @@ export function AiOnboarding() {
                 <div key={ex.ask} className="space-y-2.5">
                   {/* user question */}
                   <div className="flex justify-end">
-                    <p className="max-w-[85%] rounded-2xl rounded-br-md border border-line-dark bg-paper/[0.06] px-3.5 py-2 text-[0.86rem] text-paper/85">
+                    <p className="max-w-[85%] rounded-2xl rounded-br-md border border-line-dark bg-paper/[0.06] px-3.5 py-2 text-[0.86rem] text-inverse/85">
                       {ex.ask}
                     </p>
                   </div>
                   {/* answer */}
                   <div className="flex justify-start">
                     <div className="max-w-[90%] rounded-2xl rounded-bl-md border border-grove/30 bg-grove/[0.12] px-3.5 py-2.5">
-                      <p className="text-[0.86rem] leading-relaxed text-paper/90">
+                      <p className="text-[0.86rem] leading-relaxed text-inverse/90">
                         {ex.answer}
                       </p>
                       <span className="mt-2 inline-flex items-center gap-1 font-mono text-[0.62rem] uppercase tracking-wide text-grove-bright">
@@ -171,11 +171,11 @@ export function AiOnboarding() {
             </div>
 
             {/* composer affordance */}
-            <div className="mt-5 flex items-center gap-2 rounded-xl border border-line-dark bg-ink px-3.5 py-2.5">
-              <span className="flex-1 text-[0.82rem] text-paper/35">
+            <div className="mt-5 flex items-center gap-2 rounded-xl border border-line-dark bg-inverse px-3.5 py-2.5">
+              <span className="flex-1 text-[0.82rem] text-inverse/35">
                 Ask about this seat&rsquo;s history&hellip;
               </span>
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove text-cloud">
+              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove text-on-accent">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                   <path
                     d="M3 8h10M9 4l4 4-4 4"

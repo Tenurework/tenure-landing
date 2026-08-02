@@ -1,13 +1,13 @@
 "use client";
 
+import { Reveal } from "@/components/ui/Reveal";
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion, AnimatePresence } from "motion/react";
+import { useInView, useReducedMotion } from "motion/react";
 import NumberFlow from "@number-flow/react";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { SectionContour } from "@/components/visuals/SectionContour";
 import { site } from "@/lib/site";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 function Tile({
   metric,
@@ -36,26 +36,13 @@ function Tile({
         )}
       </div>
 
-      <div className="mt-1 h-4 overflow-hidden">
-        {"was" in metric && metric.was && (
-          <AnimatePresence mode="wait">
-            {inView && !reduce && (
-              <motion.p
-                key="was"
-                className="font-mono text-[0.68rem] text-paper/40 line-through"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: [0, 1, 1, 0] }}
-                transition={{ duration: 1.6, times: [0, 0.2, 0.7, 1] }}
-              >
-                {metric.was}
-              </motion.p>
-            )}
-          </AnimatePresence>
-        )}
-      </div>
+      {/* The struck-through "was: a semester" comparison that used to sit here
+          was removed with the unmeasured metrics it belonged to. Nothing in
+          either product repository measures onboarding duration, so there was
+          no before to strike through. */}
 
-      <p className="mt-3 text-[1.02rem] font-medium text-paper">{metric.label}</p>
-      <p className="mt-1 text-[0.86rem] leading-relaxed text-paper/55">{metric.sub}</p>
+      <p className="mt-3 text-[1.02rem] font-medium text-inverse">{metric.label}</p>
+      <p className="mt-1 text-[0.86rem] leading-relaxed text-inverse/55">{metric.sub}</p>
     </div>
   );
 }
@@ -68,37 +55,33 @@ export function MetricsBand() {
   return (
     <section
       ref={ref}
-      className="relative isolate overflow-hidden border-t border-line-dark bg-ink py-24 text-paper sm:py-28"
+      className="relative isolate overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-28"
     >
-      <SectionContour place="cr" seed={4} className="text-paper/[0.06]" />
+      <SectionContour place="cr" seed={4} className="text-inverse/[0.06]" />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_25%_20%,rgba(37,169,109,0.16),transparent_68%)]"
+        className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_25%_20%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_68%)]"
       />
 
       <Container className="relative">
         <div className="max-w-2xl">
-          <Eyebrow className="text-paper/50">Continuity, measured</Eyebrow>
-          <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-paper sm:text-[2.4rem]">
+          <Eyebrow className="text-inverse/50">Continuity, measured</Eyebrow>
+          <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.4rem]">
             We don&rsquo;t measure engagement. We measure whether the{" "}
             <span className="text-grove-bright">knowledge survived</span>.
           </h2>
-          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-paper/55">
+          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-inverse/55">
             What the seat model is built to deliver, {site.pilot.season} pilot targets.
           </p>
         </div>
 
         <div className="mt-14 grid gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+          {/* Reveal rather than motion: these four tiles carry real copy, and
+              a server-rendered opacity:0 hid all of it without JavaScript. */}
           {site.metrics.map((m, i) => (
-            <motion.div
-              key={m.label}
-              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : undefined}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: EASE }}
-              className="border-l border-line-dark pl-5"
-            >
+            <Reveal key={m.label} delay={i * 0.08} y={16} className="border-l border-line-dark pl-5">
               <Tile metric={m} inView={inView} reduce={reduce} />
-            </motion.div>
+            </Reveal>
           ))}
         </div>
       </Container>

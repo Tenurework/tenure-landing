@@ -7,12 +7,9 @@ import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { ToolLogos } from "@/components/visuals/ToolLogos";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Product",
-  description:
-    "One system for your organization's finance, events, members, and memory, with an AI that gets each new leader productive in days, not a semester.",
-};
+export const metadata = pageMetadata("/product");
 
 const svgProps = {
   width: 20,
@@ -182,7 +179,7 @@ export default function ProductPage() {
                 as="div"
                 key={r.n}
                 delay={0.04 * i}
-                className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)]"
+                className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]"
               >
                 <div className="flex items-center justify-between">
                   <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-grove-soft text-grove-deep">
@@ -248,7 +245,7 @@ export default function ProductPage() {
 
           {/* Q&A card */}
           <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[0_30px_80px_-40px_rgba(12,30,51,0.4)] sm:p-6">
+            <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)] sm:p-6">
               <div className="flex items-center justify-between border-b border-line pb-3.5">
                 <span className="inline-flex items-center gap-1.5 rounded-lg bg-grove-soft px-2.5 py-1 text-[0.72rem] font-medium text-grove-deep">
                   <span className="h-1.5 w-1.5 rounded-sm bg-grove" />

@@ -68,7 +68,7 @@ export function Integrations() {
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {LANES.map((l, i) => (
             <Reveal as="div" key={l.title} delay={0.05 * i}>
-              <div className="lift flex h-full flex-col rounded-2xl border border-line bg-cloud p-6 shadow-[0_1px_2px_rgba(12,30,51,0.05)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[0_24px_54px_-30px_rgba(12,30,51,0.4)]">
+              <div className="lift flex h-full flex-col rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[var(--shadow-lg)]">
                 <div className="flex flex-wrap items-center gap-2">
                   {l.marks.map((m) => (
                     <Chip key={`${l.title}-${m.name}`} t={m} />

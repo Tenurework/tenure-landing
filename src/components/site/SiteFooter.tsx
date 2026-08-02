@@ -8,15 +8,15 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-line-dark bg-ink">
+    <footer className="relative overflow-hidden border-t border-line-dark bg-inverse">
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <Wordmark tone="paper" />
-            <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-paper/65">
+            <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-inverse/65">
               {site.tagline}
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-paper/40">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-inverse/40">
               Founded at {site.origin.school}, {site.origin.university}.
             </p>
           </div>
@@ -28,7 +28,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-[0.95rem] text-paper/65 transition-colors hover:text-paper"
+                    className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
                   >
                     {item.label}
                   </Link>
@@ -41,7 +41,7 @@ export function SiteFooter() {
             <p className="label-mono">Get started</p>
             <ul className="mt-4 space-y-3">
               <li>
-                <ContactSalesLink className="group inline-flex items-center gap-1.5 text-[0.95rem] text-paper transition-colors hover:text-grove-bright">
+                <ContactSalesLink className="group inline-flex items-center gap-1.5 text-[0.95rem] text-inverse transition-colors hover:text-grove-bright">
                   Contact Sales
                   <span
                     aria-hidden
@@ -54,7 +54,7 @@ export function SiteFooter() {
               <li>
                 <a
                   href={`mailto:${site.email}`}
-                  className="text-[0.95rem] text-paper/65 transition-colors hover:text-paper"
+                  className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
                 >
                   {site.email}
                 </a>
@@ -68,7 +68,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4 border-t border-line-dark pt-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
             <Logo className="h-4 w-4 text-grove" />
-            <span className="text-sm text-paper/45">
+            <span className="text-sm text-inverse/45">
               © {year} {site.name}. All rights reserved.
             </span>
           </div>
@@ -77,7 +77,7 @@ export function SiteFooter() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-paper/45 transition-colors hover:text-paper"
+                className="text-inverse/45 transition-colors hover:text-inverse"
               >
                 {item.label}
               </Link>
@@ -87,18 +87,18 @@ export function SiteFooter() {
               href={site.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-paper/45 transition-colors hover:text-paper"
+              className="text-inverse/45 transition-colors hover:text-inverse"
             >
               LinkedIn
             </a>
-            <span aria-hidden className="text-paper/30">
+            <span aria-hidden className="text-inverse/30">
               /
             </span>
             <a
               href={site.socials.x}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-paper/45 transition-colors hover:text-paper"
+              className="text-inverse/45 transition-colors hover:text-inverse"
             >
               X
             </a>
@@ -111,7 +111,9 @@ export function SiteFooter() {
         aria-hidden
         className="pointer-events-none relative z-0 mt-12 flex select-none items-center justify-center gap-[2.5vw] overflow-hidden"
       >
-        <Logo className="h-[15vw] max-h-[15rem] w-[15vw] max-w-[15rem] shrink-0 translate-y-[6%] text-[#244a70]" />
+        {/* Same value as the top stop of `.wordmark-giant`, so the logomark and
+            the wordmark emboss at identical strength in both themes. */}
+        <Logo className="h-[15vw] max-h-[15rem] w-[15vw] max-w-[15rem] shrink-0 translate-y-[6%] text-[color:color-mix(in_oklab,var(--inverse-raised)_100%,white_14%)]" />
         <span className="wordmark-giant block translate-y-[12%]">Tenure</span>
       </div>
     </footer>

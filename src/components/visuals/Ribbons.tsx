@@ -13,20 +13,25 @@ export function Ribbons({ className }: { className?: string }) {
       preserveAspectRatio="xMidYMid slice"
     >
       <defs>
+        {/* The ramp is derived entirely from --accent (and its hover step) so it
+            tracks the theme. "Lighter" is expressed as transparency rather than
+            a paler literal: a pale mint tint reads as a highlight on the paper
+            canvas but glows on the dark one, whereas a partly transparent
+            accent settles onto whatever is behind it in either theme. */}
         <linearGradient id="rb-a" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#25a96d" stopOpacity="0" />
-          <stop offset="35%" stopColor="#25a96d" stopOpacity="0.95" />
-          <stop offset="100%" stopColor="#7fd6a3" stopOpacity="0.1" />
+          <stop offset="0%" stopColor="var(--accent)" stopOpacity="0" />
+          <stop offset="35%" stopColor="var(--accent)" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="color-mix(in oklab, var(--accent) 55%, transparent)" stopOpacity="0.18" />
         </linearGradient>
         <linearGradient id="rb-b" x1="1" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#1c8c5a" stopOpacity="0" />
-          <stop offset="45%" stopColor="#34c281" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#aef0cb" stopOpacity="0.1" />
+          <stop offset="0%" stopColor="var(--accent-hover)" stopOpacity="0" />
+          <stop offset="45%" stopColor="var(--accent)" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="color-mix(in oklab, var(--accent) 40%, transparent)" stopOpacity="0.25" />
         </linearGradient>
         <linearGradient id="rb-c" x1="1" y1="0" x2="0.2" y2="1">
-          <stop offset="0%" stopColor="#8be0ad" stopOpacity="0" />
-          <stop offset="50%" stopColor="#9fe9bd" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#9fe9bd" stopOpacity="0" />
+          <stop offset="0%" stopColor="color-mix(in oklab, var(--accent) 50%, transparent)" stopOpacity="0" />
+          <stop offset="50%" stopColor="color-mix(in oklab, var(--accent) 50%, transparent)" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="color-mix(in oklab, var(--accent) 50%, transparent)" stopOpacity="0" />
         </linearGradient>
         <filter id="rb-soft" x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="7" />

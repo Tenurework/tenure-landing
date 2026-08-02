@@ -6,10 +6,10 @@ import type { ReactNode } from "react";
 type Shape = { className: string; dy: number; dur: number; content?: ReactNode };
 
 const SHAPES: Shape[] = [
-  { className: "left-[7%] top-[26%] h-7 w-7 rotate-[18deg] rounded-[7px] bg-coral/85", dy: -14, dur: 7 },
-  { className: "right-[9%] top-[20%] h-5 w-5 rotate-45 rounded-[4px] bg-violet/80", dy: 12, dur: 8.5 },
+  { className: "left-[7%] top-[26%] h-7 w-7 rotate-[18deg] rounded-[7px] bg-brand-coral/85", dy: -14, dur: 7 },
+  { className: "right-[9%] top-[20%] h-5 w-5 rotate-45 rounded-[4px] bg-brand-violet/80", dy: 12, dur: 8.5 },
   {
-    className: "left-[47%] top-[11%] text-gold",
+    className: "left-[47%] top-[11%] text-brand-gold",
     dy: -10,
     dur: 9,
     content: (
@@ -19,7 +19,7 @@ const SHAPES: Shape[] = [
     ),
   },
   {
-    className: "right-[13%] top-[55%] h-7 w-7 text-sky",
+    className: "right-[13%] top-[55%] h-7 w-7 text-brand-sky",
     dy: 13,
     dur: 7.5,
     content: (

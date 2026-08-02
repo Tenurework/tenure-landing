@@ -62,7 +62,7 @@ export function AuditTrailDemo({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-line bg-cloud shadow-[0_1px_2px_rgba(12,30,51,0.05),0_40px_100px_-50px_rgba(12,30,51,0.45)]",
+        "overflow-hidden rounded-2xl border border-line bg-cloud shadow-[var(--shadow-sm),var(--shadow-lg)]",
         className,
       )}
     >
@@ -100,8 +100,12 @@ export function AuditTrailDemo({ className }: { className?: string }) {
             <motion.div
               key={r.id}
               layout={!reduce}
-              initial={reduce ? false : { opacity: 0, y: -10, backgroundColor: "rgba(228,241,233,0.6)" }}
-              animate={{ opacity: 1, y: 0, backgroundColor: "rgba(228,241,233,0)" }}
+              // color-mix keeps the new-row flash on the accent token, so it
+              // tints rather than glares in dark mode. Motion routes keyframes
+              // in browser-only colour spaces through WAAPI, which interpolates
+              // them natively.
+              initial={reduce ? false : { opacity: 0, y: -10, backgroundColor: "color-mix(in oklab, var(--accent-subtle) 60%, transparent)" }}
+              animate={{ opacity: 1, y: 0, backgroundColor: "color-mix(in oklab, var(--accent-subtle) 0%, transparent)" }}
               exit={reduce ? undefined : { opacity: 0 }}
               transition={{ duration: reduce ? 0 : 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="grid grid-cols-[1.4fr_1.2fr_0px_auto] items-center gap-3 px-4 py-2.5 text-[0.72rem] sm:grid-cols-[1.25fr_1.15fr_1.1fr_auto] sm:px-5"
@@ -110,7 +114,7 @@ export function AuditTrailDemo({ className }: { className?: string }) {
                 <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" className="shrink-0 text-ink-faint"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
                 <span className="truncate">{r.actor}</span>
               </span>
-              <span className={cn("truncate font-mono", r.result === "deny" ? "text-[#b23a1f]" : "text-grove-deep")}>
+              <span className={cn("truncate font-mono", r.result === "deny" ? "text-danger" : "text-grove-deep")}>
                 {r.action}
               </span>
               <span className="hidden truncate text-ink-soft sm:block">{r.target}</span>
@@ -119,7 +123,7 @@ export function AuditTrailDemo({ className }: { className?: string }) {
                 <span
                   className={cn(
                     "rounded-full px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase",
-                    r.result === "deny" ? "bg-coral/12 text-[#b23a1f]" : "bg-grove-soft text-grove-deep",
+                    r.result === "deny" ? "bg-brand-coral/12 text-danger" : "bg-grove-soft text-grove-deep",
                   )}
                 >
                   {r.result}

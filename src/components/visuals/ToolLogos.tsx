@@ -34,7 +34,7 @@ export function ToolLogos({ className }: { className?: string }) {
       {LANES.map((l) => (
         <div
           key={l.title}
-          className="lift flex h-full flex-col rounded-xl border border-line bg-cloud p-4 shadow-[0_1px_2px_rgba(12,30,51,0.04)] hover:shadow-[0_8px_20px_-12px_rgba(12,30,51,0.3)]"
+          className="lift flex h-full flex-col rounded-xl border border-line bg-cloud p-4 shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]"
         >
           <div className="flex flex-wrap items-center gap-2">
             {l.marks.map((m) => (

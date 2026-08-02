@@ -4,9 +4,21 @@ import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { CalendlyBadge } from "@/components/site/CalendlyBadge";
+import { ThemeScript } from "@/components/site/ThemeScript";
+import { StructuredData } from "@/components/site/StructuredData";
 import "./globals.css";
 
+/**
+ * Root metadata. Only the pieces that are genuinely site-wide live here —
+ * every route supplies its own title, description, canonical, OpenGraph and
+ * Twitter block via `pageMetadata()`.
+ *
+ * `metadataBase` is what lets each route declare a *relative* canonical, so the
+ * production host is configured in exactly one place. Note that Next merges
+ * metadata shallowly: a route that sets `openGraph.title` alone would drop the
+ * parent's `openGraph.description`, which is why no openGraph block is defined
+ * here for pages to half-inherit.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -16,42 +28,26 @@ export const metadata: Metadata = {
   description: site.description,
   applicationName: site.name,
   authors: site.founders.map((f) => ({ name: f.name })),
+  creator: site.name,
+  publisher: site.name,
   keywords: [
-    "university ERP",
-    "student organization software",
     "institutional memory",
     "leadership transition",
-    "onboarding",
-    "AI onboarding",
-    "knowledge management",
+    "student organization software",
+    "university administration software",
+    "succession planning",
+    "handoff documentation",
+    "governed system of record",
   ],
-  openGraph: {
-    type: "website",
-    url: site.url,
-    siteName: site.name,
-    title: `${site.name}, ${site.tagline}`,
-    description: site.description,
-    images: [
-      {
-        url: "/og.png",
-        width: 1200,
-        height: 630,
-        alt: `${site.name}, ${site.tagline}`,
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name}, ${site.tagline}`,
-    description: site.description,
-    images: ["/og.png"],
-  },
-  alternates: { canonical: site.url },
+  formatDetection: { telephone: false, address: false, email: false },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#fbf9f5",
-  colorScheme: "light",
+  colorScheme: "light dark",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f9f7f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a1118" },
+  ],
 };
 
 export default function RootLayout({
@@ -60,15 +56,29 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      // ThemeScript writes data-theme onto this element during HTML parsing,
+      // before React hydrates. Without this, React would treat the attribute it
+      // did not render as a hydration error and re-render — reintroducing the
+      // very flash the script exists to prevent.
+      suppressHydrationWarning
       className={`${generalSans.variable} ${plexMono.variable} antialiased`}
     >
-      <body className="flex min-h-dvh flex-col bg-paper text-ink">
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="flex min-h-dvh flex-col bg-canvas text-text">
+        {/* First focusable element on every page. */}
+        <a href="#main" className="skip-link">
+          Skip to main content
+        </a>
+        <StructuredData />
         <SmoothScroll>
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main id="main" tabIndex={-1} className="flex-1">
+            {children}
+          </main>
           <SiteFooter />
         </SmoothScroll>
-        <CalendlyBadge />
       </body>
     </html>
   );

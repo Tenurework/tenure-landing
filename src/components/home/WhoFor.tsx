@@ -57,7 +57,7 @@ export function WhoFor() {
             const photo = PHOTO[a.title];
             return (
               <Reveal key={a.title} delay={0.06 + (i % 2) * 0.06}>
-                <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-cloud shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-1 hover:shadow-[0_28px_60px_-30px_rgba(12,30,51,0.4)]">
+                <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-cloud shadow-[var(--shadow-sm)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]">
                   <div className="relative aspect-[16/8] overflow-hidden">
                     {photo && (
                       <Image
@@ -69,14 +69,14 @@ export function WhoFor() {
                         className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                       />
                     )}
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/15 to-transparent" />
-                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-lg border border-cloud/25 bg-ink/40 px-2.5 py-1 font-mono text-[0.62rem] text-paper backdrop-blur">
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-inverse/70 via-inverse/15 to-transparent" />
+                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-lg border border-text-inverse/25 bg-inverse/40 px-2.5 py-1 font-mono text-[0.62rem] text-inverse backdrop-blur">
                       <span className="h-1.5 w-1.5 rounded-sm bg-grove-bright" />
                       {a.seat}
                     </span>
                     <div className="absolute bottom-4 left-5 right-5">
-                      <h3 className="font-display text-xl font-semibold text-paper">{a.title}</h3>
-                      <p className="mt-0.5 text-[0.78rem] text-paper/75">{a.cadence}</p>
+                      <h3 className="font-display text-xl font-semibold text-inverse">{a.title}</h3>
+                      <p className="mt-0.5 text-[0.78rem] text-inverse/75">{a.cadence}</p>
                     </div>
                   </div>
                   <div className="flex flex-1 flex-col p-6 sm:p-7">

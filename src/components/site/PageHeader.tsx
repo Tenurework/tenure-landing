@@ -18,7 +18,7 @@ export function PageHeader({
     <section className="relative overflow-hidden border-b border-line">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_60%_at_50%_-10%,rgba(28,140,90,0.08),transparent_60%)]"
+        className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_60%_at_50%_-10%,color-mix(in_oklab,var(--accent)_8%,transparent),transparent_60%)]"
       />
       <Container className="relative pb-14 pt-32 text-center sm:pb-16 sm:pt-40">
         <Reveal>

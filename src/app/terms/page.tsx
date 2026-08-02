@@ -1,12 +1,9 @@
 import { Container } from "@/components/ui/layout";
 import { PageHeader } from "@/components/site/PageHeader";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Terms",
-  description:
-    "The terms for using Tenure during early access and the Fall 2026 pilot.",
-};
+export const metadata = pageMetadata("/terms");
 
 export default function TermsPage() {
   return (

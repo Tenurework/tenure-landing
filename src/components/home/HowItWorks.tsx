@@ -132,7 +132,7 @@ export function HowItWorks() {
               delay={0.06 * i}
               className="relative"
             >
-              <div className="h-full rounded-2xl border border-line bg-cloud p-7 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)]">
+              <div className="h-full rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)]">
                 <div className="flex items-center justify-between">
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-grove-soft font-mono text-[0.9rem] font-semibold text-grove-deep">
                     {step.n}

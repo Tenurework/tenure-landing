@@ -13,15 +13,16 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-grove text-cloud hover:bg-grove-bright active:translate-y-px " +
-    "shadow-[0_12px_30px_-12px_rgba(28,140,90,0.7)] hover:shadow-[0_18px_40px_-14px_rgba(37,169,109,0.75)]",
+    "bg-grove text-on-accent hover:bg-grove-bright active:translate-y-px " +
+    "shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--accent)_70%,transparent)] " +
+    "hover:shadow-[0_18px_40px_-14px_color-mix(in_oklab,var(--accent-hover)_75%,transparent)]",
   secondary:
     "bg-cloud text-ink border border-line hover:border-ink/20 hover:bg-sand/60 " +
-    "shadow-[0_1px_2px_rgba(12,30,51,0.05)]",
+    "shadow-[var(--shadow-sm)]",
   outline:
     "border border-grove/30 text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove/50",
   light:
-    "bg-cloud/10 text-paper border border-paper/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-paper/40",
+    "bg-cloud/10 text-inverse border border-text-inverse/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-text-inverse/40",
   ghost: "text-ink-soft hover:text-ink",
 };
 

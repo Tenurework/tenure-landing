@@ -3,12 +3,9 @@ import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Story",
-  description:
-    "How Tenure began at Simon Business School, and why institutional memory shouldn't reset every time a student organization changes hands.",
-};
+export const metadata = pageMetadata("/story");
 
 const RECORD: { label: string; value: string }[] = [
   {
@@ -21,9 +18,12 @@ const RECORD: { label: string; value: string }[] = [
   },
   {
     label: "Pilot",
-    value: `${site.pilot.season} · ${site.pilot.scope}`,
+    value: `Planned ${site.pilot.season}`,
   },
-  { label: "Partner", value: site.origin.partner },
+  // Deliberately "Built with", not "Partner". The Fall 2026 pilot is verbally
+  // agreed and not contracted, so no label here may imply procurement,
+  // sponsorship or endorsement by the university.
+  { label: "Built with", value: site.origin.office },
   { label: "Supported by", value: "Startup Wednesday" },
 ];
 
@@ -118,7 +118,7 @@ export default function StoryPage() {
           <div className="mt-14 grid gap-6 sm:grid-cols-2">
             {site.founders.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.08}>
-                <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_rgba(12,30,51,0.25)]">
+                <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
                   <span
                     aria-hidden
                     className="flex h-12 w-12 items-center justify-center rounded-xl bg-grove-soft font-display text-lg font-semibold text-grove-deep"
@@ -140,10 +140,10 @@ export default function StoryPage() {
       </section>
 
       {/* 3, Mission */}
-      <section className="relative overflow-hidden border-t border-line-dark bg-ink py-24 text-paper sm:py-32">
+      <section className="relative overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-32">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,rgba(37,169,109,0.16),transparent_70%)]"
+          className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_70%)]"
         />
         <Container className="relative">
           <div className="mx-auto max-w-3xl text-center">
@@ -153,13 +153,13 @@ export default function StoryPage() {
               </Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-6 text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-paper sm:text-[2.8rem] lg:text-[3.1rem]">
+              <h2 className="font-display mt-6 text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-inverse sm:text-[2.8rem] lg:text-[3.1rem]">
                 Serve any organization where people rotate faster than{" "}
                 <span className="text-grove-bright">knowledge transfers</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-paper/70">
+              <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-inverse/70">
                 We start with student clubs, where the reset is sharpest and the
                 leadership changes every spring. The same record is built for
                 boards, chapters, and committees, anywhere the calendar
@@ -194,7 +194,7 @@ export default function StoryPage() {
           </div>
 
           <Reveal delay={0.1}>
-            <div className="rounded-2xl border border-line bg-cloud p-7 shadow-[0_1px_2px_rgba(12,30,51,0.05)] sm:p-9">
+            <div className="rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] sm:p-9">
               <p className="label-mono">Record of founding</p>
               <dl className="mt-6 divide-y divide-line">
                 {RECORD.map((r) => (

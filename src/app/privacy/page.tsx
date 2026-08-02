@@ -1,12 +1,9 @@
 import { Container } from "@/components/ui/layout";
 import { PageHeader } from "@/components/site/PageHeader";
 import { site } from "@/lib/site";
+import { pageMetadata } from "@/lib/metadata";
 
-export const metadata = {
-  title: "Privacy",
-  description:
-    "How Tenure handles the information you and your organization put into the record, written in plain language.",
-};
+export const metadata = pageMetadata("/privacy");
 
 export default function PrivacyPage() {
   return (
@@ -140,8 +137,8 @@ export default function PrivacyPage() {
           <h2>Contact</h2>
           <p>
             Questions about privacy, or a request about your information? Email us
-            at <a href={`mailto:${site.email}`}>{site.email}</a> and we&rsquo;ll
-            help.
+            at <a href={`mailto:${site.email}`}>{site.email}</a>{" "}
+            and we&rsquo;ll help.
           </p>
         </div>
       </Container>

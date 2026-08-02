@@ -21,7 +21,7 @@ export function Wordmark({
       <span
         className={cn(
           "font-display text-[1.4rem] font-semibold leading-none tracking-[-0.03em]",
-          tone === "paper" ? "text-paper" : "text-ink",
+          tone === "paper" ? "text-inverse" : "text-ink",
         )}
       >
         Tenure

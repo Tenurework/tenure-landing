@@ -124,8 +124,8 @@ const POWERS: Power[] = [
 
 const CHIP: Record<string, string> = {
   held: "bg-grove-soft text-grove-deep",
-  pending: "bg-gold/20 text-[#9a6a12]",
-  done: "bg-grove text-cloud",
+  pending: "bg-brand-gold/20 text-warning",
+  done: "bg-grove text-on-accent",
 };
 
 type Step = { n: string; title: string; chip: string; tone: keyof typeof CHIP; body: string };
@@ -187,7 +187,7 @@ export function OfficeConsole() {
 
         {/* the console */}
         <Reveal delay={0.1} className="mt-14">
-          <div className="overflow-hidden rounded-3xl border border-line bg-paper shadow-[0_1px_2px_rgba(12,30,51,0.05),0_40px_100px_-56px_rgba(12,30,51,0.45)]">
+          <div className="overflow-hidden rounded-3xl border border-line bg-paper shadow-[var(--shadow-sm),var(--shadow-lg)]">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-7">
               <div>
                 <p className="font-display text-[1.05rem] font-semibold text-ink">
@@ -224,7 +224,7 @@ export function OfficeConsole() {
                           </span>
                           <span className="flex-1">{n.label}</span>
                           {n.badge && (
-                            <span className="rounded-md bg-gold/20 px-1.5 py-0.5 font-mono text-[0.55rem] font-medium text-[#9a6a12]">
+                            <span className="rounded-md bg-brand-gold/20 px-1.5 py-0.5 font-mono text-[0.55rem] font-medium text-warning">
                               {n.badge}
                             </span>
                           )}
@@ -256,7 +256,7 @@ export function OfficeConsole() {
                         $4,200 · Student Culture Council · SCC-VP-EVEN-PART
                       </p>
                     </div>
-                    <span className="rounded-md bg-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-[#9a6a12]">
+                    <span className="rounded-md bg-brand-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">
                       6 days in gate 1
                     </span>
                   </div>
@@ -273,7 +273,7 @@ export function OfficeConsole() {
                   </div>
                 </div>
 
-                <p className="mt-4 rounded-lg border border-line bg-ink px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-paper/70">
+                <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-inverse/70">
                   <span className="text-grove-bright">approval.force_approved</span>{" "}
                   · Director, Office of Student Engagement · allow
                 </p>
@@ -286,7 +286,7 @@ export function OfficeConsole() {
         <div className="mt-6 grid gap-5 lg:grid-cols-3">
           {POWERS.map((p, i) => (
             <Reveal as="div" key={p.title} delay={0.05 * i}>
-              <div className="lift flex h-full flex-col rounded-3xl border border-line bg-paper p-6 shadow-[0_1px_2px_rgba(12,30,51,0.04)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[0_24px_54px_-30px_rgba(12,30,51,0.4)] sm:p-7">
+              <div className="lift flex h-full flex-col rounded-3xl border border-line bg-paper p-6 shadow-[var(--shadow-sm)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[var(--shadow-lg)] sm:p-7">
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-grove-soft text-grove">
                   {p.icon}
                 </span>

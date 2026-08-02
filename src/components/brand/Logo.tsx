@@ -6,7 +6,7 @@ const PETAL = "M16 16 C 12.4 10.5, 12.4 5.4, 16 3.4 C 19.6 5.4, 19.6 10.5, 16 16
 /**
  * Tenure logomark, a clean, flat six-petal bloom. Symmetric (not a pinwheel),
  * single color via `currentColor`, no tile and no circles. Set the color with a
- * text-* class on the element (e.g. text-grove on light, text-paper on dark).
+ * text-* class on the element (e.g. text-grove on light, text-inverse on dark).
  */
 export function Logo({ className }: { className?: string }) {
   return (

@@ -14,7 +14,7 @@ function FinanceCard() {
   const reduce = useReducedMotion();
   const loop = { duration: 5, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.4, 0.55, 0.9, 1] };
   return (
-    <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[0_30px_80px_-44px_rgba(12,30,51,0.4)]">
+    <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
         <p className="label-mono text-[0.6rem]">Finance · fall</p>
         <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.62rem] text-grove-deep">
@@ -49,7 +49,7 @@ function FinanceCard() {
               <span className="font-mono text-ink">{r.amt}</span>
               <span className="relative h-[1.15rem] w-[4.6rem] overflow-hidden rounded-full text-[0.6rem] font-medium">
                 <motion.span
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-gold/15 text-[#9a6a12]"
+                  className="absolute inset-0 flex items-center justify-center rounded-full bg-brand-gold/15 text-warning"
                   initial={{ opacity: 1 }}
                   animate={reduce ? undefined : { opacity: [1, 1, 0, 0, 1] }}
                   transition={reduce ? undefined : { ...loop, delay: i * 0.3 }}
@@ -78,7 +78,7 @@ function HandoffCard() {
   const reduce = useReducedMotion();
   const loop = { duration: 5.4, repeat: Infinity, ease: "easeInOut" as const };
   return (
-    <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[0_30px_80px_-44px_rgba(12,30,51,0.4)]">
+    <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
         <p className="label-mono text-[0.6rem]">Term handoff</p>
         <span className="font-mono text-[0.62rem] text-ink-faint">2024–25 → 2025–26</span>
@@ -99,7 +99,7 @@ function HandoffCard() {
         </div>
 
         <motion.div
-          className="absolute top-12 z-10 w-[44%] rounded-xl border border-grove/30 bg-cloud p-2.5 shadow-[0_14px_30px_-16px_rgba(12,30,51,0.5)]"
+          className="absolute top-12 z-10 w-[44%] rounded-xl border border-grove/30 bg-cloud p-2.5 shadow-[var(--shadow-lg)]"
           initial={{ left: "4%", opacity: 0 }}
           animate={
             reduce

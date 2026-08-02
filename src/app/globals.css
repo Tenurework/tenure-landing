@@ -1,59 +1,320 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   TENURE — light, warm, geometric, and premium.
-   The university operating system. Institutional memory that outlives turnover.
+   TENURE — design tokens.
+
+   Two layers, deliberately:
+
+   1. A SEMANTIC layer (`--canvas`, `--text-muted`, `--accent` …) declared once
+      per theme on :root. These are the only values that change between light
+      and dark.
+   2. A TAILWIND layer (`@theme inline`) that maps utility names onto those
+      variables. Because the mapping is `inline`, Tailwind emits `var(--canvas)`
+      rather than baking a literal, so every existing utility follows the theme
+      at runtime with no `dark:` variant anywhere.
+
+   Colours are OKLCH so the ramps stay perceptually even, and every foreground/
+   background pair in `THEME_PAIRS` is verified against WCAG 2.2 AA by
+   `scripts/check-contrast.mjs`, which runs in CI. Do not hand-tune a value here
+   without re-running it.
+
+   Naming note: the brand palette used to double up — `--color-paper` was both
+   the page canvas *and* the text colour on navy sections, which is why a dark
+   theme was impossible without a rewrite. Those roles are now split
+   (`canvas` vs `text-inverse`, `surface` vs `on-accent`).
    ============================================================================ */
 
-@theme {
-  /* ----- Surfaces (light) ----------------------------------------------- */
-  --color-paper: #fbf9f5;        /* warm white base                        */
-  --color-sand: #f1ece2;         /* cream alt sections                     */
-  --color-cloud: #ffffff;        /* pure white cards                       */
-  --color-mist: #f6f3ec;         /* faint warm fill                        */
+/* ---------------------------------------------------------------------------
+   LIGHT (default)
+   --------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
 
-  /* ----- Ink (deep navy) ------------------------------------------------ */
-  --color-ink: #0c1e33;          /* primary text + dark sections           */
-  --color-ink-deep: #081726;     /* deepest navy, footer/void              */
-  --color-ink-raised: #122a44;   /* raised dark surfaces                   */
-  --color-ink-soft: #46586c;     /* secondary text on light                */
-  --color-ink-faint: #8a97a4;    /* captions, labels                       */
+  /* Surfaces */
+  --canvas: oklch(97.6% 0.006 85);          /* warm paper                     */
+  --surface: oklch(100% 0 0);               /* cards                          */
+  --surface-subtle: oklch(94.2% 0.012 85);  /* cream alternating sections     */
+  --surface-elevated: oklch(100% 0 0);
 
-  /* ----- Lines ---------------------------------------------------------- */
-  --color-line: #e7e0d4;         /* warm border on light                   */
-  --color-line-soft: #efeae0;
-  --color-line-dark: #21384f;    /* border on navy                         */
+  /* Inverse surfaces — the deep navy bands used as a light-theme device.
+     In dark mode these become *elevated* rather than inverted, so the page
+     keeps its rhythm instead of turning into a flat sheet of black. */
+  --inverse: oklch(23.5% 0.042 253);
+  --inverse-deep: oklch(19.5% 0.040 253);
+  --inverse-raised: oklch(28.5% 0.048 253);
 
-  /* ----- Accent (grove green) ------------------------------------------- */
-  --color-grove: #1c8c5a;
-  --color-grove-deep: #14633f;
-  --color-grove-bright: #25a96d;
-  --color-grove-glow: #37c07e;
-  --color-grove-soft: #e4f1e9;   /* tint fill                              */
-  --color-grove-mist: #f1f8f4;   /* faintest tint                          */
+  /* Text */
+  --text: oklch(24% 0.045 253);
+  --text-secondary: oklch(45% 0.032 253);
+  /* Must clear 4.5:1 on the *darkest* light surface (surface-subtle), not just
+     on white — the old #8a97a4 managed only 2.98:1 anywhere. */
+  --text-muted: oklch(51.5% 0.028 253);
+  --text-inverse: oklch(97.6% 0.006 85);    /* on inverse surfaces            */
 
-  /* ----- Playful secondaries (geometric shapes) ------------------------- */
-  --color-coral: #ed6a4a;
-  --color-gold: #e8b04b;
-  --color-sky: #3e7cb1;
-  --color-violet: #6c4cf1;
+  /* Lines. `border` is a decorative hairline; `border-strong` is load-bearing
+     (it can be the only thing marking a control boundary) and so is held to
+     the 3:1 non-text requirement. */
+  --border: oklch(90.5% 0.012 80);
+  --border-subtle: oklch(93.5% 0.010 80);
+  --border-strong: oklch(55% 0.018 80);
+  --border-inverse: oklch(33% 0.045 253);
 
-  /* ----- Radius (friendly, rounded) ------------------------------------- */
+  /* Accent — dark forest green */
+  --accent: oklch(47.5% 0.105 158);         /* solid fills; carries white text */
+  --accent-hover: oklch(42.5% 0.098 158);
+  --accent-active: oklch(38% 0.090 158);
+  --accent-text: oklch(44% 0.100 158);      /* green text on light surfaces    */
+  --accent-subtle: oklch(95.5% 0.028 158);
+  --accent-muted: oklch(97.5% 0.014 158);
+  --on-accent: oklch(100% 0 0);
+
+  /* Status */
+  --success: oklch(45% 0.105 158);
+  --success-subtle: oklch(95.5% 0.030 158);
+  --warning: oklch(48% 0.095 75);
+  --warning-subtle: oklch(95% 0.045 85);
+  --danger: oklch(47% 0.150 27);
+  --danger-subtle: oklch(95% 0.030 27);
+  --info: oklch(47% 0.090 245);
+  --info-subtle: oklch(95% 0.030 245);
+
+  /* Focus. A single ring colour cannot clear 3:1 against both the paper canvas
+     and the navy bands, so the inverse surfaces carry their own. */
+  --focus-ring: oklch(42% 0.110 158);
+  --focus-ring-inverse: oklch(80% 0.140 158);
+
+  /* Charts — categorical, checked for 3:1 against both canvases */
+  --chart-1: oklch(47.5% 0.105 158);
+  --chart-2: oklch(50% 0.095 245);
+  --chart-3: oklch(55% 0.105 75);
+  --chart-4: oklch(50% 0.140 27);
+  --chart-5: oklch(45% 0.110 300);
+  --chart-6: oklch(60% 0.030 253);
+
+  /* Elevation — tuned per theme so dark mode does not stack black on black */
+  --shadow-color: 253 40% 12%;
+  --shadow-sm: 0 1px 2px oklch(24% 0.045 253 / 0.06);
+  --shadow-md: 0 6px 18px -8px oklch(24% 0.045 253 / 0.16);
+  --shadow-lg: 0 18px 40px -22px oklch(24% 0.045 253 / 0.28);
+  --overlay: oklch(24% 0.045 253 / 0.42);
+}
+
+/* ---------------------------------------------------------------------------
+   DARK — applied either by explicit choice (`data-theme="dark"`) or by system
+   preference when the user has not chosen. The explicit attribute wins in both
+   directions, which is why the media query excludes `data-theme="light"`.
+   --------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --canvas: oklch(17.5% 0.018 250);
+    --surface: oklch(21.5% 0.021 250);
+    --surface-subtle: oklch(19.5% 0.020 250);
+    --surface-elevated: oklch(25% 0.024 250);
+
+    --inverse: oklch(25% 0.024 250);
+    --inverse-deep: oklch(21% 0.022 250);
+    --inverse-raised: oklch(29% 0.026 250);
+
+    --text: oklch(94% 0.008 250);
+    --text-secondary: oklch(78% 0.018 250);
+    --text-muted: oklch(66.5% 0.022 250);
+    --text-inverse: oklch(94% 0.008 250);
+
+    --border: oklch(30% 0.024 250);
+    --border-subtle: oklch(25.5% 0.022 250);
+    --border-strong: oklch(52% 0.030 250);
+    --border-inverse: oklch(34% 0.026 250);
+
+    --accent: oklch(72% 0.135 158);
+    --accent-hover: oklch(77% 0.140 158);
+    --accent-active: oklch(67% 0.130 158);
+    --accent-text: oklch(78% 0.130 158);
+    --accent-subtle: oklch(27% 0.045 158);
+    --accent-muted: oklch(23% 0.032 158);
+    --on-accent: oklch(16% 0.030 158);
+
+    --success: oklch(75% 0.135 158);
+    --success-subtle: oklch(27% 0.045 158);
+    --warning: oklch(80% 0.115 80);
+    --warning-subtle: oklch(28% 0.040 80);
+    --danger: oklch(72% 0.140 27);
+    --danger-subtle: oklch(28% 0.050 27);
+    --info: oklch(76% 0.100 245);
+    --info-subtle: oklch(27% 0.040 245);
+
+    --focus-ring: oklch(80% 0.140 158);
+    --focus-ring-inverse: oklch(80% 0.140 158);
+
+    --chart-1: oklch(72% 0.135 158);
+    --chart-2: oklch(72% 0.110 245);
+    --chart-3: oklch(80% 0.115 80);
+    --chart-4: oklch(70% 0.140 27);
+    --chart-5: oklch(72% 0.120 300);
+    --chart-6: oklch(70% 0.025 250);
+
+    --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.4);
+    --shadow-md: 0 6px 18px -8px oklch(0% 0 0 / 0.55);
+    --shadow-lg: 0 18px 40px -22px oklch(0% 0 0 / 0.7);
+    --overlay: oklch(0% 0 0 / 0.6);
+  }
+}
+
+/* Explicit dark choice — same values, higher specificity than the media query
+   so a user who picks dark on a light system still gets dark. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --canvas: oklch(17.5% 0.018 250);
+  --surface: oklch(21.5% 0.021 250);
+  --surface-subtle: oklch(19.5% 0.020 250);
+  --surface-elevated: oklch(25% 0.024 250);
+
+  --inverse: oklch(25% 0.024 250);
+  --inverse-deep: oklch(21% 0.022 250);
+  --inverse-raised: oklch(29% 0.026 250);
+
+  --text: oklch(94% 0.008 250);
+  --text-secondary: oklch(78% 0.018 250);
+  --text-muted: oklch(66.5% 0.022 250);
+  --text-inverse: oklch(94% 0.008 250);
+
+  --border: oklch(30% 0.024 250);
+  --border-subtle: oklch(25.5% 0.022 250);
+  --border-strong: oklch(52% 0.030 250);
+  --border-inverse: oklch(34% 0.026 250);
+
+  --accent: oklch(72% 0.135 158);
+  --accent-hover: oklch(77% 0.140 158);
+  --accent-active: oklch(67% 0.130 158);
+  --accent-text: oklch(78% 0.130 158);
+  --accent-subtle: oklch(27% 0.045 158);
+  --accent-muted: oklch(23% 0.032 158);
+  --on-accent: oklch(16% 0.030 158);
+
+  --success: oklch(75% 0.135 158);
+  --success-subtle: oklch(27% 0.045 158);
+  --warning: oklch(80% 0.115 80);
+  --warning-subtle: oklch(28% 0.040 80);
+  --danger: oklch(72% 0.140 27);
+  --danger-subtle: oklch(28% 0.050 27);
+  --info: oklch(76% 0.100 245);
+  --info-subtle: oklch(27% 0.040 245);
+
+  --focus-ring: oklch(80% 0.140 158);
+  --focus-ring-inverse: oklch(80% 0.140 158);
+
+  --chart-1: oklch(72% 0.135 158);
+  --chart-2: oklch(72% 0.110 245);
+  --chart-3: oklch(80% 0.115 80);
+  --chart-4: oklch(70% 0.140 27);
+  --chart-5: oklch(72% 0.120 300);
+  --chart-6: oklch(70% 0.025 250);
+
+  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.4);
+  --shadow-md: 0 6px 18px -8px oklch(0% 0 0 / 0.55);
+  --shadow-lg: 0 18px 40px -22px oklch(0% 0 0 / 0.7);
+  --overlay: oklch(0% 0 0 / 0.6);
+}
+
+/* ---------------------------------------------------------------------------
+   Tailwind mapping. `inline` keeps these as var() references so they follow the
+   theme. Legacy brand names are kept as aliases onto the semantic roles, which
+   is what lets ~230 existing `text-ink*` utilities become theme-aware and
+   AA-compliant without editing a single component.
+   --------------------------------------------------------------------------- */
+@theme inline {
+  /* Semantic — preferred for all new and rewritten code */
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-elevated: var(--surface-elevated);
+
+  --color-inverse: var(--inverse);
+  --color-inverse-deep: var(--inverse-deep);
+  --color-inverse-raised: var(--inverse-raised);
+
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--text-inverse);
+
+  --color-border: var(--border);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+  --color-border-inverse: var(--border-inverse);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-active: var(--accent-active);
+  --color-accent-text: var(--accent-text);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-accent-muted: var(--accent-muted);
+  --color-on-accent: var(--on-accent);
+
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-warning: var(--warning);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-danger: var(--danger);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-info: var(--info);
+  --color-info-subtle: var(--info-subtle);
+
+  --color-focus-ring: var(--focus-ring);
+  --color-focus-ring-inverse: var(--focus-ring-inverse);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+
+  /* ----- Legacy brand aliases -------------------------------------------- */
+  /* Surfaces */
+  --color-paper: var(--canvas);
+  --color-cloud: var(--surface);
+  --color-sand: var(--surface-subtle);
+  --color-mist: var(--surface-subtle);
+
+  /* Text. `--color-ink` is a TEXT role; the navy *surface* bands use
+     `bg-inverse*`, which is why the two are no longer the same token. */
+  --color-ink: var(--text);
+  --color-ink-soft: var(--text-secondary);
+  --color-ink-faint: var(--text-muted);
+  --color-ink-deep: var(--inverse-deep);
+  --color-ink-raised: var(--inverse-raised);
+
+  /* Lines */
+  --color-line: var(--border);
+  --color-line-soft: var(--border-subtle);
+  --color-line-dark: var(--border-inverse);
+
+  /* Accent */
+  --color-grove: var(--accent);
+  --color-grove-deep: var(--accent-text);
+  --color-grove-bright: var(--accent-hover);
+  --color-grove-soft: var(--accent-subtle);
+  --color-grove-mist: var(--accent-muted);
+
+  /* Secondary hues, brand-scoped so they do not shadow Tailwind's own
+     `violet-*` / `sky-*` scales the way bare `--color-violet` did. */
+  --color-brand-coral: var(--danger);
+  --color-brand-gold: var(--warning);
+  --color-brand-sky: var(--info);
+  --color-brand-violet: var(--chart-5);
+
+  /* Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 18px;
   --radius-xl: 26px;
   --radius-2xl: 32px;
 
-  /* ----- Motion --------------------------------------------------------- */
+  /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* ----- Custom animation utilities (Tailwind v4 generates animate-*) ---- */
-  --animate-marquee: marquee 40s linear infinite;
-  --animate-marquee-slow: marquee 64s linear infinite;
-  --animate-aurora: aurora 18s ease-in-out infinite;
-  --animate-float-slow: floaty 9s ease-in-out infinite;
-  --animate-pulse-soft: pulseSoft 2.6s ease-in-out infinite;
 }
 
 @theme inline {
@@ -62,13 +323,18 @@
   --font-mono: var(--font-plex), ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
+/* ---------------------------------------------------------------------------
+   Base
+   --------------------------------------------------------------------------- */
 @layer base {
-  :root {
-    color-scheme: light;
+  * {
+    border-color: var(--border);
   }
 
-  * {
-    border-color: var(--color-line);
+  /* Navy bands carry their own hairline, so an unqualified `border` inside one
+     does not paint a warm cream line on a dark surface. */
+  .on-inverse * {
+    border-color: var(--border-inverse);
   }
 
   html {
@@ -77,8 +343,8 @@
   }
 
   body {
-    background-color: var(--color-paper);
-    color: var(--color-ink);
+    background-color: var(--canvas);
+    color: var(--text);
     font-family: var(--font-general), ui-sans-serif, system-ui, sans-serif;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
@@ -87,14 +353,22 @@
   }
 
   ::selection {
-    background: var(--color-grove);
-    color: var(--color-cloud);
+    background: var(--accent);
+    color: var(--on-accent);
   }
 
+  /* Visible in both themes, and never relies on colour alone. */
   :focus-visible {
-    outline: 2px solid var(--color-grove);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 3px;
     border-radius: 2px;
+  }
+
+  /* The deep navy bands need a lighter ring: the light-theme ring is dark
+     green and would sit at 2.1:1 against them. */
+  .on-inverse :focus-visible,
+  .on-inverse:focus-visible {
+    outline-color: var(--focus-ring-inverse);
   }
 
   a {
@@ -102,60 +376,104 @@
     text-decoration: none;
   }
 
-  /* Display headings: tight, confident */
   .font-display {
     letter-spacing: -0.025em;
   }
 
-  /* Tabular figures for data / numbers */
   .tnum {
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "cv01" 1;
   }
 }
 
-/* ----- Utilities ---------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Utilities
+   --------------------------------------------------------------------------- */
 
-/* Monospace eyebrow / system label */
+/* Monospace eyebrow / system label. Uses text-secondary, not muted: at 11px
+   these are the smallest type on the page and need the extra contrast. */
 @utility label-mono {
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-ink-faint);
+  color: var(--text-secondary);
 }
 
-/* Grove gradient text — for the highlighted phrase in headlines */
 @utility text-gradient {
-  background: linear-gradient(102deg, var(--color-grove-deep) 0%, var(--color-grove) 42%, var(--color-grove-bright) 100%);
+  background: linear-gradient(102deg, var(--accent-active) 0%, var(--accent) 48%, var(--accent-hover) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Premium card surface on light */
 @utility card {
-  background: var(--color-cloud);
-  border: 1px solid var(--color-line);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: var(--radius-xl);
-  box-shadow: 0 1px 2px rgba(12, 30, 51, 0.04), 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  box-shadow: var(--shadow-sm);
 }
 
-/* Fine ledger grid, tuned per background via currentColor */
-@utility bg-grid {
-  background-image:
-    linear-gradient(to right, currentColor 1px, transparent 1px),
-    linear-gradient(to bottom, currentColor 1px, transparent 1px);
-  background-size: 44px 44px;
-}
-
-/* Elevated hover-lift transition */
 @utility lift {
-  transition: transform 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), border-color 0.3s var(--ease-out);
+  transition:
+    transform 0.24s var(--ease-out),
+    box-shadow 0.24s var(--ease-out),
+    border-color 0.2s var(--ease-out);
 }
 
-/* Giant embossed wordmark for the navy footer */
+/* ---------------------------------------------------------------------------
+   Scroll reveal.
+
+   The hidden state is scoped to `.js`, which the inline <head> script adds
+   before first paint. Without JavaScript the selector never matches and every
+   element renders visible — the site used to ship 118 elements at opacity:0 on
+   the home page, which is what a crawler, a reader-mode parser, or anyone whose
+   bundle failed to load actually saw.
+   --------------------------------------------------------------------------- */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 18px));
+}
+.js [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.7s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+/* Motion is the enhancement, so reduced motion opts out of the hidden state
+   entirely rather than animating faster. */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Skip link — first thing in the tab order, invisible until focused. */
+.skip-link {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  z-index: 100;
+  transform: translateY(-150%);
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 0.7rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: transform 0.16s var(--ease-out);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* The giant footer wordmark, keyed to the inverse surface so it stays a
+   low-contrast emboss in both themes instead of a baked navy gradient. */
 .wordmark-giant {
   font-family: var(--font-general), sans-serif;
   font-weight: 600;
@@ -163,83 +481,23 @@
   line-height: 0.86;
   letter-spacing: -0.012em;
   padding-inline: 0.1em;
-  background: linear-gradient(180deg, #2a4f73 0%, #18324d 55%, #0c1e33 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--inverse-raised) 100%, white 14%) 0%,
+    var(--inverse-raised) 55%,
+    var(--inverse-deep) 100%
+  );
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Subtle film grain — layer over sections for texture. Decorative. */
-.grain::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-}
-.grain-dark::after {
-  mix-blend-mode: screen;
-  opacity: 0.06;
-}
-
-/* Marquee track: duplicate children inside, animate -50% */
-.marquee-mask {
-  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes aurora {
-  0%, 100% { transform: translate3d(-4%, -2%, 0) scale(1.05); opacity: 0.9; }
-  33% { transform: translate3d(3%, 3%, 0) scale(1.15); opacity: 1; }
-  66% { transform: translate3d(2%, -3%, 0) scale(1.08); opacity: 0.85; }
-}
-
-@keyframes floaty {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes pulseSoft {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.35; }
-}
-
-@keyframes shimmer {
-  from { background-position: -160% 0; }
-  to { background-position: 260% 0; }
-}
-
-/* Sheen sweep for primary buttons on hover */
-.sheen {
-  position: relative;
-  overflow: hidden;
-}
-.sheen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.35) 48%, transparent 66%);
-  background-size: 220% 100%;
-  background-position: -160% 0;
-  transition: none;
-  pointer-events: none;
-}
-.sheen:hover::before {
-  animation: shimmer 0.9s ease-out;
-}
-
-/* ----- Legal / long-form prose ------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Legal / long-form prose
+   --------------------------------------------------------------------------- */
 @layer components {
   .legal {
-    color: var(--color-ink-soft);
+    color: var(--text-secondary);
     font-size: 1rem;
     line-height: 1.78;
   }
@@ -248,7 +506,7 @@
   }
   .legal h2 {
     margin-top: 2.75rem;
-    color: var(--color-ink);
+    color: var(--text);
     font-weight: 600;
     font-size: 1.5rem;
     line-height: 1.2;
@@ -256,17 +514,17 @@
   }
   .legal h3 {
     margin-top: 1.75rem;
-    color: var(--color-ink);
+    color: var(--text);
     font-weight: 600;
     font-size: 1.05rem;
   }
   .legal a {
-    color: var(--color-grove);
+    color: var(--accent-text);
     text-decoration: underline;
     text-underline-offset: 3px;
   }
   .legal a:hover {
-    color: var(--color-grove-deep);
+    color: var(--accent);
   }
   .legal ul {
     margin-top: 1rem;
@@ -285,24 +543,17 @@
     height: 6px;
     width: 6px;
     border-radius: 2px;
-    background: var(--color-grove);
+    background: var(--accent);
   }
   .legal strong {
-    color: var(--color-ink);
+    color: var(--text);
     font-weight: 600;
   }
 }
 
-/* ----- Calendly overrides — match the brand -------------------------------- */
-.calendly-badge-widget .calendly-badge-content {
-  font-family: var(--font-general), system-ui, sans-serif !important;
-  font-weight: 500 !important;
-  letter-spacing: -0.01em !important;
-  box-shadow: 0 14px 34px -12px rgba(20, 99, 63, 0.6) !important;
-  border-radius: 999px !important;
-}
-
-/* ----- Lenis smooth scroll ----------------------------------------------- */
+/* ---------------------------------------------------------------------------
+   Lenis smooth scroll
+   --------------------------------------------------------------------------- */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -317,7 +568,10 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Reduced motion: respect the reader. */
+/* ---------------------------------------------------------------------------
+   Reduced motion. Also disables smooth scrolling, which Next 16 no longer
+   overrides during navigation.
+   --------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -328,5 +582,6 @@ html.lenis body {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

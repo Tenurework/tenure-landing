@@ -14,30 +14,30 @@ export function CtaBand({
   sub?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-ink py-24 sm:py-28">
+    <section className="relative overflow-hidden bg-inverse py-24 sm:py-28">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_45%,rgba(37,169,109,0.16),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_45%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_70%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 text-paper/[0.1] [mask-image:radial-gradient(75%_75%_at_50%_50%,black,transparent_78%)]"
+        className="pointer-events-none absolute inset-0 text-inverse/[0.1] [mask-image:radial-gradient(75%_75%_at_50%_50%,black,transparent_78%)]"
       >
         <ContourField seed={3} />
       </div>
       {/* angular accents */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-[12%] top-[22%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-coral/70 sm:block"
+        className="pointer-events-none absolute right-[12%] top-[22%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-brand-coral/70 sm:block"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute left-[13%] bottom-[24%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-violet/70 sm:block"
+        className="pointer-events-none absolute left-[13%] bottom-[24%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-brand-violet/70 sm:block"
       />
 
       <Container className="relative text-center">
         <Reveal>
-          <h2 className="font-display mx-auto max-w-2xl text-[2.2rem] font-semibold leading-[1.05] tracking-[-0.035em] text-paper sm:text-[3rem]">
+          <h2 className="font-display mx-auto max-w-2xl text-[2.2rem] font-semibold leading-[1.05] tracking-[-0.035em] text-inverse sm:text-[3rem]">
             {title ?? (
               <>
                 Run the org. Hand it off.{" "}
@@ -47,7 +47,7 @@ export function CtaBand({
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-paper/70">
+          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-inverse/70">
             {sub}
           </p>
         </Reveal>
@@ -56,7 +56,7 @@ export function CtaBand({
             <ContactSales size="lg" arrow />
             <a
               href={`mailto:${site.email}`}
-              className="text-[0.97rem] text-paper/70 underline-offset-4 transition-colors hover:text-paper hover:underline"
+              className="text-[0.97rem] text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
             >
               or email us
             </a>

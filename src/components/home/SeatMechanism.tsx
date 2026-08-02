@@ -65,15 +65,15 @@ function Occupant({
       className={cn(
         "flex items-center gap-2.5 rounded-xl border px-3 py-2 transition-colors",
         status === "active" && "border-grove/30 bg-grove-soft/60",
-        status === "shadow" && "border-gold/30 bg-gold/10",
+        status === "shadow" && "border-brand-gold/30 bg-brand-gold/10",
         status === "alumni" && "border-line bg-paper/50 opacity-70",
       )}
     >
       <span
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[0.6rem] font-semibold",
-          status === "active" && "bg-grove text-cloud",
-          status === "shadow" && "bg-gold/25 text-[#9a6a12]",
+          status === "active" && "bg-grove text-on-accent",
+          status === "shadow" && "bg-brand-gold/25 text-warning",
           status === "alumni" && "bg-line text-ink-faint",
         )}
       >
@@ -87,8 +87,8 @@ function Occupant({
       <span
         className={cn(
           "rounded-full px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-wide",
-          status === "active" && "bg-grove text-cloud",
-          status === "shadow" && "bg-gold/20 text-[#9a6a12]",
+          status === "active" && "bg-grove text-on-accent",
+          status === "shadow" && "bg-brand-gold/20 text-warning",
           status === "alumni" && "bg-line/60 text-ink-faint",
         )}
       >
@@ -114,7 +114,7 @@ export function SeatMechanism() {
     <section className="relative isolate overflow-hidden border-t border-line py-24 sm:py-32">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(50%_50%_at_18%_25%,rgba(28,140,90,0.06),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(50%_50%_at_18%_25%,color-mix(in_oklab,var(--accent)_6%,transparent),transparent_70%)]"
       />
       <Container className="grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
         {/* LEFT, the thesis */}
@@ -154,7 +154,7 @@ export function SeatMechanism() {
         {/* RIGHT, the living seat */}
         <Reveal delay={0.1}>
           <div
-            className="relative rounded-[26px] border border-line bg-cloud p-5 shadow-[0_1px_2px_rgba(12,30,51,0.05),0_50px_120px_-52px_rgba(12,30,51,0.45)] sm:p-6"
+            className="relative rounded-[26px] border border-line bg-cloud p-5 shadow-[var(--shadow-sm),var(--shadow-lg)] sm:p-6"
             onMouseEnter={() => setPaused(true)}
             onMouseLeave={() => setPaused(false)}
           >

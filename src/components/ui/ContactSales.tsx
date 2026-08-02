@@ -1,14 +1,22 @@
-"use client";
-
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { buttonClasses, Arrow, type Variant, type Size } from "@/components/ui/Button";
-import { openCalendlyPopup } from "@/lib/calendly";
 import { site } from "@/lib/site";
 
 /**
- * The primary conversion CTA. Opens the Calendly scheduling popup for
- * satvikwithtenure, same visual as <Button variant="primary" /> so it drops in
- * anywhere the old "Book a demo" button lived.
+ * The primary conversion CTA.
+ *
+ * This used to be a <button> that called Calendly's popup API. That path had a
+ * silent failure mode: `openCalendlyPopup` awaited the third-party script and
+ * only then fell back to `window.open`, which is outside the user-gesture
+ * window, so popup blockers dropped it. With calendly.com blocked — routine on
+ * university networks and with any content blocker — every CTA on the site did
+ * nothing at all. Verified against production before this change.
+ *
+ * It is now a plain link to a first-party route. It works with JavaScript
+ * disabled, is middle-clickable, is announced correctly as a link, and cannot
+ * be blocked. Scheduling loads on /contact, after intent — which also takes
+ * Calendly's script, CSS and cookie banner off every other page.
  */
 export function ContactSales({
   variant = "primary",
@@ -24,21 +32,16 @@ export function ContactSales({
   children?: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      onClick={() => openCalendlyPopup(site.calendlyUrl)}
-      className={buttonClasses(variant, size, className)}
-      aria-haspopup="dialog"
-    >
+    <Link href="/contact" className={buttonClasses(variant, size, className)}>
       <span className="relative z-10 inline-flex items-center gap-2">
         {children ?? site.ctaLabel}
         {arrow && <Arrow />}
       </span>
-    </button>
+    </Link>
   );
 }
 
-/** Inline text-link variant of the same action, for prose / footers. */
+/** Inline text-link variant of the same action, for prose and footers. */
 export function ContactSalesLink({
   className,
   children,
@@ -47,13 +50,8 @@ export function ContactSalesLink({
   children?: ReactNode;
 }) {
   return (
-    <button
-      type="button"
-      onClick={() => openCalendlyPopup(site.calendlyUrl)}
-      className={className}
-      aria-haspopup="dialog"
-    >
+    <Link href="/contact" className={className}>
       {children ?? site.ctaLabel}
-    </button>
+    </Link>
   );
 }

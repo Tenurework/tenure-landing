@@ -109,8 +109,8 @@ const STANDING: Standing[] = [
 ];
 
 const TONE: Record<string, string> = {
-  shadow: "bg-gold/20 text-[#9a6a12]",
-  active: "bg-grove text-cloud",
+  shadow: "bg-brand-gold/20 text-warning",
+  active: "bg-grove text-on-accent",
   alumni: "bg-line/60 text-ink-faint",
 };
 
@@ -179,7 +179,7 @@ export function Handoff() {
 
         {/* the packet itself */}
         <Reveal delay={0.1} className="mt-14">
-          <div className="overflow-hidden rounded-3xl border border-line bg-cloud shadow-[0_1px_2px_rgba(12,30,51,0.05),0_40px_100px_-56px_rgba(12,30,51,0.45)]">
+          <div className="overflow-hidden rounded-3xl border border-line bg-cloud shadow-[var(--shadow-sm),var(--shadow-lg)]">
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-7">
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-grove-soft text-grove">
@@ -229,7 +229,7 @@ export function Handoff() {
                     {s.holder ? (
                       <p className="text-[0.9rem] text-ink">{s.holder}</p>
                     ) : (
-                      <span className="inline-flex rounded-md border border-coral/30 bg-coral/[0.07] px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-[#b23a1f]">
+                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-brand-coral/[0.07] px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-danger">
                         Vacant
                       </span>
                     )}
@@ -250,7 +250,7 @@ export function Handoff() {
                     <ColumnLabel>Shadowing in</ColumnLabel>
                     {s.shadow ? (
                       <span className="inline-flex items-center gap-2">
-                        <span className="rounded-md bg-gold/20 px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-[#9a6a12]">
+                        <span className="rounded-md bg-brand-gold/20 px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-warning">
                           Shadow
                         </span>
                         <span className="text-[0.85rem] text-ink-soft">{s.shadow}</span>

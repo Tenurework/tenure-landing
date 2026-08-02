@@ -23,7 +23,7 @@ const ITEMS: { q: string; a: string }[] = [
   },
   {
     q: "Is sensitive data handled responsibly?",
-    a: "Yes. Tenure runs least-access by default, isolates each organization's data at the query layer, and logs every action to an immutable audit trail. The organization owns its records, not Tenure, not any individual. Documents are encrypted at rest and only ever served through short-lived signed links, never a raw file URL.",
+    a: "Each organization's data is isolated at the query layer by the database client itself, and privileged actions append to a create-only audit trail that records refusals as well as approvals. The organization owns its records, not Tenure and not any individual. Documents are encrypted at rest and only ever served through short-lived signed links, never a raw file URL. What is not yet true is listed on the trust page — including that institution staff currently see every organization they steward.",
   },
   {
     q: "What does it cost?",
@@ -54,7 +54,7 @@ export function Faq() {
             {ITEMS.map((item, i) => (
               <Reveal as="div" key={item.q} delay={Math.min(i * 0.05, 0.3)}>
                 <details className="group" name="faq" open={i === 2}>
-                  <summary className="inline-flex w-fit max-w-[90%] cursor-pointer list-none items-center gap-3 rounded-2xl border border-line bg-cloud px-5 py-3 text-[0.98rem] text-ink shadow-[0_1px_2px_rgba(12,30,51,0.05)] transition-colors hover:border-grove/40 [&::-webkit-details-marker]:hidden">
+                  <summary className="inline-flex w-fit max-w-[90%] cursor-pointer list-none items-center gap-3 rounded-2xl border border-line bg-cloud px-5 py-3 text-[0.98rem] text-ink shadow-[var(--shadow-sm)] transition-colors hover:border-grove/40 [&::-webkit-details-marker]:hidden">
                     <span>{item.q}</span>
                     <span
                       aria-hidden
