@@ -217,26 +217,28 @@ twice — once in the DOM and again in the RSC flight payload — for a backgrou
 
 | Item | Status | Evidence |
 |---|---|---|
-| Playwright functional suite | PASS | ,  — 64 passed, 0 failed |
-| SEO suite | PASS |  — 69 tests |
-| Claims ratchet | PASS |  — 42 tests |
-| Accessibility suite | FAIL |  — 18 of 20 defects fixed; 2 remain on /product |
+| Playwright functional suite | PASS | `nav.spec.ts`, `interaction.spec.ts` — 64 passed, 0 failed |
+| SEO suite | PASS | `seo.spec.ts` — 69 tests |
+| Claims ratchet | PASS | `claims.spec.ts` — 42 tests |
+| Accessibility suite | FAIL | `a11y.spec.ts` — 18 of 20 defects fixed; 2 remain on /product |
 | Visual baselines | PASS | 74 snapshots, 4 projects, stable on a second run |
 | Internal link checker | PASS | 111 links, 0 broken |
 | Contrast gate | PASS | 72/72 across both themes |
-| CI workflow, pinned actions, least privilege | PASS | SHA-pinned, , never deploys |
+| CI workflow, pinned actions, least privilege | PASS | SHA-pinned, `contents: read`, never deploys |
 | Performance budgets | FAIL | Payload cut 29% and the cause identified, but no Lighthouse measurement taken |
 
 **Full suite, four projects: 1,030 passed · 2 failed · 16 skipped.**
 
-The 2 failures are on /product inside , a decorative mock whose card
-transitions opacity; the contrast walk catches it mid-transition. Recorded rather than silenced.
+The 2 failures are on `/product` inside `ProductAtWork`, a decorative mock whose card transitions
+opacity; the contrast walk catches it mid-transition. Recorded rather than silenced.
 
 ### What the suite caught that nothing else did
 
-The a11y suite found a defect the contrast gate structurally could not: resolved to the navy **surface** token, because Tailwind generates  from every
- entry. 61 usages across 13 files were painting navy text on navy at **1.00:1**.
-The token gate validates PAIRS; this was a NAMING collision. Both layers were needed.
+The a11y suite found a defect the contrast gate structurally could not: `text-inverse` resolved
+to the navy **surface** token, because Tailwind generates `text-*` from every `--color-*` entry.
+61 usages across 13 files were painting navy text on navy at **1.00:1** — invisible. The token
+gate validates PAIRS; this was a NAMING collision. Both layers were needed, and the second one
+found what the first could not see.
 
 ---
 
@@ -253,7 +255,7 @@ satisfied**, and no persona finding informed the current state of the site.
 
 ## Phase 7 — Release evidence and handoff
 
-**PASS** — see [](EVIDENCE-REPORT.md).
+**PASS** — see [`EVIDENCE-REPORT.md`](EVIDENCE-REPORT.md).
 
 | Item | Status |
 |---|---|
