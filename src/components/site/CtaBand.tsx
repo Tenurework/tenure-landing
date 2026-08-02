@@ -14,7 +14,7 @@ export function CtaBand({
   sub?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-inverse py-24 sm:py-28">
+    <section className="relative overflow-hidden bg-band py-24 sm:py-28">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_45%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_70%)]"

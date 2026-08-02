@@ -127,7 +127,7 @@ export function ThemeToggle({ className }: { className?: string }) {
                 className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
               />
               <span aria-hidden="true">{opt.icon}</span>
-              <span className="sr-only sm:not-sr-only">{opt.label}</span>
+              <span className="sr-only">{opt.label}</span>
             </label>
           );
         })}

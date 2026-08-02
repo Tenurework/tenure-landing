@@ -109,9 +109,9 @@ const STANDING: Standing[] = [
 ];
 
 const TONE: Record<string, string> = {
-  shadow: "bg-brand-gold/20 text-warning",
+  shadow: "bg-warning-subtle text-warning",
   active: "bg-grove text-on-accent",
-  alumni: "bg-line/60 text-ink-faint",
+  alumni: "bg-surface-subtle text-text-secondary",
 };
 
 type Stage = { tone: keyof typeof TONE; label: string; when: string; body: string };
@@ -218,7 +218,7 @@ export function Handoff() {
                 >
                   <div>
                     <p className="text-[0.92rem] font-medium text-ink">{s.seat}</p>
-                    <p className="font-mono text-[0.6rem] text-ink-faint">{s.code}</p>
+                    <p className="font-mono text-[0.6rem] text-text-secondary">{s.code}</p>
                   </div>
 
                   <div>
@@ -226,7 +226,7 @@ export function Handoff() {
                     {s.holder ? (
                       <p className="text-[0.9rem] text-ink">{s.holder}</p>
                     ) : (
-                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-brand-coral/[0.07] px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-danger">
+                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-danger">
                         Vacant
                       </span>
                     )}
@@ -235,7 +235,7 @@ export function Handoff() {
                   <div>
                     <ColumnLabel>Held it last term</ColumnLabel>
                     <p className="text-[0.9rem] text-ink-soft">{s.last}</p>
-                    <p className="font-mono text-[0.6rem] text-ink-faint">{s.reach}</p>
+                    <p className="font-mono text-[0.6rem] text-text-secondary">{s.reach}</p>
                   </div>
 
                   <div>
@@ -247,7 +247,7 @@ export function Handoff() {
                     <ColumnLabel>Shadowing in</ColumnLabel>
                     {s.shadow ? (
                       <span className="inline-flex items-center gap-2">
-                        <span className="rounded-md bg-brand-gold/20 px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-warning">
+                        <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-warning">
                           Shadow
                         </span>
                         <span className="text-[0.85rem] text-ink-soft">{s.shadow}</span>

@@ -124,7 +124,7 @@ const POWERS: Power[] = [
 
 const CHIP: Record<string, string> = {
   held: "bg-grove-soft text-grove-deep",
-  pending: "bg-brand-gold/20 text-warning",
+  pending: "bg-warning-subtle text-warning",
   done: "bg-grove text-on-accent",
 };
 
@@ -201,7 +201,7 @@ export function OfficeConsole() {
 
             <div className="grid md:grid-cols-[13.5rem_1fr]">
               {/* six sections */}
-              <nav className="border-b border-line p-4 md:border-b-0 md:border-r">
+              <nav aria-label="Administration console sections" className="border-b border-line p-4 md:border-b-0 md:border-r">
                 <p className="label-mono px-2 text-[0.55rem]">Sections</p>
                 <ul className="mt-3 space-y-1">
                   {NAV.map((n) => {
@@ -221,7 +221,7 @@ export function OfficeConsole() {
                           </span>
                           <span className="flex-1">{n.label}</span>
                           {n.badge && (
-                            <span className="rounded-md bg-brand-gold/20 px-1.5 py-0.5 font-mono text-[0.55rem] font-medium text-warning">
+                            <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-[0.55rem] font-medium text-warning">
                               {n.badge}
                             </span>
                           )}
@@ -253,7 +253,7 @@ export function OfficeConsole() {
                         $4,200 · Student Culture Council · SCC-VP-EVEN-PART
                       </p>
                     </div>
-                    <span className="rounded-md bg-brand-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">
+                    <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">
                       6 days in gate 1
                     </span>
                   </div>
@@ -270,7 +270,7 @@ export function OfficeConsole() {
                   </div>
                 </div>
 
-                <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-inverse/70">
+                <p className="mt-4 rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-inverse/70">
                   <span className="text-grove-bright">approval.force_approved</span>{" "}
                   · Director · allow
                 </p>

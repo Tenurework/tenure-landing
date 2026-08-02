@@ -325,7 +325,7 @@ export default function PilotPage() {
       <section className="relative border-t border-line py-24 sm:py-32">
         <Container>
           <Reveal>
-            <div className="relative overflow-hidden rounded-2xl bg-inverse p-8 text-inverse sm:p-12">
+            <div className="relative overflow-hidden rounded-2xl bg-band p-8 text-inverse sm:p-12">
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_70%_at_85%_15%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_65%)]"

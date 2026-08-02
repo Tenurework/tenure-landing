@@ -96,7 +96,7 @@ export function SiteHeader() {
       <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
         <Wordmark />
 
-        <nav aria-label="Main" className="hidden items-center gap-0.5 md:flex">
+        <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">
           {site.nav.map((item) => {
             const active = pathname === item.href;
             return (
@@ -122,7 +122,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden min-w-0 items-center gap-3 lg:flex">
           <ThemeToggle />
           <ContactSales size="sm" arrow />
         </div>
@@ -134,7 +134,7 @@ export function SiteHeader() {
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          className="-mr-2 flex h-11 w-11 items-center justify-center text-ink md:hidden"
+          className="-mr-2 flex h-11 w-11 items-center justify-center text-ink lg:hidden"
         >
           <span aria-hidden className="relative block h-3 w-5">
             <span
@@ -162,7 +162,7 @@ export function SiteHeader() {
       {/* Rendered only when open so its links are never reachable by Tab while
           the panel is visually collapsed. */}
       {open && (
-        <div id="mobile-menu" ref={panelRef} className="md:hidden">
+        <div id="mobile-menu" ref={panelRef} className="lg:hidden">
           <nav aria-label="Main" className="flex flex-col gap-1 px-5 pb-6 pt-2">
             {site.nav.map((item) => (
               <Link

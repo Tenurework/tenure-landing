@@ -16,7 +16,7 @@ export function HeroFloatingCards() {
     <div aria-hidden className="pointer-events-none absolute inset-0 z-20 hidden xl:block">
       {/* conflict toast, floating over the dashboard's top-left */}
       <motion.div
-        className="absolute -left-8 top-[10%] w-[14.5rem] -rotate-2 rounded-2xl border border-brand-coral/25 bg-cloud/95 p-3 shadow-[var(--shadow-lg)] backdrop-blur"
+        className="absolute -left-8 top-[10%] w-[14.5rem] -rotate-2 rounded-2xl border border-brand-coral/25 bg-cloud p-3 shadow-[var(--shadow-lg)] backdrop-blur"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
@@ -27,7 +27,7 @@ export function HeroFloatingCards() {
             words shimmering). */}
         <motion.div className="transform-gpu will-change-transform" {...float(-7, 6.5, 0)}>
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-brand-coral/12 text-danger">
+            <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-danger-subtle text-danger">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 8v5M12 16.5v.5" strokeLinecap="round" /><path d="M10.3 3.9 2.6 18a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z" /></svg>
             </span>
             <span className="text-[0.72rem] font-semibold text-ink">Scheduling conflict</span>
@@ -40,7 +40,7 @@ export function HeroFloatingCards() {
 
       {/* approval cleared, floating over the dashboard's bottom-left */}
       <motion.div
-        className="absolute -left-10 bottom-[12%] w-[15rem] rotate-[1.5deg] rounded-2xl border border-grove/25 bg-cloud/95 p-3 shadow-[0_28px_54px_-18px_color-mix(in_oklab,var(--accent)_36%,transparent)] backdrop-blur"
+        className="absolute -left-10 bottom-[12%] w-[15rem] rotate-[1.5deg] rounded-2xl border border-grove/25 bg-cloud p-3 shadow-[0_28px_54px_-18px_color-mix(in_oklab,var(--accent)_36%,transparent)] backdrop-blur"
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}

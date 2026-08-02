@@ -231,8 +231,8 @@ export function Platform() {
               </Desc>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.56rem] font-medium text-grove-deep">ACTIVE</span>
-                <span className="rounded-md bg-brand-gold/15 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">SHADOW</span>
-                <span className="rounded-md bg-line/60 px-2 py-0.5 font-mono text-[0.56rem] font-medium text-ink-faint">ALUMNI</span>
+                <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">SHADOW</span>
+                <span className="rounded-md bg-surface-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-text-secondary">ALUMNI</span>
               </div>
             </Cell>
           </Reveal>
@@ -264,7 +264,7 @@ export function Platform() {
                 Denials recorded as permanently as approvals; rows are only ever
                 created.
               </Desc>
-              <p className="mt-4 rounded-lg border border-line-dark bg-inverse px-2.5 py-1.5 font-mono text-[0.6rem] text-inverse/70">
+              <p className="mt-4 rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.6rem] text-inverse/70">
                 <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
               </p>
             </Cell>

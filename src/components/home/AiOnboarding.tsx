@@ -48,7 +48,7 @@ function Check() {
 
 export function AiOnboarding() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-32">
+    <section className="relative isolate overflow-hidden border-t border-line-dark bg-band py-24 text-inverse sm:py-32">
       <SectionContour place="br" seed={11} className="text-inverse/[0.07]" />
       {/* soft grove glow */}
       <div
@@ -105,7 +105,7 @@ export function AiOnboarding() {
 
         {/* RIGHT, chat card */}
         <Reveal delay={0.12}>
-          <div className="rounded-2xl border border-line-dark bg-inverse-raised p-5 shadow-[var(--shadow-lg)]">
+          <div className="rounded-2xl border border-line-dark bg-band-raised p-5 shadow-[var(--shadow-lg)]">
             {/* card header */}
             <div className="flex items-center justify-between gap-3 border-b border-line-dark pb-4">
               <div className="flex items-center gap-2.5">
@@ -122,7 +122,7 @@ export function AiOnboarding() {
                   Ask Tenure
                 </span>
               </div>
-              <span className="label-mono text-[0.6rem] text-inverse/40">
+              <span className="label-mono text-[0.6rem] text-inverse/75">
                 Treasurer seat
               </span>
             </div>
@@ -168,8 +168,8 @@ export function AiOnboarding() {
             </div>
 
             {/* composer affordance */}
-            <div className="mt-5 flex items-center gap-2 rounded-xl border border-line-dark bg-inverse px-3.5 py-2.5">
-              <span className="flex-1 text-[0.82rem] text-inverse/35">
+            <div className="mt-5 flex items-center gap-2 rounded-xl border border-line-dark bg-band px-3.5 py-2.5">
+              <span className="flex-1 text-[0.82rem] text-inverse/75">
                 Ask about this seat&rsquo;s history&hellip;
               </span>
               <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove text-on-accent">

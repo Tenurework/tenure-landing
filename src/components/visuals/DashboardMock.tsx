@@ -49,8 +49,8 @@ function Badge({
       className={cn(
         "rounded-full px-1.5 py-0.5 font-mono text-[0.56rem] font-medium",
         tone === "grove" && "bg-grove-soft text-grove-deep",
-        tone === "amber" && "bg-brand-gold/15 text-warning",
-        tone === "coral" && "bg-brand-coral/12 text-danger",
+        tone === "amber" && "bg-warning-subtle text-warning",
+        tone === "coral" && "bg-danger-subtle text-danger",
       )}
     >
       {children}
@@ -222,7 +222,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full border text-[0.58rem] font-semibold",
                     i < active && "border-grove bg-grove text-on-accent",
-                    i === active && "border-brand-gold bg-brand-gold/15 text-warning",
+                    i === active && "border-brand-gold bg-warning-subtle text-warning",
                     i > active && "border-line bg-cloud text-ink-faint",
                   )}
                   initial={reduce ? false : { scale: 0.6, opacity: 0 }}

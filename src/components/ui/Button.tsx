@@ -22,7 +22,7 @@ const variants: Record<Variant, string> = {
   outline:
     "border border-grove/30 text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove/50",
   light:
-    "bg-cloud/10 text-inverse border border-text-inverse/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-text-inverse/40",
+    "bg-cloud/10 text-inverse border border-inverse/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-inverse/40",
   ghost: "text-ink-soft hover:text-ink",
 };
 

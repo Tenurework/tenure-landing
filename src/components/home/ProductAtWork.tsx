@@ -23,7 +23,7 @@ function FinanceCard() {
       </div>
       <p className="mt-3 font-mono text-2xl font-semibold text-ink">
         $12,400{" "}
-        <span className="text-sm font-normal text-ink-faint">/ $18,000</span>
+        <span className="text-sm font-normal text-text-secondary">/ $18,000</span>
       </p>
       <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-line">
         <motion.div
@@ -42,14 +42,14 @@ function FinanceCard() {
         ].map((r, i) => (
           <div
             key={r.who}
-            className="flex items-center justify-between rounded-lg border border-line bg-paper/50 px-3 py-2 text-[0.8rem]"
+            className="flex items-center justify-between rounded-lg border border-line bg-surface-subtle px-3 py-2 text-[0.8rem]"
           >
             <span className="text-ink-soft">{r.who}</span>
             <span className="flex items-center gap-2">
               <span className="font-mono text-ink">{r.amt}</span>
               <span className="relative h-[1.15rem] w-[4.6rem] overflow-hidden rounded-full text-[0.6rem] font-medium">
                 <motion.span
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-brand-gold/15 text-warning"
+                  className="absolute inset-0 flex items-center justify-center rounded-full bg-warning-subtle text-warning"
                   initial={{ opacity: 1 }}
                   animate={reduce ? undefined : { opacity: [1, 1, 0, 0, 1] }}
                   transition={reduce ? undefined : { ...loop, delay: i * 0.3 }}
@@ -81,7 +81,7 @@ function HandoffCard() {
     <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
         <p className="label-mono text-[0.6rem]">Term handoff</p>
-        <span className="font-mono text-[0.62rem] text-ink-faint">2024–25 → 2025–26</span>
+        <span className="font-mono text-[0.62rem] text-text-secondary">2024–25 → 2025–26</span>
       </div>
 
       <div className="relative mt-4 h-40">
@@ -91,7 +91,7 @@ function HandoffCard() {
         {/* a record already inherited, so the incoming side is never empty */}
         <div className="absolute bottom-3 right-[3.5%] z-0 w-[40%] rounded-lg border border-line bg-paper/70 p-2">
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.48rem] uppercase text-ink-faint">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.55rem] uppercase text-text-secondary">
               Lead
             </span>
             <span className="truncate text-[0.7rem] text-ink-soft">Wegmans · ’24</span>
@@ -109,12 +109,12 @@ function HandoffCard() {
           transition={reduce ? undefined : { ...loop, times: [0, 0.14, 0.5, 0.9, 1] }}
         >
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.5rem] uppercase text-grove-deep">
+            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.55rem] uppercase text-grove-deep">
               Deal
             </span>
             <span className="text-[0.74rem] text-ink">Aramark renewal</span>
           </div>
-          <p className="mt-1 font-mono text-[0.6rem] text-ink-faint">$4,000 · Maya ’24</p>
+          <p className="mt-1 font-mono text-[0.62rem] text-text-secondary">$4,000 · Maya ’24</p>
         </motion.div>
       </div>
     </div>
@@ -134,11 +134,11 @@ function Zone({
     <div
       className={cn(
         "absolute top-0 h-full w-[46%] rounded-xl border border-dashed border-line p-2.5",
-        dim && "opacity-70",
+        dim && "[&_*]:text-text-secondary",
         className,
       )}
     >
-      <p className="font-mono text-[0.56rem] uppercase tracking-[0.14em] text-ink-faint">
+      <p className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-text-secondary">
         {label}
       </p>
     </div>

@@ -69,12 +69,17 @@ export function WhoFor() {
                         className="h-full w-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                       />
                     )}
-                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-inverse/70 via-inverse/15 to-transparent" />
-                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-lg border border-text-inverse/25 bg-inverse/40 px-2.5 py-1 font-mono text-[0.62rem] text-inverse backdrop-blur">
+                    {/* The caption sits on a SOLID band, not on a gradient over the
+                        photo. Over the image its contrast depended on whichever
+                        pixels happened to be beneath it, and it measured 1.05:1
+                        against the card — it would also have been white-on-white
+                        had the photo failed to load. */}
+                    <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-band/60 to-transparent" />
+                    <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-lg bg-band px-2.5 py-1 font-mono text-[0.62rem] text-inverse">
                       <span className="h-1.5 w-1.5 rounded-sm bg-grove-bright" />
                       {a.seat}
                     </span>
-                    <div className="absolute bottom-4 left-5 right-5">
+                    <div className="absolute inset-x-0 bottom-0 bg-band px-5 py-3.5">
                       <h3 className="font-display text-xl font-semibold text-inverse">{a.title}</h3>
                       <p className="mt-0.5 text-[0.78rem] text-inverse/75">{a.cadence}</p>
                     </div>

@@ -42,7 +42,7 @@ function Tile({
           no before to strike through. */}
 
       <p className="mt-3 text-[1.02rem] font-medium text-inverse">{metric.label}</p>
-      <p className="mt-1 text-[0.86rem] leading-relaxed text-inverse/55">{metric.sub}</p>
+      <p className="mt-1 text-[0.86rem] leading-relaxed text-inverse/75">{metric.sub}</p>
     </div>
   );
 }
@@ -55,7 +55,7 @@ export function MetricsBand() {
   return (
     <section
       ref={ref}
-      className="relative isolate overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-28"
+      className="relative isolate overflow-hidden border-t border-line-dark bg-band py-24 text-inverse sm:py-28"
     >
       <SectionContour place="cr" seed={4} className="text-inverse/[0.06]" />
       <div
@@ -65,12 +65,12 @@ export function MetricsBand() {
 
       <Container className="relative">
         <div className="max-w-2xl">
-          <Eyebrow className="text-inverse/50">Continuity, measured</Eyebrow>
+          <Eyebrow className="text-inverse/75">Continuity, measured</Eyebrow>
           <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.4rem]">
             We don&rsquo;t measure engagement. We measure whether the{" "}
             <span className="text-grove-bright">knowledge survived</span>.
           </h2>
-          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-inverse/55">
+          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-inverse/75">
             Every number here is counted, not projected.
           </p>
         </div>

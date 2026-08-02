@@ -8,7 +8,7 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-line-dark bg-inverse">
+    <footer className="relative overflow-hidden border-t border-line-dark bg-band">
       <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
@@ -16,7 +16,7 @@ export function SiteFooter() {
             <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-inverse/65">
               {site.tagline}
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-inverse/40">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-inverse/75">
               Founded at {site.origin.school}, {site.origin.university}.
             </p>
           </div>
@@ -68,7 +68,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4 border-t border-line-dark pt-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
             <Logo className="h-4 w-4 text-grove" />
-            <span className="text-sm text-inverse/45">
+            <span className="text-sm text-inverse/75">
               © {year} {site.name}. All rights reserved.
             </span>
           </div>
@@ -77,7 +77,7 @@ export function SiteFooter() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-inverse/45 transition-colors hover:text-inverse"
+                className="text-inverse/75 transition-colors hover:text-inverse"
               >
                 {item.label}
               </Link>
@@ -87,18 +87,18 @@ export function SiteFooter() {
               href={site.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-inverse/45 transition-colors hover:text-inverse"
+              className="text-inverse/75 transition-colors hover:text-inverse"
             >
               LinkedIn
             </a>
-            <span aria-hidden className="text-inverse/30">
+            <span aria-hidden className="text-inverse/60">
               /
             </span>
             <a
               href={site.socials.x}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-inverse/45 transition-colors hover:text-inverse"
+              className="text-inverse/75 transition-colors hover:text-inverse"
             >
               X
             </a>

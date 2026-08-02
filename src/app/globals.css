@@ -231,19 +231,24 @@
   --color-surface-subtle: var(--surface-subtle);
   --color-surface-elevated: var(--surface-elevated);
 
-  --color-inverse: var(--inverse);
-  --color-inverse-deep: var(--inverse-deep);
-  --color-inverse-raised: var(--inverse-raised);
+  /* The navy bands are a SURFACE. They are named `band`, not `inverse`, because
+     Tailwind generates text-*, bg-* and border-* from every --color-* token: a
+     surface called `inverse` also produces `text-inverse`, which silently
+     painted navy text on the navy bands at 1.00:1. */
+  --color-band: var(--inverse);
+  --color-band-deep: var(--inverse-deep);
+  --color-band-raised: var(--inverse-raised);
 
   --color-text: var(--text);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
-  --color-text-inverse: var(--text-inverse);
+  /* Light text, for use ON a band. `text-inverse` now means what it reads as. */
+  --color-inverse: var(--text-inverse);
 
   --color-border: var(--border);
   --color-border-subtle: var(--border-subtle);
   --color-border-strong: var(--border-strong);
-  --color-border-inverse: var(--border-inverse);
+  --color-border-band: var(--border-inverse);
 
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -280,7 +285,7 @@
   --color-mist: var(--surface-subtle);
 
   /* Text. `--color-ink` is a TEXT role; the navy *surface* bands use
-     `bg-inverse*`, which is why the two are no longer the same token. */
+     `bg-band*`, which is why the two are no longer the same token. */
   --color-ink: var(--text);
   --color-ink-soft: var(--text-secondary);
   --color-ink-faint: var(--text-muted);
@@ -331,9 +336,37 @@
     border-color: var(--border);
   }
 
+  /**
+   * The navy bands are a dark surface inside a light theme, so every semantic
+   * text token is re-pointed for anything rendered on one. Without this, a
+   * utility that resolves to `--text-secondary` — `label-mono` does, and so do
+   * `text-ink-soft` and `text-grove-deep` — paints light-theme text on navy.
+   * The footer measured 2.25:1 that way.
+   *
+   * Re-pointing the tokens rather than patching each component means a section
+   * dropped onto a band is correct by default, and cannot regress when someone
+   * adds a `text-ink-faint` inside one.
+   */
+  .on-inverse,
+  [class*="bg-band"] {
+    --text: var(--text-inverse);
+    --text-secondary: oklch(84% 0.012 250);
+    --text-muted: oklch(74% 0.016 250);
+    --accent-text: oklch(80% 0.140 158);
+    /* grove / grove-bright resolve through these; the light-theme values are
+       dark greens and land at 2.11:1 on navy. */
+    --accent: oklch(72% 0.135 158);
+    --accent-hover: oklch(80% 0.140 158);
+    /* The band accent is a LIGHT green, so its label must be dark. Re-pointing
+       --accent without this puts white on light green at 2.33:1. */
+    --on-accent: oklch(16% 0.030 158);
+    --border: var(--border-inverse);
+    --border-subtle: var(--border-inverse);
+  }
+
   /* Navy bands carry their own hairline, so an unqualified `border` inside one
      does not paint a warm cream line on a dark surface. */
-  .on-inverse * {
+  .on-inverse *, [class*="bg-band"] * {
     border-color: var(--border-inverse);
   }
 
@@ -367,6 +400,7 @@
   /* The deep navy bands need a lighter ring: the light-theme ring is dark
      green and would sit at 2.1:1 against them. */
   .on-inverse :focus-visible,
+  [class*="bg-band"] :focus-visible,
   .on-inverse:focus-visible {
     outline-color: var(--focus-ring-inverse);
   }

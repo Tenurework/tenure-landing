@@ -140,7 +140,7 @@ export default function StoryPage() {
       </section>
 
       {/* 3, Mission */}
-      <section className="relative overflow-hidden border-t border-line-dark bg-inverse py-24 text-inverse sm:py-32">
+      <section className="relative overflow-hidden border-t border-line-dark bg-band py-24 text-inverse sm:py-32">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_70%)]"
@@ -205,7 +205,7 @@ export default function StoryPage() {
                     <dt className="w-32 shrink-0 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-ink-faint">
                       {r.label}
                     </dt>
-                    <dd className="text-[1.02rem] text-ink">{r.value}</dd>
+                    <dd className="min-w-0 break-words text-[1.02rem] text-ink">{r.value}</dd>
                   </div>
                 ))}
               </dl>

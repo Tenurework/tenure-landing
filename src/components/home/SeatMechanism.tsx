@@ -70,15 +70,15 @@ function Occupant({
         "flex items-center gap-2.5 rounded-xl border px-3 py-2 transition-colors",
         status === "active" && "border-grove/30 bg-grove-soft/60",
         status === "shadow" && "border-brand-gold/30 bg-brand-gold/10",
-        status === "alumni" && "border-line bg-paper/50 opacity-70",
+        status === "alumni" && "border-line bg-surface-subtle",
       )}
     >
       <span
         className={cn(
           "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[0.6rem] font-semibold",
           status === "active" && "bg-grove text-on-accent",
-          status === "shadow" && "bg-brand-gold/25 text-warning",
-          status === "alumni" && "bg-line text-ink-faint",
+          status === "shadow" && "bg-warning-subtle text-warning",
+          status === "alumni" && "bg-surface-subtle text-text-secondary",
         )}
       >
         {initials}
@@ -92,8 +92,8 @@ function Occupant({
         className={cn(
           "rounded-full px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-wide",
           status === "active" && "bg-grove text-on-accent",
-          status === "shadow" && "bg-brand-gold/20 text-warning",
-          status === "alumni" && "bg-line/60 text-ink-faint",
+          status === "shadow" && "bg-warning-subtle text-warning",
+          status === "alumni" && "bg-surface-subtle text-text-secondary",
         )}
       >
         {status}
@@ -259,7 +259,7 @@ export function SeatMechanism() {
             </div>
 
             {/* ask this seat */}
-            <div className="mt-4 rounded-2xl border border-line bg-paper/50 p-3.5">
+            <div className="mt-4 rounded-2xl border border-line bg-surface-subtle p-3.5">
               <div className="flex items-center gap-2">
                 <Logo className="h-4 w-4 text-grove" />
                 {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
