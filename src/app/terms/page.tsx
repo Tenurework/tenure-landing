@@ -13,14 +13,23 @@ export default function TermsPage() {
         title="Terms of Use"
         intro={
           <>
-            The terms for using Tenure during our early access and{" "}
-            {site.pilot.season} pilot. Last updated June 2026.
+            The terms for using Tenure during early access and the planned{" "}
+            {site.pilot.season} pilot. Last updated 2 August 2026.
           </>
         }
       />
 
       <Container>
         <div className="legal max-w-2xl pb-24">
+          <div className="mb-10 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+            <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
+            It has not been reviewed by counsel, and Tenure is not yet an
+            incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
+            name for the two founders. These terms are published so an
+            institution can see the current position; they are not a finished
+            contract, and a pilot agreement would be negotiated separately.
+          </div>
+
           <p>
             These terms cover how you and your organization may use Tenure while
             the product is in early access. We&rsquo;ve kept them short and plain

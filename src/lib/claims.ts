@@ -80,7 +80,7 @@ export const claims: Claim[] = [
     id: "C-001",
     claim:
       "Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and an outgoing one keeps the record but loses access.",
-    where: ["/", "/product", "/trust", "components/home/Governance.tsx"],
+    where: ["/", "/product", "/trust"],
     category: "product",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
@@ -243,7 +243,7 @@ export const claims: Claim[] = [
     id: "C-003",
     claim:
       "Multi-tenant isolation is enforced at the query layer by the database client itself, not by convention at each call site.",
-    where: ["/", "/trust", "components/home/Governance.tsx"],
+    where: ["/", "/trust"],
     category: "security",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
@@ -264,7 +264,7 @@ export const claims: Claim[] = [
     id: "C-004",
     claim:
       "An append-only audit trail records both allows and denials; audit rows are only ever created, never updated or deleted.",
-    where: ["/", "/trust", "components/home/Governance.tsx"],
+    where: ["/", "/trust"],
     category: "security",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
@@ -289,8 +289,9 @@ export const claims: Claim[] = [
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "infrastructure/terraform (RDS storage_encrypted; documents bucket sse_algorithm aws:kms)",
-      "getSignedUrl at both document call sites, 600s TTL",
+      "infrastructure/terraform/rds.tf:35 (storage_encrypted = true)",
+      "infrastructure/terraform/s3.tf:15 (sse_algorithm = \"aws:kms\")",
+      "apps/web/src/lib/s3.ts:47,61 (getSignedUrl, expiresIn 600)",
     ],
     availability: "live",
     qualification:
@@ -345,6 +346,8 @@ export const claims: Claim[] = [
     evidenceCommit: TENURE,
     evidence: ["apps/web/prisma/schema.prisma:872-891 — no hash/signature/checksum column"],
     availability: "unsupported",
+    qualification:
+      "Append-only is enforced by the application, not by cryptography or write-once storage. Never say hash-chained, tamper-proof, cryptographically immutable or WORM. The honest and still-strong claim is that rows are only ever created — no update, delete or upsert against the audit table exists anywhere in the application.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -410,7 +413,7 @@ export const claims: Claim[] = [
   {
     id: "C-030",
     claim: "Customer records are never used to train any model.",
-    where: ["/privacy", "/trust", "components/home/Governance.tsx"],
+    where: ["/privacy", "/trust", "components/home/AiOnboarding.tsx"],
     category: "ai",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,

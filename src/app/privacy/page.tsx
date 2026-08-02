@@ -11,11 +11,24 @@ export default function PrivacyPage() {
       <PageHeader
         eyebrow="Legal"
         title="Privacy"
-        intro="How Tenure handles information, in plain language. Last updated June 2026."
+        intro="How Tenure handles information, in plain language. Last updated 2 August 2026."
       />
 
       <Container>
         <div className="legal max-w-2xl pb-24">
+          {/* Publishing the current position honestly is better than publishing
+              nothing, but an institution must not mistake a founder draft for a
+              reviewed instrument. */}
+          <div className="mb-10 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+            <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
+            It has not been reviewed by counsel, and Tenure is not yet an
+            incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
+            name for the two founders named on the{" "}
+            <a href="/story">story page</a>. If you are evaluating Tenure for an
+            institution, treat this as a statement of current practice and ask us
+            for the reviewed version before signing anything.
+          </div>
+
           <h2>Overview</h2>
           <p>
             Tenure is an early-stage ERP for organizations where leadership turns over faster than knowledge does, starting with university administrations and
@@ -47,11 +60,11 @@ export default function PrivacyPage() {
           <h2>How we use it</h2>
           <p>
             We use the information to run Tenure, support your organization, and
-            power AI onboarding, so when a leader leaves a seat, an AI grounded in
-            everything the role has recorded can get the next person productive in
-            days instead of a semester. We do not sell personal information. We
-            use it to deliver the service you&rsquo;re asking for, not to build a
-            business out of your data.
+            answer questions from the seat&rsquo;s own record, so an incoming
+            leader can read what the role already knows instead of reconstructing
+            it. We do not sell personal information. We use it to deliver the
+            service you&rsquo;re asking for, not to build a business out of your
+            data.
           </p>
           <p>
             One piece of that deserves saying plainly, because a security review
@@ -61,9 +74,11 @@ export default function PrivacyPage() {
             Anthropic&rsquo;s API, the model provider we use. So some of your
             record does leave our infrastructure at the moment someone asks a
             question, and you should hear that from us rather than find it later.
-            Your records are never used to train any model, by us or by
-            Anthropic. We do not train or fine-tune models on customer data, and
-            we have no pipeline that could.
+            We do not train or fine-tune models on customer data, and there is no
+            pipeline anywhere in the product that could. Anthropic&rsquo;s own
+            handling of data sent to its API is governed by Anthropic&rsquo;s
+            commercial terms rather than ours; ask us for the terms in force
+            rather than taking a sentence on a marketing page for it.
           </p>
 
           <h2>Who can see it</h2>
@@ -95,12 +110,20 @@ export default function PrivacyPage() {
 
           <h2>Student data</h2>
           <p>
-            We treat student information on a least-access basis: people see what
-            their role needs, and no more. The institution or organization owns
-            its records, not Tenure, and not the individuals who pass through a
-            seat. We aim to support FERPA-conscious handling of education records,
-            and we&rsquo;ll work with your administration on the policies and
-            controls that fit your institution.
+            Access is scoped to the seat a person holds, and the institution or
+            organization owns its records &mdash; not Tenure, and not the
+            individuals who pass through a seat. One limit worth stating plainly:
+            an account with an institution-level membership can currently read
+            every organization that institution stewards, so administrative
+            access is broad by design today rather than narrowed per advisor.
+          </p>
+          <p>
+            We aim to support FERPA-conscious handling of education records and
+            will work with your administration on the policies and controls that
+            fit your institution. That is a statement of intent, not a compliance
+            assertion: no FERPA-specific control is implemented in the product,
+            and this page has not been reviewed by counsel. The{" "}
+            <a href="/trust">trust page</a> lists what is and is not built.
           </p>
 
           <h2>Security</h2>

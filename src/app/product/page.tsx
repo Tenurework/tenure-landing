@@ -8,6 +8,9 @@ import { CtaBand } from "@/components/site/CtaBand";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { ToolLogos } from "@/components/visuals/ToolLogos";
 import { pageMetadata } from "@/lib/metadata";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { ProductAtWork } from "@/components/home/ProductAtWork";
+import { WhoFor } from "@/components/home/WhoFor";
 
 export const metadata = pageMetadata("/product");
 
@@ -112,7 +115,7 @@ export default function ProductPage() {
             <span className="text-grove">runs</span>.
           </>
         }
-        intro="Tenure runs your finances, events, members, and institutional memory in one place, then Tenure AI turns everything the role has recorded into sourced answers, getting each new leader productive in days, not a semester."
+        intro="Finance, events, members, documents and institutional memory in one governed record, and a handoff packet the next officer inherits already written. Below: the data model, what a week looks like on each side of it, and what is live versus planned."
       >
         <ContactSales size="lg" arrow />
         <Button href="/pilot" variant="secondary" size="lg">
@@ -278,6 +281,14 @@ export default function ProductPage() {
           </Reveal>
         </Container>
       </section>
+
+      {/* Moved here from the home page, where they were a second telling of an
+          argument the hero and the seat mechanism had already made. On this
+          route they answer the questions the page exists for: how a handoff
+          actually works, what each surface does, and who the seat model serves. */}
+      <HowItWorks />
+      <ProductAtWork />
+      <WhoFor />
 
       <CtaBand />
     </>

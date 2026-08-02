@@ -6,7 +6,20 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "check:links": "node scripts/check-links.mjs",
+    "claims:build": "node scripts/build-claims-doc.mjs",
+    "test": "playwright test",
+    "test:e2e": "playwright test nav.spec.ts interaction.spec.ts",
+    "test:a11y": "playwright test a11y.spec.ts",
+    "test:seo": "playwright test seo.spec.ts",
+    "test:claims": "playwright test claims.spec.ts",
+    "test:visual": "playwright test visual.spec.ts",
+    "test:visual:update": "playwright test visual.spec.ts --update-snapshots",
+    "test:ui": "playwright test --ui",
+    "verify": "npm run lint && npm run typecheck && npm run check:contrast && npm run build && npm run test"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.0",
@@ -20,10 +33,13 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "axe-core": "^4.12.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "playwright": "^1.61.1",

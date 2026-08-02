@@ -1,0 +1,124 @@
+name: CI
+
+# Verification only. This workflow never deploys — Vercel owns deployment, and
+# nothing here holds a cloud credential. A green run means the site is correct,
+# not that anything shipped.
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+# Least privilege by default. Only the checks job needs to read the repository,
+# and nothing needs to write to it.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Turbopack is the default builder in Next 16; keep CI deterministic.
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  verify:
+    name: Lint, types, contrast, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Actions are pinned to a commit SHA, not a tag: a tag is mutable, so
+      # `@v7` would let an upstream compromise run arbitrary code in CI.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run typecheck
+
+      # Fails if any token pair drops below WCAG 2.2 AA in either theme, or if
+      # the two dark-theme blocks drift apart.
+      - name: Contrast gate
+        run: npm run check:contrast
+
+      # The claims register document is generated. If it is stale, the register
+      # and the site disagree, which is the failure mode the register exists to
+      # prevent.
+      - name: Claims register is up to date
+        run: |
+          npm run claims:build
+          git diff --exit-code -- docs/PUBLIC-CLAIMS-REGISTER.md \
+            || (echo "::error::docs/PUBLIC-CLAIMS-REGISTER.md is stale. Run 'npm run claims:build' and commit." && exit 1)
+
+      - name: Build
+        run: npm run build
+
+      - name: Internal link check
+        run: npm run check:links
+
+      - name: Upload build output on failure
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: next-build
+          path: .next/
+          retention-days: 3
+
+  test:
+    name: Playwright (${{ matrix.suite }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: verify
+    strategy:
+      # One failing suite should not hide the others.
+      fail-fast: false
+      matrix:
+        suite: [nav, interaction, a11y, seo, claims, visual]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build
+        run: npm run build
+
+      # The Playwright config starts `next start` itself.
+      - name: Run ${{ matrix.suite }}
+        run: npx playwright test ${{ matrix.suite }}.spec.ts
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: playwright-${{ matrix.suite }}
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
