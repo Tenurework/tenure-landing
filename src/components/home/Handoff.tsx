@@ -133,7 +133,10 @@ const STAGES: Stage[] = [
     tone: "alumni",
     label: "Alumni",
     when: "After the term",
-    body: "The outgoing officer keeps the record and loses the keys. Seats carrying history are retired, never deleted.",
+    // "The outgoing officer keeps the record" made the departing person the subject
+    // of "keeps" — read literally by a records reviewer, the exact outcome /privacy
+    // and /terms were written to foreclose. The record stays with the seat.
+    body: "The record stays on the seat; the outgoing officer's access does not. Seats carrying history are retired, never deleted.",
   },
 ];
 

@@ -17,8 +17,8 @@ Recorded 2026-08-02. All three fetched and verified at these commits.
 
 | Repository | Role | Commit | Notes |
 |---|---|---|---|
-| `satvikOS/tenure-landing` | This repo | `fb6a3bd` | Next.js 16.2.9, React 19.2.4, Tailwind 4. Clean worktree at start. |
-| `satvikOS/Tenure` | **Deploying** — determines what may be called live | `819aec0e` | App under `apps/web/`. 132 e2e across 28 specs, 292 unit tests. |
+| `Tenurework/tenure-landing` | This repo | `fb6a3bd` | Next.js 16.2.9, React 19.2.4, Tailwind 4. Clean worktree at start. Recorded here as `satvikOS/tenure-landing`, which is now a redirect: the repository was transferred to the `Tenurework` organization, and the GitHub API resolves both names to `Tenurework/tenure-landing`. It is public. |
+| `satvikOS/Tenure` | **Deploying** — determines what may be called live | `819aec0e` | App under `apps/web/`. 132 e2e across 28 specs; **320** unit tests across 23 jest suites — recorded here as 292, which `npx jest --ci` disproves at this very commit. |
 | `satvikOS/Tenure-Parent` | Canonical development engine | `1c03db8f` | Now a full monorepo (675 files, ~79.6k lines). **3 commits ahead of the bible's stated baseline `e1cfbe82`.** |
 
 **Correction to the bible's stated baseline.** §6 lists Parent at `e1cfbe82`. Parent had moved to
@@ -118,7 +118,7 @@ hold as written.
 
 | Claim | Was | Now |
 |---|---|---|
-| Audit coverage | "100% of actions logged" | Privileged actions, create-only, allows **and** denials. Real coverage 49/63 stated on `/trust` |
+| Audit coverage | "100% of actions logged" | Privileged actions, create-only, allows **and** denials. Phase 1 replaced the false 100% with "49 of 63 on `/trust`"; **Phase 8 withdrew that fraction too** — it did not survive a recount and its exclusion list was wrong. No fraction is published now |
 | Approval chain | 5 steps incl. a phantom "Advisor" gate | Draft → President → OSE → Approved (2 gates, 7 types) |
 | Policy snapshot | "snapshots the exact policy in force, so you can prove the rules" + "policy v4 · frozen 2026-09-12" | Records the deciding seat, transition and reason. `policySnapshot` is never read back, so the old claim was unprovable |
 | Messaging | "delivery across in-app, email, and push" + "sensitivity" | Four conversation types. Every write is `in_app`; `Message` has no sensitivity field |
@@ -127,7 +127,7 @@ hold as written.
 | Approval types | 6 of 7 listed | All 7, including `EXCEPTION` |
 | Metrics band | 3-day onboarding, 0 knowledge lost | 26 organizations / 209 seats, 2 gates / 7 types, 0 records deleted, 132 e2e tests — all counted from the deploying repo |
 | Pilot | "OSE **is** standing Tenure up across every org" | "We are **planning** a Fall 2026 pilot… proposed, not contracted" |
-| Story record | "Partner: OSE" | "Built with: OSE" |
+| Story record | "Partner: OSE" | "Built with: OSE" — and **Phase 8 downgraded it again**, to "Proposed pilot with". Nothing has been built with the office: `/pilot` says "Who would sign — Nobody yet" |
 
 ---
 
@@ -154,6 +154,19 @@ hold as written.
 | `/terms` | 702 → 777 | 195 → 224 | 11 → 11 |
 | `/trust` | new — 1,611 | new — 433 | new — 37 |
 | `/contact` | new — 292 | new — 228 | new — 7 |
+
+> **This table is a Phase 2 snapshot, and Phase 6 invalidated part of it.** Re-measured on
+> 2026-08-03 it does not hold: `/pilot` is not 708 words but roughly 3,180, and `/trust`,
+> `/terms` and `/privacy` all grew substantially too. Nothing was misreported at the time —
+> Phase 6 rewrote `/pilot` into an operational proposal and added governing law, confidentiality,
+> a wind-down clause and a 72-hour incident obligation to `/terms`, and nobody re-measured
+> afterwards. Current figures are in Phase 8. The lesson worth keeping is that a measurement
+> table needs a date and a re-run, or it silently becomes a claim about a build that no longer
+> exists.
+>
+> A note on method, because the two passes count differently: the figures above count the main
+> content, the Phase 8 figures count every word in the prerendered document including nav,
+> footer and screen-reader-only text. Neither is wrong; they are not comparable.
 
 `/product` grew because three sections moved onto it; `/privacy` and `/terms` grew because each
 gained a counsel-review notice and an honest statement of a limit. Those are the intended
@@ -207,30 +220,40 @@ twice — once in the DOM and again in the RSC flight payload — for a backgrou
 | Mobile menu focus management | PASS | Focus moves in, is contained, and returns to the trigger on Escape |
 | `aria-current` on active nav | PASS | Desktop and mobile |
 | No-JS content readable | PASS | Prerendered `opacity:0`: 118 → 8 on home; 0 on `/story`, `/pilot`, `/trust`, `/contact` |
-| Security headers | *pending* | Phase 5 |
+| Security headers | PASS | `next.config.ts` — CSP + X-Content-Type-Options, Referrer-Policy, Permissions-Policy, X-Frame-Options, HSTS, with a wider CSP scoped to `/contact` alone so Calendly cannot be introduced anywhere else without a reviewable diff. This row said *pending → Phase 5* long after the work landed, and Phase 5 had no row to receive it. |
 
 ---
 
 ## Phase 5 — Test and performance system
 
-**Gate: all suites pass locally; no production deployment as a side effect.** — **FAIL** (2 tests)
+**Gate: all suites pass locally; no production deployment as a side effect.** — **PASS**
+
+> **Corrected 2026-08-03.** This gate read *FAIL (2 tests)* and the table below recorded
+> "1,030 passed · 2 failed". That was stale: the two `ProductAtWork` contrast failures were
+> fixed before the branch head, and `EVIDENCE-REPORT.md` recorded the corrected figure while
+> this file kept the old one. Re-run on 2026-08-03 against the branch head: **1,052 passed ·
+> 0 failed · 16 skipped**, exit 0, 8.6 minutes, four browser projects. The performance-budget
+> row below was the genuinely unmet part of this gate, and it is now measured — see Phase 8.
 
 | Item | Status | Evidence |
 |---|---|---|
 | Playwright functional suite | PASS | `nav.spec.ts`, `interaction.spec.ts` — 64 passed, 0 failed |
 | SEO suite | PASS | `seo.spec.ts` — 69 tests |
 | Claims ratchet | PASS | `claims.spec.ts` — 42 tests |
-| Accessibility suite | FAIL | `a11y.spec.ts` — 18 of 20 defects fixed; 2 remain on /product |
+| Accessibility suite | PASS | `a11y.spec.ts` — 268/268 across 4 projects. The 2 `/product` failures this row used to record were fixed before the branch head |
 | Visual baselines | PASS | 74 snapshots, 4 projects, stable on a second run |
 | Internal link checker | PASS | 111 links, 0 broken |
 | Contrast gate | PASS | 72/72 across both themes |
 | CI workflow, pinned actions, least privilege | PASS | SHA-pinned, `contents: read`, never deploys |
-| Performance budgets | FAIL | Payload cut 29% and the cause identified, but no Lighthouse measurement taken |
+| Performance budgets | FAIL → measured in Phase 8 | Payload cut 29% and the cause identified, but no Lighthouse measurement was taken. Taking one was the first thing Phase 8 did, and it failed on all 8 routes |
 
-**Full suite, four projects: 1,030 passed · 2 failed · 16 skipped.**
+**Full suite, four projects: 1,052 passed · 0 failed · 16 skipped** (re-run 2026-08-03).
 
-The 2 failures are on `/product` inside `ProductAtWork`, a decorative mock whose card transitions
-opacity; the contrast walk catches it mid-transition. Recorded rather than silenced.
+The 2 `/product` failures this section used to describe — `ProductAtWork`'s card transitioning
+opacity, caught mid-transition by the contrast walk — were fixed at source before the branch
+head. They are recorded here because the fix, not the failure, is the useful history: an
+infinite opacity loop had been putting text below AA permanently, and two successor forms of
+the same bug were fixed with it.
 
 ### What the suite caught that nothing else did
 
@@ -244,7 +267,14 @@ found what the first could not see.
 
 ## Phase 6 — Adversarial review
 
-**Gate: resolve every P0/P1 or record a named external blocker.** — **PARTIAL: P0s resolved, P1/P2 backlog recorded**
+**Gate: resolve every P0/P1 or record a named external blocker.** — **PASS**
+
+> **Status corrected 2026-08-03.** This read `PARTIAL`, which is not one of the four statuses
+> this document allows — the rule at the top says an item that is half done is FAIL until it
+> is not. At the time it was written the P1 backlog was genuinely open, so the honest label
+> was FAIL. It has since been closed (see "P1 backlog — resolved" below) and the remaining
+> items are named external blockers, so the gate is now PASS on its own terms rather than by
+> inventing a fifth status.
 
 Eight personas reviewed the site independently: university IT security, OSE director, incoming
 treasurer, procurement/legal, enterprise operations, keyboard/low-vision, slow mobile, and
@@ -319,8 +349,130 @@ symptom were the same defect.
 | Test suites run and reported honestly | PASS |
 | Before/after measurements | PASS |
 | No secrets or personal data in the diff | PASS |
-| Committed to the working branch | PASS — 6 commits, head  |
+| Committed to the working branch | PASS — 6 commits, head `2c13adc` |
 | Not merged, not deployed | PASS |
+
+---
+
+## Phase 8 — Verification pass, 2026-08-03
+
+A second pass over the same bible, starting from the assumption that nothing in these
+documents was true until re-checked. Two things came out of it: the one performance gate that
+had never been measured was measured and failed, and 29 claim defects survived independent
+adjudication despite a 1,052-test suite passing green.
+
+### 8.1 What re-running the gates found
+
+| Gate | Recorded state | Re-measured 2026-08-03 |
+|---|---|---|
+| lint · typecheck · contrast · build | PASS | PASS — 0, 0, 72/72, 0 |
+| Full Playwright suite | "FAIL, 1,030 passed · 2 failed" (ledger) vs "1,052 passed · 0 failed" (evidence report) | **1,052 passed · 0 failed · 16 skipped**, exit 0, 8.6 min. The ledger was stale; the evidence report was right |
+| Internal links | 111 / 0 broken | 111 / 0 broken |
+| **Lighthouse §13** | never taken | **failed on all 8 routes** |
+
+The two documents disagreeing with each other in the same commit is the finding, not the two
+tests. A ledger that is not re-run is a claim like any other.
+
+### 8.2 The performance gate, measured
+
+First measurement, mobile lab, production build, simulated Slow 4G:
+
+| Route | Perf | A11y | BP | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|
+| `/` | **63** | 100 | 100 | 100 | 4,339 ms | 0.000 | 889 ms |
+| `/product` | **66** | 100 | 100 | 100 | 4,215 ms | 0.000 | 822 ms |
+| `/pilot` | **74** | 100 | 100 | 100 | 3,458 ms | 0.000 | 705 ms |
+| `/trust` | **79** | 100 | 100 | 100 | 3,264 ms | 0.000 | 554 ms |
+| `/story` | **78** | 100 | 100 | 100 | 3,279 ms | 0.000 | 556 ms |
+| `/contact` | **84** | 100 | 100 | 100 | 3,112 ms | 0.000 | 388 ms |
+| `/privacy` | **80** | 100 | 100 | 100 | 3,242 ms | 0.000 | 489 ms |
+| `/terms` | **81** | 100 | 100 | 100 | 3,257 ms | 0.000 | 469 ms |
+
+Accessibility, Best Practices and SEO were a clean 100 everywhere and CLS a perfect 0.000 —
+the previous pass's work holds up. Performance failed on every route.
+
+### 8.3 Causes, and what each was worth
+
+Four parallel investigations attributed the failure; a fifth adjudicated them against source.
+Two of its conclusions are worth recording because they were wrong on first pass and were
+caught by insisting on isolation:
+
+- A cross-route regression fit `styleLayout = 308 + 0.337·domNodes + 0.217·contourSegments`
+  with **R² = 0.9963** and attributed 1,300 ms of style and layout to the contour SVGs. It was
+  an artifact: the two predictors correlate at 0.963, and an isolated benchmark of all eight
+  real contour SVGs measured **6 ms**. The contours were a bytes problem, not a layout one.
+- `tailwind-merge` was reported as resolving no conflicts anywhere. Diffing all 2,642 rendered
+  class attributes showed it resolving exactly one, 25 times — and resolving it *wrongly*.
+
+| Fix | Mechanism | Measured worth |
+|---|---|---|
+| `PageHeader` no longer wraps its `h1` in `Reveal` | `.js [data-reveal]{opacity:0}` applies before first paint, so LCP waited for hydration on 7 routes | FCP→LCP gap of **~800–870 ms** on `/product`, `/pilot`, `/trust`, `/story`, gone. Observed LCP now equals observed FCP on all 8 routes |
+| Contours generated at build time into `public/contours/*.svg`, painted as a CSS mask | The geometry shipped twice per response — as DOM and again in the RSC flight payload | Home document **99 KB → 40 KB gzipped (−60%)**; `/product` 47→23, `/story` 22→12, `/pilot` 39→29 |
+| `Button` renders `#hash` links as plain anchors | Next resolved `#platform` against the current route, so home prefetched **itself** | 42.5 KB `?_rsc=` request removed from the LCP window |
+| Both auto-tour `setInterval`s gated on an IntersectionObserver | Neither checked visibility; one did not even check for a backgrounded tab | ~1,053 ms of style and layout on home, ~957 ms of it after the page was otherwise idle |
+| `tailwind-merge` removed | 27 KB table reachable from the header, so it loaded on every route | −8.5 KB gzipped everywhere, including the routes already closest to budget |
+| Supporter logos given rendered rather than intrinsic dimensions | `width={2000}` made Next build a 2× srcset, capped at `w=3840`, for a mark painting ~128 px | ~45 KB of image transfer on home |
+
+### 8.4 Where performance landed
+
+Median of 3 runs per route, same lab conditions:
+
+| Route | Perf before → after | LCP before → after | TBT before → after |
+|---|---|---|---|
+| `/story` | 78 → **99** | 3,279 → 2,196 ms | 556 → 43 ms |
+| `/privacy` | 80 → **98** | 3,242 → 2,267 ms | 489 → 74 ms |
+| `/terms` | 81 → **98** | 3,257 → 2,272 ms | 469 → 84 ms |
+| `/contact` | 84 → **97** | 3,112 → 2,175 ms | 388 → 70 ms |
+| `/pilot` | 74 → **95** | 3,458 → 2,934 ms | 705 → 45 ms |
+| `/trust` | 79 → **87** | 3,264 → 2,319 ms | 554 → 424 ms |
+| `/product` | 66 → **81** | 4,215 → 3,452 ms | 822 → 405 ms |
+| `/` | 63 → **81** | 4,339 → 3,721 ms | 889 → 323 ms |
+
+**Status: FAIL, with a measured and documented exception.** Five of eight routes clear
+Performance ≥ 90; `/`, `/product` and `/trust` do not, and LCP ≤ 2,500 ms is met on four.
+Accessibility, Best Practices and SEO hold at 100 on all eight, and CLS at 0.000.
+
+Two honest qualifications on these numbers:
+
+1. **The measurement environment is not trustworthy for TBT.** These were taken on a developer
+   workstation running a chat client, a video-call app and several dozen browser processes.
+   `/trust` measured 424 ms while `/pilot`, which ships *more* JavaScript, measured 45 ms in
+   the same sweep — that ordering is not physical. The stable, repeatable figures are
+   Accessibility, Best Practices, SEO, CLS and the byte counts; treat Performance, LCP and TBT
+   as directional. `npm run check:perf -- --runs=3` is the reproduction.
+2. **There is a framework floor.** `/trust` ships essentially no application JavaScript —
+   17.7 KB gzipped of header, Reveal and tokens — and still cannot reach TBT ≤ 200 ms,
+   because the React 19 + Next 16 runtime alone costs ~872 ms of bootup on a 4×-throttled
+   mobile CPU. `/` and `/product` additionally carry `motion`, 138 KB minified and 45.6%
+   unused, which is the one remaining structural difference between them and the five routes
+   that pass. Removing or lazy-loading it is the next lever and is **not** attempted here:
+   it is a five-component migration whose failure mode is a runtime throw, and it belongs in
+   its own change with its own verification rather than bolted onto this one.
+
+### 8.5 Claim defects found with the suite green
+
+Four independent reviewers produced 53 alleged defects; adjudication against the deploying
+repo confirmed 29, refuted 8 outright and merged 10 as cross-lens duplicates. The refutations
+mattered as much as the confirmations — one would have driven a rewrite of three accurate
+security rows on the strength of an authority rule the register does not contain.
+
+The suite could not have caught any of the 29, for three structural reasons, all now closed:
+
+| Gap | Consequence | Closed by |
+|---|---|---|
+| `claims.spec.ts` regex-matched the *shape* of an evidence path and never resolved one | A non-existent file, a literal `...` placeholder and a spec testing something else all passed green | Tests rejecting elided segments, and requiring `ci-verified` to name a real test file |
+| Nothing read `claim.where` | The register's central rule — that a limit travels with its claim wherever it appears — had no enforcement on any claim | C-003's "15 of 39" now travels to the home page; the general enforcement is recorded as still open |
+| Published counts were never re-derived | "292 unit tests" shipped under a heading reading "counted from the repository that deploys". The real figure is **320** | Recount recorded in C-015 with the command that produces it |
+
+The 29 are listed with their fixes in [`EVIDENCE-REPORT.md`](EVIDENCE-REPORT.md).
+
+A thirtieth was found by the visual suite rather than by any reviewer, and only because the
+diff was inspected instead of accepted: `SeatMechanism`'s "Ask this seat" panel asked "Who did
+we use for catering, and why did we switch?" — an eleven-term AND that returns nothing. The
+same inspection showed the committed baseline rendering a *different* exchange again, with the
+invented "$1,240 over" figure Phase 6 had removed, proving the baselines predated the source
+and were passing only because the changed region fell under the 1% pixel tolerance. Both are
+fixed; all 42 affected baselines are regenerated and stable across two runs.
 
 ---
 
@@ -333,3 +485,4 @@ symptom were the same defect.
 | `C-030` | "Anthropic does not train on your data" | Almamy Diaby | The commercial terms in force. Now attributed to Anthropic's terms rather than asserted as Tenure's guarantee |
 | `C-032` | Operating legal entity | Almamy Diaby | Incorporation. Privacy and Terms carry a founder-draft banner meanwhile |
 | `X-01` | Student roster in public git history | Satvik Adyanthaya | History rewrite or private repo, in `satvikOS/Tenure` — read-only for this work |
+| `C-023` | The pilot sign-in mechanism cannot be described publicly | Satvik Adyanthaya | A decision. `/terms` no longer makes anyone liable for activity under their account, and `/trust` now says access is not gated on a per-user secret, because a liability clause written against a shared credential is not defensible. Saying more than that needs C-023 lifted; saying less would put the clause back |

@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { ContactSalesLink } from "@/components/ui/ContactSales";
+import { site } from "@/lib/site";
 
 const LINK = "whitespace-nowrap font-medium text-grove-deep underline underline-offset-4";
 
@@ -24,14 +25,25 @@ const ITEMS: { q: string; a: ReactNode }[] = [
   },
   {
     q: "Who owns the record?",
-    a: "The organization does; access attaches to the seat, not the person. An incoming officer gets read-only access to the seat's record and knowledge cards before their term begins, and an outgoing one keeps the record and loses access.",
+    // "an outgoing one keeps the record" made the departing person the subject of
+    // "keeps" — read literally, the opposite of what /privacy and /terms exist to
+    // establish, and self-contradictory next to "loses access". /trust already had
+    // the right formulation; use it here.
+    a: "The organization does; access attaches to the seat, not the person. An incoming officer gets read-only access to the seat's record and knowledge cards before their term begins, and when a term ends the record stays on the seat while the outgoing officer's access does not.",
   },
   {
     q: "Is sensitive data handled responsibly?",
     a: (
       <>
-        Isolation is enforced at the query layer by the database client itself, and privileged
-        actions append to a create-only audit trail that records refusals as well as approvals.
+        {/*
+          claims.ts defines a claim's `qualification` as the limits that must travel
+          with it WHEREVER it appears, and C-003/C-004 both list "/" — but the home
+          page carried the headline and left both numbers on /trust, so this read as
+          blanket enforcement. The numbers travel now.
+        */}
+        Isolation is enforced at the query layer by the database client itself, on the 15 of 39
+        models that carry a tenant column, and privileged actions append to a create-only audit
+        trail that records refusals as well as approvals.
         Documents are encrypted at rest and served through signed links that expire in ten
         minutes.{" "}
         <Link href="/trust" className={LINK}>
@@ -91,7 +103,7 @@ export function Faq() {
           <p className="mt-8 text-ink-soft">
             Something we haven&rsquo;t answered?{" "}
             <ContactSalesLink className="font-medium text-grove underline-offset-4 transition-colors hover:text-grove-deep hover:underline">
-              Contact sales
+              {site.ctaLabel}
             </ContactSalesLink>
             .
           </p>

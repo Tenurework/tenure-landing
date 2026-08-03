@@ -59,10 +59,29 @@ export default function TermsPage() {
           </p>
 
           <h2>Your account and content</h2>
+          {/*
+            This paragraph used to read "You're responsible for the activity that
+            happens under it." That is the sentence a procurement lawyer holds up,
+            and during the pilot it is not defensible: access is not gated on a
+            secret that belongs to one person and to nobody else, so activity under
+            a name is not evidence that the named person did it. Asserting the
+            liability anyway would have been both unfair and unenforceable.
+
+            The specifics of the pilot sign-in mechanism are deliberately not
+            published here — see C-023 — but the consequence of it belongs in the
+            operative document rather than only in a security page's caveat.
+          */}
           <p>
-            You are responsible for your account and for keeping your login
-            secure. You&rsquo;re responsible for the activity that happens under
-            it, so let us know promptly if you think someone else has access.
+            You are responsible for keeping your access to Tenure secure, and for
+            telling us promptly if you think someone else has it.
+          </p>
+          <p>
+            We do not hold you personally responsible for activity that happens
+            under your account during the pilot. The pilot access model is not
+            built on an individual credential that only you hold, so we will not
+            treat an action recorded under your name as proof that you took it.
+            Ask us for the current sign-in mechanism and we will walk you through
+            it; it is the first thing we intend to replace.
           </p>
           <p>
             Your organization keeps ownership of the content it stores in Tenure.

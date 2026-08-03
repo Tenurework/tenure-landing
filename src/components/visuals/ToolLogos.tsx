@@ -1,30 +1,40 @@
-/* eslint-disable @next/next/no-img-element */
 import { cn } from "@/lib/cn";
 
-type Mark = { src: string; name: string };
-type Lane = { title: string; tag: string; body: string; marks: Mark[] };
+/**
+ * Formats, not vendor marks.
+ *
+ * C-029 in the claims register is explicit: no vendor logo may appear unless
+ * connector code and an end-to-end test exist, and importing a file a vendor
+ * produced is not an integration. There is no Microsoft or Google connector in
+ * the deploying repo — spreadsheets are parsed from bytes with JSZip, documents
+ * with mammoth, and the calendar is a signed one-way ICS feed that requires no
+ * vendor code at all. A vendor mark is the strongest connector signal on a page
+ * regardless of how honest the sentence underneath it is, so the marks are gone
+ * and the file formats say the same true thing.
+ *
+ * The vendor NAMES stay in the titles: "you can subscribe from Outlook" is
+ * accurate and useful, and the body says plainly that no account is connected.
+ */
+type Lane = { title: string; tag: string; body: string; formats: string[] };
 
 const LANES: Lane[] = [
   {
     title: "Excel, Word, PowerPoint, PDF",
     tag: "Open in Tenure",
-    body: "Contracts, decks, and spreadsheets open in the app, PowerPoint with its speaker notes. Spreadsheets and text files edit in place, versioned.",
-    marks: [{ src: "/logos/tools/excel.svg", name: "Excel" }],
+    body: "Contracts, decks, and spreadsheets open in the app, PowerPoint with its speaker notes. Spreadsheets and text files edit in place, with a save-conflict check.",
+    formats: [".xlsx", ".docx", ".pptx", ".pdf"],
   },
   {
     title: "Outlook, Google, Apple Calendar",
     tag: "Subscribe, one link",
     body: "One signed link, no account connection and no password shared. It carries only what your seat may see. One-way today, Tenure fills your calendar and does not read it back.",
-    marks: [
-      { src: "/logos/tools/outlook.svg", name: "Outlook" },
-      { src: "/logos/tools/google-calendar.svg", name: "Google Calendar" },
-    ],
+    formats: ["iCalendar (.ics)"],
   },
   {
     title: "Your existing budget spreadsheet",
     tag: "Imported, columns matched",
     body: "Upload it as you keep it. Tenure works out which column is which, drops subtotal rows so nothing double-counts, and shows what it read before anything is saved.",
-    marks: [{ src: "/logos/tools/excel.svg", name: "Excel" }],
+    formats: [".xlsx", ".csv"],
   },
 ];
 
@@ -37,21 +47,13 @@ export function ToolLogos({ className }: { className?: string }) {
           className="lift flex h-full flex-col rounded-xl border border-line bg-cloud p-4 shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)]"
         >
           <div className="flex flex-wrap items-center gap-2">
-            {l.marks.map((m) => (
+            {l.formats.map((f) => (
               <span
-                key={`${l.title}-${m.name}`}
-                className="inline-flex items-center gap-2 rounded-lg border border-line bg-paper/60 px-2.5 py-1.5"
+                key={`${l.title}-${f}`}
+                className="inline-flex items-center rounded-lg border border-line bg-paper/60 px-2.5 py-1.5"
               >
-                <img
-                  src={m.src}
-                  alt=""
-                  width={18}
-                  height={18}
-                  className="h-[18px] w-[18px] object-contain"
-                  loading="lazy"
-                />
-                <span className="whitespace-nowrap text-[0.78rem] font-medium text-ink-soft">
-                  {m.name}
+                <span className="whitespace-nowrap font-mono text-[0.78rem] font-medium text-ink-soft">
+                  {f}
                 </span>
               </span>
             ))}

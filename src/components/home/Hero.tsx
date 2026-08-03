@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { Reveal } from "@/components/ui/Reveal";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
-import { ContourField } from "@/components/visuals/ContourField";
+import { ContourMask } from "@/components/visuals/SectionContour";
 import { HeroShapes } from "@/components/home/HeroShapes";
 import { HeroFloatingCards } from "@/components/home/HeroFloatingCards";
 import { site } from "@/lib/site";
@@ -41,7 +41,7 @@ export function Hero() {
         <div className="absolute left-1/2 top-[-12%] h-[46rem] w-[46rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_10%,transparent),transparent_62%)] blur-2xl" />
         <div className="absolute right-[6%] top-[8%] h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--warning)_10%,transparent),transparent_65%)] blur-3xl" />
         <div className="absolute inset-x-0 top-0 h-[80%] text-grove/[0.13] [mask-image:radial-gradient(75%_70%_at_60%_18%,black,transparent_76%)]">
-          <ContourField seed={1} />
+          <ContourMask seed={1} />
         </div>
       </div>
 

@@ -47,7 +47,7 @@ length of any other route, with four arguments made twice.
 | Governance | **Merge → OfficeConsole + `/trust`** | Addressed the office in the third person while OfficeConsole addressed it directly. The security detail is better served on `/trust`, where a reviewer will look for it |
 | OfficeConsole | **Keep, compressed** | "For the office". Absorbed Governance's office-facing argument |
 | WhoFor | **Move → `/product`** | Audience segmentation is a consideration-stage question |
-| Integrations | **Keep, compressed** | Trust and fit. Three honest mechanism lanes; the one-way calendar qualifier is load-bearing |
+| Integrations | **Keep, compressed** | Trust and fit. Three honest mechanism lanes; the one-way calendar qualifier is load-bearing. The Excel, Outlook and Google Calendar marks were removed on 2026-08-03 and replaced with file-format chips: C-029 forbids a vendor logo without connector code and an end-to-end test, and there is none — spreadsheets are parsed from bytes, and the calendar is a one-way ICS feed no vendor participates in. Under a heading reading "Fits your stack", a vendor mark reads as an integration whatever the sentence beneath it says |
 | Faq | **Keep, compressed** | Reduced to the four questions asked first; depth links to `/trust` |
 | CtaBand | **Keep** | The ask |
 
@@ -92,9 +92,16 @@ components/
              ThemeToggle      system / light / dark, reads the DOM as its store
              Scheduler        on-demand Calendly, always with a plain-anchor fallback
              StructuredData   Organization + WebSite JSON-LD
-  ui/        primitives: Button, ContactSales, Reveal, StatusBadge, Container/Eyebrow/Rule
-  visuals/   product mocks and generative decoration: DashboardMock, AuditTrailDemo,
-             ContourField, Ribbons, SectionContour, ToolLogos
+  ui/        primitives: Button, ContactSales, Reveal, StatusBadge, MockDisclosure,
+             Container/Eyebrow/Rule
+  visuals/   product mocks and decoration: DashboardMock, AuditTrailDemo, Ribbons,
+             SectionContour, ToolLogos
+  lib/       contours.ts  the marching-squares generator, moved out of the component
+                          tree. scripts/build-contours.mjs writes public/contours/*.svg
+                          at prebuild and SectionContour paints them as CSS masks; it
+                          used to render inline SVG, which put 60 KB gzipped of path
+                          data in the home document and the same again in the RSC
+                          payload
   brand/     Logo, Wordmark
 ```
 

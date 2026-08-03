@@ -167,9 +167,33 @@ improvement, update it and say so in the commit; if it is not, it is a regressio
 ```bash
 npm run check:contrast
 npm run check:links    # after a build
+npm run check:perf     # Lighthouse budgets — needs a server, see below
 npm run claims:build   # regenerate the register document from src/lib/claims.ts
+npm run build:contours # regenerate public/contours/*.svg (also runs from prebuild)
 npm run verify         # lint + typecheck + contrast + build + tests
 ```
+
+### Performance budgets
+
+`check:perf` measures the bible's §13 targets with Lighthouse against a real production
+build. It needs the site already running, in another terminal:
+
+```bash
+npm run build && npm run start -- -p 3100   # terminal 1
+npm run check:perf                          # terminal 2
+npm run check:perf -- --runs=3              # median of 3, for a number worth quoting
+npm run check:perf -- --only=/product       # one route
+```
+
+It is **not** in CI, deliberately. This is a lab measurement of a local server, and it is
+sensitive to whatever else the machine is doing — measured on a developer workstation with a
+chat client and a browser open, TBT for the same build swung between 45 ms and 424 ms on
+routes that ship almost no JavaScript. A hard budget gate on a shared runner would fail for
+reasons that have nothing to do with the commit, and a flaky gate teaches people to ignore
+gates. Run it locally, take the median of three, and compare like with like.
+
+The scores that *are* stable run to run — Accessibility, Best Practices, SEO and CLS — are
+worth trusting from a single run. Performance, LCP and TBT are not.
 
 ---
 

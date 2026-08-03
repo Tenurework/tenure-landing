@@ -71,9 +71,12 @@ export default function PrivacyPage() {
             will ask. Tenure AI answers from records the person asking already
             has permission to see, and it shows its sources. To turn those
             sources into an answer, the relevant record text is sent to
-            Anthropic&rsquo;s API, the model provider we use. So some of your
-            record does leave our infrastructure at the moment someone asks a
-            question, and you should hear that from us rather than find it later.
+            Anthropic&rsquo;s API, the model provider we use. The same is true
+            when someone asks for a summary of a text document, which sends that
+            document&rsquo;s contents, and when someone uses Draft Assist, which
+            sends what they typed. So some of your record does leave our
+            infrastructure at those moments, and you should hear that from us
+            rather than find it later.
             We do not train or fine-tune models on customer data, and there is no
             pipeline anywhere in the product that could. Anthropic&rsquo;s own
             handling of data sent to its API is governed by Anthropic&rsquo;s
@@ -87,9 +90,25 @@ export default function PrivacyPage() {
               <strong>Your organization&rsquo;s members</strong>, and the boards
               that inherit the record when a term ends.
             </li>
+            {/*
+              Institution staff were missing from the bullet list a privacy reviewer
+              builds their data-flow map from, and "private to your organization"
+              affirmatively contradicted the limit stated further down the page. The
+              enforced boundary is the institution: the Prisma extension scopes by
+              institutionId, and any account with an institution membership resolves
+              every organization in the portfolio.
+            */}
             <li>
-              <strong>Not the public.</strong> Your record is private to your
-              organization by default.
+              <strong>Institution staff at the office that stewards your
+              organization.</strong> Today that means any institution account can
+              read every organization in the portfolio, not only the ones it
+              advises.
+            </li>
+            <li>
+              <strong>Not the public.</strong> Records are separated per
+              institution at the database layer; separation between organizations
+              inside one institution is enforced by access rules rather than by
+              that boundary.
             </li>
             <li>
               <strong>The subprocessors listed below</strong>, under
@@ -111,9 +130,23 @@ export default function PrivacyPage() {
               there is no customer-managed key option today.
             </li>
             <li>
-              <strong>Anthropic</strong> &mdash; the model provider. Receives the
-              permission-filtered record text needed to answer a question, at the
-              moment someone asks one, as described above.
+              {/*
+                This row previously disclosed one of three outbound flows. The
+                deploying app calls api.anthropic.com from three places: answer
+                synthesis, document summarisation (which reads the file out of S3
+                and sends up to 24,000 characters of its text), and Draft Assist
+                (which sends the instruction the user typed). A reader of "record
+                text needed to answer a question" would not expect the contents of
+                a file to be included, and /trust's "document file contents are not
+                indexed" made that reading more likely, not less.
+              */}
+              <strong>Anthropic</strong> &mdash; the model provider. Receives
+              permission-filtered record text in three cases: when someone asks a
+              question, the records retrieved for it; when someone asks for a
+              summary of a text document, the contents of that document; and when
+              someone uses Draft Assist, the instruction they typed. Processing
+              location and retention are governed by Anthropic&rsquo;s commercial
+              terms rather than ours &mdash; ask us for the terms in force.
             </li>
             <li>
               <strong>Vercel</strong> &mdash; hosting for this marketing website
@@ -191,8 +224,17 @@ export default function PrivacyPage() {
           </p>
           <ul>
             <li>
+              {/*
+                There is no anonymisation or user-deletion routine in the deploying
+                app — a repo-wide search for one returns only integration-test
+                fixture cleanup. Stating it as an available control implied a
+                self-service or automated path that does not exist.
+              */}
               <strong>Your personal account details</strong> &mdash; name, email,
-              profile &mdash; can be removed or anonymised on request.
+              profile &mdash; can be removed or anonymised on request. There is no
+              self-service control for this and no automated routine behind it: we
+              do it by hand, and assignments and audit rows that reference you are
+              kept.
             </li>
             <li>
               <strong>An organization&rsquo;s whole record</strong> can be

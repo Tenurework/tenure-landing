@@ -43,7 +43,7 @@ const STATUS: { k: string; v: string }[] = [
   },
   {
     k: "Start",
-    v: "Not scheduled. A term is the unit of work; no date appears on this page because none has been agreed.",
+    v: "Not scheduled. Fall 2026 is the term we are proposing for; no start date has been agreed, and none is published here.",
   },
   {
     k: "Length",
@@ -55,7 +55,11 @@ const STATUS: { k: string; v: string }[] = [
   },
   {
     k: "Cost",
-    v: "Not stated here. Pricing is per portfolio rather than per organization, and a figure for a pilot term is something we would put in writing with the office rather than publish first. A walkthrough costs nothing.",
+    // /terms §Fees makes an unconditional zero-fee statement about the pilot. This
+    // row used to say only that a pilot-term figure "is something we would put in
+    // writing", which pointed the opposite way and left a reader holding two
+    // documents that disagreed about whether the pilot term carries a charge.
+    v: "Free for the pilot term — see Terms, Fees. Beyond it, pricing is per portfolio rather than per organization, and any figure would be a separate written agreement signed in advance, not an update to a page. A walkthrough costs nothing.",
   },
   {
     k: "Who would sign",
@@ -83,7 +87,11 @@ const PARTICIPANTS: { who: string; seat: string; ask: string }[] = [
   {
     who: "Advisors attached to organizations",
     seat: "Advisor tier — one capability of the sixteen in the console",
-    ask: "Watches what the office asks them to watch. Read the limit before provisioning them: an institution account can currently read every organization, not only the ones it advises.",
+    // "Watches what the office asks them to watch" described the opposite of what the
+    // tier grants. The Advisor tier's single capability is audit.view — "read the
+    // institution-wide audit trail" — so provisioning nineteen advisors provisions
+    // nineteen readers of every privileged action by every seat in the office.
+    ask: "Read the limit before provisioning them. The Advisor tier's one capability is reading the institution-wide audit log, and an institution account can currently read every organization's budget, roster and documents — not only the ones it advises.",
   },
   {
     who: "Us",
@@ -221,7 +229,11 @@ const SUPPORT: string[] = [
   "Onboarding is done with you, live. It is not handed over as documentation and a login.",
   "A bug goes to the same inbox as everything else, and is answered by one of the two people who will fix it.",
   "What the office needs during the term is what we work on during the term, ahead of our own roadmap.",
-  "The product is not a prototype: 132 end-to-end tests and 292 unit tests run against a real database on every build.",
+  // The database phrase is scoped to the e2e half deliberately. jest.config.js
+  // excludes *.itest.ts from the default run precisely because those are the ones
+  // needing a live PostgreSQL, so attaching "against a real database" to the unit
+  // tests — as this line used to — described the opposite of what runs.
+  "The product is not a prototype: 132 end-to-end tests run against a real PostgreSQL on every build, alongside 320 unit tests.",
   "Anything above that matters to you belongs in the written scope. A sentence on a marketing page is not a commitment, and we will not pretend otherwise.",
 ];
 
@@ -237,13 +249,13 @@ const HANDLING: { t: string; d: string; limit?: string }[] = [
     t: "How approvals are decided",
     d: "Two gates across seven request types. Every step permanently records the deciding seat, what the request moved from and to, and whether a backup approver acted on another seat's behalf. Requests show how long they have sat in a gate, flagged at three days and again at six.",
     limit:
-      "A president's own request skips the first gate, and nothing prevents a person who holds both an institution membership and an active seat from submitting a request and then approving it. If your finance policy requires that control enforced by the system, Tenure does not have it today.",
+      "A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both gates; every use is audited, but nothing prevents it and no second party is required. A president's own request skips the first gate, and nothing prevents a person who holds both an institution membership and an active seat from submitting a request and then approving it. If your finance policy requires those controls enforced by the system, Tenure does not have them today.",
   },
   {
     t: "What gets written down",
     d: "Privileged actions append an audit row, and refusals are recorded alongside successes — which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
     limit:
-      "Coverage is 49 of 63 server actions. Messaging, activity-feed, profile and resource writes append nothing, and AI or search queries are not recorded at all. The table carries no hash, signature or checksum column — append-only is enforced by the application, not by cryptography or write-once storage.",
+      "Coverage is partial and is not yet generated by anything that would fail if it drifted, so no fraction is published here. Administrative actions are audited through the capability guard, which records the denial as well as the allow; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not, and search queries are not recorded. The table carries no hash, signature or checksum column — append-only is enforced by the application, not by cryptography or write-once storage.",
   },
   {
     t: "Where the record lives",

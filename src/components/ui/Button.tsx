@@ -124,6 +124,23 @@ export function Button({
         </a>
       );
     }
+    /*
+      A same-document hash link is not a navigation, and must not be a <Link>.
+      Next resolves "#platform" against the current route, so the hero's
+      "See the platform" button made the home page prefetch ITSELF: Lighthouse's
+      network log showed three ?_rsc= requests for "/" starting at ~1.28s, the
+      largest 42,583 B — byte-for-byte the page the browser was already
+      displaying — competing for Slow-4G bandwidth well inside the LCP window.
+
+      Nothing is lost by dropping to a plain anchor: the smooth scroll is CSS.
+    */
+    if (href.startsWith("#")) {
+      return (
+        <a href={href} className={cls}>
+          {inner}
+        </a>
+      );
+    }
     return (
       <Link href={href} className={cls}>
         {inner}

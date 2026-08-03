@@ -10,6 +10,7 @@ import { Integrations } from "@/components/home/Integrations";
 import { MetricsBand } from "@/components/home/MetricsBand";
 import { Faq } from "@/components/home/Faq";
 import { CtaBand } from "@/components/site/CtaBand";
+import { MockDisclosure } from "@/components/ui/MockDisclosure";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = pageMetadata("/");
@@ -45,6 +46,11 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      {/* Says once, near the first mock, that the product surfaces on this page are
+          drawn rather than captured. It sits above MetricsBand's "counted, not
+          projected" heading for a reason: without it, that guarantee reads as
+          covering the mocks too. */}
+      <MockDisclosure className="border-t border-line bg-paper pt-10" />
       <TrustStrip />
       <Problem />
       <SeatMechanism />

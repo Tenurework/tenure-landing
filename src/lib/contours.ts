@@ -1,7 +1,25 @@
-import { cn } from "@/lib/cn";
+/**
+ * Marching-squares iso-contour geometry for the decorative section backgrounds.
+ *
+ * This used to live inside `components/visuals/ContourField.tsx` and run on every
+ * server render, emitting one `<path>` per elevation level straight into the RSC
+ * tree. That cost more than it looked: the path data shipped TWICE in each
+ * response — once as DOM markup and again inside the inline `self.__next_f.push`
+ * flight payload — and measured 60,349 gzipped bytes of the home document, 59.4%
+ * of the whole transferred page, for a background rendered at 5-13% opacity.
+ *
+ * It is deterministic on `seed`, so it belongs at build time. `scripts/
+ * build-contours.mjs` calls this and writes one static, cacheable SVG per seed
+ * into `public/contours/`, which `SectionContour` then paints as a CSS mask.
+ *
+ * Kept as a plain .ts module with no JSX so the build script can import it
+ * directly under Node's type stripping.
+ */
+export const W = 1200;
+export const H = 700;
 
-const W = 1200;
-const H = 700;
+/** Every seed referenced by a SectionContour/contour call site, plus the default. */
+export const SEEDS = [0, 1, 2, 3, 4, 5, 6, 8, 11] as const;
 
 /** Scalar field: a few gaussian "peaks" (for the contour eyes) + flowing ridges. */
 function field(x: number, y: number, seed: number): number {
@@ -25,20 +43,16 @@ function field(x: number, y: number, seed: number): number {
 }
 
 /**
- * Marching-squares iso-contours → one path string per elevation level.
+ * One path string per elevation level.
  *
- * Grid resolution and coordinate precision are both deliberately modest. This
- * runs on the server, so every emitted character ships twice: once in the DOM
- * and again in the RSC flight payload. At 66x38x8 levels with one-decimal
- * coordinates the contours alone were 200KB of path data and roughly two thirds
- * of the home page's 640KB of HTML — for a background that renders between 6%
- * and 13% opacity.
- *
- * 48x28 with integer coordinates is visually indistinguishable at those
- * opacities (the field is smooth, and the viewBox is scaled to fill a section
- * so a half-unit is well under a device pixel) and costs about a third as much.
+ * Grid resolution and coordinate precision are both deliberately modest. At
+ * 66x38x8 levels with one-decimal coordinates this was 200KB of path data; 48x28
+ * with integer coordinates is visually indistinguishable at these opacities (the
+ * field is smooth and the viewBox is scaled to fill a section, so a half-unit is
+ * well under a device pixel) and costs about a third as much. That still matters
+ * for the generated file size even though it no longer ships in the document.
  */
-function buildContours(seed: number): string[] {
+export function buildContours(seed: number): string[] {
   const COLS = 48;
   const ROWS = 28;
   const g: number[][] = [];
@@ -124,31 +138,20 @@ function buildContours(seed: number): string[] {
 }
 
 /**
- * A faint topographic contour field, iso-lines over a field of peaks and ridges,
- * the way a real contour map reads. Inherits color via currentColor. Decorative.
+ * The full SVG document for one seed.
+ *
+ * Stroked in black: the file is used as a CSS mask, so only its alpha matters and
+ * the colour is supplied by `background-color: currentColor` at the call site.
+ * That is what keeps every existing tint class — `text-grove/[0.06]`,
+ * `text-inverse/[0.07]`, `text-ink/[0.05]` — and both themes working unchanged.
+ * The per-level opacity ramp survives as mask alpha.
  */
-export function ContourField({
-  className,
-  seed = 0,
-}: {
-  className?: string;
-  seed?: number;
-  /** kept for call-site compatibility */
-  lines?: number;
-}) {
-  const paths = buildContours(seed);
-  return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="xMidYMid slice"
-      aria-hidden="true"
-      className={cn("h-full w-full", className)}
-    >
-      <g fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round">
-        {paths.map((d, i) => (
-          <path key={i} d={d} opacity={(0.5 + (i / paths.length) * 0.5).toFixed(2)} />
-        ))}
-      </g>
-    </svg>
-  );
+export function contourSvg(seed: number): string {
+  const paths = buildContours(seed)
+    .map(
+      (d, i, all) =>
+        `<path d="${d}" opacity="${(0.5 + (i / all.length) * 0.5).toFixed(2)}"/>`,
+    )
+    .join("");
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice"><g fill="none" stroke="#000" stroke-width="1" stroke-linecap="round">${paths}</g></svg>`;
 }

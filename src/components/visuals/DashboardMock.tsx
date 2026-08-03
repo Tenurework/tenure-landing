@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/cn";
+import { useOnScreen } from "@/lib/use-on-screen";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -19,12 +20,25 @@ const ICONS: Record<ModuleKey, string> = {
   Memory: "M12 3l8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12L4 7.5",
 };
 
+/**
+ * Search queries against what is actually indexed.
+ *
+ * loadSearchCorpus in the deploying repo builds from exactly five sources: memory
+ * records, document titles and descriptions, approval requests, events and
+ * organizations. Budget, BudgetLine, Transaction, LedgerEntry, Vendor, User and
+ * DirectoryPerson are absent — which is why /trust states that finance figures and
+ * people records cannot be answered by the assistant. These prompts used to ask
+ * exactly those questions, in full sentences the AND-matcher returns nothing for,
+ * so the site's most prominent mock demonstrated the one thing its own security
+ * page says the product cannot do. They are now keyword-shaped and aimed at the
+ * indexed kinds.
+ */
 const ASKS: Record<ModuleKey, string[]> = {
-  Finance: ["Why was the gala budget returned?", "What did the board decide about dues?"],
-  Calendar: ["Which venues have we used before?", "When did we last hold the gala?"],
-  Approvals: ["What's stuck in OSE review?", "Which vendor requests did OSE return?"],
-  Members: ["What did this seat hand over last term?", "Which roster changes did OSE approve?"],
-  Memory: ["Why did we drop the fall mixer?", "Which sponsors should we renew?"],
+  Finance: ["gala budget approval", "dues decision"],
+  Calendar: ["gala venue", "spring formal"],
+  Approvals: ["OSE review", "vendor request"],
+  Members: ["handover notes", "roster change approval"],
+  Memory: ["fall mixer", "sponsor renewal"],
 };
 
 /* -------------------------------------------------------------- primitives */
@@ -349,11 +363,19 @@ export function DashboardMock({
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModuleKey>(initialModule);
   const [paused, setPaused] = useState(false);
+  const { ref: frameRef, onScreen } = useOnScreen<HTMLDivElement>();
   const View = VIEWS[active];
 
-  // Auto-advance through modules (hero surface); paused on hover, off for reduced motion.
+  // Auto-advance through modules (hero surface); paused on hover, off for reduced
+  // motion, and — added after measurement — stopped while the mock is off screen.
+  //
+  // Each tick swaps a whole dashboard subtree, and this ran for the entire session:
+  // on a mobile viewport the hero scrolls away almost immediately and the tour kept
+  // re-rendering behind the reader for as long as the tab stayed open. Gating it on
+  // visibility was measured at ~438 ms of style and layout on its own, and ~1,053 ms
+  // together with SeatMechanism's timer.
   useEffect(() => {
-    if (!auto || reduce || paused) return;
+    if (!auto || reduce || paused || !onScreen) return;
     const id = setInterval(() => {
       // Checked per tick, not once: a gate evaluated when the effect runs would
       // strand the tour permanently if the page happened to start backgrounded.
@@ -361,10 +383,11 @@ export function DashboardMock({
       setActive((cur) => NAV[(NAV.indexOf(cur) + 1) % NAV.length]);
     }, 4200);
     return () => clearInterval(id);
-  }, [auto, reduce, paused]);
+  }, [auto, reduce, paused, onScreen]);
 
   return (
     <div
+      ref={frameRef}
       className={cn(tilt && "[perspective:2200px]", className)}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
@@ -470,7 +493,10 @@ export function DashboardMock({
               <span className="text-[0.78rem] font-semibold text-ink">Tenure AI</span>
               <motion.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
-            <p className="text-[0.74rem] leading-relaxed text-ink-soft">Ask about the <span className="font-medium text-ink">{active.toLowerCase()}</span> this seat has recorded.</p>
+            {/* Module-independent: the caption used to interpolate the active module,
+                so it promised answers "about the finance" and "about the members" —
+                the two kinds that are not in the search corpus at all. */}
+            <p className="text-[0.74rem] leading-relaxed text-ink-soft">Search the decisions, events and records this seat has filed.</p>
             <div className="space-y-1.5">
               {ASKS[active].map((a) => (
                 <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-[0.7rem] text-ink-soft">{a}</span>

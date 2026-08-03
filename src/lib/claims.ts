@@ -79,7 +79,11 @@ export const claims: Claim[] = [
   {
     id: "C-001",
     claim:
-      "Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and an outgoing one keeps the record but loses access.",
+      // Phrased so the SEAT is the subject of "keeps". Written the other way round —
+      // "an outgoing one keeps the record" — the sentence says the departing student
+      // retains the organization's record, which is what /privacy and /terms exist to
+      // rule out.
+      "Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and when a term ends the record stays on the seat while the outgoing officer's access does not.",
     where: ["/", "/product", "/trust"],
     category: "product",
     evidenceRepo: "Tenure",
@@ -270,12 +274,21 @@ export const claims: Claim[] = [
     evidenceCommit: TENURE,
     evidence: [
       "apps/web/prisma/schema.prisma:872-891 (AuditEvent)",
-      "apps/web/src/lib/admin/guard.ts:63 (audits both outcomes)",
-      "37 auditEvent.create sites; zero update/delete/upsert in application code",
+      "apps/web/src/lib/admin/guard.ts:63-76 (requireCapability writes the row with outcome ALLOW or DENY before it throws; 19 of 21 admin actions route through it)",
+      "apps/web/e2e/audit.spec.ts (OSE sees a filterable audit log)",
+      "zero update/delete/upsert against the audit table in application code",
     ],
     availability: "ci-verified",
+    // The "49 of 63 (78%)" figure did not survive a recount and has been removed
+    // from here and from every public surface. Three methods over the deploying
+    // repo at 819aec0e produced three different answers, and the exclusion list was
+    // wrong on its own terms: resources/actions.ts routes both writes through an
+    // audited helper in resources-data.ts, and the document-summary path writes a
+    // Document.Summarized row. Publishing a precise fraction again requires a count
+    // GENERATED in the deploying repo — the bible forbids a hardcoded metric with no
+    // generated source, and this is exactly why.
     qualification:
-      "Coverage is 49 of 63 server actions (78%), NOT 100%. Messaging, feed, profile and resource writes are unaudited, and AI/search routes write no audit row. There is no hash, prevHash, signature or checksum column — never say hash-chained, tamper-proof, cryptographically immutable or WORM.",
+      "Coverage is PARTIAL and no fraction may be published until a count is generated in the deploying repo. Verified action-by-action: administrative actions are audited through the capability guard, including denials; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not, and search queries are not recorded — of the AI paths only document summarisation is. Never say 100%. There is no hash, prevHash, signature or checksum column — never say hash-chained, tamper-proof, cryptographically immutable or WORM.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -290,7 +303,13 @@ export const claims: Claim[] = [
     evidenceCommit: TENURE,
     evidence: [
       "infrastructure/terraform/rds.tf:35 (storage_encrypted = true)",
-      "infrastructure/terraform/s3.tf:15 (sse_algorithm = \"aws:kms\")",
+      // s3.tf:15 sets the bucket DEFAULT to aws:kms, but uploadDocument passes
+      // ServerSideEncryption "AES256" on every PutObject, which overrides the bucket
+      // default per object. Documents actually land under SSE-S3. The public claim
+      // ("encrypted at rest, AWS-managed keys") holds either way, but the citation
+      // misdescribed the mechanism it was offered as proof of.
+      "infrastructure/terraform/s3.tf:15 (bucket default sse_algorithm = \"aws:kms\")",
+      "apps/web/src/lib/s3.ts:31 (PutObject ServerSideEncryption \"AES256\" — overrides the bucket default; both are AWS-managed)",
       "apps/web/src/lib/s3.ts:47,61 (getSignedUrl, expiresIn 600)",
     ],
     availability: "live",
@@ -371,6 +390,35 @@ export const claims: Claim[] = [
       "This list must stay complete. Adding anything that touches organizational records requires updating /privacy and notifying active organizations before it starts processing.",
     owner: "Almamy Diaby",
     lastVerified: VERIFIED,
+    reviewBy: REVIEW,
+  },
+
+  /**
+   * Registered 2026-08-03. The home page has always rendered "Force approve ·
+   * Force reject · both gates bypassed" and an `approval.force_approved` audit
+   * line, but neither /trust nor /pilot mentioned an override — the word appeared
+   * zero times on both — while each listed the two LESSER approval bypasses. The
+   * two pages that exist to tell a security reviewer what to worry about omitted
+   * the highest-privilege action in the product. No claim row covered it, so no
+   * ratchet could have noticed.
+   */
+  {
+    id: "C-037",
+    claim:
+      "A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both approval gates. Every use is audited.",
+    where: ["/", "/trust", "/pilot"],
+    category: "security",
+    evidenceRepo: "Tenure",
+    evidenceCommit: TENURE,
+    evidence: [
+      "apps/web/src/lib/admin/capabilities.ts:118-123 (approval.override, minRole OSE_DIRECTOR)",
+      "apps/web/src/lib/admin/guard.ts:63-76 (requireCapability writes an AuditEvent with outcome ALLOW or DENY before it throws)",
+    ],
+    availability: "live",
+    qualification:
+      "Nothing prevents the override and no second party is required — there is no four-eyes control on it. It must never be described as constrained, only as audited. Wherever the home page's console mock shows it, /trust must carry the limit.",
+    owner: "Satvik Adyanthaya",
+    lastVerified: "2026-08-03",
     reviewBy: REVIEW,
   },
   {
@@ -457,11 +505,16 @@ export const claims: Claim[] = [
     evidence: [
       "apps/web/src/lib/search-data.ts (loadSearchCorpus applies RBAC before ranking)",
       "apps/web/src/lib/ai.ts:35 (fetch https://api.anthropic.com/v1/messages)",
-      "apps/web/src/lib/ai.ts:21 (model claude-haiku-4-5-20251001)",
+      "apps/web/src/lib/ai.ts:21 (model resolved as process.env.ANTHROPIC_MODEL ?? claude-haiku-4-5-20251001, unvalidated)",
+      // Three call sites reach the API, not one. The register previously cited only
+      // the first, and /privacy disclosed only the first.
+      "apps/web/src/lib/ai.ts:82-97 (draftText — sends the user's Draft Assist instruction)",
+      "apps/web/src/lib/ai.ts:99-112 (summarizeDocument — sends content.slice(0, 24_000) of the file body)",
+      "apps/web/src/lib/search.ts:21-41 (tokenize + scoreDoc: terms.every, AND semantics)",
     ],
     availability: "live",
     qualification:
-      "PROVIDER GATE: production calls Anthropic DIRECTLY. There is no Bedrock integration in either repository. Public and legal copy must say Anthropic until the deploying repo invokes Bedrock, infrastructure and tests land, and the cutover is confirmed. One platform-wide key serves all tenants; there is no per-tenant key, quota or opt-out. Retrieval is keyword matching over five record kinds — no embeddings, no vector search, document file contents not indexed. Never say 'instant', 'never invents' or 'answers anything'.",
+      "PROVIDER GATE: production calls Anthropic DIRECTLY. There is no Bedrock integration in either repository. Public and legal copy must say Anthropic until the deploying repo invokes Bedrock, infrastructure and tests land, and the cutover is confirmed. The model id is an UNVALIDATED environment variable defaulting to claude-haiku-4-5-20251001 — say 'by default', and do not describe Parent's reviewed-model allowlist, which does not deploy. One platform-wide key serves all tenants; there is no per-tenant key, quota or opt-out. THREE outbound flows, all of which must be disclosed together: retrieved records at question time, full text-document contents on an explicit summary request, and the Draft Assist instruction. RETRIEVAL IS CONJUNCTIVE: every query token longer than one character must appear literally in a single record, with no stemming, synonyms or stopword removal — so full-sentence questions typically return nothing, and any rendered demo must use keyword-shaped queries against the five indexed kinds. Citation is prompt-instructed and unverified, and the route calls the model even with zero sources: never write 'every answer cites its sources'. Never say 'instant', 'never invents' or 'answers anything'.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -475,8 +528,14 @@ export const claims: Claim[] = [
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "apps/web/src/components/TenureAIPanel.tsx:74-84",
-      "apps/web/src/app/(app)/search/page.tsx:71-75",
+      // Was apps/web/src/components/TenureAIPanel.tsx — a path that does not exist.
+      // The ratchet only regex-matched the SHAPE of a path and never resolved one,
+      // so a dead citation passed green.
+      "apps/web/src/components/ai/TenureAIPanel.tsx:73-85",
+      // search/page.tsx gates its "answer generation was unavailable" notice behind
+      // aiConfigured(), so with no API key set it cannot distinguish an unavailable
+      // model from a query that matched nothing. Only the panel satisfies the claim.
+      "apps/web/src/app/(app)/search/page.tsx:71-75 (partial — see qualification)",
     ],
     availability: "live",
     owner: "Satvik Adyanthaya",
@@ -530,7 +589,8 @@ export const claims: Claim[] = [
     evidenceCommit: TENURE,
     evidence: [
       "apps/web/src/app/api/documents/_lib/content.ts (JSZip, xlsx, mammoth)",
-      "apps/web/src/app/api/documents/.../save/route.ts (optimistic lock -> 409)",
+      // The literal "..." segment resolved to nothing. Real path, brackets included:
+      "apps/web/src/app/api/documents/[id]/save/route.ts (optimistic lock -> 409)",
     ],
     availability: "live",
     qualification:
@@ -550,6 +610,11 @@ export const claims: Claim[] = [
     evidence: [
       "apps/web/src/lib/finance.ts:141-261 (scored fuzzy header matching, no-reuse allocation)",
       "apps/web/src/app/api/templates/budget/route.ts (template generated by the same code that parses it)",
+      // "ci-verified" means a test asserts it on every build, and this row named no
+      // test at all until 2026-08-03 — it passed only because the ratchet checked
+      // that evidence LOOKED like a path, never that any of it was a test.
+      "apps/web/e2e/finance.spec.ts",
+      "apps/web/src/lib/finance.test.ts",
     ],
     availability: "ci-verified",
     owner: "Satvik Adyanthaya",
@@ -568,11 +633,20 @@ export const claims: Claim[] = [
       "apps/web/src/app/api/jobs/reminders/route.ts",
       "DeliverableReminder @@unique([deliverableId,userId])",
       "infrastructure/terraform/scheduler.tf (EventBridge cron(0 13 * * ? *))",
-      "apps/web/e2e/deliverables.spec.ts",
+      // Was apps/web/e2e/deliverables.spec.ts, whose 5 tests are all about how
+      // deadlines render on the calendar — none exercises the reminder job, the
+      // bearer gate or the once-per-person guarantee this claim rests on. The spec
+      // that actually covers it:
+      "apps/web/e2e/policies.spec.ts:77-106",
     ],
     availability: "ci-verified",
     qualification:
-      "Delivery is IN-APP ONLY. All three Delivery writes hardcode channel 'in_app'; there is no SES, nodemailer or web-push anywhere. Never claim email or push delivery.",
+      // "there is no SES ... anywhere" was false and would mislead the next reviewer
+      // who greps and finds it: infrastructure/terraform/ses.tf provisions a domain
+      // identity, DKIM, an email identity and a configuration set, and ecs.tf:151
+      // injects SES_FROM_EMAIL into the task. The public conclusion is unchanged —
+      // nothing invokes any of it.
+      "Delivery is IN-APP ONLY. All three Delivery writes hardcode channel 'in_app', and no application code sends email or push. SES is provisioned in Terraform (ses.tf) and SES_FROM_EMAIL is injected into the task, but nothing invokes it. Never claim email or push delivery.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -632,14 +706,23 @@ export const claims: Claim[] = [
   },
   {
     id: "C-015",
-    claim: "132 end-to-end tests and 292 unit tests run on every build.",
+    claim: "132 end-to-end tests and 320 unit tests run on every build.",
     where: ["/", "site.ts metrics", "/pilot"],
     category: "metric",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
       "28 e2e spec files containing 132 test() cases",
-      "23 .test.* + 2 .itest.ts containing 292 it()/test() cases",
+      // 292 was wrong and was published under a heading reading "Every number below
+      // is counted from the repository that deploys — not an estimate". Counted by
+      // running the suite rather than by grepping for it:
+      //   cd apps/web && npx jest --ci --silent
+      //   -> Test Suites: 23 passed, 23 total / Tests: 320 passed, 320 total
+      // The *.itest.ts files are excluded from that run by testPathIgnorePatterns
+      // because they need a live PostgreSQL, so "runs against a real database"
+      // belongs to the e2e half of the sentence only.
+      "apps/web/jest.config.js (testPathIgnorePatterns excludes *.itest.ts — those need a live PostgreSQL)",
+      "23 jest suites containing 320 test cases (cd apps/web && npx jest --ci, run 2026-08-03)",
     ],
     availability: "live",
     owner: "Satvik Adyanthaya",
@@ -737,6 +820,31 @@ export const claims: Claim[] = [
   },
 ];
 
+/**
+ * The knowledge-card kinds a person may actually create, mirroring
+ * CreatableCardTypeEnum in the deploying repo at `apps/web/src/lib/schemas/
+ * knowledge-card.ts:38-46`.
+ *
+ * The home page advertised "Credential" here for months. The product retired that
+ * type deliberately — MemoryRecord.content is an unencrypted Json column that any
+ * ACTIVE seat can write and that is indexed for search, so a card kind called
+ * "Login or access info" invited people to paste passwords into a shared database,
+ * against a schema comment claiming an encryption control that was never written.
+ * It also omitted THREAD and BUDGET, which are creatable.
+ *
+ * Nothing tests a marketing tag row against a product enum unless something like
+ * this exists to test it against.
+ */
+export const creatableCardTypes = [
+  "Contact",
+  "Playbook",
+  "Budget",
+  "Vendor",
+  "Lesson",
+  "Thread",
+  "Deadline",
+] as const;
+
 /** Phrases that may never appear in public copy, with the claim that forbids them. */
 export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: string }[] = [
   { phrase: /\bFERPA[- ](compliant|aligned|certified)\b/i, because: "No FERPA controls exist", claimId: "C-027" },
@@ -755,7 +863,17 @@ export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: strin
   { phrase: /\bnothing leaves your tenant\b/i, because: "Record text is sent to Anthropic", claimId: "C-007" },
   { phrase: /\banswers? anything\b/i, because: "Retrieval is keyword matching over five record kinds", claimId: "C-007" },
   { phrase: /\bnever (invents|hallucinates)\b/i, because: "Grounding is prompt-instructed, not verified", claimId: "C-007" },
-  { phrase: /\b100% of actions\b/i, because: "Audit coverage is 49/63 server actions", claimId: "C-004" },
+  { phrase: /\b100% of actions\b/i, because: "Audit coverage is partial and not generated; messaging, feed and profile writes append nothing", claimId: "C-004" },
+  // Added this pass, each from a defect that shipped past the existing rules:
+  { phrase: /\bevery answer (cites|links)\b/i, because: "Citation is prompt-instructed and unverified; the route calls the model even with zero sources", claimId: "C-007" },
+  { phrase: /\bcontact sales\b/i, because: "site.ts retired the phrase for overselling a two-founder company; use site.ctaLabel", claimId: "C-014" },
+  { phrase: /\bversioned\b/i, because: "Document.version is an optimistic-lock counter; there is no DocumentVersion model, history or restore", claimId: "C-010" },
+  // Deliberately NOT a blanket ban on the word "credential": /terms and /trust have
+  // to be able to say that pilot access is not gated on an individual credential,
+  // which is the honest disclosure. What must never return is CREDENTIAL offered as
+  // a knowledge-card KIND — the product retired it because MemoryRecord.content is
+  // an unencrypted Json column. That is held by the card-kind test in claims.spec.ts
+  // against creatableCardTypes below, not by a phrase match.
   { phrase: /\bexport everything,? anytime\b/i, because: "There is no bulk export path", claimId: "C-028" },
   { phrase: /\bseparation of duties\b/i, because: "No SoD control exists", claimId: "C-024" },
   { phrase: /\bleast[- ]access\b/i, because: "Any institution member can read every organization", claimId: "C-025" },

@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   claims,
+  creatableCardTypes,
   forbiddenPhrases,
   forbiddenPilotPhrases,
   type Claim,
@@ -62,8 +63,20 @@ const ASSERTS_ABSENCE: Claim["availability"][] = [
  * fixed — the live tests above them already cover everything else.
  */
 const KNOWN_REGISTER_GAPS = {
-  /** C-031 is `unsupported` but carries no `qualification`. */
-  missingQualification: ["C-031"],
+  /**
+   * Empty, and it should stay that way.
+   *
+   * This used to list C-031 as "unsupported but carries no qualification". C-031
+   * has carried one all along (claims.ts:428 — "Append-only is enforced by the
+   * application, not by cryptography..."), so the live test `continue`d past the
+   * one claim it named, and the paired test.fixme that would have caught a REAL
+   * missing qualification stayed switched off behind it.
+   *
+   * That is the failure mode worth naming: a stale exemption is indistinguishable
+   * from a live one, and it silently excuses the next genuine defect. The live
+   * test passes unexempted.
+   */
+  missingQualification: [] as string[],
   /**
    * C-028 / C-029 / C-030 are sourced to the deploying repo but cite no file:
    * their evidence is an absence proof ("grep returns zero hits"), and a file
@@ -414,6 +427,41 @@ test.describe("forbidden phrases", () => {
    * is why the test above does not catch it. Fixing it means editing a
    * component this suite does not own.
    */
+  /**
+   * The home page advertised "Credential" as a knowledge-card kind for months.
+   *
+   * The product retired that type on purpose: MemoryRecord.content is an
+   * unencrypted Json column that any ACTIVE seat can write and that is indexed for
+   * search, so a kind called "Login or access info" invited people to paste
+   * passwords into a shared database against an encryption control that was never
+   * written. The row also omitted THREAD and BUDGET, which are creatable.
+   *
+   * No phrase blocklist could catch this — "Credential" is a perfectly good word,
+   * and /terms and /trust now have to use it to disclose that pilot access is not
+   * gated on an individual credential. What is wrong is only the CONTEXT: the word
+   * offered as a card kind. So the row is asserted against the register's mirror of
+   * the product enum instead.
+   */
+  test("the memory card kinds match the types the product lets you create", async ({ page }) => {
+    await page.goto("/");
+    await settle(page);
+    const row = page.getByTestId("memory-card-kinds");
+    await expect(row).toBeVisible();
+    const rendered = (await row.allInnerTexts())
+      .join("\n")
+      .split("\n")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    expect(
+      rendered,
+      `The home page's knowledge-card kinds must equal CreatableCardTypeEnum in the ` +
+        `deploying repo (mirrored as creatableCardTypes in src/lib/claims.ts).\n` +
+        `    rendered: ${rendered.join(", ")}\n` +
+        `    expected: ${creatableCardTypes.join(", ")}\n` +
+        `    "Credential" is retired and must never return without a vault behind it.`,
+    ).toEqual([...creatableCardTypes]);
+  });
+
   test("SOC 2 is never described as in progress", async ({ page }) => {
     const pages = await siteText(page);
     const violations = pages
@@ -668,19 +716,61 @@ test.describe("claims register integrity", () => {
     expect(problems, report(problems)).toHaveLength(0);
   });
 
+  /*
+    The test.fixme that used to sit here has been deleted rather than fixed,
+    because there was nothing to fix. It pinned "C-031 carries no qualification",
+    and C-031 has carried one all along. The stale entry in KNOWN_REGISTER_GAPS
+    made the live test above skip the only id it named, and kept this disabled
+    test standing in for a defect that did not exist. Both are gone; the live test
+    now runs unexempted.
+  */
+
   /**
-   * KNOWN DEFECT — see `failures` in the report.
-   * C-031 ("Cryptographic tamper-evidence on the audit trail", availability
-   * "unsupported") carries no `qualification`, so nothing travels with it to
-   * explain what append-only does and does not prove. Every other absent
-   * capability in the register has one. Fixing it means editing
-   * src/lib/claims.ts, which this suite does not own.
+   * An evidence path with a "..." in it is not a path.
+   *
+   * C-010 cited `apps/web/src/app/api/documents/.../save/route.ts` and passed for
+   * months, because CITES_A_PATH only matches the SHAPE of a path and never
+   * resolves one. The product repo is not checked out in CI, so this suite cannot
+   * open the file — but it can refuse the two things that are wrong on their face:
+   * an elided segment, and a bare directory where a file was promised.
    */
-  test.fixme("every unsupported claim states its limit, with no exceptions", () => {
-    const missing = claims
-      .filter((c) => ASSERTS_ABSENCE.includes(c.availability) && !c.qualification?.trim())
-      .map((c) => `${c.id} (${c.availability}): ${c.claim}`);
-    expect(missing, report(missing)).toHaveLength(0);
+  test("no evidence path contains an elided segment", () => {
+    const problems: string[] = [];
+    for (const c of claims) {
+      for (const e of c.evidence) {
+        if (/\.\.\./.test(e)) {
+          problems.push(
+            `${c.id} cites a path with "..." in it, which resolves to nothing:\n      ${e}\n` +
+              `    Write the real path. Bracketed Next.js segments are fine: [id], [slug].`,
+          );
+        }
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
+  });
+
+  /**
+   * "ci-verified" is defined in the register as "Live, and a test asserts it on
+   * every build". A claim making that promise must name the test.
+   *
+   * C-012 and C-018 were both marked ci-verified while citing no spec at all —
+   * C-018's evidence pointed at a spec that tests something else entirely.
+   */
+  test("every ci-verified claim names the test that verifies it", () => {
+    const TEST_FILE = /\.(?:spec|test|itest)\.[tj]sx?\b/;
+    const problems: string[] = [];
+    for (const c of claims) {
+      if (c.availability !== "ci-verified") continue;
+      if (!c.evidence.some((e) => TEST_FILE.test(e))) {
+        problems.push(
+          `${c.id} is "ci-verified" but cites no test file:\n` +
+            c.evidence.map((e) => `      - ${e}`).join("\n") +
+            `\n    "ci-verified" means a test asserts it on every build. Name that test, ` +
+            `or downgrade the claim to "live".`,
+        );
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
   });
 
   test("a capability sourced to the deploying repo cites a file", () => {

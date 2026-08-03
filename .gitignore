@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# lighthouse
+/lighthouse-reports/
+
 # playwright
 /playwright-report/
 /test-results/

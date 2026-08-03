@@ -7,6 +7,7 @@ import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/cn";
+import { useOnScreen } from "@/lib/use-on-screen";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -106,16 +107,25 @@ export function SeatMechanism() {
   const reduce = useReducedMotion();
   const [i, setI] = useState(0);
   const [paused, setPaused] = useState(false);
+  const { ref: sectionRef, onScreen } = useOnScreen<HTMLElement>();
   const step = STEPS[i];
 
+  // Gated on visibility as well as reduced motion and hover. This had no viewport
+  // check and — unlike DashboardMock — not even a backgrounded-tab check, so it
+  // re-rendered the section and restarted a NumberFlow digit animation every 3.4
+  // seconds for the life of the page. Measured at roughly 615 ms of the home page's
+  // style and layout.
   useEffect(() => {
-    if (reduce || paused) return;
+    if (reduce || paused || !onScreen) return;
     const id = setInterval(() => setI((v) => (v + 1) % STEPS.length), 3400);
     return () => clearInterval(id);
-  }, [reduce, paused]);
+  }, [reduce, paused, onScreen]);
 
   return (
-    <section className="relative isolate overflow-hidden border-t border-line py-24 sm:py-32">
+    <section
+      ref={sectionRef}
+      className="relative isolate overflow-hidden border-t border-line py-24 sm:py-32"
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 -z-10 [background:radial-gradient(50%_50%_at_18%_25%,color-mix(in_oklab,var(--accent)_6%,transparent),transparent_70%)]"
@@ -278,8 +288,17 @@ export function SeatMechanism() {
                 {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
                 <span className="text-[0.74rem] font-semibold text-ink">Ask this seat</span>
               </div>
+              {/*
+                A keyword query, not a sentence. This read "Who did we use for
+                catering, and why did we switch?" — eleven terms, and search.ts:39
+                requires EVERY one of them to appear literally in a single record
+                ("who", "did", "we", "and" included), with no stemming or stopword
+                removal. Three records would each have had to contain all eleven for
+                the "3 sources" below to be true. In practice it returns nothing, and
+                with zero sources the route never calls the model at all.
+              */}
               <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-[0.78rem] text-ink-soft ring-1 ring-line">
-                Who did we use for catering, and why did we switch?
+                catering vendor
               </p>
               <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-[0.78rem] leading-relaxed text-ink">
                 Prestige Catering. Marcus renegotiated after the &rsquo;25 gala ran over

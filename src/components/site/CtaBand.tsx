@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Container } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactSales } from "@/components/ui/ContactSales";
-import { ContourField } from "@/components/visuals/ContourField";
+import { ContourMask } from "@/components/visuals/SectionContour";
 import { site } from "@/lib/site";
 
 /** Site-wide closing call to action, a navy band. Reused at the foot of pages. */
@@ -23,7 +23,7 @@ export function CtaBand({
         aria-hidden
         className="pointer-events-none absolute inset-0 text-inverse/[0.1] [mask-image:radial-gradient(75%_75%_at_50%_50%,black,transparent_78%)]"
       >
-        <ContourField seed={3} />
+        <ContourMask seed={3} />
       </div>
       {/* angular accents */}
       <div

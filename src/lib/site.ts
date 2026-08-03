@@ -111,8 +111,13 @@ export const site = {
     {
       name: "Startup Wednesday",
       src: "/logos/startup-wednesday.png",
-      width: 2000,
-      height: 563,
+      // `width`/`height` are the RENDERED box, not the intrinsic asset size.
+      // Passing the intrinsic 2000x563 to next/image made it build a srcset at 1x
+      // and 2x of 2000 — capped at the largest device size — so a mark that paints
+      // ~128px wide was fetched as /_next/image?w=3840. Lighthouse caught it.
+      // Intrinsic size is preserved in the source file; only the request changes.
+      width: 128,
+      height: 36,
       displayHeight: "2.25rem",
     },
     {
@@ -121,8 +126,9 @@ export const site = {
       // vertical variant ships alongside it at
       // /logos/simon-business-school-vertical.png for stacked placements.
       src: "/logos/simon-business-school-horizontal.png",
-      width: 1054,
-      height: 339,
+      // Rendered box; intrinsic asset is 1054x339. See the note above.
+      width: 107,
+      height: 34,
       displayHeight: "2.15rem",
     },
   ],
@@ -169,7 +175,7 @@ export const site = {
       value: 132,
       suffix: "",
       label: "end-to-end tests",
-      sub: "run against a real database on every build, alongside 292 unit tests",
+      sub: "run against a real database on every build, alongside 320 unit tests",
       claimId: "C-015",
     },
   ],

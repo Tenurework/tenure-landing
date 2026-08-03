@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "build:contours": "node scripts/build-contours.mjs",
+    "prebuild": "node scripts/build-contours.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "check:contrast": "node scripts/check-contrast.mjs",
     "check:links": "node scripts/check-links.mjs",
+    "check:perf": "node scripts/check-perf.mjs",
     "claims:build": "node scripts/build-claims-doc.mjs",
     "test": "playwright test",
     "test:e2e": "playwright test nav.spec.ts interaction.spec.ts",
@@ -19,7 +22,7 @@
     "test:visual": "playwright test visual.spec.ts",
     "test:visual:update": "playwright test visual.spec.ts --update-snapshots",
     "test:ui": "playwright test --ui",
-    "verify": "npm run lint && npm run typecheck && npm run check:contrast && npm run build && npm run test"
+    "verify": "npm run lint && npm run typecheck && npm run check:contrast && npm run build && npm run check:links && npm run test"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.0",
@@ -28,9 +31,7 @@
     "motion": "^12.42.0",
     "next": "16.2.9",
     "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "simple-icons": "^16.24.0",
-    "tailwind-merge": "^3.6.0"
+    "react-dom": "19.2.4"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
@@ -42,6 +43,7 @@
     "axe-core": "^4.12.1",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "lighthouse": "^13.4.1",
     "playwright": "^1.61.1",
     "tailwindcss": "^4",
     "typescript": "^5"

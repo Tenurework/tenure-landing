@@ -14,15 +14,27 @@ type Exchange = {
   sources: string;
 };
 
+/**
+ * These are search queries, not conversation.
+ *
+ * The deploying retriever tokenises on non-alphanumerics, drops one-character
+ * tokens, and then requires EVERY remaining token to appear literally in a single
+ * record — no stemming, no synonyms, no stopword removal. "What's our sponsorship
+ * pipeline?" therefore becomes a four-term AND including "what" and "our", and
+ * returns nothing. These demos used to be shaped that way, which meant the most
+ * prominent product proof on the site depicted a result the product cannot return.
+ *
+ * Substring matching is what makes these work: "election" matches "elections".
+ */
 const EXCHANGES: Exchange[] = [
   {
-    ask: "What's our sponsorship pipeline?",
+    ask: "sponsorship renewal",
     answer:
       "From last term’s sponsorship cards: Aramark renewal sent, M&T Bank awaiting reply after Maya ’24’s intro, Rochester Print at a standing 15% rate.",
     sources: "3 sources",
   },
   {
-    ask: "How do we run elections?",
+    ask: "election nominations",
     answer:
       "Nominations open week 10, two-week window, ranked-choice ballot in the Members module.",
     sources: "2 records",
@@ -193,10 +205,24 @@ export function AiOnboarding() {
             have to reach /trust to find it. */}
         <Reveal delay={0.1}>
           <p className="mx-auto mt-12 max-w-2xl text-center text-[0.88rem] leading-relaxed text-inverse/60">
-            Tenure AI is given only records you can already open, and every
-            answer links its sources. To compose an answer, the retrieved text
-            is sent to Anthropic&rsquo;s API &mdash; part of your record does
-            leave our infrastructure when someone asks. We do not train models
+            {/*
+              "every answer links its sources" was an absolute the code does not
+              enforce: citation is an instruction in the system prompt with no
+              post-hoc verification, and the chat route calls the model even when
+              retrieval matched nothing, passing "(none found)" as the source block.
+              /trust already had the accurate phrasing; it is used here now.
+
+              The provider sentence also disclosed only one of three outbound flows.
+              Document summarisation sends the file's text and Draft Assist sends the
+              user's instruction, neither of which is "retrieved text at question
+              time".
+            */}
+            Tenure AI is given only records you can already open, and answers link
+            the records they came from. Text is sent to Anthropic&rsquo;s API in
+            three cases &mdash; the records retrieved for a question, the contents
+            of a text document when someone asks for a summary, and the
+            instruction typed into Draft Assist &mdash; so part of your record does
+            leave our infrastructure at those moments. We do not train models
             on it, and no pipeline exists that could.{" "}
             <Link
               href="/trust"

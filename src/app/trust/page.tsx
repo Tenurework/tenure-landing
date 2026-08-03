@@ -30,8 +30,14 @@ const GROUPS: Group[] = [
         title: "Tenant filter attached to the database client — directly on 15 of 39 models",
         status: "ci",
         body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 15 of 39 is the honest headline.",
+        // The old sentence said all 24 remaining models "are reached through their
+        // parent relation", which the registry it cites contradicts twice: five are
+        // platform-global by design and have no tenant parent, and DirectoryPerson is
+        // recorded with reachableVia "(none)". Describing the model that holds real
+        // student and advisor contact details as parent-protected made the disclosure
+        // less honest than the code it describes.
         limit:
-          "The other 24 models are reached through their parent relation and are recorded in the tenancy registry as not independently enforceable at the query layer — a query that reaches them without going through the parent is not caught by the extension. This is also query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
+          "Of the other 24: five are platform-global by design — the identity and session rows — and are not tenant-owned. Nineteen are tenant-owned with no column the query layer can filter on. Eighteen of those are reachable only through a scoped parent, so they are protected by whatever check the calling code performs rather than by the extension. The nineteenth, DirectoryPerson, holds student and advisor contact details and has no parent at all; it needs a schema change before a second institution exists. This is also query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",
@@ -68,6 +74,18 @@ const GROUPS: Group[] = [
           "Stated plainly because it is the question an institution should ask. If you need advisors scoped to assigned organizations, that work is not done and we will not pretend otherwise.",
       },
       {
+        // The home page renders "Force approve · Force reject · both gates bypassed"
+        // and an approval.force_approved audit line, while the two pages that claim
+        // to enumerate what a security reviewer must know contained the word
+        // "override" zero times between them. Listing the two lesser bypasses and
+        // omitting the total one is the wrong way round.
+        title: "Institution-wide approval override",
+        status: "live",
+        body: "A Director-tier capability, approval.override, can force-approve or force-reject any request in the institution, bypassing both gates. It is the highest-privilege action in the product.",
+        limit:
+          "Every use is written to the audit trail with the deciding seat, but nothing prevents it and no second party is required. If your policy needs a four-eyes control on overrides, Tenure does not have one.",
+      },
+      {
         title: "Separation of duties on approvals",
         status: "unsupported",
         body: "There is no control preventing a requester who also holds an approving seat from approving their own request. The requester is identified in the code but is not excluded from the approving step.",
@@ -84,8 +102,17 @@ const GROUPS: Group[] = [
         title: "Append-only audit trail, allows and denials",
         status: "ci",
         body: "Privileged actions append an audit row, and refusals are recorded as well as successes — which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
+        // The published fraction was "49 of 63 server actions", and it did not survive
+        // a recount. Three methods over the deploying repo at 819aec0e produced three
+        // different answers, and the exclusion list was wrong on its own terms:
+        // resources/actions.ts routes both of its writes through an audited helper in
+        // resources-data.ts, and document summarisation writes a Document.Summarized
+        // row, so "resource writes" and "AI ... not recorded at all" were both false.
+        // Publishing a precise figure again needs a count generated in the deploying
+        // repo, not one typed here — see the bible's rule on hardcoded metrics. What
+        // is stated below is what was verified action-by-action.
         limit:
-          "Coverage is 49 of 63 server actions. Messaging, activity-feed, profile and resource writes do not currently append a row, and AI or search queries are not recorded in the trail.",
+          "Coverage is partial and is not yet counted by anything that would fail if it drifted, so no fraction is published here. Verified today: administrative actions are audited through the capability guard, which records the denial as well as the allow; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not. Search queries are not recorded; of the AI paths, only document summarisation is.",
       },
       {
         title: "Decisions record the deciding seat",
@@ -161,7 +188,16 @@ const GROUPS: Group[] = [
       {
         title: "Model provider: Anthropic",
         status: "live",
-        body: "Answer synthesis calls Anthropic's API directly (Claude Haiku 4.5). Retrieved record text is included in that request, so some of your record does leave our infrastructure at the moment a question is asked. Anthropic is the only model subprocessor.",
+        // "Claude Haiku 4.5" is a default, not a guarantee: ai.ts resolves the model
+        // as process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001" with no
+        // validation. Nothing sets that variable today, so the default applies — but
+        // nothing in the deploying repo enforces it either. The reviewed-model
+        // allowlist exists only in Tenure-Parent, which does not deploy, so it must
+        // not be described here.
+        //
+        // Three call sites reach the API, not one. Summarisation sends document
+        // contents; Draft Assist sends the user's instruction.
+        body: "Anthropic's API is called directly, using Claude Haiku 4.5 by default. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our infrastructure at those moments. Anthropic is the only model subprocessor.",
         limit:
           "One platform-wide API key serves all tenants. There is no per-tenant key, no per-tenant usage quota, and no per-tenant opt-out.",
       },
@@ -176,13 +212,24 @@ const GROUPS: Group[] = [
         title: "Retrieval quality",
         status: "validating",
         body: "Retrieval is keyword matching over five record kinds — knowledge cards, document titles and descriptions, approvals, events and organization records. Answers link the records they came from.",
+        // The conjunctive rule is the property that decides whether a buyer's question
+        // works at all, and it was the one thing this limit did not say. Every token
+        // longer than one character must appear literally in a single record — no
+        // stemming, no synonyms, no stopword removal — so a full-sentence question
+        // is an AND over its every word, including "what" and "our", and typically
+        // returns nothing.
         limit:
-          "There is no semantic or vector search. Document file contents are not indexed, only titles and descriptions. Finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant today.",
+          "There is no semantic or vector search, and matching is literal and conjunctive: every word of a query longer than one character must appear in the same record, with no stemming, synonyms or stopword removal. Short, specific queries work; full-sentence questions often return nothing. Document file contents are not indexed for search, only titles and descriptions — though a document's contents are sent to the model when someone explicitly asks for a summary. Finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant today.",
       },
       {
         title: "Behaviour when the model is unavailable",
         status: "live",
-        body: "If synthesis is unavailable, the ranked and permission-scoped sources are still returned, and the interface says which happened.",
+        // "the interface says which happened" was true of only one of the two
+        // surfaces. The assistant panel distinguishes both cases; the search page
+        // gates its explanatory notice behind a configured API key, so when no key
+        // is set — the default in the deploying repo's Terraform — it renders
+        // sources with no explanation at all.
+        body: "If synthesis is unavailable, the ranked and permission-scoped sources are still returned. The assistant panel says which happened; the search page shows the sources without distinguishing an unavailable model from a query that matched nothing.",
       },
     ],
   },
@@ -195,7 +242,11 @@ const GROUPS: Group[] = [
         status: "validating",
         body: "Pilot accounts are created by us in advance against a named person. There is no public registration and no self-service signup. Sessions are issued as signed tokens by the application's auth layer.",
         limit:
-          "This is a pilot-grade access model, and it is the weakest control on this page. There is no MFA, no password policy you can configure, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold student data your institution would classify as sensitive, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
+          // "No password policy you can configure" presupposed a password. Naming the
+          // security property — that access is not gated on a per-user secret — is
+          // what an institution actually needs in order to assess the risk, and it
+          // stops short of publishing the mechanism C-023 holds back.
+          "This is a pilot-grade access model, and it is the weakest control on this page. Access is not gated on a secret held by one person and nobody else, so an action recorded under a name is not proof that person took it — which is why our Terms do not make you liable for activity under your account. There is no MFA, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold student data your institution would classify as sensitive, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
       },
       {
         title: "Multi-factor authentication",

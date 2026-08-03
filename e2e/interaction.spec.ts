@@ -368,7 +368,16 @@ test.describe("scheduler with calendly blocked", () => {
     await page.goto("/contact");
     await hydrated(page);
 
-    const anchor = page.getByRole("link", { name: new RegExp(`^${site.ctaLabel}`) }).last();
+    // Scoped to <main>. This used to be `page.getByRole(...).last()`, which worked
+    // only because the footer's CTA said "Contact Sales" and therefore did not match
+    // site.ctaLabel. That was itself the defect — site.ts retired that phrase and the
+    // footer was overriding the decision — so once the footer started rendering
+    // site.ctaLabel too, `.last()` began selecting the footer's /contact link instead
+    // of this page's scheduler anchor. Scoping says what the test actually means.
+    const anchor = page
+      .getByRole("main")
+      .getByRole("link", { name: new RegExp(`^${site.ctaLabel}`) })
+      .last();
     await expect(anchor).toBeVisible();
     await expect(anchor).toHaveAttribute("href", site.calendlyUrl);
     await expect(anchor).toHaveAttribute("target", "_blank");
@@ -520,7 +529,7 @@ test.describe("product mock", () => {
     await expect(page.getByText(PANEL_MARKER.Members)).toHaveCount(0);
   });
 
-  test("the mock auto-advances on its own", async ({ page }) => {
+  test("the mock auto-advances once it is on screen", async ({ page }) => {
     await page.goto("/");
     await hydrated(page);
 
@@ -530,10 +539,42 @@ test.describe("product mock", () => {
     // is not one for a touch or keyboard user.
     const pause = page.getByRole("button", { name: /pause tour/i });
     await expect(pause).toBeVisible();
+
+    // Scrolled into view deliberately. The tour is gated on an IntersectionObserver,
+    // so on a phone-sized viewport — where the mock stacks below the heading, the
+    // lead, both CTAs and two footnotes — it is not running when the page loads, and
+    // asserting otherwise would be asserting the bug this gate exists to fix. On
+    // desktop the mock is already in the first viewport and this is a no-op.
+    await pause.scrollIntoViewIfNeeded();
+
     await expect(page.getByText(PANEL_MARKER.Finance)).toBeVisible();
     // The tour advances every 4.2s; this waits for the next panel rather than
     // sleeping for a fixed interval.
     await expect(page.getByText(PANEL_MARKER.Calendar)).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("the tour stops while it is off screen", async ({ page }) => {
+    await page.goto("/");
+    await hydrated(page);
+
+    const pause = page.getByRole("button", { name: /pause tour/i });
+    await expect(pause).toBeVisible();
+    await pause.scrollIntoViewIfNeeded();
+    await expect(page.getByText(PANEL_MARKER.Finance)).toBeVisible();
+
+    // Away from the mock, well past it.
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+
+    // A fixed wait, which this suite otherwise avoids — but the assertion is that
+    // something does NOT happen, and there is no event to await for that. 6s clears
+    // the 4.2s tick with room. Before the gate, five ticks would have fired here for
+    // a surface scrolled far off screen, on every visitor's phone, for the whole
+    // session; that work was measured at roughly 438ms of style and layout.
+    await page.waitForTimeout(6_000);
+
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await pause.scrollIntoViewIfNeeded();
+    await expect(page.getByText(PANEL_MARKER.Finance)).toBeVisible();
   });
 
   test("the tour can be paused and resumed without a mouse", async ({ page }) => {

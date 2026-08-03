@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
@@ -79,11 +80,18 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
 const POINTS: { t: string; d: string }[] = [
   {
     t: "Ready on day one",
-    d: "Tenure AI answers from the knowledge, decisions and events recorded against the seat, from day one — so a brand-new officer's first question gets a sourced answer rather than a shrug.",
+    // This was the one unqualified promise on the site: "a brand-new officer's
+    // first question gets a sourced answer rather than a shrug", against a
+    // retriever that requires every word of the question to appear literally in
+    // one record. The limit travels with the claim now.
+    d: "Tenure AI answers from the knowledge, decisions and events recorded against the seat, from day one. Retrieval is literal keyword matching — every word of a question has to appear in a record — so short, specific queries work and full sentences often return nothing.",
   },
   {
-    t: "Every answer cites its sources",
-    d: "Responses link straight back to the records, files, and decisions they came from, and the model is only ever given records you're already allowed to see.",
+    // "Every answer cites its sources" is not an enforced property. Citation is an
+    // instruction in the system prompt with no verification, and the route calls
+    // the model even when nothing matched. /trust's wording is the accurate one.
+    t: "Answers link the records they came from",
+    d: "Responses link back to the records, files, and decisions they were drawn from, and the model is only ever given records you're already allowed to see.",
   },
   {
     t: "The knowledge stays with the seat",
@@ -115,7 +123,21 @@ export default function ProductPage() {
             <span className="text-grove">runs</span>.
           </>
         }
-        intro="Finance, events, members, documents and institutional memory in one governed record, and a handoff packet the next officer inherits already written. Below: the data model, what a week looks like on each side of it, and what is live versus planned."
+        // "and what is live versus planned" promised a status vocabulary this page
+        // does not have: the prerendered product.html contained no "Roadmap", no
+        // "Not supported", no status badge, and no body link to /trust — only the
+        // header and footer nav links. Promising the qualification and not shipping
+        // it is worse than not promising it, so the sentence now points at the page
+        // that does carry the vocabulary.
+        intro={
+          <>
+            Finance, events, members, documents and institutional memory in one
+            governed record, and a handoff packet the next officer inherits
+            already written. Below: the data model, and what a week looks like on
+            each side of it. What is live, in validation, on the roadmap or not
+            supported is set out on <Link href="/trust">Trust</Link>.
+          </>
+        }
       >
         <ContactSales size="lg" arrow />
         <Button href="/pilot" variant="secondary" size="lg">
@@ -217,9 +239,9 @@ export default function ProductPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
                 When a leader leaves and the next one takes the seat, they
-                don&rsquo;t start from zero. They ask Tenure in their own words
-                and get the sources back, with an answer whenever Tenure can
-                ground one in the seat&rsquo;s own record.
+                don&rsquo;t start from zero. They search the seat&rsquo;s own
+                record and get the sources back, with an answer whenever Tenure
+                can ground one in them.
               </p>
             </Reveal>
 

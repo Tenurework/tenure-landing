@@ -41,8 +41,14 @@ export function SiteFooter() {
             <p className="label-mono">Get started</p>
             <ul className="mt-4 space-y-3">
               <li>
+                {/*
+                  No children: fall through to site.ctaLabel. site.ts retired
+                  "Contact Sales" because it oversold a two-founder company and set
+                  the wrong expectation for who picks up — but this call site passed
+                  the literal string and overrode the decision on all eight routes.
+                */}
                 <ContactSalesLink className="group inline-flex items-center gap-1.5 text-[0.95rem] text-inverse transition-colors hover:text-grove-bright">
-                  Contact Sales
+                  {site.ctaLabel}
                   <span
                     aria-hidden
                     className="text-grove-bright transition-transform duration-300 group-hover:translate-x-0.5"

@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { SectionContour } from "@/components/visuals/SectionContour";
 import { cn } from "@/lib/cn";
+import { creatableCardTypes } from "@/lib/claims";
 
 const svg = {
   viewBox: "0 0 24 24",
@@ -68,9 +69,9 @@ function Desc({ children }: { children: ReactNode }) {
 }
 
 /* small tag chips */
-function Tags({ items }: { items: string[] }) {
+function Tags({ items, testId }: { items: string[]; testId?: string }) {
   return (
-    <div className="mt-4 flex flex-wrap gap-1.5">
+    <div data-testid={testId} className="mt-4 flex flex-wrap gap-1.5">
       {items.map((t) => (
         <span key={t} className="rounded-md border border-line bg-paper/50 px-1.5 py-0.5 font-mono text-[0.58rem] text-ink-soft">
           {t}
@@ -115,8 +116,11 @@ export function Platform() {
                 Answers drawn only from records your seat can already see.
               </Desc>
               <div className="mt-5 space-y-2">
+                {/* Keyword-shaped, for the reason recorded in AiOnboarding.tsx:
+                    retrieval is an AND over every query token. "How do we run
+                    elections?" is a five-term AND including "how", "do" and "we". */}
                 <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.76rem] text-ink-soft">
-                  How do we run elections?
+                  election nominations
                 </p>
                 <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
                   <p className="text-[0.76rem] leading-relaxed text-ink">
@@ -213,7 +217,20 @@ export function Platform() {
               <Desc>
                 Decisions and know-how filed as work happens.
               </Desc>
-              <Tags items={["Contact", "Playbook", "Vendor", "Lesson", "Credential", "Deadline"]} />
+              {/*
+                These are the card kinds a person may actually create, taken from
+                CreatableCardTypeEnum in the deploying repo. "Credential" used to be
+                listed here and is deliberately gone: the product retired it because
+                MemoryRecord.content is an unencrypted Json column, so a type called
+                "Login or access info" invited people to paste passwords into a
+                shared database against a control that was never written. Advertising
+                a credential store Tenure does not have is the worst thing to be asked
+                about in a security review. "Thread" and "Budget" are creatable and
+                were missing.
+              */}
+              {/* testId: claims.spec.ts asserts this row equals creatableCardTypes,
+                  so the retired CREDENTIAL kind cannot come back unnoticed. */}
+              <Tags testId="memory-card-kinds" items={[...creatableCardTypes]} />
             </Cell>
           </Reveal>
 
@@ -248,7 +265,14 @@ export function Platform() {
               <Desc>
                 PDF, Word, Excel and PowerPoint open inside Tenure.
               </Desc>
-              <Tags items={["versioned", "edit in place", "save-conflict check"]} />
+              {/*
+                "versioned" is gone. Document.version is a bare Int counter used for
+                the optimistic lock and the audit row — there is no DocumentVersion
+                model, no prior-version retrieval and no restore UI, and saves
+                overwrite the same S3 key. Sitting between two genuine editing
+                features, the word read as version history.
+              */}
+              <Tags items={["edit in place", "save-conflict check"]} />
             </Cell>
           </Reveal>
 

@@ -20,10 +20,13 @@ const RECORD: { label: string; value: string }[] = [
     label: "Pilot",
     value: `Planned ${site.pilot.season}`,
   },
-  // Deliberately "Built with", not "Partner". The Fall 2026 pilot is verbally
-  // agreed and not contracted, so no label here may imply procurement,
-  // sponsorship or endorsement by the university.
-  { label: "Built with", value: site.origin.office },
+  // "Built with" was still too strong for a labelled fact table. Nothing has been
+  // built with the office: /pilot says "Who would sign — Nobody yet" and
+  // "Organizations enrolled — None", and C-021's evidence is a conversation with no
+  // written commitment in either direction. In a row of verified founding facts,
+  // "Built with <institution>" asserts a completed collaboration that does not
+  // exist, which is exactly what C-021 and C-022 forbid implying.
+  { label: "Proposed pilot with", value: site.origin.office },
   { label: "Supported by", value: "Startup Wednesday" },
 ];
 
@@ -194,9 +197,9 @@ export default function StoryPage() {
                 Here is exactly where things stand. We are planning a{" "}
                 {site.pilot.season} pilot with Simon&rsquo;s Office of Student
                 Engagement, covering the organizations it stewards and the
-                office itself. That scope is proposed and agreed in
-                conversation &mdash; nothing is contracted, and no organization
-                has been enrolled.
+                office itself. That scope is one we have proposed and discussed
+                with the office &mdash; nothing is agreed in either direction,
+                nothing is contracted, and no organization has been enrolled.
               </p>
             </Reveal>
           </div>
