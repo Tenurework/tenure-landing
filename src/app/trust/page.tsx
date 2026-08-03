@@ -27,11 +27,11 @@ const GROUPS: Group[] = [
       "Each institution's record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
-        title: "Tenant filter attached to the database client",
+        title: "Tenant filter attached to the database client — directly on 15 of 39 models",
         status: "ci",
-        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases.",
+        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 15 of 39 is the honest headline.",
         limit:
-          "This is query-layer enforcement, not PostgreSQL row-level security. No CREATE POLICY exists. 15 of 39 models carry a tenant column directly; the remainder are reached through their parent relation and are recorded in the tenancy registry as not independently enforceable at the query layer.",
+          "The other 24 models are reached through their parent relation and are recorded in the tenancy registry as not independently enforceable at the query layer — a query that reaches them without going through the parent is not caught by the extension. This is also query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",
@@ -123,9 +123,28 @@ const GROUPS: Group[] = [
         body: "A seat carrying assignments, holdings or knowledge is refused deletion and must be retired instead. An active assignment is revoked to alumni rather than removed. This is deliberate: it is the property the whole product rests on.",
       },
       {
+        title: "Encryption in transit",
+        status: "live",
+        body: "All traffic is redirected to HTTPS at the edge, with a TLS 1.2 minimum.",
+      },
+      {
+        title: "Backups and point-in-time recovery",
+        status: "live",
+        body: "The database takes automated daily backups in a fixed window, has deletion protection enabled, and takes a final snapshot on teardown. The document bucket has object versioning enabled, so an overwritten file can be recovered.",
+        limit:
+          "Backup retention is ONE DAY. That is the setting in production infrastructure today, and it means an issue discovered on Wednesday cannot be recovered from Monday's state. For a system of record that is too short, we know it, and it is the single infrastructure number an institution should push us on.",
+      },
+      {
+        title: "Restore testing and disaster recovery",
+        status: "unsupported",
+        body: "No restore has been rehearsed, there is no documented recovery objective, and there is no second region. Backups exist; the process for using them under pressure does not.",
+      },
+      {
         title: "Bulk export",
         status: "roadmap",
         body: "There is no self-service export path in the application today. Export and deletion requests are handled by us, by hand, on request.",
+        limit:
+          "This is a dependency on us being reachable. It matters most in exactly the scenario where you would least want it — see the wind-down commitment in the terms.",
       },
     ],
   },
@@ -307,19 +326,39 @@ export default function TrustPage() {
         <div className="grid gap-8 py-14 sm:grid-cols-2">
           <div>
             <h2 className="font-display text-xl font-semibold tracking-tight text-text">
-              Reporting a security issue
+              Security issues, in both directions
             </h2>
             <p className="mt-3 leading-relaxed text-text-secondary">
-              Email{" "}
+              To report one: email{" "}
               <a
                 href={`mailto:${site.email}`}
                 className="text-accent-text underline underline-offset-4 hover:text-accent"
               >
                 {site.email}
-              </a>{" "}
-              with the details. It reaches both founders directly. We will
-              confirm receipt and tell you what we are doing about it — we do not
-              have a bug bounty, and we will not argue with you about severity.
+              </a>
+              . It reaches both founders directly. We will confirm receipt and
+              tell you what we are doing about it — we do not have a bug bounty,
+              and we will not argue with you about severity.
+            </p>
+            <p className="mt-3 leading-relaxed text-text-secondary">
+              And in the other direction, which an earlier version of this page
+              left out entirely: if we become aware of an incident affecting your
+              organization&rsquo;s records,{" "}
+              <span className="font-medium text-text">
+                we will tell you without undue delay and within 72 hours
+              </span>{" "}
+              of becoming aware — what we know, what we do not, what we are doing,
+              and what we suggest you do. We will not wait for a complete picture
+              before telling you something happened. That commitment is written
+              into the <a href="/terms" className="text-accent-text underline underline-offset-4 hover:text-accent">terms</a>.
+            </p>
+            <p className="mt-3 leading-relaxed text-text-secondary">
+              The full subprocessor list — AWS, Anthropic, Vercel and Calendly,
+              with what each one touches and where — is on the{" "}
+              <a href="/privacy" className="text-accent-text underline underline-offset-4 hover:text-accent">
+                privacy page
+              </a>
+              .
             </p>
           </div>
           <div>
@@ -344,6 +383,20 @@ export default function TrustPage() {
               are drafts written by the founders and have not yet been reviewed
               by counsel. They are published because an institution deserves to
               see the current position, not because they are finished.
+            </p>
+            <p className="mt-3 leading-relaxed text-text-secondary">
+              <span className="font-medium text-text">
+                There is no company to contract with yet.
+              </span>{" "}
+              Tenure is not an incorporated entity &mdash; it is two people, named
+              on the <a href="/story" className="text-accent-text underline underline-offset-4 hover:text-accent">story page</a>.
+              That means no corporate liability shield, no professional indemnity
+              or cyber insurance, and nobody who can sign an institutional
+              agreement today. If your procurement process requires a
+              counterparty, insurance certificates or liability caps, that
+              requirement is not met, and no amount of the detail above changes
+              it. It belongs at the top of a security review, not discovered at
+              the end of one.
             </p>
           </div>
         </div>

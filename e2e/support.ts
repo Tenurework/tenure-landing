@@ -42,6 +42,34 @@ export async function settle(page: Page) {
 }
 
 /**
+ * Waits until React has hydrated and the reveal observer is live.
+ *
+ * The obvious implementation — wait for the first `[data-reveal].is-revealed`
+ * — silently assumed a reveal sat in the opening viewport. That held until the
+ * hero's above-the-fold reveals were removed so its copy and CTAs paint with
+ * the document. On a phone the first remaining reveal is roughly 900px down, so
+ * nothing ever intersected and every spec using this hung for 30 seconds.
+ *
+ * This nudges the page down until something reveals, which proves the same
+ * thing without assuming where the first reveal happens to be, then returns the
+ * scroll position to the top so callers see the page as a visitor would.
+ */
+export async function waitForHydration(page: Page) {
+  await page.waitForFunction(
+    () => {
+      const all = document.querySelectorAll("[data-reveal]");
+      if (all.length === 0) return true;
+      if (document.querySelector("[data-reveal].is-revealed")) return true;
+      window.scrollBy(0, window.innerHeight);
+      return false;
+    },
+    undefined,
+    { timeout: 30_000 },
+  );
+  await page.evaluate(() => window.scrollTo(0, 0));
+}
+
+/**
  * Collects genuine first-party page errors. Third-party noise and the
  * favicon/devtools chatter that every site emits are excluded, so a failure
  * here means our code threw.

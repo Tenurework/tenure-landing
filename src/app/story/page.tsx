@@ -129,8 +129,14 @@ export default function StoryPage() {
                     {f.name}
                   </h3>
                   <p className="mt-1.5 label-mono">{f.role}</p>
+                  {/* Both cards used to render the same sentence, which made the
+                      two founders interchangeable on the one page asking an
+                      institution to trust them. `focus` states what each one
+                      answers for and nothing else — no biography, credentials,
+                      employer, education or photograph is published, because
+                      none of that has been verified. */}
                   <p className="mt-4 text-[0.97rem] leading-relaxed text-ink-soft">
-                    Co-founder. Building Tenure at {site.origin.school}.
+                    {f.focus}
                   </p>
                 </div>
               </Reveal>

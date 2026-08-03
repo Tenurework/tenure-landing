@@ -18,10 +18,10 @@ Applied whenever sources disagree. A capability may only be described as availab
 
 ## Status of the register
 
-- **32** material claims tracked.
-- 11 × Live in production
+- **36** material claims tracked.
+- 14 × Live in production
 - 10 × Live, verified in CI
-- 4 × Not supported
+- 5 × Not supported
 - 4 × BLOCKED — external
 - 3 × Roadmap
 
@@ -87,9 +87,22 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
+| `C-036` | The subprocessors are AWS (hosting, database, documents), Anthropic (model provider), Vercel (this website only) and Calendly (scheduling, on /contact after an explicit click). | `/privacy` `/trust` | **Live in production** | Tenure | `819aec0e` | Almamy Diaby | 2026-08-02 | 2026-11-02 |
 | `C-026` | SOC 2. | `/trust (roadmap)` | **Roadmap** | none | `n/a` | Almamy Diaby | 2026-08-02 | 2026-11-02 |
 | `C-027` | FERPA-conscious handling of education records. | `/privacy` `/trust` | **BLOCKED — external** | none | `n/a` | Almamy Diaby | 2026-08-02 | 2026-09-02 |
 | `C-032` | The legal entity operating Tenure. | `/privacy` `/terms` | **BLOCKED — external** | external | `n/a` | Almamy Diaby | 2026-08-02 | 2026-09-02 |
+
+<details><summary><code>C-036</code> — evidence and limits</summary>
+
+**Evidence**
+
+- infrastructure/terraform (ECS, RDS, S3, CloudFront — AWS US regions)
+- apps/web/src/lib/ai.ts:35 (Anthropic)
+- tenure-landing: Vercel response headers; src/lib/calendly.ts (Calendly, /contact only)
+
+**Qualification that must travel with this claim:** This list must stay complete. Adding anything that touches organizational records requires updating /privacy and notifying active organizations before it starts processing.
+
+</details>
 
 <details><summary><code>C-026</code> — evidence and limits</summary>
 
@@ -368,6 +381,9 @@ These need a signature, counsel, or a third party. They are not defects and cann
 | `C-003` | Multi-tenant isolation is enforced at the query layer by the database client itself, not by convention at each call site. | `/` `/trust` | **Live, verified in CI** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
 | `C-004` | An append-only audit trail records both allows and denials; audit rows are only ever created, never updated or deleted. | `/` `/trust` | **Live, verified in CI** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
 | `C-016` | The database and uploaded documents are encrypted at rest, and documents are served only through signed links that expire in ten minutes. | `/trust` `/privacy` | **Live in production** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
+| `C-033` | All traffic is redirected to HTTPS at the edge, with a TLS 1.2 minimum. | `/trust` | **Live in production** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
+| `C-034` | The database takes automated daily backups with deletion protection and a final snapshot on teardown; the document bucket has object versioning. | `/trust` | **Live in production** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
+| `C-035` | Restore testing, a documented recovery objective, or multi-region failover. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
 | `C-024` | Separation of duties on approvals (a requester cannot approve their own request). | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
 | `C-025` | Institution staff are scoped to their assigned organizations. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
 | `C-031` | Cryptographic tamper-evidence on the audit trail. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `819aec0e` | Satvik Adyanthaya | 2026-08-02 | 2026-11-02 |
@@ -407,6 +423,37 @@ These need a signature, counsel, or a third party. They are not defects and cann
 - apps/web/src/lib/s3.ts:47,61 (getSignedUrl, expiresIn 600)
 
 **Qualification that must travel with this claim:** Keys are AWS-managed. There is no customer-managed KMS key and no BYOK. The exports bucket has no explicit encryption block.
+
+</details>
+
+<details><summary><code>C-033</code> — evidence and limits</summary>
+
+**Evidence**
+
+- infrastructure/terraform/cloudfront.tf:54,81,113 (viewer_protocol_policy = redirect-to-https)
+- infrastructure/terraform/cloudfront.tf:124 (minimum_protocol_version = TLSv1.2_2021)
+
+</details>
+
+<details><summary><code>C-034</code> — evidence and limits</summary>
+
+**Evidence**
+
+- infrastructure/terraform/rds.tf:48-49 (backup_retention_period = 1, window 03:00-04:00)
+- infrastructure/terraform/rds.tf:53-54 (deletion_protection = true, skip_final_snapshot = false)
+- infrastructure/terraform/s3.tf:6-8 (aws_s3_bucket_versioning, status Enabled)
+
+**Qualification that must travel with this claim:** Retention is ONE DAY. State that number wherever backups are mentioned — an issue found on Wednesday cannot be recovered from Monday. Never describe this as a backup strategy suitable for a system of record without the number attached.
+
+</details>
+
+<details><summary><code>C-035</code> — evidence and limits</summary>
+
+**Evidence**
+
+- No restore rehearsal, RTO/RPO document or second region exists in infrastructure/terraform
+
+**Qualification that must travel with this claim:** Backups exist; the process for using them under pressure does not. Do not imply disaster recovery from the existence of backups.
 
 </details>
 

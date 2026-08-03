@@ -22,9 +22,15 @@ export function TrustStrip() {
       <Container className="py-9 sm:py-10">
         <Reveal className="flex flex-col items-center gap-7 lg:flex-row lg:justify-between lg:gap-10">
           <div className="flex flex-col items-center gap-5 sm:flex-row sm:gap-10">
-            <p className="label-mono shrink-0 text-center">
-              Planned {site.pilot.season} pilot
-            </p>
+            {/*
+              This row used to be captioned "Planned Fall 2026 pilot" with the
+              University of Rochester's mark immediately beside it, which reads
+              as the university being in the pilot — or endorsing the product.
+              C-022 permits these marks for origin and support only. The caption
+              now says what the marks actually mean, and the pilot statement
+              lives in the hero where it can carry its own hedge.
+            */}
+            <p className="label-mono shrink-0 text-center">Origin &amp; support</p>
             <div className="flex items-center gap-9 sm:gap-12">
               {site.supporters.map((s) => (
                 <Image
@@ -38,6 +44,12 @@ export function TrustStrip() {
                 />
               ))}
             </div>
+            <p className="sr-only">
+              Tenure was founded at Simon Business School, University of
+              Rochester, and is supported by Startup Wednesday. Neither mark
+              indicates that its organization is a customer of Tenure, sponsors
+              the product, or endorses it.
+            </p>
           </div>
 
           <span aria-hidden className="hidden h-8 w-px bg-line lg:block" />

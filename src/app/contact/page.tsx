@@ -12,8 +12,12 @@ const EXPECT = [
     body: "There is no SDR and no qualification call. Whoever picks up built the thing you are asking about.",
   },
   {
+    // This used to promise "a real organization's record". Offering to
+    // screen-share a real student organization's record with anyone who books a
+    // slot is a privacy problem, not a copy problem — the walkthrough runs on a
+    // demonstration organization and always did.
     title: "30 minutes, screen shared",
-    body: "We open a real organization's record — seats, approvals, the budget, the handoff packet — and you ask what you want to see.",
+    body: "We open a demonstration organization built on the same model — seats, approvals, the budget, the handoff packet — and you ask what you want to see. It carries representative data, never a real organization's records.",
   },
   {
     title: "We will tell you what is not built",

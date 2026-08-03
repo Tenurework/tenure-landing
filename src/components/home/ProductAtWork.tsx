@@ -184,8 +184,25 @@ export function ProductAtWork() {
           </Reveal>
           <Reveal delay={0.06}>
             <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-              Not a pitch deck. The system, <span className="text-grove">actually running</span>.
+              Not a pitch deck. The mechanics,{" "}
+              <span className="text-grove">exactly as they work</span>.
             </h2>
+          </Reveal>
+          {/*
+            The heading previously read "The system, actually running" directly
+            above two hand-drawn React illustrations, and a reviewer called that
+            what it was. The behaviour depicted is real; the surfaces are not
+            screenshots, and the page now says so before anyone has to ask.
+            Replacing this with genuine screen captures of the seeded
+            environment is a content deliverable, not a code change.
+          */}
+          <Reveal delay={0.1}>
+            <p className="mt-5 text-[0.95rem] leading-relaxed text-ink-soft">
+              The two panels below are illustrations, not screenshots. They draw
+              behaviour the product really has — the ledger, the approval step,
+              the record crossing a term — rather than showing captured screens.
+              Ask for a walkthrough and you see the running application instead.
+            </p>
           </Reveal>
         </div>
 

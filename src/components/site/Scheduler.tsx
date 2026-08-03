@@ -31,7 +31,11 @@ export function Scheduler() {
       if (!host.current || !window.Calendly) throw new Error("calendly");
       host.current.innerHTML = "";
       window.Calendly.initInlineWidget({
-        url: `${site.calendlyUrl}?hide_gdpr_banner=1&background_color=ffffff&primary_color=116d45`,
+        // NO hide_gdpr_banner. That parameter switches off a third party's own
+        // consent prompt, and this site publishes no cookie notice of its own to
+        // replace it — so suppressing it removed the only disclosure a visitor
+        // would ever see. Calendly's banner stays on.
+        url: `${site.calendlyUrl}?background_color=ffffff&primary_color=116d45`,
         parentElement: host.current,
       });
       setState("ready");
@@ -87,7 +91,8 @@ export function Scheduler() {
 
       <p className="mt-4 text-sm text-text-muted">
         Booking opens Calendly. Nothing from Calendly loads on this site until
-        you choose one of the options above.
+        you choose one of the options above. Calendly is a third party: once it
+        opens it sets its own cookies and receives the details you enter to book.
       </p>
 
       {state === "failed" && (

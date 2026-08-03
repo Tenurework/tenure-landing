@@ -92,12 +92,53 @@ export default function PrivacyPage() {
               organization by default.
             </li>
             <li>
-              <strong>Service providers we rely on</strong> to operate Tenure, 
-              for example, hosting, infrastructure, and the AI provider
-              described above, under confidentiality obligations, and only as
-              needed to run the service.
+              <strong>The subprocessors listed below</strong>, under
+              confidentiality obligations and only as needed to run the service.
             </li>
           </ul>
+
+          <h2>Subprocessors</h2>
+          <p>
+            The complete list, so a security review can put it in a risk register
+            rather than ask us for it. An earlier version of this page named only
+            the AI provider, which was not enough to be useful.
+          </p>
+          <ul>
+            <li>
+              <strong>Amazon Web Services</strong> &mdash; hosting, database and
+              document storage for the application. Data is held in AWS&rsquo;s
+              United States regions. Encryption at rest uses AWS-managed keys;
+              there is no customer-managed key option today.
+            </li>
+            <li>
+              <strong>Anthropic</strong> &mdash; the model provider. Receives the
+              permission-filtered record text needed to answer a question, at the
+              moment someone asks one, as described above.
+            </li>
+            <li>
+              <strong>Vercel</strong> &mdash; hosting for this marketing website
+              only. It does not touch your organization&rsquo;s record.
+            </li>
+            <li>
+              <strong>Calendly</strong> &mdash; scheduling, and only if you open
+              the scheduler on our <a href="/contact">contact page</a>. It sets
+              its own cookies and shows its own consent prompt when you do.
+            </li>
+          </ul>
+          <p>
+            If we add a subprocessor that touches organizational records, we will
+            update this list and tell active organizations before it starts
+            processing.
+          </p>
+
+          <h2>This website</h2>
+          <p>
+            The marketing site you are reading sets no analytics or advertising
+            cookies, and we do not track you across it. Nothing third-party loads
+            on any page until you ask for it &mdash; the scheduler on the contact
+            page is the only such thing, and it loads only after you press a
+            button. If you never open it, no third party sees your visit.
+          </p>
 
           <h2>Who owns it</h2>
           <p>
@@ -141,12 +182,41 @@ export default function PrivacyPage() {
             organization places in us seriously and work to earn it.
           </p>
 
-          <h2>Your choices</h2>
+          <h2>Your choices, and where deletion genuinely stops</h2>
           <p>
-            You can request access to the information we hold about you, ask for
-            an export, or request deletion. The simplest way is to contact us and
-            tell us what you need; we&rsquo;ll work with you and your organization
-            to honor the request.
+            You can ask us what we hold about you, ask for an export, or ask for
+            deletion, by writing to us. Two of those are simple. Deletion needs an
+            honest answer, because an earlier version of this page promised
+            something the product is deliberately built to refuse.
+          </p>
+          <ul>
+            <li>
+              <strong>Your personal account details</strong> &mdash; name, email,
+              profile &mdash; can be removed or anonymised on request.
+            </li>
+            <li>
+              <strong>An organization&rsquo;s whole record</strong> can be
+              exported and deleted at the end of the relationship, on the
+              instruction of that organization&rsquo;s current leadership.
+            </li>
+            <li>
+              <strong>Individual entries you made cannot be erased from a
+              seat&rsquo;s history on your own say-so.</strong> That is the
+              product working as designed: a seat carrying history refuses
+              deletion, and an outgoing officer is moved to alumni rather than
+              removed. If a departing treasurer could delete the budget decisions
+              they made, the record would not survive turnover &mdash; which is
+              the entire point of Tenure.
+            </li>
+          </ul>
+          <p>
+            So: access is revoked, history is retained. If you need a specific
+            entry corrected or removed for a legal reason, contact us and we will
+            work with your organization&rsquo;s leadership on it &mdash; but we
+            will not quietly delete institutional history at the request of one
+            person who is leaving. The{" "}
+            <a href="/trust">trust page</a> states the same limit from the
+            product&rsquo;s side.
           </p>
 
           <h2>Changes to this policy</h2>

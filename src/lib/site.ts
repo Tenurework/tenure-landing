@@ -28,9 +28,26 @@ export const site = {
 
   email: "hello@tenurework.com",
 
+  /**
+   * Two founders, and which half of the company each one answers for. The split
+   * is not decoration: it matches claim ownership in `claims.ts`, where Satvik
+   * owns every engineering and security row and Almamy owns the customer, legal
+   * and metric rows. `focus` is a responsibility statement only — no
+   * biographies, credentials, employers, education or photographs, because none
+   * of that has been verified for publication.
+   */
   founders: [
-    { name: "Almamy Diaby", role: "Co-founder" },
-    { name: "Satvik Adyanthaya", role: "Co-founder" },
+    {
+      name: "Almamy Diaby",
+      role: "Business cofounder",
+      focus:
+        "Customer development, market acquisition, operations, finance, and business development.",
+    },
+    {
+      name: "Satvik Adyanthaya",
+      role: "Technical cofounder",
+      focus: "Product, AI systems, platform engineering.",
+    },
   ],
 
   origin: {
@@ -82,7 +99,10 @@ export const site = {
   },
 
   /**
-   * Partner marks. `displayHeight` is the rendered lockup height, tuned per mark
+   * Supporter marks — origin and support only, never customership, sponsorship
+   * of the product or endorsement (C-022).
+   *
+   * `displayHeight` is the rendered lockup height, tuned per mark
    * so the row reads optically level: the Startup Wednesday PNG carries ~20% of
    * transparent padding, while the Simon lockup is cropped tight, so equal CSS
    * heights would make Simon read oversized.
@@ -121,8 +141,14 @@ export const site = {
     {
       value: 26,
       suffix: "",
+      // The sub-line used to boast that the 209 seats were "built from the
+      // office's own leadership roster rather than invented for a demo". Two
+      // reviewers read that, correctly, as an advertisement that the demo
+      // environment holds real student records — and the site then offered to
+      // screen-share one. The structural point survives without it: what was
+      // modelled is the office's org chart, not its people.
       label: "organizations modelled",
-      sub: "209 seats, built from the office's own leadership roster rather than invented for a demo",
+      sub: "209 seats, modelled on the office's real organizational structure — seeded counts, not active users",
       claimId: "C-014",
     },
     {
@@ -157,13 +183,19 @@ export const site = {
       title: "University organizations",
       seat: "VP Finance & Operations · SCC-VP-FINA-OPER",
       cadence: "Leadership turns over every spring",
-      body: "Run the club and hand it off clean, finances, events, members, and a record the next board inherits on day one. No scattered drives, no lost passwords, no starting from zero.",
+      // "No lost passwords" was removed: Tenure stores no credentials and has
+      // no vault, so it implied a capability that does not exist.
+      body: "Run the club and hand it off clean, finances, events, members, and a record the next board inherits on day one. No scattered drives, no knowledge stranded in a graduating officer's inbox, no starting from zero.",
     },
     {
       title: "University administrations",
       seat: "Office of Student Engagement · Director",
       cadence: "Oversees dozens of orgs at once",
-      body: "Govern every organization you steward from one seat, approvals, spending, and compliance that persist by role, without approving every bake sale. The knowledge you fund stops walking out the door.",
+      // "Compliance" claimed a control the product does not have — the six
+      // transcribed policies have no enforcement path (C-020). Deadlines are
+      // real and shipped (C-018). The closing line now names the mechanism
+      // (C-001, C-011) instead of promising an outcome no term has measured.
+      body: "Govern every organization you steward from one seat, approvals, spending, and deadlines that persist by role, without approving every bake sale. The knowledge you fund stays with the seat that produced it.",
     },
     {
       title: "SMEs & growing teams",
@@ -175,7 +207,11 @@ export const site = {
       title: "Nonprofits, chapters & boards",
       seat: "Board Chair · BRD-CHAI",
       cadence: "Annual board & volunteer rotation",
-      body: "Volunteer boards reset every year and relearn the same lessons. The same engine already configures a structurally different organization, programs, committees, sites, and funder relations in place of clubs and boards, so donor context and deadlines can persist across every term.",
+      // "The same engine already configures ... programs, committees, sites and
+      // funder relations" asserted shipped, configured support for an entity
+      // type nothing in the deploying repo evidences. The seat model genuinely
+      // does generalise — that is the honest version of the same point.
+      body: "Volunteer boards reset every year and relearn the same lessons. The same seat model applies: a board chair or committee lead is a position with the record attached, so donor context and deadlines can persist across every term instead of resetting with the slate.",
     },
   ],
 } as const;

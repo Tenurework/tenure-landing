@@ -11,16 +11,43 @@ const base =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-grove " +
   "disabled:pointer-events-none disabled:opacity-50";
 
+/**
+ * BORDERS ON THESE CONTROLS ARE LOAD-BEARING, so they use load-bearing tokens.
+ *
+ * `secondary` and `outline` have a near-canvas fill — white on warm paper is
+ * 1.07:1 in the light theme, surface on canvas is 1.08:1 in the dark one — so
+ * the border is the only thing that says "this is a control". Both used to draw
+ * it with `border-line` (`--border`, the decorative hairline: 1.24:1 light,
+ * 1.39:1 dark) or a 30%-alpha accent, which put "Explore the platform", "See
+ * the product" and "Or pick a time here" below the 3:1 that WCAG 2.2 SC 1.4.11
+ * requires of the visual information identifying a component. `--shadow-sm`
+ * carries no rescue: it is a 6%-alpha 1px offset.
+ *
+ * They now use the tokens globals.css defines for exactly this and that
+ * scripts/check-contrast.mjs holds to the 3:1 non-text threshold in BOTH themes:
+ *   secondary -> `border-strong`  (3:1+ vs canvas and surface, checked in CI)
+ *   outline   -> `grove-deep` = `--accent-text` (checked at 4.5:1 vs canvas,
+ *                surface and the faint accent fill it sits on, so it clears the
+ *                non-text bar with room and keeps the variant's accent identity
+ *                instead of flattening it to grey)
+ *
+ * Both hovers strengthen the line rather than fading it (`ink-soft` /
+ * `grove-bright`), so the boundary is never weaker in any state than it is at
+ * rest — the previous `hover:border-ink/20` was itself under 3:1.
+ *
+ * `primary` is untouched: it is a solid accent fill whose label contrast is
+ * already verified, and its boundary is the fill itself, not a line.
+ */
 const variants: Record<Variant, string> = {
   primary:
     "bg-grove text-on-accent hover:bg-grove-bright active:translate-y-px " +
     "shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--accent)_70%,transparent)] " +
     "hover:shadow-[0_18px_40px_-14px_color-mix(in_oklab,var(--accent-hover)_75%,transparent)]",
   secondary:
-    "bg-cloud text-ink border border-line hover:border-ink/20 hover:bg-sand/60 " +
+    "bg-cloud text-ink border border-border-strong hover:border-ink-soft hover:bg-sand/60 " +
     "shadow-[var(--shadow-sm)]",
   outline:
-    "border border-grove/30 text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove/50",
+    "border border-grove-deep text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove-bright",
   light:
     "bg-cloud/10 text-inverse border border-inverse/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-inverse/40",
   ghost: "text-ink-soft hover:text-ink",

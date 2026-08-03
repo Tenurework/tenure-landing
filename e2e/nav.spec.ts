@@ -1,5 +1,10 @@
 import { expect, test, type Page } from "@playwright/test";
-import { ALL_ROUTES, collectPageErrors, settle } from "./support";
+import {
+  ALL_ROUTES,
+  collectPageErrors,
+  settle,
+  waitForHydration as sharedWaitForHydration,
+} from "./support";
 import { site } from "../src/lib/site";
 
 /**
@@ -110,7 +115,11 @@ async function focusInfo(page: Page) {
  * listening, and a client-side navigation silently becomes a document load.
  */
 async function waitForHydration(page: Page) {
-  await page.locator("[data-reveal].is-revealed").first().waitFor({ state: "attached" });
+  // Delegates to the shared implementation. This used to wait directly for the
+  // first `[data-reveal].is-revealed`, which assumed one sat in the opening
+  // viewport — no longer true since the hero's above-the-fold reveals were
+  // removed, so on a phone it hung for 30 seconds on every mobile-menu test.
+  await sharedWaitForHydration(page);
 }
 
 // ---------------------------------------------------------------------------

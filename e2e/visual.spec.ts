@@ -178,7 +178,9 @@ const HOME_COMPONENTS: { name: string; find: (page: Page) => Locator }[] = [
   },
   {
     name: "home-metrics-band",
-    find: (page) => sectionByHeading(page, 2, /whether the knowledge survived/i),
+    // The heading changed: the band no longer promises measured outcomes it
+    // cannot deliver, so "whether the knowledge survived" is gone.
+    find: (page) => sectionByHeading(page, 2, /exactly how it.s built/i),
   },
   {
     name: "home-office-console",

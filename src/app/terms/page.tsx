@@ -66,8 +66,18 @@ export default function TermsPage() {
           </p>
           <p>
             Your organization keeps ownership of the content it stores in Tenure.
-            We don&rsquo;t claim it as ours. We process it only to provide and
-            improve the service for you, as described in our Privacy notice.
+            We don&rsquo;t claim it as ours. We process it only to provide the
+            service to your organization, as described in our{" "}
+            <a href="/privacy">Privacy notice</a>. We do not use your content to
+            improve the product for anyone else, to build datasets, or to train
+            models, and we will not start doing so without your written
+            permission.
+          </p>
+          <p>
+            That wording is deliberate. An institution treating us as a school
+            official cannot have its records processed for our own product
+            development, and &ldquo;to improve the service&rdquo; is broad enough
+            to swallow that restriction.
           </p>
 
           <h2>Acceptable use</h2>
@@ -103,15 +113,47 @@ export default function TermsPage() {
             significant changes when we can.
           </p>
 
-          <h2>Limitation of liability</h2>
+          <h2>Security incidents</h2>
           <p>
-            We&rsquo;re an early-stage team doing our honest best to keep your
-            record safe and useful, but we can&rsquo;t promise the service will be
-            perfect. To the extent the law allows, Tenure isn&rsquo;t liable for
-            indirect or consequential losses arising from using the service during
-            the pilot. None of this limits any rights you have that can&rsquo;t be
-            waived under applicable law. Keep your own copies of anything truly
-            critical.
+            If we become aware of a security incident affecting your
+            organization&rsquo;s records, we will tell you without undue delay and
+            in any event within 72 hours of becoming aware of it. We will tell you
+            what we know, what we do not yet know, what we are doing about it, and
+            what we recommend you do. We will not wait until we have a complete
+            picture before telling you that something happened.
+          </p>
+
+          <h2>If we stop operating</h2>
+          <p>
+            You should plan for this, because Tenure is two people and a system of
+            record is the wrong place for optimism. If we decide to stop running
+            the service, we will give your organization at least 30 days&rsquo;
+            notice and provide a complete export of its record before access ends.
+          </p>
+          <p>
+            One limit you should know when you weigh that commitment: there is no
+            self-service bulk export in the product today. Export is something we
+            do by hand on request. That is a real dependency on us continuing to
+            be reachable, and it is on the roadmap precisely because it should not
+            be.
+          </p>
+
+          <h2>Limitation of liability, and what we cannot offer</h2>
+          <p>
+            To the extent the law allows, we are not liable for indirect or
+            consequential losses arising from use of the service during the pilot.
+            None of this limits rights you have that cannot be waived under
+            applicable law. Keep your own copies of anything truly critical.
+          </p>
+          <p>
+            Stated plainly for anyone doing vendor due diligence: Tenure is not an
+            incorporated entity. There is no corporate liability shield, no
+            professional indemnity or cyber insurance, and no balance sheet behind
+            these terms. We are not able to offer the indemnities, insurance
+            certificates or liability caps an institutional contract would
+            normally require. If your procurement process needs those, it needs
+            them from a company that exists, and we would rather you learned that
+            here than three weeks into a review.
           </p>
 
           <h2>Termination</h2>
@@ -124,13 +166,80 @@ export default function TermsPage() {
             where we reasonably can.
           </p>
 
+          <h2>Fees</h2>
+          <p>
+            The pilot is free. No fees, subscription or usage charges are payable
+            for it, and there are no taxes to pass on because there is nothing to
+            invoice. If Tenure ever charges an organization, that will require a
+            separate written agreement signed in advance &mdash; it will not
+            appear by way of an update to this page.
+          </p>
+
           <h2>Changes to these terms</h2>
           <p>
-            As Tenure grows beyond the pilot, these terms will evolve with it.
-            When we make a meaningful change, we&rsquo;ll update the date above and
-            let active organizations know. Continuing to use the service after a
-            change means you accept the updated terms.
+            As Tenure grows beyond the pilot, these terms will evolve with it. We
+            will give at least 30 days&rsquo; notice by email before a material
+            change takes effect, and a change will never apply retroactively to
+            anything that happened before it. If you do not accept a change, you
+            may end your use of the service before it takes effect and we will
+            provide an export of your record.
           </p>
+          <p>
+            What we will not do is treat your continued use as acceptance. An
+            earlier version of this page said exactly that, and a procurement
+            reviewer was right to refuse to sign under it: deemed acceptance means
+            an institution can be bound by terms it never read, by doing nothing.
+          </p>
+
+          <h2>The rest of the boilerplate, which was missing</h2>
+          <p>
+            These clauses were absent from an earlier version of this page. A
+            document that claims to form a contract and omits them is not one.
+          </p>
+          <ul>
+            <li>
+              <strong>Governing law and venue.</strong> These terms are governed
+              by the laws of the State of New York, without regard to its
+              conflict-of-laws rules, and the state and federal courts located in
+              Monroe County, New York have exclusive jurisdiction. A pilot
+              agreement with an institution may specify otherwise, and the
+              institution&rsquo;s own requirements would take precedence in that
+              negotiation.
+            </li>
+            <li>
+              <strong>Confidentiality.</strong> Each side will protect the
+              other&rsquo;s non-public information with at least reasonable care
+              and use it only for the purpose it was shared. This runs both ways.
+            </li>
+            <li>
+              <strong>Publicity.</strong> Neither side may use the other&rsquo;s
+              name, marks or logo, or describe the relationship publicly, without
+              prior written permission. This is the clause that governs how we may
+              describe an institution on this website, and we hold ourselves to it.
+            </li>
+            <li>
+              <strong>Notices.</strong> Notices to us go to{" "}
+              <a href={`mailto:${site.email}`}>{site.email}</a>. Notices to you go
+              to the address your organization gives us. Email is sufficient for
+              both, including for the notice periods above.
+            </li>
+            <li>
+              <strong>Assignment.</strong> Neither side may assign these terms
+              without the other&rsquo;s written consent, except that we may assign
+              them to a legal entity we form to operate Tenure &mdash; which,
+              given that no such entity exists yet, is a foreseeable event rather
+              than a hypothetical.
+            </li>
+            <li>
+              <strong>Severability.</strong> If any provision is held
+              unenforceable, the rest stays in force.
+            </li>
+            <li>
+              <strong>Entire agreement.</strong> These terms and the Privacy
+              notice are the whole agreement about the website and early access.
+              They are not a pilot agreement, and they do not override one.
+            </li>
+          </ul>
 
           <h2>Contact</h2>
           <p>

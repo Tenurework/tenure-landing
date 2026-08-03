@@ -50,10 +50,25 @@ const label = (p: string) => (p === "/" ? "/ (home)" : p);
 async function open(page: Page, path: string) {
   await page.goto(path, { waitUntil: "load" });
 
-  await page.waitForFunction(() => {
-    const all = document.querySelectorAll("[data-reveal]");
-    return all.length === 0 || document.querySelector("[data-reveal].is-revealed") !== null;
-  });
+  // Proof the observer is live. It used to simply wait for the first reveal,
+  // which assumed one sat in the opening viewport — true until the hero's
+  // above-the-fold reveals were removed so its copy and CTAs paint with the
+  // document. At 320px the first remaining reveal is ~900px down, so nothing
+  // ever intersected and this waited forever. It now nudges the page down until
+  // something reveals, which proves the same thing without assuming where the
+  // first reveal happens to live.
+  await page.waitForFunction(
+    () => {
+      const all = document.querySelectorAll("[data-reveal]");
+      if (all.length === 0) return true;
+      if (document.querySelector("[data-reveal].is-revealed")) return true;
+      window.scrollBy(0, window.innerHeight);
+      return false;
+    },
+    undefined,
+    { timeout: 30_000 },
+  );
+  await page.evaluate(() => window.scrollTo(0, 0));
 
   await settle(page);
 

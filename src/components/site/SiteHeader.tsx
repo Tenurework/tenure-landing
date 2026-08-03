@@ -84,13 +84,34 @@ export function SiteHeader() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
+  /**
+   * The surface, priced per frame.
+   *
+   * `scrolled` flips 12px in, so whatever it selects is on for essentially the
+   * whole visit — and a full-width backdrop-filter is the most expensive thing
+   * on this page: the compositor has to read back the strip behind the header
+   * and re-blur it on every frame the content beneath it moves, and what moves
+   * beneath it is thousands of SVG contour paths and several large gradients.
+   * So the session-long surface is a near-opaque fill instead. At 95% the fill
+   * carries the legibility on its own in both themes, and the small blur that
+   * remains is a depth cue rather than the thing doing the work — kept only for
+   * fine pointers, where the compositor is not the bottleneck.
+   *
+   * The open mobile panel keeps the deeper treatment: it is transient, it is
+   * dismissed rather than scrolled past, and its tint is part of how the panel
+   * reads as a layer above the page.
+   */
+  const surface = open
+    ? "border-line bg-canvas/85 backdrop-blur-xl"
+    : scrolled
+      ? "border-line bg-canvas/95 pointer-fine:backdrop-blur-sm"
+      : "border-transparent";
+
   return (
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
-        scrolled || open
-          ? "border-line bg-canvas/85 backdrop-blur-xl"
-          : "border-transparent",
+        surface,
       )}
     >
       <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
