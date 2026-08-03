@@ -449,7 +449,39 @@ Two honest qualifications on these numbers:
    it is a five-component migration whose failure mode is a runtime throw, and it belongs in
    its own change with its own verification rather than bolted onto this one.
 
-### 8.5 Claim defects found with the suite green
+### 8.5 The motion migration
+
+The five routes that met the performance budget and the three that did not differed in one
+structural way: `/` and `/product` were the only routes loading `motion`, at 138 KB minified
+and 45.6% unused. All 19 animated elements across five components moved to `LazyMotion` with
+`domAnimation` and `motion/react-m`; the `motion` proxy cannot tree-shake, because it cannot
+know at build time which features an element will use.
+
+| | Before | After |
+|---|---|---|
+| Route chunk, raw | 172,979 B | **118,726 B** (−31%) |
+| Route chunk, gzipped | ~56,900 B | **~40,840 B** |
+
+Two facts were verified in the installed source instead of assumed, and one of them corrected me:
+nothing in `src/` uses `layout`, `layoutId`, `drag`, `useScroll`, `useTransform` or `useSpring`;
+and `AnimatePresence mode="popLayout"` does **not** need layout projection — `PopChild.mjs`
+measures in `getSnapshotBeforeUpdate` and injects an absolute-positioning rule. I had assumed the
+opposite, which would have ruled out the correct strategy for a reason that is false.
+
+`strict` is enabled, so a missed `motion.*` throws rather than silently degrading.
+
+**Reported in bytes, not scores.** The Lighthouse sweep after this change is not usable: it put
+`/story` at 88 (was 99), `/privacy` at 83 (was 98) and `/pilot`'s TBT at 614 ms (was 45 ms) — on
+five routes that load no `motion` and whose bytes did not change. Same environment problem as
+8.4, worse. Status for §13 is unchanged: **FAIL with a measured exception.**
+
+Removing `motion` altogether remains available and is worth the other ~138 KB. It is not done
+here because the investigation that planned it lost the agent responsible for analysing which
+tests constrain it, and what it did surface is not cosmetic: the reduced-motion block does not
+zero `animation-delay`, which with `animation-fill-mode: backwards` would hold a hidden state
+through the delay — the same shape as the permanent-contrast defect Phase 6 fixed.
+
+### 8.6 Claim defects found with the suite green
 
 Four independent reviewers produced 53 alleged defects; adjudication against the deploying
 repo confirmed 29, refuted 8 outright and merged 10 as cross-lens duplicates. The refutations

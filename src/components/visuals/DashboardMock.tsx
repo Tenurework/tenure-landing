@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+// AnimatePresence stays on motion/react; the ten animated elements below use `m`.
+// See HeroShapes.tsx for why this file no longer imports the `motion` proxy.
+import { AnimatePresence, LazyMotion, domAnimation, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import { Logo } from "@/components/brand/Logo";
 import { cn } from "@/lib/cn";
 import { useOnScreen } from "@/lib/use-on-screen";
@@ -99,9 +102,11 @@ function AreaChart({ reduce }: { reduce: boolean | null }) {
           <stop offset="100%" stopColor="var(--chart-1)" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <motion.path d={`${line}L${w} ${h}L0 ${h}Z`} fill="url(#dm-area)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : 0.7, delay: 0.3 }} />
-      <motion.path d={line} fill="none" stroke="var(--chart-1)" strokeWidth="2" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 1.1, ease: EASE }} />
-      <motion.circle cx={last[0]} cy={last[1]} r="3.5" fill="var(--chart-1)" stroke="var(--surface)" strokeWidth="2" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: reduce ? 0 : 0.3, delay: 1.1 }} />
+      <m.path d={`${line}L${w} ${h}L0 ${h}Z`} fill="url(#dm-area)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : 0.7, delay: 0.3 }} />
+      {/* pathLength is an SVG attribute animation, part of the core animation
+          feature set — not a layout or drag feature — so it survives domAnimation. */}
+      <m.path d={line} fill="none" stroke="var(--chart-1)" strokeWidth="2" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 1.1, ease: EASE }} />
+      <m.circle cx={last[0]} cy={last[1]} r="3.5" fill="var(--chart-1)" stroke="var(--surface)" strokeWidth="2" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: reduce ? 0 : 0.3, delay: 1.1 }} />
     </svg>
   );
 }
@@ -140,7 +145,7 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
         <p className="label-mono text-[0.54rem]">Budget by category</p>
         <div className="mt-1.5 flex h-2.5 w-full overflow-hidden rounded-full">
           {cats.map((c) => (
-            <motion.span key={c.label} style={{ backgroundColor: c.color }} initial={{ width: "0%" }} animate={{ width: `${c.pct}%` }} transition={{ duration: reduce ? 0 : 0.8, ease: EASE, delay: 0.2 }} />
+            <m.span key={c.label} style={{ backgroundColor: c.color }} initial={{ width: "0%" }} animate={{ width: `${c.pct}%` }} transition={{ duration: reduce ? 0 : 0.8, ease: EASE, delay: 0.2 }} />
           ))}
         </div>
         <div className="mt-2 flex flex-wrap gap-x-3.5 gap-y-1">
@@ -180,7 +185,7 @@ function CalendarView({ reduce }: { reduce: boolean | null }) {
       </div>
       <div className="mt-3 space-y-2">
         {events.map((e, i) => (
-          <motion.div
+          <m.div
             key={e.t}
             className={cn(
               "rounded-xl border bg-paper/40 p-3",
@@ -204,7 +209,7 @@ function CalendarView({ reduce }: { reduce: boolean | null }) {
                 Hard conflict, Schlegel 207 double-booked 5:00–6:30p
               </p>
             )}
-          </motion.div>
+          </m.div>
         ))}
       </div>
     </>
@@ -232,7 +237,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
           {APPROVAL_STEPS.map((s, i) => (
             <div key={s} className="flex flex-1 items-center last:flex-none">
               <div className="flex flex-col items-center gap-1">
-                <motion.span
+                <m.span
                   className={cn(
                     "flex h-6 w-6 items-center justify-center rounded-full border text-[0.58rem] font-semibold",
                     i < active && "border-grove bg-grove text-on-accent",
@@ -244,12 +249,12 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
                   transition={{ duration: reduce ? 0 : 0.3, delay: 0.1 + i * 0.12 }}
                 >
                   {i < active ? "✓" : i + 1}
-                </motion.span>
+                </m.span>
                 <span className="text-[0.52rem] text-ink-faint">{s}</span>
               </div>
               {i < APPROVAL_STEPS.length - 1 && (
                 <div className="mx-1 h-[2px] flex-1 overflow-hidden rounded-full bg-line">
-                  <motion.span
+                  <m.span
                     className="block h-full bg-grove"
                     initial={{ width: "0%" }}
                     animate={{ width: i < active ? "100%" : "0%" }}
@@ -392,7 +397,8 @@ export function DashboardMock({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <motion.div
+      <LazyMotion features={domAnimation} strict>
+      <m.div
         className="overflow-hidden rounded-2xl border border-line bg-cloud shadow-[var(--shadow-lg)] ring-1 ring-ink/[0.03]"
         style={tilt ? { transformStyle: "preserve-3d", transformOrigin: "50% 50%" } : undefined}
         // Starts visible. This is the hero product surface: rendering the whole
@@ -472,7 +478,7 @@ export function DashboardMock({
               )}
             </div>
             <AnimatePresence mode="wait">
-              <motion.div
+              <m.div
                 key={active}
                 initial={reduce ? false : { opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -480,7 +486,7 @@ export function DashboardMock({
                 transition={{ duration: reduce ? 0 : 0.28, ease: EASE }}
               >
                 <View reduce={reduce} />
-              </motion.div>
+              </m.div>
             </AnimatePresence>
           </div>
 
@@ -491,7 +497,7 @@ export function DashboardMock({
                 <Logo className="h-3.5 w-3.5 text-grove" />
               </span>
               <span className="text-[0.78rem] font-semibold text-ink">Tenure AI</span>
-              <motion.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
+              <m.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
             {/* Module-independent: the caption used to interpolate the active module,
                 so it promised answers "about the finance" and "about the members" —
@@ -507,7 +513,8 @@ export function DashboardMock({
             </div>
           </aside>
         </div>
-      </motion.div>
+      </m.div>
+      </LazyMotion>
     </div>
   );
 }

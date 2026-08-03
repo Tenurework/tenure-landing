@@ -133,10 +133,49 @@ numbers above:
    SEO and CLS are stable and reproducible; Performance, LCP and TBT are directional.
 2. **There is a framework floor.** `/trust` ships 17.7 KB gzipped of application JavaScript and
    still cannot reach TBT ≤ 200 ms, because the React 19 + Next 16 runtime alone costs ~872 ms
-   of bootup on a 4×-throttled mobile CPU. `/` and `/product` additionally carry `motion`
-   (138 KB minified, 45.6% unused), which is the one structural difference between them and
-   the five routes that pass. **Not attempted here**: it is a five-component migration whose
-   failure mode is a runtime throw, and it belongs in its own change with its own verification.
+   of bootup on a 4×-throttled mobile CPU.
+
+### The motion migration
+
+`/` and `/product` were the only two routes carrying `motion`, 138 KB minified and 45.6%
+unused. All 19 animated elements across five components now use `LazyMotion` with the
+`domAnimation` feature set and `motion/react-m` instead of the `motion` proxy, which cannot
+tree-shake because it does not know at build time which features an element will use.
+
+Two things were checked against the installed source rather than assumed, and one of them
+reversed a wrong assumption of mine:
+
+- **Nothing here needs the layout or drag feature sets.** A repo-wide search for `layout`,
+  `layoutId`, `drag`, `useScroll`, `useTransform` and `useSpring` returns nothing in `src/`.
+- **`AnimatePresence mode="popLayout"` is safe under `domAnimation`.** I expected it to require
+  layout projection and it does not: `PopChild.mjs` measures in `getSnapshotBeforeUpdate` and
+  injects an absolute-positioning rule. Had I trusted the assumption, the obvious strategy would
+  have been rejected for a reason that is not true.
+
+`strict` is on, so any missed `motion.*` throws at runtime rather than silently falling back.
+
+**Measured in bytes, not in scores.** The re-measurement after this change is not reportable:
+in the same sweep `/story` went 99 → 88, `/privacy` 98 → 83 and `/pilot`'s TBT 45 → 614 ms —
+on five routes that do not load `motion` at all and whose bytes are identical before and after.
+That is the workstation, not the code, and it is the second time the environment has produced
+an impossible ordering. What is deterministic:
+
+| | Before | After |
+|---|---|---|
+| Motion route chunk, raw | 172,979 B | **118,726 B** (−31%) |
+| Motion route chunk, gzipped | ~56,900 B | **~40,840 B** (−16,060 B per route) |
+
+Rendering is unchanged by design, so the visual baselines do not move — which is the reason this
+strategy was chosen over deleting `motion` outright.
+
+**Still not done, deliberately.** A parallel investigation recommended removing `motion`
+entirely and replacing all 19 animations with CSS keyframes, worth the remaining ~138 KB. Its
+plan is detailed and largely convincing, and it is **not** being executed here: the agent whose
+job was enumerating which of the 1,080 tests constrain the migration failed mid-run, so the plan
+arrived without its risk analysis. The parts it did surface are not trivial — the reduced-motion
+block does not currently zero `animation-delay`, which combined with `animation-fill-mode:
+backwards` would hold a hidden state through the delay and reintroduce exactly the permanent
+contrast defect Phase 6 fixed. That is a change to make with the test analysis in hand.
 
 ---
 

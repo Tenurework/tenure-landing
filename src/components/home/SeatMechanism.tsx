@@ -1,7 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+// AnimatePresence still comes from motion/react — it is not a `motion.*` element
+// and has no lazy-feature variant. Only the animated elements move to `m`.
+import { AnimatePresence, LazyMotion, domAnimation, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import NumberFlow from "@number-flow/react";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
@@ -122,6 +125,7 @@ export function SeatMechanism() {
   }, [reduce, paused, onScreen]);
 
   return (
+    <LazyMotion features={domAnimation} strict>
     <section
       ref={sectionRef}
       className="relative isolate overflow-hidden border-t border-line py-24 sm:py-32"
@@ -233,7 +237,7 @@ export function SeatMechanism() {
                 <span className="font-mono text-[0.62rem] text-ink-faint">the person rotates ↻</span>
               </div>
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={step.term}
                   className="mt-2.5 space-y-2"
                   initial={reduce ? false : { opacity: 0, y: 8 }}
@@ -251,7 +255,7 @@ export function SeatMechanism() {
                       + {step.alumni.length - 1} more alumni on this seat
                     </p>
                   )}
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
 
@@ -264,8 +268,12 @@ export function SeatMechanism() {
                 </p>
               </div>
               <p className="text-[0.66rem] text-ink-soft">records, carried across every handoff</p>
+              {/* popLayout is safe under domAnimation: PopChild measures in
+                  getSnapshotBeforeUpdate and injects an absolute-positioning rule
+                  rather than using layout projection. Verified in the installed
+                  source, not assumed. */}
               <AnimatePresence mode="popLayout">
-                <motion.div
+                <m.div
                   key={step.fresh.t}
                   className="mt-3 flex items-center gap-2 rounded-lg border border-grove/25 bg-cloud px-2.5 py-1.5"
                   initial={reduce ? false : { opacity: 0, x: -10 }}
@@ -277,7 +285,7 @@ export function SeatMechanism() {
                     + {step.fresh.tag}
                   </span>
                   <span className="text-[0.72rem] text-ink">{step.fresh.t}</span>
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
 
@@ -310,5 +318,6 @@ export function SeatMechanism() {
         </Reveal>
       </Container>
     </section>
+    </LazyMotion>
   );
 }

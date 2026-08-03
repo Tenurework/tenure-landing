@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { LazyMotion, domAnimation, useReducedMotion } from "motion/react";
+import * as m from "motion/react-m";
 import type { ReactNode } from "react";
 import { Container, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
@@ -25,7 +26,7 @@ function FinanceCard() {
         <span className="text-sm font-normal text-text-secondary">/ $18,000</span>
       </p>
       <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-line">
-        <motion.div
+        <m.div
           className="h-full rounded-full bg-grove"
           initial={{ width: "0%" }}
           whileInView={{ width: "69%" }}
@@ -104,7 +105,7 @@ function HandoffCard() {
           The handoff it illustrates is carried by the two zones and the card's
           final position; the fade was decoration bought with legibility.
         */}
-        <motion.div
+        <m.div
           className="absolute top-12 z-10 w-[44%] rounded-xl border border-grove/30 bg-cloud p-2.5 shadow-[var(--shadow-lg)]"
           initial={{ left: "4%", opacity: 1 }}
           whileInView={{ left: "52%", opacity: 1 }}
@@ -118,7 +119,7 @@ function HandoffCard() {
             <span className="text-[0.74rem] text-ink">Aramark renewal</span>
           </div>
           <p className="mt-1 font-mono text-[0.62rem] text-text-secondary">$4,000 · Maya ’24</p>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );
@@ -175,6 +176,11 @@ const FEATURES: Feature[] = [
 
 export function ProductAtWork() {
   return (
+    // One provider at the section root covers both m.div usages, which live in the
+    // FinanceCard and handoff sub-components below. `strict` throws on any missed
+    // motion.* — see the note in HeroShapes.tsx for why this file no longer imports
+    // the full-feature `motion` proxy.
+    <LazyMotion features={domAnimation} strict>
     <section className="relative isolate overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
       <SectionContour place="cr" seed={6} className="text-grove/[0.06]" />
       <Container>
@@ -227,5 +233,6 @@ export function ProductAtWork() {
         </div>
       </Container>
     </section>
+    </LazyMotion>
   );
 }
