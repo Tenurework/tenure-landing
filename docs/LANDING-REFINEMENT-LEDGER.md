@@ -349,7 +349,7 @@ symptom were the same defect.
 | Test suites run and reported honestly | PASS |
 | Before/after measurements | PASS |
 | No secrets or personal data in the diff | PASS |
-| Committed to the working branch | PASS — 6 commits, head `2c13adc` |
+| Committed to the working branch | PASS — **12** commits, head `2c13adc`. This row said "6 commits, head " with the SHA missing; `git rev-list --count origin/main..2c13adc` returns 12 |
 | Not merged, not deployed | PASS |
 
 ---
