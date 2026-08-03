@@ -1,6 +1,6 @@
 # Release evidence — `refine/landing-bible-v1`
 
-Branch: `refine/landing-bible-v1` · head `2723de3` · base `fb6a3bd`
+Branch: `refine/landing-bible-v1` · head `d0f8cb5` · base `fb6a3bd`
 Nothing merged. Nothing deployed. No production side effect.
 
 ---
@@ -17,7 +17,7 @@ All run on Windows 11, Node 24.16.0, from the repository root.
 | `npm run build` | 0 | 12 routes prerendered |
 | `npm run check:contrast` | 0 | **72/72** token pairs pass WCAG 2.2 AA across both themes; dark blocks agree on all 38 tokens |
 | `npm run check:links` | 0 | **111** internal links, **0** broken |
-| `npm run claims:build` | 0 | 32 claims, 16 forbidden phrases |
+| `npm run claims:build` | 0 | 32 claims, 20 forbidden phrases |
 | `npx playwright test` (all 4 projects) | 0 | **1,052 passed · 0 failed · 16 skipped** (6.2 min) |
 
 ### Test suites
@@ -30,7 +30,7 @@ Four browser projects: `desktop-light`, `desktop-dark`, `mobile-light`, `mobile-
 | `interaction.spec.ts` | theme, CTA, third-party gating, FAQ, reduced motion, no-JS | pass |
 | `seo.spec.ts` | 69 | pass — metadata, canonical, sitemap, robots, JSON-LD |
 | `claims.spec.ts` | 42 | pass — the claim-accuracy ratchet |
-| `a11y.spec.ts` | axe + keyboard, target size, reflow, zoom, measured contrast | **2 failing**, see below |
+| `a11y.spec.ts` | axe + keyboard, target size, reflow, zoom, measured contrast | pass — 268/268 across 4 projects |
 | `visual.spec.ts` | 74 baselines | pass; regenerated and confirmed stable on a second run |
 
 **All suites pass.** The two failures recorded in the first draft of this report are fixed: an infinite opacity loop in ProductAtWork that put text below AA forever, and its two successor forms.
@@ -62,12 +62,12 @@ Measured from prerendered HTML, and against production for the baseline.
 | Home DOM elements | 1,992 | 1,561 (−22%) |
 | Home HTML payload | 640 KB | **453 KB** (−29%) |
 | Prerendered `opacity:0` elements (home) | 118 | 8 |
-| Measured WCAG AA failures | **177** | 0 in the token system; 2 test failures remain in one mock |
+| Measured WCAG AA failures | **177** | **0** |
 | Routes canonicalising to the home page | 5 of 5 sub-pages | 0 |
 | Routes with JSON-LD | 0 | 8 |
 | Routes loading Calendly | 7 (incl. the 404) | 1, after an explicit click |
 | Security headers | HSTS only | CSP + 5 |
-| First-party tests | 0 | 1,030 passing across 4 projects |
+| First-party tests | 0 | **1,052** passing across 4 projects |
 
 ---
 
@@ -132,6 +132,7 @@ inside a list of clients to *forbid*. Public and legal copy therefore still says
 | Ledger | `docs/LANDING-REFINEMENT-LEDGER.md` |
 | Content map | `docs/ARCHITECTURE-AND-CONTENT-MAP.md` |
 | Governing document | `docs/DEVELOPMENT-BIBLE-v1.0.md` |
+| Adversarial review | `docs/ADVERSARIAL-REVIEW-FINDINGS.md` — 144 findings, 8 personas |
 
 Baseline screenshots of the **pre-change** production site were captured at all seven widths
 during Phase 0 and kept out of the repository deliberately: they are recoverable from production
