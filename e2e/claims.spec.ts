@@ -8,6 +8,13 @@ import {
 } from "../src/lib/claims";
 import { site } from "../src/lib/site";
 import { ALL_ROUTES, settle } from "./support";
+import evidenceManifestJson from "../docs/evidence-manifest.json";
+
+type EvidenceManifest = {
+  heads: Record<string, string | null>;
+  entries: { claim: string; repo: string; path: string; exists: boolean | null; at: string | null }[];
+};
+const evidenceManifest = evidenceManifestJson as EvidenceManifest;
 
 /**
  * THE CLAIM ACCURACY RATCHET
@@ -793,6 +800,83 @@ test.describe("claims register integrity", () => {
    * open the file — but it can refuse the two things that are wrong on their face:
    * an elided segment, and a bare directory where a file was promised.
    */
+  /**
+   * The register's citations are resolved against a real checkout by
+   * `npm run claims:evidence`, which writes docs/evidence-manifest.json. This
+   * asserts against that manifest, because CI has no checkout of the product
+   * repositories and therefore cannot open the files itself.
+   *
+   * It is the difference between "this string is shaped like a path" — which is
+   * all CITES_A_PATH could ever tell us, and which let a non-existent file, a
+   * literal "..." and a spec testing something else all pass green — and "this
+   * path existed in that repository at that commit".
+   *
+   * The manifest can drift; that is the honest limit. It records the commit it
+   * was generated at, and the test below checks that against the register's own
+   * evidenceCommit, so drift fails loudly instead of passing quietly.
+   */
+  test("every evidence path resolved against a real checkout", () => {
+    const problems: string[] = [];
+
+    for (const entry of evidenceManifest.entries) {
+      if (entry.exists === true) continue;
+      problems.push(
+        entry.exists === false
+          ? `${entry.claim} cites ${entry.repo}/${entry.path}, which does not exist.\n` +
+              `    Resolved at ${entry.at}. Fix the path, or the claim.`
+          : `${entry.claim} cites ${entry.repo}/${entry.path}, which was never resolved — ` +
+              `the repository was not checked out when the manifest was generated.\n` +
+              `    Re-run \`npm run claims:evidence\` somewhere it is.`,
+      );
+    }
+
+    /*
+      And the other half, without which the above is theatre: a path that is not
+      IN the manifest is not checked by it. Someone adding a claim without
+      regenerating would get a green run on an unverified citation — the same
+      failure shape as the regex it replaces, one level up. So every file-shaped
+      evidence entry in the register must appear in the manifest.
+    */
+    const resolved = new Set(
+      evidenceManifest.entries.map((e) => `${e.claim}|${e.repo}|${e.path}`),
+    );
+    for (const c of claims) {
+      for (const ev of c.evidence) {
+        const token = ev.trim().split(/\s+/)[0].replace(/:[0-9]+(-[0-9]+)?$/, "").replace(/[,;]$/, "");
+        const looksLikeFile = token.includes("/") && /\.[a-z0-9]+$/i.test(token) && !token.includes("...");
+        if (!looksLikeFile) continue;
+        if (!resolved.has(`${c.id}|${c.evidenceRepo}|${token}`)) {
+          problems.push(
+            `${c.id} cites ${token} but the evidence manifest has no entry for it.\n` +
+              `    The citation has never been resolved against a checkout. Run ` +
+              `\`npm run claims:evidence\` and commit docs/evidence-manifest.json.`,
+          );
+        }
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
+  });
+
+  test("the evidence manifest was generated at the commits the register cites", () => {
+    const problems: string[] = [];
+    const cited = new Map<string, string>();
+    for (const c of claims) cited.set(c.evidenceRepo, c.evidenceCommit);
+
+    for (const [repo, commit] of cited) {
+      const head = evidenceManifest.heads[repo];
+      if (head == null) continue; // recorded as unresolved by the test above
+      if (!commit.startsWith(head) && !head.startsWith(commit)) {
+        problems.push(
+          `The register cites ${repo} at ${commit}, but the evidence manifest was ` +
+            `generated against ${head}.\n    The citations were checked against a different ` +
+            `commit than the one they claim. Re-run \`npm run claims:evidence\`, or correct ` +
+            `evidenceCommit.`,
+        );
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
+  });
+
   test("no evidence path contains an elided segment", () => {
     const problems: string[] = [];
     for (const c of claims) {

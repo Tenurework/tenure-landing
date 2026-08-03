@@ -14,6 +14,7 @@
     "check:links": "node scripts/check-links.mjs",
     "check:perf": "node scripts/check-perf.mjs",
     "claims:build": "node scripts/build-claims-doc.mjs",
+    "claims:evidence": "node scripts/build-evidence-manifest.mjs",
     "test": "playwright test",
     "test:e2e": "playwright test nav.spec.ts interaction.spec.ts",
     "test:a11y": "playwright test a11y.spec.ts",

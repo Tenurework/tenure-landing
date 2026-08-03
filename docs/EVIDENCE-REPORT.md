@@ -231,9 +231,14 @@ This is the product-side cause of the `/terms` P0 above.
    the home page asserted query-layer isolation with no scope while the register required
    "15 of 39" to travel with it. Verified non-vacuous: the figure appears in exactly
    `index.html` and `trust.html`, C-003's two routes.
-3. **Evidence paths are still not resolved.** CI has no checkout of the product repo, so the
-   ratchet can only reject an elided path and require `ci-verified` to name a test file. A
-   committed manifest of paths and SHAs would close it properly.
+3. ~~Evidence paths are still not resolved.~~ **Closed.** `npm run claims:evidence` resolves
+   every citation against real checkouts and writes `docs/evidence-manifest.json`; the suite
+   asserts against it, since CI has no product-repo checkout. **68 paths, all resolving**, at
+   `Tenure@819aec0` and `Tenure-Parent@1c03db8` — the commits the register itself cites, which
+   is a third test. Both halves are enforced: a path in the manifest must exist, *and* every
+   file-shaped citation in the register must appear in the manifest — without the second, a
+   newly added claim would pass unverified, which is the same failure the regex had, one level
+   up. The honest limit is that a manifest can drift; the commit check makes drift fail loudly.
 4. **The committed visual baselines were stale, and the tolerance hid it.** Inspecting the
    `home-seat-mechanism` diff rather than accepting it showed the *baseline* rendering a demo
    exchange — "Who's our caterer, and what did we overpay last year?" answered with a

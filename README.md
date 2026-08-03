@@ -169,6 +169,7 @@ npm run check:contrast
 npm run check:links    # after a build
 npm run check:perf     # Lighthouse budgets — needs a server, see below
 npm run claims:build   # regenerate the register document from src/lib/claims.ts
+npm run claims:evidence # resolve every evidence path against the product repos
 npm run build:contours # regenerate public/contours/*.svg (also runs from prebuild)
 npm run verify         # lint + typecheck + contrast + build + tests
 ```
