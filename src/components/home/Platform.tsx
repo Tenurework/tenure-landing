@@ -123,7 +123,7 @@ export function Platform() {
                     Nominations open week 10, two-week window, ranked-choice ballot.
                   </p>
                   <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
-                    Bylaws §4 · 2 records ↗
+                    2 records ↗
                   </span>
                 </div>
               </div>

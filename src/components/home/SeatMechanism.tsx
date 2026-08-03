@@ -176,6 +176,19 @@ export function SeatMechanism() {
                 </div>
               </div>
               <div className="flex items-center gap-1.5">
+                {/* WCAG 2.2.2: this rotated every 3.4s and could only be paused
+                    with a mouse. */}
+                {!reduce && (
+                  <button
+                    type="button"
+                    onClick={() => setPaused((v) => !v)}
+                    aria-pressed={paused}
+                    aria-label={paused ? "Resume the term walkthrough" : "Pause the term walkthrough"}
+                    className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-md font-mono text-[0.66rem] text-text-secondary hover:text-ink"
+                  >
+                    {paused ? "▶" : "⏸"}
+                  </button>
+                )}
                 {STEPS.map((s, idx) => (
                   <button
                     key={s.term}
@@ -266,11 +279,11 @@ export function SeatMechanism() {
                 <span className="text-[0.74rem] font-semibold text-ink">Ask this seat</span>
               </div>
               <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-[0.78rem] text-ink-soft ring-1 ring-line">
-                Who&rsquo;s our caterer, and what did we overpay last year?
+                Who did we use for catering, and why did we switch?
               </p>
               <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-[0.78rem] leading-relaxed text-ink">
-                Prestige Catering. The &rsquo;25 gala ran <span className="font-medium">$1,240 over</span>, Marcus
-                renegotiated it to a flat $3,800.
+                Prestige Catering. Marcus renegotiated after the &rsquo;25 gala ran over
+                &mdash; the vendor card and the approval behind it are attached.
                 <span className="ml-1 whitespace-nowrap font-mono text-[0.6rem] text-grove-deep">3 sources ↗</span>
               </p>
             </div>

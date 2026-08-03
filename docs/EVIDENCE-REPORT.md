@@ -18,7 +18,7 @@ All run on Windows 11, Node 24.16.0, from the repository root.
 | `npm run check:contrast` | 0 | **72/72** token pairs pass WCAG 2.2 AA across both themes; dark blocks agree on all 38 tokens |
 | `npm run check:links` | 0 | **111** internal links, **0** broken |
 | `npm run claims:build` | 0 | 32 claims, 16 forbidden phrases |
-| `npx playwright test` (all 4 projects) | 1 | **1,030 passed · 2 failed · 16 skipped** (6.5 min) |
+| `npx playwright test` (all 4 projects) | 0 | **1,052 passed · 0 failed · 16 skipped** (6.2 min) |
 
 ### Test suites
 
@@ -33,11 +33,7 @@ Four browser projects: `desktop-light`, `desktop-dark`, `mobile-light`, `mobile-
 | `a11y.spec.ts` | axe + keyboard, target size, reflow, zoom, measured contrast | **2 failing**, see below |
 | `visual.spec.ts` | 74 baselines | pass; regenerated and confirmed stable on a second run |
 
-**The 2 failures are real and recorded, not silenced.** Both are on `/product`, both inside
-`ProductAtWork` — a decorative mock whose card transitions opacity, so the contrast walk catches
-it mid-transition and measures a partially transparent foreground. The fix is to drive that card
-from the CSS reveal mechanism rather than an opacity animation, which is a component rewrite
-rather than a copy or token change. Nothing else on any route fails.
+**All suites pass.** The two failures recorded in the first draft of this report are fixed: an infinite opacity loop in ProductAtWork that put text below AA forever, and its two successor forms.
 
 ### Skipped tests
 
@@ -173,9 +169,7 @@ secret in the same file uses `valueFrom`.
 ### Open engineering items
 
 1. The 2 failing `a11y` tests on `/product` (`ProductAtWork` opacity animation).
-2. **Phase 6 adversarial review did not run.** Eight persona reviews were launched and all eight
-   were killed by a session limit before producing findings. This is a mandatory gate and it is
-   **not** satisfied.
+2. **Phase 6 P1/P2 backlog.** The review ran and produced 144 findings; all 22 P0s are fixed, but 53 P1s are recorded rather than resolved — chiefly the legal gaps in /terms, the deletion contradiction between /privacy and /trust, the undisclosed subprocessors, and the missing backup/retention/DR statements. See ADVERSARIAL-REVIEW-FINDINGS.md.
 3. Visual baselines are Windows-only. CI omits the `visual` suite for that reason, with the
    remedy documented inline in the workflow.
 4. Performance budgets were not measured with Lighthouse. Payload was reduced 29% and the cause
@@ -189,6 +183,9 @@ secret in the same file uses `valueFrom`.
 **Make `satvikOS/Tenure` private, or rewrite its history.** Everything else on this list can
 wait; that one is disclosing real students' names and email addresses right now.
 
-After that, in order: run the Phase 6 persona review; fix the two `ProductAtWork` failures; take
-a Lighthouse measurement against the production build; then review this branch and merge. Do not
-deploy on the strength of this report alone — the adversarial gate has not been met.
+After that, in order: take the legal gaps in /terms to counsel (procurement will not sign the
+current document); reconcile the /privacy deletion promise with /trust; disclose AWS and Calendly
+as subprocessors; take a Lighthouse measurement. Then review this branch and merge.
+
+The adversarial gate has now been met for P0. It has NOT been met for P1 — 53 findings are
+recorded and unresolved, and most of the legal ones would stop a university signing.

@@ -12,7 +12,6 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 /* ---------- Finance: a budget that fills + a reimbursement that approves ---- */
 function FinanceCard() {
   const reduce = useReducedMotion();
-  const loop = { duration: 5, repeat: Infinity, ease: "easeInOut" as const, times: [0, 0.4, 0.55, 0.9, 1] };
   return (
     <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
@@ -39,7 +38,7 @@ function FinanceCard() {
         {[
           { who: "Print order, D. Reyes", amt: "$240" },
           { who: "Gala venue deposit", amt: "$1,500" },
-        ].map((r, i) => (
+        ].map((r) => (
           <div
             key={r.who}
             className="flex items-center justify-between rounded-lg border border-line bg-surface-subtle px-3 py-2 text-[0.8rem]"
@@ -47,23 +46,21 @@ function FinanceCard() {
             <span className="text-ink-soft">{r.who}</span>
             <span className="flex items-center gap-2">
               <span className="font-mono text-ink">{r.amt}</span>
-              <span className="relative h-[1.15rem] w-[4.6rem] overflow-hidden rounded-full text-[0.6rem] font-medium">
-                <motion.span
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-warning-subtle text-warning"
-                  initial={{ opacity: 1 }}
-                  animate={reduce ? undefined : { opacity: [1, 1, 0, 0, 1] }}
-                  transition={reduce ? undefined : { ...loop, delay: i * 0.3 }}
-                >
-                  Pending
-                </motion.span>
-                <motion.span
-                  className="absolute inset-0 flex items-center justify-center rounded-full bg-grove-soft text-grove-deep"
-                  initial={{ opacity: 0 }}
-                  animate={reduce ? { opacity: 1 } : { opacity: [0, 0, 1, 1, 0] }}
-                  transition={reduce ? undefined : { ...loop, delay: i * 0.3 }}
-                >
-                  Approved
-                </motion.span>
+              {/*
+                Static. This was a Pending -> Approved crossfade, and it
+                produced an accessibility defect in three successive forms:
+                first as an infinite loop putting both labels below AA forever,
+                then as a one-shot that left the incoming label invisible
+                without JavaScript, then as one that left the outgoing label
+                invisible under reduced motion.
+
+                It was decoration. The row already shows a cleared
+                reimbursement, and the approval mechanism is explained in words
+                elsewhere on the page. Motion should explain a state change, not
+                be a permanent tax — so this one is gone.
+              */}
+              <span className="flex h-[1.15rem] w-[4.6rem] items-center justify-center rounded-full bg-grove-soft text-[0.6rem] font-medium text-grove-deep">
+                Approved
               </span>
             </span>
           </div>
@@ -76,7 +73,6 @@ function FinanceCard() {
 /* ---------- Handoff: a record crosses from the outgoing term to the next ---- */
 function HandoffCard() {
   const reduce = useReducedMotion();
-  const loop = { duration: 5.4, repeat: Infinity, ease: "easeInOut" as const };
   return (
     <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
@@ -98,15 +94,22 @@ function HandoffCard() {
           </div>
         </div>
 
+        {/*
+          Moves once and stays. This used to run `opacity: [0,1,1,1,0]` on an
+          infinite loop, so the card's text was fully transparent — and below
+          WCAG AA — for part of every cycle, forever. Contrast applies to text
+          as presented, so a permanent fade loop is a permanent contrast
+          failure, not a rendering detail.
+
+          The handoff it illustrates is carried by the two zones and the card's
+          final position; the fade was decoration bought with legibility.
+        */}
         <motion.div
           className="absolute top-12 z-10 w-[44%] rounded-xl border border-grove/30 bg-cloud p-2.5 shadow-[var(--shadow-lg)]"
-          initial={{ left: "4%", opacity: 0 }}
-          animate={
-            reduce
-              ? { left: "52%", opacity: 1 }
-              : { left: ["4%", "4%", "52%", "52%", "52%"], opacity: [0, 1, 1, 1, 0] }
-          }
-          transition={reduce ? undefined : { ...loop, times: [0, 0.14, 0.5, 0.9, 1] }}
+          initial={{ left: "4%", opacity: 1 }}
+          whileInView={{ left: "52%", opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={reduce ? { duration: 0 } : { duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
           <div className="flex items-center gap-1.5">
             <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.55rem] uppercase text-grove-deep">

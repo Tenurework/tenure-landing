@@ -524,11 +524,40 @@ test.describe("product mock", () => {
     await page.goto("/");
     await hydrated(page);
 
-    await expect(page.getByText("auto-touring")).toBeVisible();
+    // The pause control's presence is what says the tour is running — it
+    // replaced a plain "auto-touring" status label, because WCAG 2.2.2 needs a
+    // way to stop anything auto-updating for more than five seconds, and hover
+    // is not one for a touch or keyboard user.
+    const pause = page.getByRole("button", { name: /pause tour/i });
+    await expect(pause).toBeVisible();
     await expect(page.getByText(PANEL_MARKER.Finance)).toBeVisible();
     // The tour advances every 4.2s; this waits for the next panel rather than
     // sleeping for a fixed interval.
     await expect(page.getByText(PANEL_MARKER.Calendar)).toBeVisible({ timeout: 15_000 });
+  });
+
+  test("the tour can be paused and resumed without a mouse", async ({ page }) => {
+    await page.goto("/");
+    await hydrated(page);
+
+    const pause = page.getByRole("button", { name: /pause tour/i });
+    await pause.focus();
+    await page.keyboard.press("Enter");
+
+    const resume = page.getByRole("button", { name: /resume tour/i });
+    await expect(resume).toBeVisible();
+    await expect(resume).toHaveAttribute("aria-pressed", "true");
+
+    // A negative needs an observation window: two full intervals must pass with
+    // the panel unchanged, or "paused" is decorative.
+    const panel = await page.getByText(PANEL_MARKER.Finance).isVisible();
+    if (panel) {
+      await page.waitForTimeout(9_000);
+      await expect(page.getByText(PANEL_MARKER.Finance)).toBeVisible();
+    }
+
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("button", { name: /pause tour/i })).toBeVisible();
   });
 
   test("reduced motion stops the auto-advance", async ({ page }) => {

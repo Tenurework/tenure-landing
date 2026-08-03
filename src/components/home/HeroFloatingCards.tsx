@@ -57,7 +57,7 @@ export function HeroFloatingCards() {
             <span className="text-[0.72rem] font-semibold text-ink">Approval cleared</span>
           </div>
           <p className="mt-1.5 text-[0.7rem] leading-snug text-ink-soft">
-            Spring Gala budget, $4,200. <span className="font-mono text-[0.62rem] text-grove-deep">policy v4 snapshot</span>
+            Spring Gala budget, $4,200. <span className="font-mono text-[0.62rem] text-grove-deep">VP Finance &middot; gate 2 of 2</span>
           </p>
         </motion.div>
       </motion.div>

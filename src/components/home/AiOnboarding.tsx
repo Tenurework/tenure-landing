@@ -25,7 +25,7 @@ const EXCHANGES: Exchange[] = [
     ask: "How do we run elections?",
     answer:
       "Nominations open week 10, two-week window, ranked-choice ballot in the Members module.",
-    sources: "Bylaws §4 · 2 records",
+    sources: "2 records",
   },
 ];
 

@@ -671,6 +671,14 @@ export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: strin
   { phrase: /\brow[- ]level security\b/i, because: "Tenancy is query-layer, not Postgres RLS", claimId: "C-003" },
   { phrase: /\bhash[- ]chain(ed)?\b/i, because: "AuditEvent has no hash column", claimId: "C-004" },
   { phrase: /\btamper[- ]proof\b/i, because: "No cryptographic tamper-evidence", claimId: "C-031" },
+  // Added after the adversarial review: four personas independently flagged the
+  // home page calling the audit trail "immutable" while /trust warns buyers to
+  // interrogate that exact word. The ratchet only blocked "tamper-proof" and
+  // "hash-chained", so it walked straight past it.
+  { phrase: /\bimmutab(le|ility)\b/i, because: "Append-only is application-enforced; there is no hash chain, signature or checksum", claimId: "C-031" },
+  { phrase: /\bask(ing)? anything\b/i, because: "Retrieval covers five record kinds; finance, people and file contents are excluded", claimId: "C-007" },
+  { phrase: /\bpolicy v[0-9]+\b/i, because: "policySnapshot has no version and is never read back", claimId: "C-005" },
+  { phrase: /\bdays,? not a semester\b/i, because: "Nothing measures onboarding duration", claimId: "C-014" },
   { phrase: /\bnothing leaves your tenant\b/i, because: "Record text is sent to Anthropic", claimId: "C-007" },
   { phrase: /\banswers? anything\b/i, because: "Retrieval is keyword matching over five record kinds", claimId: "C-007" },
   { phrase: /\bnever (invents|hallucinates)\b/i, because: "Grounding is prompt-instructed, not verified", claimId: "C-007" },

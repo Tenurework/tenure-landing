@@ -10,7 +10,10 @@ const CHIPS = [
   site.pilot.scopeShort,
   "Hard + soft conflict detection",
   "2-gate approval chain, 7 request types",
-  "Immutable audit trail",
+  // NOT "immutable": /trust warns buyers to interrogate that word, and the
+  // audit table has no hash, signature or checksum column. Append-only is
+  // what is true, and it is still the strong claim.
+  "Append-only audit trail",
 ];
 
 export function TrustStrip() {

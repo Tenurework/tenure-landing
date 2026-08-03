@@ -355,6 +355,9 @@ export function DashboardMock({
   useEffect(() => {
     if (!auto || reduce || paused) return;
     const id = setInterval(() => {
+      // Checked per tick, not once: a gate evaluated when the effect runs would
+      // strand the tour permanently if the page happened to start backgrounded.
+      if (document.visibilityState === "hidden") return;
       setActive((cur) => NAV[(NAV.indexOf(cur) + 1) % NAV.length]);
     }, 4200);
     return () => clearInterval(id);
@@ -423,9 +426,27 @@ export function DashboardMock({
           <div className="min-h-[19.5rem] p-4 sm:p-5">
             <div className="mb-3 flex items-center justify-between">
               <p className="font-display text-lg font-semibold text-ink">{active}</p>
-              <span className="font-mono text-[0.62rem] text-ink-faint">
-                {auto && !reduce ? "auto-touring ↺" : "click a module ↗"}
-              </span>
+              {/*
+                A real control, not a status label. WCAG 2.2.2 (Level A)
+                requires a way to pause anything that auto-updates for more
+                than five seconds; this rotated every 4.2s and could only be
+                stopped by hovering a mouse, which a touch or keyboard user
+                does not have.
+              */}
+              {auto && !reduce ? (
+                <button
+                  type="button"
+                  onClick={() => setPaused((v) => !v)}
+                  aria-pressed={paused}
+                  className="inline-flex h-6 min-w-6 items-center gap-1 rounded-md px-1.5 font-mono text-[0.62rem] text-text-secondary hover:text-ink"
+                >
+                  {paused ? "▶ resume tour" : "⏸ pause tour"}
+                </button>
+              ) : (
+                <span className="font-mono text-[0.62rem] text-text-secondary">
+                  click a module ↗
+                </span>
+              )}
             </div>
             <AnimatePresence mode="wait">
               <motion.div
@@ -449,7 +470,7 @@ export function DashboardMock({
               <span className="text-[0.78rem] font-semibold text-ink">Tenure AI</span>
               <motion.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
-            <p className="text-[0.74rem] leading-relaxed text-ink-soft">Ask anything about the <span className="font-medium text-ink">{active.toLowerCase()}</span> this seat has handled.</p>
+            <p className="text-[0.74rem] leading-relaxed text-ink-soft">Ask about the <span className="font-medium text-ink">{active.toLowerCase()}</span> this seat has recorded.</p>
             <div className="space-y-1.5">
               {ASKS[active].map((a) => (
                 <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-[0.7rem] text-ink-soft">{a}</span>

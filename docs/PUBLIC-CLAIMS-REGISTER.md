@@ -466,6 +466,10 @@ Enforced by `e2e/claims.spec.ts` against the rendered text of every route. A neg
 | `\brow[- ]level security\b` | Tenancy is query-layer, not Postgres RLS | `C-003` |
 | `\bhash[- ]chain(ed)?\b` | AuditEvent has no hash column | `C-004` |
 | `\btamper[- ]proof\b` | No cryptographic tamper-evidence | `C-031` |
+| `\bimmutab(le\|ility)\b` | Append-only is application-enforced; there is no hash chain, signature or checksum | `C-031` |
+| `\bask(ing)? anything\b` | Retrieval covers five record kinds; finance, people and file contents are excluded | `C-007` |
+| `\bpolicy v[0-9]+\b` | policySnapshot has no version and is never read back | `C-005` |
+| `\bdays,? not a semester\b` | Nothing measures onboarding duration | `C-014` |
 | `\bnothing leaves your tenant\b` | Record text is sent to Anthropic | `C-007` |
 | `\banswers? anything\b` | Retrieval is keyword matching over five record kinds | `C-007` |
 | `\bnever (invents\|hallucinates)\b` | Grounding is prompt-instructed, not verified | `C-007` |

@@ -185,10 +185,12 @@ export default function StoryPage() {
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-                Here is exactly where things stand, and where they go this
-                fall. Every organization Simon&rsquo;s Office of Student
-                Engagement stewards puts Tenure to work, and so does the office
-                itself.
+                Here is exactly where things stand. We are planning a{" "}
+                {site.pilot.season} pilot with Simon&rsquo;s Office of Student
+                Engagement, covering the organizations it stewards and the
+                office itself. That scope is proposed and agreed in
+                conversation &mdash; nothing is contracted, and no organization
+                has been enrolled.
               </p>
             </Reveal>
           </div>

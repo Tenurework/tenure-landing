@@ -123,7 +123,7 @@ const INCLUDED: { icon: ReactNode; t: string; d: string }[] = [
   {
     icon: <ConsoleIcon />,
     t: "A console for the office itself",
-    d: "One place for every organization OSE stewards: what's pending, what's vacant, what got denied. Three staff levels, so an advisor sees advising and a director sees everything, and an override lands on the record like every other decision.",
+    d: "One place for every organization the office stewards: what's pending, what's vacant, what got denied. Three staff levels gate which actions each role can take, and an override lands on the record like every other decision. Note the current limit: any institution account can read every organization — advisors are not yet scoped to their own.",
   },
   {
     icon: <LineIcon />,
@@ -208,10 +208,10 @@ export default function PilotPage() {
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
-                One term, hands-on the whole way. No waiting list, no
-                application, and no placeholder accounts. If OSE stewards your
-                organization, you&rsquo;re in. Here&rsquo;s what lands on both
-                sides of the record.
+                One term, hands-on the whole way. The proposed scope covers
+                the organizations the office stewards &mdash; nothing is
+                contracted yet, and no organization has been enrolled.
+                Here&rsquo;s what would land on both sides of the record.
               </p>
             </Reveal>
           </div>

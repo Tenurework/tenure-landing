@@ -244,12 +244,62 @@ found what the first could not see.
 
 ## Phase 6 — Adversarial review
 
-**Gate: resolve every P0/P1 or record a named external blocker.** — **FAIL — did not run**
+**Gate: resolve every P0/P1 or record a named external blocker.** — **PARTIAL: P0s resolved, P1/P2 backlog recorded**
 
-Eight persona reviews were launched (university IT, OSE director, incoming treasurer,
-procurement/legal, enterprise ops, keyboard/low-vision, slow mobile, investor). All eight were
-terminated by a session limit before producing findings. **This mandatory gate is not
-satisfied**, and no persona finding informed the current state of the site.
+Eight personas reviewed the site independently: university IT security, OSE director, incoming
+treasurer, procurement/legal, enterprise operations, keyboard/low-vision, slow mobile, and
+investor/recruiter. Full output in
+[`ADVERSARIAL-REVIEW-FINDINGS.md`](ADVERSARIAL-REVIEW-FINDINGS.md).
+
+**144 findings: 22 P0 · 53 P1 · 47 P2 · 22 P3.**
+
+The signal worth acting on first was agreement: five separate personas independently flagged the
+same pilot-language defect, four flagged the same "immutable" contradiction, and four flagged
+the same unanswerable AI demos.
+
+### What they caught that the automated gates could not
+
+| Finding | Why the ratchet missed it |
+|---|---|
+| Home page chip read **"Immutable audit trail"** while `/trust` warns buyers to interrogate that exact word | `forbiddenPhrases` blocked `tamper-proof` and `hash-chained`, never `immutable` |
+| `/story` asserted the uncontracted pilot in the **present tense** — "Every organization … puts Tenure to work" — under a heading boasting about honesty | The hedge test only fired on sentences containing both the office name **and** the literal string "Fall 2026". This said "this fall" |
+| `/pilot` told third-party organizations **"you're in"** | Same gap |
+| Every AI demo showed an answer the retrieval layer **cannot produce** — a budget figure, a caterer's overspend, a `Bylaws §4` citation | The ratchet checks words, not whether a rendered mock is answerable |
+| **"policy v4 snapshot"** still shipped in `HeroFloatingCards` | It was removed from `DashboardMock` only. The evidence report wrongly recorded it as gone |
+| **"Ask anything"** shipped inside the hero mock | Not in the blocklist |
+| `/trust` documented **no authentication control at all** | Nothing tests for an absent section |
+| `/pilot` said advisors see only their own orgs; `/trust` says any institution account reads every organization | No cross-page consistency check exists |
+| Two auto-rotating regions could only be paused **with a mouse** — WCAG 2.2.2, Level A | axe cannot detect a missing pause affordance |
+
+### Resolved in this pass
+
+All P0s above are fixed, plus four new ratchet rules (`immutable`, `ask anything`, `policy vN`,
+`days not a semester`) so they cannot return. The last of those immediately caught a surviving
+instance on `/product` that the personas had also flagged — the rule paid for itself before it
+was committed.
+
+The pause controls fixed a real Level A gap **and** a test flake: the parallel a11y run had been
+failing intermittently because axe sampled an auto-rotating region mid-transition. Root cause and
+symptom were the same defect.
+
+### Not resolved — P1/P2 backlog
+
+Recorded, not fixed. The largest themes, each raised by more than one persona:
+
+- **Legal.** No governing law, venue, confidentiality, notices, assignment or severability in
+  `/terms`; unilateral amendment with deemed acceptance; no breach-notification obligation; no
+  wind-down or data-return-on-failure clause; silence on fees. Procurement would not sign.
+- **Contradiction.** `/privacy` offers deletion on request while `/trust` states the product is
+  built to refuse deletion. Both are true of different things and the site does not say so.
+- **Subprocessors.** Only Anthropic is named. AWS and Calendly are never disclosed, and there is
+  no hosting region, DPA or subprocessor list — so an IT reviewer cannot open a risk register row.
+- **Missing controls on `/trust`.** No backup, restore, retention, in-transit or DR statement,
+  under a product whose whole promise is durability.
+- **Performance.** `SmoothScroll` changes the React element type after hydration, tearing down
+  and rebuilding the document; Lenis ships and runs a permanent rAF loop on phones where it does
+  nothing; `backdrop-blur-xl` is active for the entire scroll session.
+- **Evidence.** Nothing on the site is checkable — no screenshot, no video, no demo, no app link.
+- **`MetricsBand` renders 0** for every metric when the section is taller than 2.5 viewports.
 
 ---
 

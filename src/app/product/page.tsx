@@ -79,7 +79,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
 const POINTS: { t: string; d: string }[] = [
   {
     t: "Ready on day one",
-    d: "Tenure AI answers from the seat's full record from day one, so a brand-new officer's first question gets a real answer.",
+    d: "Tenure AI answers from the knowledge, decisions and events recorded against the seat, from day one — so a brand-new officer's first question gets a sourced answer rather than a shrug.",
   },
   {
     t: "Every answer cites its sources",
@@ -211,8 +211,7 @@ export default function ProductPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-                Productive in <span className="text-grove">days</span>, not a
-                semester.
+                They read the seat <span className="text-grove">before they sit in it</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>

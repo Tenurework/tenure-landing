@@ -172,9 +172,21 @@ const GROUPS: Group[] = [
     blurb: "What Tenure connects to, and what it does not.",
     controls: [
       {
+        title: "How people sign in",
+        status: "validating",
+        body: "Pilot accounts are created by us in advance against a named person. There is no public registration and no self-service signup. Sessions are issued as signed tokens by the application's auth layer.",
+        limit:
+          "This is a pilot-grade access model, and it is the weakest control on this page. There is no MFA, no password policy you can configure, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold student data your institution would classify as sensitive, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
+      },
+      {
+        title: "Multi-factor authentication",
+        status: "unsupported",
+        body: "MFA is not available in any form today.",
+      },
+      {
         title: "Single sign-on (SAML / OIDC)",
         status: "roadmap",
-        body: "Institutional SSO is not deployed. Pilot access is closed: accounts are provisioned by us in advance and the environment is not open to public registration.",
+        body: "Institutional SSO is not deployed. It is the gating item for taking Tenure beyond a pilot.",
         limit:
           "If SSO is a procurement precondition, it is not met today. We would rather tell you now than during a security review.",
       },
