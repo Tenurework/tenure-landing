@@ -282,24 +282,30 @@ The pause controls fixed a real Level A gap **and** a test flake: the parallel a
 failing intermittently because axe sampled an auto-rotating region mid-transition. Root cause and
 symptom were the same defect.
 
-### Not resolved — P1/P2 backlog
+### P1 backlog — resolved
 
-Recorded, not fixed. The largest themes, each raised by more than one persona:
+| Theme | Disposition |
+|---|---|
+| **Legal, `/terms`** | Deemed acceptance removed (30 days' notice, no retroactive application, exit with export). Added governing law and venue, mutual confidentiality, publicity, notices, assignment, severability, entire agreement, a 72-hour incident obligation, a wind-down clause, a fees clause, and a plain statement that with no entity we cannot offer indemnities or insurance. "Process it to provide **and improve** the service" removed — that phrase swallows the school-official posture. |
+| **Deletion contradiction** | `/privacy` now splits it honestly: personal details removable, an organization's whole record exportable and deletable, individual entries **not** erasable from a seat's history on a departing person's say-so — which is the product working as designed. `/trust` states the same limit from the product side. |
+| **Subprocessors** | Full list published on `/privacy`: AWS (hosting, US regions), Anthropic (model), Vercel (this website only), Calendly (scheduling, `/contact` only). `/trust` cross-references it. Registered as `C-036`. |
+| **Missing `/trust` controls** | Added encryption in transit (TLS 1.2, verified), backups with **one-day retention stated as the number to push us on**, restore testing as *Not supported*, and the breach commitment. Registered as `C-033`–`C-035`. |
+| **Tenant isolation headline** | "15 of 39 models" moved from the footnote into the heading. |
+| **University mark captioned as a pilot** | Now "Origin & support" with an explicit non-endorsement note. |
+| **`MetricsBand` rendered 0** | Root cause removed: `useInView` with a 40% threshold is gone, the real value is the server-rendered and every-degraded-path state, and the count-up cannot strand it. The seeded count carries "Seeded model — not customers, not users" on its face. |
+| **Performance** | `SmoothScroll` no longer changes element type after hydration — it was unmounting and remounting the whole document one frame in. Lenis never loads on a coarse pointer. The header's session-long backdrop blur is a near-opaque fill, blurred only for fine pointers. |
+| **Hero** | Paragraph and both CTAs paint with the document; opens on a concrete image; and there is finally a path for someone who already has Tenure. |
+| **Secondary buttons** | Moved onto a token that clears 3:1, so the control's edge is perceivable. |
+| **Calendly consent** | `hide_gdpr_banner` removed — we were switching off a third party's consent prompt while publishing no cookie notice of our own. |
+| **Founders anonymous** | Each now carries a specific responsibility split. No invented biography, credential or photograph. |
 
-- **Legal.** No governing law, venue, confidentiality, notices, assignment or severability in
-  `/terms`; unilateral amendment with deemed acceptance; no breach-notification obligation; no
-  wind-down or data-return-on-failure clause; silence on fees. Procurement would not sign.
-- **Contradiction.** `/privacy` offers deletion on request while `/trust` states the product is
-  built to refuse deletion. Both are true of different things and the site does not say so.
-- **Subprocessors.** Only Anthropic is named. AWS and Calendly are never disclosed, and there is
-  no hosting region, DPA or subprocessor list — so an IT reviewer cannot open a risk register row.
-- **Missing controls on `/trust`.** No backup, restore, retention, in-transit or DR statement,
-  under a product whose whole promise is durability.
-- **Performance.** `SmoothScroll` changes the React element type after hydration, tearing down
-  and rebuilding the document; Lenis ships and runs a permanent rAF loop on phones where it does
-  nothing; `backdrop-blur-xl` is active for the entire scroll session.
-- **Evidence.** Nothing on the site is checkable — no screenshot, no video, no demo, no app link.
-- **`MetricsBand` renders 0** for every metric when the section is taller than 2.5 viewports.
+### Still open
+
+| Item | Why it is not a code change |
+|---|---|
+| **No screenshots, video or demo recording** | Nothing on the site is independently checkable. `ProductAtWork` now states plainly that its surfaces are illustrations rather than screenshots, but real artefacts are a content deliverable. |
+| **No application URL** | There is no public app host anywhere in the repository, so the new sign-in path points at `/contact` rather than an invented hostname. Confirm the URL and the link can be direct. |
+| **`/pilot` success measures** | Restructured as an operational proposal, but the targets are ours. They should be agreed with the office before the page claims them jointly. |
 
 ---
 

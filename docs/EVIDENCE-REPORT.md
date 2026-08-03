@@ -1,6 +1,6 @@
 # Release evidence — `refine/landing-bible-v1`
 
-Branch: `refine/landing-bible-v1` · head `d0f8cb5` · base `fb6a3bd`
+Branch: `refine/landing-bible-v1` · head `9aac6cb` · base `fb6a3bd`
 Nothing merged. Nothing deployed. No production side effect.
 
 ---
@@ -17,7 +17,7 @@ All run on Windows 11, Node 24.16.0, from the repository root.
 | `npm run build` | 0 | 12 routes prerendered |
 | `npm run check:contrast` | 0 | **72/72** token pairs pass WCAG 2.2 AA across both themes; dark blocks agree on all 38 tokens |
 | `npm run check:links` | 0 | **111** internal links, **0** broken |
-| `npm run claims:build` | 0 | 32 claims, 20 forbidden phrases |
+| `npm run claims:build` | 0 | 36 claims, 20 forbidden phrases |
 | `npx playwright test` (all 4 projects) | 0 | **1,052 passed · 0 failed · 16 skipped** (6.2 min) |
 
 ### Test suites
@@ -170,7 +170,7 @@ secret in the same file uses `valueFrom`.
 ### Open engineering items
 
 1. The 2 failing `a11y` tests on `/product` (`ProductAtWork` opacity animation).
-2. **Phase 6 P1/P2 backlog.** The review ran and produced 144 findings; all 22 P0s are fixed, but 53 P1s are recorded rather than resolved — chiefly the legal gaps in /terms, the deletion contradiction between /privacy and /trust, the undisclosed subprocessors, and the missing backup/retention/DR statements. See ADVERSARIAL-REVIEW-FINDINGS.md.
+2. **Phase 6 P1 backlog is resolved.** All 22 P0s and the P1 themes are fixed — see the ledger. What remains is not code: no screenshots or demo recording exist, there is no public application URL in the repository, and the /pilot success measures are ours rather than jointly agreed.
 3. Visual baselines are Windows-only. CI omits the `visual` suite for that reason, with the
    remedy documented inline in the workflow.
 4. Performance budgets were not measured with Lighthouse. Payload was reduced 29% and the cause
@@ -188,5 +188,4 @@ After that, in order: take the legal gaps in /terms to counsel (procurement will
 current document); reconcile the /privacy deletion promise with /trust; disclose AWS and Calendly
 as subprocessors; take a Lighthouse measurement. Then review this branch and merge.
 
-The adversarial gate has now been met for P0. It has NOT been met for P1 — 53 findings are
-recorded and unresolved, and most of the legal ones would stop a university signing.
+The adversarial gate is met for P0 and for the P1 themes. Legal review is still outstanding: /terms and /privacy are materially better than they were, but they remain founder-drafted and uncounselled, and there is still no entity to sign anything.
