@@ -442,6 +442,55 @@ test.describe("forbidden phrases", () => {
    * offered as a card kind. So the row is asserted against the register's mirror of
    * the product enum instead.
    */
+  /**
+   * THE REGISTER'S CENTRAL RULE, FINALLY ENFORCED.
+   *
+   * claims.ts defines `qualification` as "Limits that MUST travel with the claim
+   * wherever it appears", and `where` as the routes it appears on. Nothing checked
+   * that the limit made the trip. It had not: C-003 lists "/" and its qualification
+   * carries "15 of 39", and the home page said "isolation is enforced at the query
+   * layer" with no scope at all — the strongest possible reading of a claim whose
+   * whole point is that it is partial.
+   *
+   * Scoped to figures of the form "N of M" deliberately. A qualification is prose
+   * and cannot be matched wholesale, but a fraction is the part a reader would
+   * quote back, it is unambiguous to search for, and it is precisely the shape that
+   * went missing. If a future qualification states a scope this way, it will be
+   * held to the same rule on every route the claim appears on.
+   */
+  test("a qualification that states a fraction states it on every route the claim appears on", async ({
+    page,
+  }) => {
+    const routes = await siteText(page);
+    const byRoute = new Map(routes.map((r) => [r.route, r]));
+    const FRACTION = /\b\d+ of \d+\b/g;
+    const problems: string[] = [];
+
+    for (const c of claims) {
+      const figures = [...new Set(c.qualification?.match(FRACTION) ?? [])];
+      if (!figures.length) continue;
+
+      for (const w of c.where) {
+        const route = routeOf(w);
+        if (!route) continue;
+        const text = byRoute.get(route);
+        if (!text) continue;
+        const body = normalise(text.lines.join(" "));
+        for (const figure of figures) {
+          if (!body.includes(figure)) {
+            problems.push(
+              `${c.id}: the qualification says "${figure}" but ${route} does not.\n` +
+                `    ${c.claim}\n` +
+                `    A limit that does not travel with the claim is a limit nobody reads — ` +
+                `either state the scope on ${route}, or drop ${route} from the claim's \`where\`.`,
+            );
+          }
+        }
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
+  });
+
   test("the memory card kinds match the types the product lets you create", async ({ page }) => {
     await page.goto("/");
     await settle(page);
@@ -613,6 +662,16 @@ test.describe("pilot language", () => {
 /* 3. REGISTER INTEGRITY                                                       */
 /* ========================================================================== */
 
+/**
+ * A `where` entry is a route only if it starts with one. The field also carries
+ * non-route pointers — "site.ts metrics", "components/home/AiOnboarding.tsx" —
+ * and routes annotated with their framing, like "/trust (stated as NOT supported)".
+ */
+function routeOf(where: string): string | null {
+  const m = /^(\/[a-z0-9-]*)/i.exec(where.trim());
+  return m ? m[1] : null;
+}
+
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 /** `dir/file.ext`, a bare `file.ext`, or a directory path — anything a reviewer can open. */
 const CITES_A_PATH = /[\w.-]+\/[\w./[\]()-]+|\b[\w.-]+\.(?:ts|tsx|js|jsx|mjs|cjs|prisma|sql|ya?ml|json|md|tf)\b/;
@@ -756,6 +815,31 @@ test.describe("claims register integrity", () => {
    * C-012 and C-018 were both marked ci-verified while citing no spec at all —
    * C-018's evidence pointed at a spec that tests something else entirely.
    */
+  /**
+   * `where` records the routes a claim appears on, and until now nothing read it.
+   * `grep -c "\.where" claims.spec.ts` returned 0, so the register could name a
+   * route that had never carried the claim, or one that stopped carrying it, and
+   * no test would notice. This is the cheap half of closing that: the routes have
+   * to exist. The expensive half — that the limit actually travels — is below.
+   */
+  test("every route a claim claims to appear on is a real route", () => {
+    const known = new Set<string>(ALL_ROUTES);
+    const problems: string[] = [];
+    for (const c of claims) {
+      for (const w of c.where) {
+        const route = routeOf(w);
+        if (!route) continue; // "site.ts metrics", "components/…" — not routes
+        if (!known.has(route)) {
+          problems.push(
+            `${c.id} lists "${w}" in \`where\`, but ${route} is not a route in routes.ts.\n` +
+              `    Known routes: ${[...known].join(", ")}`,
+          );
+        }
+      }
+    }
+    expect(problems, report(problems)).toHaveLength(0);
+  });
+
   test("every ci-verified claim names the test that verifies it", () => {
     const TEST_FILE = /\.(?:spec|test|itest)\.[tj]sx?\b/;
     const problems: string[] = [];

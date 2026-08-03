@@ -493,7 +493,7 @@ The suite could not have caught any of the 29, for three structural reasons, all
 | Gap | Consequence | Closed by |
 |---|---|---|
 | `claims.spec.ts` regex-matched the *shape* of an evidence path and never resolved one | A non-existent file, a literal `...` placeholder and a spec testing something else all passed green | Tests rejecting elided segments, and requiring `ci-verified` to name a real test file |
-| Nothing read `claim.where` | The register's central rule — that a limit travels with its claim wherever it appears — had no enforcement on any claim | C-003's "15 of 39" now travels to the home page; the general enforcement is recorded as still open |
+| Nothing read `claim.where` | The register's central rule — that a limit travels with its claim wherever it appears — had no enforcement on any claim | **Closed.** Two tests now read `where`: every route a claim names must exist, and a qualification stating an "N of M" figure must state it on every route in `where`. C-003 was the live violation — the home page asserted query-layer isolation with no scope while the register required "15 of 39" to accompany it |
 | Published counts were never re-derived | "292 unit tests" shipped under a heading reading "counted from the repository that deploys". The real figure is **320** | Recount recorded in C-015 with the command that produces it |
 
 The 29 are listed with their fixes in [`EVIDENCE-REPORT.md`](EVIDENCE-REPORT.md).

@@ -225,9 +225,12 @@ This is the product-side cause of the `/terms` P0 above.
 ### Open engineering items
 
 1. **Performance on `/`, `/product` and `/trust`** — see §3. The next lever is `motion`.
-2. **`claim.where` is still not enforced.** The register defines a qualification as the limit
-   that must travel with a claim *wherever it appears*, and nothing verifies that. C-003's
-   "15 of 39" now travels to the home page by hand; the general rule has no test.
+2. ~~`claim.where` is still not enforced.~~ **Closed.** Two tests now read `where`: every
+   route a claim names must be a real route, and any qualification stating a figure of the
+   form "N of M" must state it on every route in `where`. The second is what C-003 violated —
+   the home page asserted query-layer isolation with no scope while the register required
+   "15 of 39" to travel with it. Verified non-vacuous: the figure appears in exactly
+   `index.html` and `trust.html`, C-003's two routes.
 3. **Evidence paths are still not resolved.** CI has no checkout of the product repo, so the
    ratchet can only reject an elided path and require `ci-verified` to name a test file. A
    committed manifest of paths and SHAs would close it properly.
