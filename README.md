@@ -196,6 +196,12 @@ gates. Run it locally, take the median of three, and compare like with like.
 The scores that *are* stable run to run — Accessibility, Best Practices, SEO and CLS — are
 worth trusting from a single run. Performance, LCP and TBT are not.
 
+**Always measure a control route.** If a change appears to have moved Performance, re-measure a
+route the change cannot possibly affect before believing it. A hero-only change once read as
+home going 85 → 72; `/terms`, which the change could not touch, had gone 99 → 81 in the same
+window. The machine had degraded, not the site. Warm the server first, too — a sweep started
+seconds after `next start` measures cache population rather than the page.
+
 ---
 
 ## Editing content

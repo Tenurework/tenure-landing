@@ -123,8 +123,9 @@ across every route (109 KB raw / 39 KB gzipped for all nine seeds, cached once).
 Accessibility 100, Best Practices 100, SEO 100 and CLS 0.000 on **all eight routes**, before
 and after.
 
-**This gate is FAIL with a documented exception.** Two things must be said plainly about the
-numbers above:
+**This gate is FAIL with a documented exception — seven of eight routes now pass.** The table
+in this section is the *first* measurement, taken before any of the fixes; the current state is
+in "The motion migration" below. Two things must be said plainly about all of these numbers:
 
 1. **The measurement environment cannot be trusted for TBT.** These were taken on a developer
    workstation running a chat client, a video-call app and several dozen browser processes.
@@ -154,16 +155,44 @@ reversed a wrong assumption of mine:
 
 `strict` is on, so any missed `motion.*` throws at runtime rather than silently falling back.
 
-**Measured in bytes, not in scores.** The re-measurement after this change is not reportable:
-in the same sweep `/story` went 99 → 88, `/privacy` 98 → 83 and `/pilot`'s TBT 45 → 614 ms —
-on five routes that do not load `motion` at all and whose bytes are identical before and after.
-That is the workstation, not the code, and it is the second time the environment has produced
-an impossible ordering. What is deterministic:
+Deterministic effect:
 
 | | Before | After |
 |---|---|---|
 | Motion route chunk, raw | 172,979 B | **118,726 B** (−31%) |
 | Motion route chunk, gzipped | ~56,900 B | **~40,840 B** (−16,060 B per route) |
+
+And once the workstation was quiet enough to produce a coherent sweep, the scores followed —
+**seven of eight routes now meet Performance ≥ 90**:
+
+| Route | Perf | LCP | TBT | | was |
+|---|---|---|---|---|---|
+| `/story` | **99** | 2,187 ms | 54 ms | | 78 |
+| `/terms` | **99** | 2,265 ms | 64 ms | | 81 |
+| `/pilot` | **98** | 2,338 ms | 89 ms | | 74 |
+| `/privacy` | **97** | 2,414 ms | 115 ms | | 80 |
+| `/trust` | **95** | 2,834 ms | 152 ms | | 79 |
+| `/contact` | **95** | 2,742 ms | 149 ms | | 84 |
+| `/product` | **94** | 2,566 ms | 188 ms | | 66 |
+| `/` | 85 | 3,526 ms | 255 ms | | 63 |
+
+TBT is inside budget on every route but home. Home remains the one failure: its **observed**
+first paint is 1,269 ms against 95–204 ms elsewhere, before any throttling — it carries the
+largest DOM on the site (1,433 elements) and the most client components. LCP is marginal on
+`/product`, `/trust` and `/contact` (2.5–2.8 s against a 2.5 s budget).
+
+### On measuring at all, in this environment
+
+Three separate sweeps produced physically impossible results — routes whose bytes did not change
+moving by 15+ points, and `/trust` once measuring 424 ms TBT beside `/pilot` at 45 ms with more
+JavaScript. The table above is the one coherent sweep, and it is reported as such.
+
+**The method that settles it is a control route.** After the hero components were converted to
+CSS, home measured 72 (from 85) — which would have read as a serious regression. Measuring
+`/terms`, a route the change cannot touch, showed it had gone 99 → 81 in the same window. The
+machine had degraded, not the code. Any perf claim made here without a control measurement on an
+unchanged route is not evidence, and a warm-up pass matters too: a sweep started nine seconds
+after `next start` measures cache population, not the site.
 
 Rendering is unchanged by design, so the visual baselines do not move — which is the reason this
 strategy was chosen over deleting `motion` outright.

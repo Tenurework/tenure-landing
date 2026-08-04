@@ -470,10 +470,17 @@ opposite, which would have ruled out the correct strategy for a reason that is f
 
 `strict` is enabled, so a missed `motion.*` throws rather than silently degrading.
 
-**Reported in bytes, not scores.** The Lighthouse sweep after this change is not usable: it put
-`/story` at 88 (was 99), `/privacy` at 83 (was 98) and `/pilot`'s TBT at 614 ms (was 45 ms) — on
-five routes that load no `motion` and whose bytes did not change. Same environment problem as
-8.4, worse. Status for §13 is unchanged: **FAIL with a measured exception.**
+Once the workstation was quiet enough for a coherent sweep, **seven of eight routes met
+Performance ≥ 90**: `/story` 99, `/terms` 99, `/pilot` 98, `/privacy` 97, `/trust` 95,
+`/contact` 95, `/product` 94, `/` 85. TBT is inside budget everywhere except home. Against the
+opening measurement of 63–84 failing on all eight, that is the gate substantially met — but
+**still FAIL**, because home is not there and LCP is marginal on three routes.
+
+**Measuring in this environment needs a control.** Three sweeps produced impossible results.
+After the hero components moved to CSS, home measured 72 against 85 — an apparent serious
+regression. `/terms`, a route that change cannot touch, had gone 99 → 81 in the same window: the
+machine, not the code. No performance claim here is worth anything without a control measurement
+on an unchanged route, and the server needs warming before the first sweep.
 
 Removing `motion` altogether remains available and is worth the other ~138 KB. It is not done
 here because the investigation that planned it lost the agent responsible for analysing which

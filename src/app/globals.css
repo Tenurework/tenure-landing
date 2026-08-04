@@ -614,8 +614,53 @@ html.lenis body {
   *::before,
   *::after {
     animation-duration: 0.001ms !important;
+    /* Delays must be zeroed too, not just durations. Any animation using
+       `animation-fill-mode: backwards` holds its `from` frame for the whole delay,
+       so a hidden starting state would stay hidden for the full delay even here —
+       a permanent-looking contrast failure for exactly the users who asked for
+       less motion. That is the shape of the defect Phase 6 fixed in ProductAtWork,
+       arrived at from the other direction. */
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero decoration, in CSS.
+
+   HeroShapes and HeroFloatingCards used to be client components driving these
+   with motion. They are `aria-hidden` ornaments behind `hidden lg:block` and
+   `hidden xl:block`, so on a phone they are display:none — and were still being
+   server-rendered, shipped, parsed and hydrated for a viewport that never shows
+   them. As CSS they cost no client boundary and no JavaScript at all.
+
+   INVARIANT: the resting state is the base declaration and the hidden state lives
+   only in a `from` frame, so no-JS, reduced motion and Playwright's
+   animations:"disabled" all resolve to the visible state.
+
+   `translate:` and not `transform:` — Tailwind v4 compiles `rotate-45` and
+   `-rotate-2` to the independent `rotate:` property and `transform-gpu` to
+   `transform: translateZ(0)`. Animating `transform` here would clobber the GPU
+   promotion those classes exist for, which is what keeps the perpetual float off
+   the paint path.
+   --------------------------------------------------------------------------- */
+@keyframes tn-float {
+  50% {
+    translate: 0 var(--tn-dy, -10px);
+  }
+}
+@keyframes tn-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+  }
+}
+.tn-float {
+  animation: tn-float var(--tn-dur, 8s) ease-in-out var(--tn-delay, 0s) infinite;
+}
+.tn-rise {
+  animation: tn-rise 0.6s var(--ease-out) var(--tn-delay, 0s) backwards;
 }
