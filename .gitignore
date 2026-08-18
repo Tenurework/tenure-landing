@@ -48,3 +48,6 @@ next-env.d.ts
 /test-results/
 /blob-report/
 /playwright/.cache/
+
+# Local screenshot scratch from scripts/shot.mjs and scripts/strip.mjs
+.shots/

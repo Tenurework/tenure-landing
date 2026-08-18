@@ -317,6 +317,7 @@
   --radius-lg: 18px;
   --radius-xl: 26px;
   --radius-2xl: 32px;
+  --radius-3xl: 40px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -454,6 +455,82 @@
     transform 0.24s var(--ease-out),
     box-shadow 0.24s var(--ease-out),
     border-color 0.2s var(--ease-out);
+}
+
+/* ---------------------------------------------------------------------------
+   BACKDROP TEXTURES.
+
+   ONE RULE GOVERNS EVERY UTILITY BELOW: paint them on an `aria-hidden`,
+   absolutely-positioned SIBLING layer — never on an element that is an ancestor
+   of text.
+
+   That is not a style preference, it is what keeps the accessibility gate
+   meaningful. `a11y.spec.ts`'s contrast walk resolves the background behind each
+   text node by climbing its ANCESTORS: a `url()` layer makes the backdrop
+   unresolvable and the sample is *skipped* (silently un-checked), and a gradient
+   layer is expanded into every one of its stops so the darkest stop becomes the
+   assertion. Put a texture on a <section> that holds copy and you either switch
+   the check off or fail it against a colour no reader ever sees. Every backdrop
+   in components/visuals/Backdrop.tsx is a sibling for this reason.
+
+   The second rule is the one SectionContour.tsx already records: bound the layer
+   with a mask. An unmasked full-bleed texture makes the compositor consider the
+   whole page; the measured difference there was 3,101 ms of style and layout
+   against 699 ms.
+   --------------------------------------------------------------------------- */
+
+/* A fine drafting grid. Two gradients rather than an image, so it costs no
+   request and follows `currentColor` into both themes. */
+@utility hairline-grid {
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: var(--grid, 64px) var(--grid, 64px);
+  background-position: center;
+}
+
+/* The same grid as dots, for surfaces where lines would fight the content. */
+@utility dot-grid {
+  background-image: radial-gradient(currentColor 1px, transparent 1px);
+  background-size: var(--grid, 22px) var(--grid, 22px);
+  background-position: center;
+}
+
+/* Film grain: one 120px tile of fractal noise, inlined at ~300 bytes. Tiling a
+   single small raster is what keeps this off the paint path — a full-viewport
+   feTurbulence filter is one of the most expensive things a browser can do. */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 120px 120px;
+}
+
+/* ---------------------------------------------------------------------------
+   THE SINGLE CARD.
+
+   The site used to answer every section with a grid of three to nine cards, so a
+   reader met three arguments at once and read none of them. The rewrite gives
+   each section ONE surface. `panel` is that surface: a raised sheet with a
+   1px inner highlight along its top edge, which is what separates a card that
+   reads as a physical layer from a div with a border on it.
+
+   `color-mix` against --surface rather than a literal white so the highlight
+   inverts with the theme instead of glowing on the dark canvas.
+   --------------------------------------------------------------------------- */
+@utility panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, var(--surface) 100%, white 45%),
+    var(--shadow-md);
+}
+
+/* The recessed well a panel puts its live surfaces into — a mock, a table, a
+   chart. Reads as *below* the sheet, which is what makes the sheet read as one. */
+@utility well {
+  background: color-mix(in oklab, var(--canvas) 92%, var(--text) 8%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
 }
 
 /* ---------------------------------------------------------------------------

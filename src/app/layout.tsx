@@ -30,14 +30,22 @@ export const metadata: Metadata = {
   authors: site.founders.map((f) => ({ name: f.name })),
   creator: site.name,
   publisher: site.name,
+  // Broadened 2026-08-18. Two of the seven terms named a single vertical
+  // ("student organization software", "university administration software") while
+  // the product's own audience list covers universities, nonprofits and NGOs,
+  // small businesses and associations. Keyword metadata carries little ranking
+  // weight, but it is a statement of who the site is for, and this one said
+  // "universities only" as clearly as the copy used to.
   keywords: [
     "institutional memory",
     "leadership transition",
-    "student organization software",
-    "university administration software",
     "succession planning",
     "handoff documentation",
     "governed system of record",
+    "nonprofit board management",
+    "association chapter management",
+    "student organization software",
+    "small business operations",
   ],
   formatDetection: { telephone: false, address: false, email: false },
 };

@@ -1,10 +1,50 @@
-import type { ReactNode } from "react";
-import { Container, Eyebrow } from "@/components/ui/layout";
+"use client";
+
+import { useState, type ReactNode } from "react";
+import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
+import { Panel, PanelBar, PanelRail, PanelNote, PanelTag } from "@/components/ui/Panel";
+import { RailList, type SegmentItem } from "@/components/ui/Segmented";
 import { Logo } from "@/components/brand/Logo";
-import { SectionContour } from "@/components/visuals/SectionContour";
-import { cn } from "@/lib/cn";
+import { Share, GateRail } from "@/components/visuals/Charts";
 import { creatableCardTypes } from "@/lib/claims";
+
+/**
+ * WHAT TENURE RUNS — eleven modules, one at a time.
+ *
+ * THIS SECTION IS THE REASON THE COMPACTION PASS EXISTS.
+ *
+ * It used to be a nine-cell bento grid: nine bordered cards, each with an icon, a
+ * cluster tag, a heading, a description and a row of chips, all painted at once.
+ * Forty-five pieces of information in one viewport, at a point in the page where
+ * the reader has been told what a seat is and nothing else. Nobody reads a
+ * nine-card grid; they scan two cards, conclude "it does a lot of things", and
+ * scroll. It also cost roughly 1,600px — an eighth of the entire home page — to
+ * say something a rail of eleven names says better.
+ *
+ * The rewrite is one panel. The rail on the left lists all eleven module names,
+ * so the completeness argument the grid was making is still made — and made more
+ * legibly, because eleven names scan in about two seconds where nine cards do
+ * not. The pane on the right shows ONE module: its sentence, and whatever
+ * artefact makes that module concrete (a gate rail, a budget share, a conflict, a
+ * record list). One thing to read at a time.
+ *
+ * TWO DETAILS THAT ARE NOT FREE TO CHANGE
+ *
+ * 1. **The card-kind chips are in the permanent footer, not in the Memory
+ *    pane.** `claims.spec.ts` asserts `getByTestId("memory-card-kinds")` is
+ *    *visible* on a fresh load of "/" and equals `creatableCardTypes` exactly.
+ *    Inside a switchable pane that assertion would depend on which module happens
+ *    to be selected by default — a test that passes for a reason unrelated to
+ *    what it is checking. In the footer it is unconditional.
+ * 2. **"Credential" is not in that list and must never return.** The product
+ *    retired the type because MemoryRecord.content is an unencrypted Json column
+ *    that any ACTIVE seat can write and that is indexed for search, so a kind
+ *    called "Login or access info" invited people to paste passwords into a shared
+ *    database against a control that was never written. The list is imported from
+ *    the register's mirror of the product enum rather than typed here, which is
+ *    what makes that enforceable.
+ */
 
 const svg = {
   viewBox: "0 0 24 24",
@@ -13,67 +53,32 @@ const svg = {
   strokeWidth: 1.7,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
-  className: "h-[20px] w-[20px]",
+  className: "h-4 w-4",
   "aria-hidden": true,
 };
 
-function Cluster({ children }: { children: string }) {
-  return (
-    <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-ink-faint">
-      {children}
-    </span>
-  );
-}
+type Cluster = "Run" | "Govern" | "Remember";
 
-function Head({
-  icon,
-  cluster,
-}: {
+type Module = {
+  key: string;
+  /** Rail label. Short enough not to truncate at the rail's width. */
+  label: string;
+  cluster: Cluster;
   icon: ReactNode;
-  cluster: string;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-grove-soft text-grove">
-        {icon}
-      </span>
-      <Cluster>{cluster}</Cluster>
-    </div>
-  );
-}
+  /** The one sentence. */
+  body: string;
+  /** The artefact that makes it concrete. */
+  detail: ReactNode;
+};
 
-function Cell({
-  className,
-  children,
-}: {
-  className?: string;
-  children: ReactNode;
-}) {
+function Chips({ items }: { items: readonly string[] }) {
   return (
-    <article
-      className={cn(
-        "lift group flex flex-col rounded-3xl border border-line bg-cloud p-5 shadow-[var(--shadow-sm),var(--shadow-md)] hover:-translate-y-1 hover:border-grove/25 hover:shadow-[var(--shadow-lg)] sm:p-6",
-        className,
-      )}
-    >
-      {children}
-    </article>
-  );
-}
-
-function Title({ children }: { children: ReactNode }) {
-  return <h3 className="mt-5 font-display text-[1.1rem] font-semibold text-ink">{children}</h3>;
-}
-function Desc({ children }: { children: ReactNode }) {
-  return <p className="mt-1.5 text-[0.9rem] leading-relaxed text-ink-soft">{children}</p>;
-}
-
-/* small tag chips */
-function Tags({ items, testId }: { items: string[]; testId?: string }) {
-  return (
-    <div data-testid={testId} className="mt-4 flex flex-wrap gap-1.5">
+    <div className="flex flex-wrap gap-1.5">
       {items.map((t) => (
-        <span key={t} className="rounded-md border border-line bg-paper/50 px-1.5 py-0.5 font-mono text-[0.58rem] text-ink-soft">
+        <span
+          key={t}
+          className="rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-[0.6rem] text-ink-soft"
+        >
           {t}
         </span>
       ))}
@@ -81,265 +86,398 @@ function Tags({ items, testId }: { items: string[]; testId?: string }) {
   );
 }
 
-export function Platform() {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <section id="platform" className="relative isolate overflow-hidden border-t border-line bg-paper py-24 scroll-mt-20 sm:py-32">
-      <SectionContour place="tr" seed={2} className="text-grove/[0.06]" />
-      <Container className="relative">
-        <div className="mx-auto max-w-2xl text-center">
-          <Reveal>
-            <Eyebrow className="justify-center">The platform</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-              One governed system for everything the org{" "}
-              <span className="text-gradient">runs on</span>.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Work happens here, so the record writes itself.
-            </p>
-          </Reveal>
-        </div>
+    <div>
+      <p className="label-mono text-[0.54rem]">{label}</p>
+      <div className="mt-2">{children}</div>
+    </div>
+  );
+}
 
-        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6 lg:auto-rows-[minmax(0,auto)]">
-          {/* Tenure AI, tall hero cell */}
-          <Reveal as="div" className="lg:col-span-2 lg:row-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Remember"
-                icon={<Logo className="h-5 w-5" />}
-              />
-              <Title>Tenure AI</Title>
-              <Desc>
-                Answers drawn only from records your seat can already see.
-              </Desc>
-              <div className="mt-5 space-y-2">
-                {/* Keyword-shaped, for the reason recorded in AiOnboarding.tsx:
-                    retrieval is an AND over every query token. "How do we run
-                    elections?" is a five-term AND including "how", "do" and "we". */}
-                <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.76rem] text-ink-soft">
-                  election nominations
-                </p>
-                <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
-                  <p className="text-[0.76rem] leading-relaxed text-ink">
-                    Nominations open week 10, two-week window, ranked-choice ballot.
-                  </p>
-                  <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
-                    2 records ↗
+const MODULES: Module[] = [
+  {
+    key: "ai",
+    label: "Tenure AI",
+    cluster: "Remember",
+    icon: <Logo className="h-4 w-4" />,
+    body: "Answers drawn only from records your seat can already open, with the sources linked.",
+    detail: (
+      <Field label="A question against the record">
+        <div className="space-y-2">
+          {/* Keyword-shaped, not a sentence. Retrieval is an AND over every query
+              token longer than one character, with no stemming or stopword
+              removal, so "How do we run elections?" is a five-term AND including
+              "how", "do" and "we" and returns nothing (C-007). */}
+          <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.78rem] text-ink-soft">
+            election nominations
+          </p>
+          <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
+            <p className="text-[0.78rem] leading-relaxed text-ink">
+              Nominations open week 10, two-week window, ranked-choice ballot.
+            </p>
+            <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
+              2 records ↗
+            </span>
+          </div>
+          <p className="pt-1 text-[0.72rem] text-ink-faint">
+            Short, specific queries work. If the model is unavailable the ranked
+            sources still come back.
+          </p>
+        </div>
+      </Field>
+    ),
+  },
+  {
+    key: "approvals",
+    label: "Approvals",
+    cluster: "Govern",
+    icon: (
+      <svg {...svg}>
+        <rect x="4" y="4" width="16" height="16" rx="2.5" />
+        <path d="M8.5 12l2.4 2.4L16 9" />
+      </svg>
+    ),
+    body: "Two gates, president then office, routed by seat across seven request types.",
+    detail: (
+      <div className="space-y-4">
+        <Field label="Spring Gala · $4,200 budget">
+          <GateRail stages={["Draft", "President", "Office", "Approved"]} at={2} />
+        </Field>
+        <Field label="Request types">
+          <Chips
+            items={["event", "budget", "vendor", "comms", "document", "roster", "exception"]}
+          />
+        </Field>
+      </div>
+    ),
+  },
+  {
+    key: "finance",
+    label: "Finance",
+    cluster: "Run",
+    icon: (
+      <svg {...svg}>
+        <path d="M3 21h18" />
+        <rect x="5" y="11" width="3.4" height="7" rx="1" />
+        <rect x="10.3" y="6" width="3.4" height="12" rx="1" />
+        <rect x="15.6" y="14" width="3.4" height="4" rx="1" />
+      </svg>
+    ),
+    body: "Budgets, dues, reimbursements and vendor terms in one ledger, approved in place.",
+    detail: (
+      <div className="space-y-4">
+        <Field label="Committed this term">
+          <div className="flex items-baseline justify-between">
+            <span className="font-mono text-xl font-semibold tnum text-ink">$12,400</span>
+            <span className="font-mono text-[0.66rem] text-ink-faint">of $18,000</span>
+          </div>
+        </Field>
+        <Field label="Budget by category">
+          <Share
+            slices={[
+              { label: "Events", pct: 38 },
+              { label: "Operations", pct: 24 },
+              { label: "Marketing", pct: 16 },
+              { label: "Reserve", pct: 22 },
+            ]}
+          />
+        </Field>
+      </div>
+    ),
+  },
+  {
+    key: "calendar",
+    label: "Calendar",
+    cluster: "Run",
+    icon: (
+      <svg {...svg}>
+        <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+        <path d="M3.5 9.5h17M8 3v4M16 3v4" />
+      </svg>
+    ),
+    body: "Hard and soft conflicts caught before anything is published, not after.",
+    detail: (
+      <Field label="Caught on publish">
+        <div className="space-y-2">
+          <p className="flex items-center gap-2 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-2 text-[0.76rem] font-medium text-danger">
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-coral" />
+            Hard conflict &mdash; Schlegel 207 double-booked 5:00 to 6:30p
+          </p>
+          <p className="flex items-center gap-2 rounded-lg border border-brand-gold/30 bg-warning-subtle/60 px-2.5 py-2 text-[0.76rem] font-medium text-warning">
+            <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
+            Soft overlap &mdash; two sponsor events the same evening
+          </p>
+        </div>
+      </Field>
+    ),
+  },
+  {
+    key: "memory",
+    label: "Institutional memory",
+    cluster: "Remember",
+    icon: (
+      <svg {...svg}>
+        <path d="M12 3l8.5 4.5-8.5 4.5L3.5 8z" />
+        <path d="M3.5 12l8.5 4.5 8.5-4.5M3.5 15.5l8.5 4.5 8.5-4.5" />
+      </svg>
+    ),
+    body: "Decisions and know-how filed against the seat as the work happens, not written up afterwards.",
+    detail: (
+      <Field label="Filed against this seat">
+        <ul className="space-y-1.5">
+          {[
+            { tag: "Deal", t: "Aramark, sponsorship renewal", from: "Maya Chen · 2023–24" },
+            { tag: "Playbook", t: "Spring Gala, run of show", from: "Priya Nair · 2024–25" },
+            { tag: "Lesson", t: "Why we moved the fall mixer", from: "Board · 2022–23" },
+          ].map((r) => (
+            <li key={r.t} className="rounded-lg border border-line bg-paper/50 p-2.5">
+              <div className="flex items-center gap-1.5">
+                <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.52rem] uppercase tracking-wide text-ink-faint">
+                  {r.tag}
+                </span>
+                <span className="text-[0.78rem] text-ink">{r.t}</span>
+              </div>
+              <p className="mt-1 font-mono text-[0.62rem] text-ink-faint">
+                ↳ inherited from {r.from}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </Field>
+    ),
+  },
+  {
+    key: "members",
+    label: "Members & seats",
+    cluster: "Run",
+    icon: (
+      <svg {...svg}>
+        <rect x="3.5" y="5" width="17" height="14" rx="2.5" />
+        <rect x="6.5" y="8" width="4.5" height="4.5" rx="1.2" />
+        <path d="M14 9h3.5M14 12h2.5M6.75 15.5h10.75" />
+      </svg>
+    ),
+    body: "Access follows the seat: read-only before the term, revoked after it, record kept.",
+    detail: (
+      <Field label="Seat states">
+        <div className="space-y-2">
+          {[
+            { s: "Active", n: "Dev Patel", note: "write access, this term" },
+            { s: "Shadow", n: "Leah Cohen", note: "read-only, term starts in May" },
+            { s: "Alumni", n: "Maya Chen", note: "access revoked, record kept" },
+          ].map((r) => (
+            <div
+              key={r.s}
+              className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-lg border border-line bg-paper/50 px-2.5 py-2"
+            >
+              <span className="rounded-md bg-surface-subtle px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-text-secondary">
+                {r.s}
+              </span>
+              <span className="text-[0.78rem] text-ink">{r.n}</span>
+              <span className="text-[0.72rem] text-ink-faint">{r.note}</span>
+            </div>
+          ))}
+        </div>
+      </Field>
+    ),
+  },
+  {
+    key: "documents",
+    label: "Documents",
+    cluster: "Remember",
+    icon: (
+      <svg {...svg}>
+        <path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
+        <path d="M14 3v5h5M9 13h6M9 17h4" />
+      </svg>
+    ),
+    body: "Contracts, decks and spreadsheets open inside Tenure rather than downloading to a laptop.",
+    detail: (
+      <div className="space-y-4">
+        <Field label="Opens in place">
+          <Chips items={[".pdf", ".docx", ".xlsx", ".pptx"]} />
+        </Field>
+        <Field label="Editing">
+          {/*
+            "versioned" is deliberately absent, and `forbiddenPhrases` blocks it.
+            Document.version is a bare Int used for the optimistic lock and the
+            audit row — there is no DocumentVersion model, no prior-version
+            retrieval and no restore UI, and saves overwrite the same object key.
+            Sitting between two genuine editing features, the word read as
+            version history.
+          */}
+          <Chips items={["text and spreadsheets edit in place", "save-conflict check"]} />
+        </Field>
+      </div>
+    ),
+  },
+  {
+    key: "audit",
+    label: "Audit trail",
+    cluster: "Govern",
+    icon: (
+      <svg {...svg}>
+        <path d="M12 3l7 3v6c0 4-3 6.5-7 9-4-2.5-7-5-7-9V6z" />
+        <path d="M9.5 12l1.8 1.8L15 10" />
+      </svg>
+    ),
+    body: "Refusals are recorded as permanently as approvals, and rows are only ever created.",
+    detail: (
+      <Field label="Two rows, one action each">
+        <div className="space-y-1.5">
+          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.62rem] text-inverse/75">
+            <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
+          </p>
+          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.62rem] text-inverse/75">
+            <span className="text-brand-coral">roster.export</span> · SCC-VP-SPON · deny
+          </p>
+          <p className="pt-1 text-[0.72rem] text-ink-faint">
+            Coverage is partial and append-only is enforced by the application, not
+            by cryptography. The full scope is on Security.
+          </p>
+        </div>
+      </Field>
+    ),
+  },
+  {
+    key: "messages",
+    label: "Messages",
+    cluster: "Remember",
+    icon: (
+      <svg {...svg}>
+        <path d="M4 5h16v11H9l-4 3v-3H4z" />
+        <path d="M8 9h8M8 12h5" />
+      </svg>
+    ),
+    body: "Read and post rules differ by conversation type, so a board channel is not a group chat.",
+    detail: (
+      <Field label="Conversation types">
+        <Chips items={["DM", "board channel", "approval thread", "broadcast"]} />
+      </Field>
+    ),
+  },
+  {
+    key: "cross-org",
+    label: "Cross-org work",
+    cluster: "Govern",
+    icon: (
+      <svg {...svg}>
+        <circle cx="7" cy="8" r="3" />
+        <circle cx="17" cy="8" r="3" />
+        <path d="M2.5 19a4.5 4.5 0 0 1 9 0M12.5 19a4.5 4.5 0 0 1 9 0" />
+      </svg>
+    ),
+    body: "Two organizations co-hosting run the same approval path, and both records keep it.",
+    detail: (
+      <Field label="Co-hosted event">
+        <Chips items={["shared feed", "co-host", "gated & audited"]} />
+      </Field>
+    ),
+  },
+  {
+    key: "reports",
+    label: "Reports & search",
+    cluster: "Govern",
+    icon: (
+      <svg {...svg}>
+        <circle cx="11" cy="11" r="7" />
+        <path d="M21 21l-4-4" />
+      </svg>
+    ),
+    body: "Spending, participation and continuity in one report the board can read without a spreadsheet.",
+    detail: (
+      <Field label="Scope">
+        <Chips items={["board-ready", "seat-scoped search"]} />
+      </Field>
+    ),
+  },
+];
+
+const RAIL: SegmentItem[] = MODULES.map((m) => ({
+  key: m.key,
+  label: m.label,
+  icon: m.icon,
+}));
+
+export function Platform() {
+  const [active, setActive] = useState(MODULES[0].key);
+  const mod = MODULES.find((m) => m.key === active) ?? MODULES[0];
+
+  return (
+    <Section id="platform" tone="canvas" backdrop="quiet">
+      <Container>
+        <SectionHead
+          align="center"
+          eyebrow="The platform"
+          title={
+            <>
+              One governed system for everything the organization{" "}
+              <span className="text-gradient">runs on</span>.
+            </>
+          }
+          lead="Eleven modules on one record. Work happens here, so the record writes itself — pick any one to see what it actually does."
+        />
+
+        <Reveal delay={0.14} className="mt-10">
+          <Panel>
+            <PanelBar
+              title="Tenure"
+              meta="one organization · one term · one record"
+              aside={<PanelTag>{`${MODULES.length} modules`}</PanelTag>}
+            />
+
+            <div className="grid md:grid-cols-[13.5rem_1fr]">
+              <PanelRail label="Modules">
+                <RailList
+                  label="Platform modules"
+                  items={RAIL}
+                  active={active}
+                  onSelect={setActive}
+                />
+              </PanelRail>
+
+              {/* The single view. `min-h` is set from the tallest pane so switching
+                  modules does not jump the page under the reader's cursor — the
+                  one thing a tab control must never do. */}
+              <div className="min-h-[21rem] p-5 sm:p-6">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="font-display text-[1.15rem] font-semibold text-ink">
+                    {mod.label}
+                  </h3>
+                  <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-ink-faint">
+                    {mod.cluster}
                   </span>
                 </div>
+                <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-ink-soft">
+                  {mod.body}
+                </p>
+                <div className="mt-5 max-w-xl">{mod.detail}</div>
               </div>
-              <div className="mt-auto pt-5">
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/50 px-2.5 py-1.5 text-[0.72rem] text-ink-faint">
-                  <span className="h-1.5 w-1.5 rounded-full bg-grove" />
-                  Sources linked, even when the model is down
-                </span>
-              </div>
-            </Cell>
-          </Reveal>
+            </div>
 
-          {/* Approvals */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Govern"
-                icon={<svg {...svg}><rect x="4" y="4" width="16" height="16" rx="2.5" /><path d="M8.5 12l2.4 2.4L16 9" /></svg>}
-              />
-              <Title>Approvals & oversight</Title>
-              <Desc>
-                Two gates, President then Office, routed by seat.
-              </Desc>
-              <div className="mt-4 flex items-center gap-1">
-                {["Draft", "President", "OSE", "Approved"].map((s, idx) => (
-                  <div key={s} className="flex flex-1 items-center last:flex-none">
-                    <span className={cn("h-2 w-2 rounded-full", idx < 2 ? "bg-grove" : idx === 2 ? "bg-brand-gold" : "bg-line")} />
-                    {idx < 3 && <span className={cn("mx-0.5 h-px flex-1", idx < 2 ? "bg-grove" : "bg-line")} />}
-                  </div>
+            <PanelNote className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <span className="label-mono">Knowledge card kinds</span>
+              {/* testId: claims.spec.ts asserts this row equals creatableCardTypes,
+                  and asserts it is VISIBLE on a fresh load — which is why it lives
+                  in the permanent footer rather than inside the Memory pane. A
+                  <div>, because the spec reads the row with allInnerTexts() and
+                  splits on newlines: flex children of a block container give one
+                  chip per line, which is the shape it compares against. */}
+              <div data-testid="memory-card-kinds" className="flex flex-wrap gap-1.5">
+                {creatableCardTypes.map((t) => (
+                  <span
+                    key={t}
+                    className="rounded-md border border-line bg-cloud px-1.5 py-0.5 font-mono text-[0.6rem] text-ink-soft"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
-              <Tags items={["event", "budget", "vendor", "comms", "document", "roster", "exception"]} />
-            </Cell>
-          </Reveal>
-
-          {/* Finance */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Run"
-                icon={<svg {...svg}><path d="M3 21h18" /><rect x="5" y="11" width="3.4" height="7" rx="1" /><rect x="10.3" y="6" width="3.4" height="12" rx="1" /><rect x="15.6" y="14" width="3.4" height="4" rx="1" /></svg>}
-              />
-              <Title>Finance</Title>
-              <Desc>
-                Budgets, dues, reimbursements and vendors, one ledger.
-              </Desc>
-              <div className="mt-4">
-                <div className="flex items-baseline justify-between">
-                  <span className="font-mono text-lg font-semibold tnum text-ink">$12,400</span>
-                  <span className="font-mono text-[0.62rem] text-ink-faint">of $18,000</span>
-                </div>
-                <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-line">
-                  <span className="block h-full w-[69%] rounded-full bg-grove" />
-                </div>
-              </div>
-            </Cell>
-          </Reveal>
-
-          {/* Calendar */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Run"
-                icon={<svg {...svg}><rect x="3.5" y="5" width="17" height="15.5" rx="2.5" /><path d="M3.5 9.5h17M8 3v4M16 3v4" /></svg>}
-              />
-              <Title>Conflict-aware calendar</Title>
-              <Desc>
-                Hard and soft conflicts caught before publishing.
-              </Desc>
-              <div className="mt-4 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-1.5">
-                <p className="flex items-center gap-1.5 text-[0.7rem] font-medium text-danger">
-                  <span className="h-1.5 w-1.5 rounded-full bg-brand-coral" />
-                  Hard conflict, Schlegel 207, 5:00 to 6:30p
-                </p>
-              </div>
-            </Cell>
-          </Reveal>
-
-          {/* Memory */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Remember"
-                icon={<svg {...svg}><path d="M12 3l8.5 4.5-8.5 4.5L3.5 8z" /><path d="M3.5 12l8.5 4.5 8.5-4.5M3.5 15.5l8.5 4.5 8.5-4.5" /></svg>}
-              />
-              <Title>Institutional memory</Title>
-              <Desc>
-                Decisions and know-how filed as work happens.
-              </Desc>
-              {/*
-                These are the card kinds a person may actually create, taken from
-                CreatableCardTypeEnum in the deploying repo. "Credential" used to be
-                listed here and is deliberately gone: the product retired it because
-                MemoryRecord.content is an unencrypted Json column, so a type called
-                "Login or access info" invited people to paste passwords into a
-                shared database against a control that was never written. Advertising
-                a credential store Tenure does not have is the worst thing to be asked
-                about in a security review. "Thread" and "Budget" are creatable and
-                were missing.
-              */}
-              {/* testId: claims.spec.ts asserts this row equals creatableCardTypes,
-                  so the retired CREDENTIAL kind cannot come back unnoticed. */}
-              <Tags testId="memory-card-kinds" items={[...creatableCardTypes]} />
-            </Cell>
-          </Reveal>
-
-          {/* Members */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Run"
-                icon={<svg {...svg}><rect x="3.5" y="5" width="17" height="14" rx="2.5" /><rect x="6.5" y="8" width="4.5" height="4.5" rx="1.2" /><path d="M14 9h3.5M14 12h2.5M6.75 15.5h10.75" /></svg>}
-              />
-              <Title>Members & durable seats</Title>
-              <Desc>
-                Access follows the seat: read-only before the term, revoked after
-                it, record kept.
-              </Desc>
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.56rem] font-medium text-grove-deep">ACTIVE</span>
-                <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">SHADOW</span>
-                <span className="rounded-md bg-surface-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-text-secondary">ALUMNI</span>
-              </div>
-            </Cell>
-          </Reveal>
-
-          {/* Documents */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Remember"
-                icon={<svg {...svg}><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" /><path d="M14 3v5h5M9 13h6M9 17h4" /></svg>}
-              />
-              <Title>Documents</Title>
-              <Desc>
-                PDF, Word, Excel and PowerPoint open inside Tenure.
-              </Desc>
-              {/*
-                "versioned" is gone. Document.version is a bare Int counter used for
-                the optimistic lock and the audit row — there is no DocumentVersion
-                model, no prior-version retrieval and no restore UI, and saves
-                overwrite the same S3 key. Sitting between two genuine editing
-                features, the word read as version history.
-              */}
-              <Tags items={["edit in place", "save-conflict check"]} />
-            </Cell>
-          </Reveal>
-
-          {/* Audit */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Govern"
-                icon={<svg {...svg}><path d="M12 3l7 3v6c0 4-3 6.5-7 9-4-2.5-7-5-7-9V6z" /><path d="M9.5 12l1.8 1.8L15 10" /></svg>}
-              />
-              <Title>Append-only audit trail</Title>
-              <Desc>
-                Denials recorded as permanently as approvals; rows are only ever
-                created.
-              </Desc>
-              <p className="mt-4 rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.6rem] text-inverse/70">
-                <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
-              </p>
-            </Cell>
-          </Reveal>
-
-          {/* Messages */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Remember"
-                icon={<svg {...svg}><path d="M4 5h16v11H9l-4 3v-3H4z" /><path d="M8 9h8M8 12h5" /></svg>}
-              />
-              <Title>Messages</Title>
-              <Desc>
-                Read and post rules differ by conversation type.
-              </Desc>
-              <Tags items={["DM", "board channel", "approval thread", "broadcast"]} />
-            </Cell>
-          </Reveal>
-
-          {/* Collaboration */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Govern"
-                icon={<svg {...svg}><circle cx="7" cy="8" r="3" /><circle cx="17" cy="8" r="3" /><path d="M2.5 19a4.5 4.5 0 0 1 9 0M12.5 19a4.5 4.5 0 0 1 9 0" /></svg>}
-              />
-              <Title>Cross-org collaboration</Title>
-              <Desc>
-                Co-hosting between orgs, same approval path.
-              </Desc>
-              <Tags items={["feed", "co-host", "gated & audited"]} />
-            </Cell>
-          </Reveal>
-
-          {/* Reports & Search */}
-          <Reveal as="div" className="lg:col-span-2">
-            <Cell className="h-full">
-              <Head
-                cluster="Govern"
-                icon={<svg {...svg}><circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" /></svg>}
-              />
-              <Title>Reports & search</Title>
-              <Desc>
-                Spending, participation and continuity, one report.
-              </Desc>
-              <Tags items={["board-ready", "seat-scoped search"]} />
-            </Cell>
-          </Reveal>
-        </div>
+            </PanelNote>
+          </Panel>
+        </Reveal>
       </Container>
-    </section>
+    </Section>
   );
 }

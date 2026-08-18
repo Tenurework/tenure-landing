@@ -1,11 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
-import { Reveal } from "@/components/ui/Reveal";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
-import { ContourMask } from "@/components/visuals/SectionContour";
-import { HeroShapes } from "@/components/home/HeroShapes";
+import { Backdrop } from "@/components/visuals/Backdrop";
 import { HeroFloatingCards } from "@/components/home/HeroFloatingCards";
 import { site } from "@/lib/site";
 
@@ -14,84 +13,98 @@ import { site } from "@/lib/site";
  *
  * The headline used to be a word-by-word blur-in built on `motion`, which meant
  * the largest text on the page — the LCP element — was server-rendered at
- * `opacity: 0` with a blur filter and only became legible after the bundle
- * booted and ran a per-word stagger. That delayed perceived load, cost a filter
- * repaint per word, and left the sentence invisible altogether if JavaScript
- * never arrived. It now paints with the document.
+ * `opacity: 0` behind a blur filter and only became legible after the bundle
+ * booted. The supporting paragraph and both calls to action had the same problem
+ * one layer down, through `Reveal`'s `.js`-scoped hidden state. Everything above
+ * the fold paints with the document, and nothing in this file is wrapped in
+ * `Reveal`. Keep it that way.
  *
- * The supporting paragraph and BOTH calls to action used to be wrapped in
- * `Reveal`, which has the same shape of problem one layer down: globals.css
- * hides `[data-reveal]` behind a `.js` class that ThemeScript sets before first
- * paint, so those elements stayed transparent until the `Reveal` client
- * component hydrated and its IntersectionObserver fired. `Reveal` handles
- * "JavaScript absent" correctly — the `.js` class never lands, so the content
- * is simply visible — but the common campus-network case is JavaScript SLOW,
- * and there the first paint was a headline with no explanation and no button
- * beneath it, behind the whole client bundle. They now paint with the document
- * too. Only the pilot footnote, which is below the conversion path and not the
- * reason anyone is here, still reveals.
+ * WHAT CHANGED IN THE COMPACTION PASS
  *
- * This is also no longer a client component — nothing left in it needs one.
+ * 1. **The trust strip moved in.** It was its own bordered section directly
+ *    below — a full band for two logos and four chips. It is now the hero's
+ *    closing rail, which removes a section boundary and about 180px without
+ *    losing a word.
+ * 2. **Three stacked footnotes became one.** The hero carried a lead paragraph
+ *    and then three separate small-print paragraphs (the existing-customer
+ *    path, the import/calendar line, the pilot hedge) in three different
+ *    positions. That is the "three things at once" problem in its purest form:
+ *    a reader met four blocks of prose before the first section. The
+ *    existing-customer path is now one line under the buttons, and the import
+ *    and pilot facts are chips in the rail, next to the other scope chips they
+ *    always belonged with.
+ * 3. **HeroShapes is gone.** Four floating squares in a separate component,
+ *    `hidden lg:block`. The Memphis figure in `Backdrop`'s aurora variant does
+ *    the same job with real composition instead of four coloured rectangles.
+ * 4. **The opening sentence is no longer about a university.** It said "Every
+ *    spring the treasurer graduates" — an image that only lands for one of the
+ *    four audiences this product serves, at the top of the page, before the
+ *    reader has any other frame. The turnover it describes is now stated the way
+ *    it happens everywhere, and the sector rail sits a screen below.
  */
+
+/**
+ * The scope chips, read from the governed source. `site.pilot.scopeShort` states
+ * a PROPOSED scope; "Every org OSE stewards" stated a settled one (C-021:
+ * verbally agreed, NOT contracted).
+ *
+ * "Append-only audit trail" and not "immutable": /trust warns buyers to
+ * interrogate that exact word, the audit table has no hash, signature or
+ * checksum column, and `forbiddenPhrases` blocks it.
+ */
+const CHIPS = [
+  site.pilot.scopeShort,
+  "2-gate approval chain, 7 request types",
+  "Append-only audit trail",
+  "Bring your own spreadsheets",
+];
+
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 sm:pt-32">
-      {/* aurora wash + faint contour grain */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-12%] h-[46rem] w-[46rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_10%,transparent),transparent_62%)] blur-2xl" />
-        <div className="absolute right-[6%] top-[8%] h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--warning)_10%,transparent),transparent_65%)] blur-3xl" />
-        <div className="absolute inset-x-0 top-0 h-[80%] text-grove/[0.13] [mask-image:radial-gradient(75%_70%_at_60%_18%,black,transparent_76%)]">
-          <ContourMask seed={1} />
-        </div>
-      </div>
+    <section className="relative isolate overflow-hidden pt-24 sm:pt-28">
+      <Backdrop variant="aurora" />
 
-      <HeroShapes />
-
-      <Container className="relative pb-16 sm:pb-20">
-        <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,46%)_1fr] lg:gap-8">
+      <Container className="relative">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,45%)_1fr] lg:gap-8">
           {/* LEFT, editorial copy */}
           <div className="relative z-10 max-w-xl text-center lg:text-left">
-            <p className="label-mono">
-              The operating system for organizational memory
-            </p>
+            <p className="label-mono">The system of record for organizations that rotate</p>
 
-            <h1 className="font-display mt-6 text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.035em] text-ink sm:text-[3.5rem] lg:text-[4.15rem]">
+            <h1 className="font-display mt-5 text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.035em] text-ink sm:text-[3.3rem] lg:text-[3.9rem]">
               <span className="block">People move on.</span>
               <span className="block">
                 The know-how <span className="text-gradient">stays.</span>
               </span>
             </h1>
 
-            {/* Opens on the image, not the abstraction: the reader is the
-                person staring at the empty folder, so the first clause is the
-                thing they recognise. "System of record" and "attaches to the
-                seat" are the same claims, said after the picture rather than
-                before it. */}
-            <p className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-ink-soft lg:mx-0">
-              Every spring the treasurer graduates and the budget walks out with
-              them. Tenure keeps the money, the events, the approvals and what
-              the last officer learned attached to the seat rather than the
-              person holding it &mdash; so the next leader opens a record
-              instead of an empty folder.
+            {/* Opens on the image, not the abstraction: the reader is the person
+                staring at the empty folder. The image is now sector-neutral —
+                a treasurer graduating is one instance of it, not the whole of it. */}
+            <p className="mx-auto mt-5 max-w-lg text-[1.05rem] leading-relaxed text-ink-soft sm:text-lg lg:mx-0">
+              Someone leaves, and the budget, the vendors and the reasons leave
+              with them. Tenure attaches the money, the events, the approvals and
+              what the last holder learned to the <span className="font-medium text-ink">seat</span> rather
+              than the person in it &mdash; so the next one opens a record instead
+              of an empty folder.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
               <ContactSales size="lg" arrow />
               <Button href="#platform" variant="secondary" size="lg">
-                Explore the platform
+                See the platform
               </Button>
             </div>
 
             {/* The site had one audience: someone evaluating Tenure. The person
-                whose club already runs on it had nowhere to go — every control
-                on every page booked a sales call. This is that path.
+                whose organization already runs on it had nowhere to go — every
+                control on every page booked a call. This is that path.
 
                 It points at /contact rather than the application, because the
-                app's public host is not recorded anywhere in this repository
-                and inventing one would be worse than the omission. The wording
-                stays inside what /trust already publishes (accounts are created
-                in advance, there is no self-service signup) and names no
-                sign-in mechanism, which C-023 forbids. */}
+                app's public host is recorded nowhere in this repository and
+                inventing one would be worse than the omission. The wording stays
+                inside what /trust already publishes (accounts are created in
+                advance, there is no self-service signup) and names no sign-in
+                mechanism, which C-023 forbids. */}
             <p className="mx-auto mt-4 max-w-md text-[0.82rem] leading-relaxed text-ink-faint lg:mx-0">
               Already using Tenure?{" "}
               <Link
@@ -100,23 +113,78 @@ export function Hero() {
               >
                 Ask us for your sign-in
               </Link>{" "}
-              &mdash; accounts are set up in advance for a named person, so
-              there is no public signup to find.
+              &mdash; accounts are set up in advance for a named person, so there
+              is no public signup to find.
             </p>
-
-            <Reveal delay={0.12} y={8}>
-              <p className="mx-auto mt-5 max-w-md text-[0.82rem] leading-relaxed text-ink-faint lg:mx-0">
-                Bring your spreadsheets in. Keep the calendar you already open.
-                Planned {site.pilot.season} pilot with {site.origin.office}.
-              </p>
-            </Reveal>
           </div>
 
-          {/* RIGHT, the product surface, bleeding off the right edge */}
-          <div className="relative lg:-mr-[12vw] xl:-mr-[8vw]">
+          {/* RIGHT, the product surface, bleeding off the right edge.
+              `pt-6` on mobile keeps the floating cards (xl only) clear of the
+              copy above; they used to overlap the dashboard's own ledger rows
+              and cut four transaction labels in half. */}
+          <div className="relative pt-2 lg:-mr-[10vw] lg:pt-0 xl:-mr-[6vw]">
             <HeroFloatingCards />
             <DashboardMock tilt auto className="relative z-0" />
           </div>
+        </div>
+
+        {/* The closing rail: origin marks on the left, scope chips on the right.
+            One row, one hairline, no section of its own. */}
+        <div className="mt-12 border-t border-line pb-10 pt-6 sm:mt-14">
+          <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between lg:gap-10">
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
+              {/*
+                Captioned "Origin & support", never "pilot". The University of
+                Rochester's mark beside the words "Fall 2026 pilot" reads as the
+                university being in the pilot, or endorsing the product; C-022
+                permits these marks for origin and support only.
+              */}
+              <p className="label-mono shrink-0">Origin &amp; support</p>
+              <div className="flex items-center gap-8 sm:gap-10">
+                {site.supporters.map((s) => (
+                  <Image
+                    key={s.name}
+                    src={s.src}
+                    alt={s.name}
+                    width={s.width}
+                    height={s.height}
+                    className="w-auto object-contain opacity-90 mix-blend-multiply"
+                    style={{ height: s.displayHeight }}
+                  />
+                ))}
+              </div>
+              <p className="sr-only">
+                Tenure was founded at Simon Business School, University of
+                Rochester, and is supported by Startup Wednesday. Neither mark
+                indicates that its organization is a customer of Tenure, sponsors
+                the product, or endorses it.
+              </p>
+            </div>
+
+            <span aria-hidden className="hidden h-8 w-px bg-line lg:block" />
+
+            <ul className="flex flex-wrap items-center justify-center gap-2">
+              {CHIPS.map((c) => (
+                <li
+                  key={c}
+                  className="inline-flex items-center gap-2 rounded-full border border-line bg-paper/70 px-3 py-1.5 text-[0.78rem] font-medium text-ink-soft"
+                >
+                  <span aria-hidden className="h-1.5 w-1.5 rounded-sm bg-grove" />
+                  {c}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Two facts that used to be separate paragraphs of hero small print.
+              The pilot hedge is load-bearing: C-021 requires "planned" or
+              "proposed" in the same sentence as the season and the office. */}
+          <p className="mt-5 text-center text-[0.8rem] leading-relaxed text-ink-faint lg:text-left">
+            Planned {site.pilot.season} pilot with {site.origin.office} &mdash; proposed,
+            not contracted. The product surfaces on this page are illustrations,
+            not screenshots: they draw behaviour the product really has, with
+            representative names and figures.
+          </p>
         </div>
       </Container>
     </section>

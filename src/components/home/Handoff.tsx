@@ -1,8 +1,29 @@
 import type { ReactNode } from "react";
-import { Container, Eyebrow } from "@/components/ui/layout";
+import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionContour } from "@/components/visuals/SectionContour";
-import { cn } from "@/lib/cn";
+import { Panel, PanelBar, PanelTag } from "@/components/ui/Panel";
+
+/**
+ * The packet, which is the proof: it is assembled from the database when you open
+ * it, so there is nothing for the outgoing holder to remember to write.
+ *
+ * TWO THINGS WERE REMOVED HERE, BOTH DUPLICATES.
+ *
+ * 1. **The "Shadow access" sub-block.** An eyebrow, an h3 reading "They read the
+ *    seat before they sit in it", a paragraph, and three cards for SHADOW /
+ *    ACTIVE / ALUMNI — about 700px. `SeatMechanism` already rotates three
+ *    occupants through those exact three states one section earlier, and
+ *    `AiOnboarding`'s h2 was that same sentence *verbatim*. The lifecycle is now
+ *    stated once, in the seat panel where it is labelling something.
+ * 2. **The three standing figures as a separate strip.** "3 requests",
+ *    "2 deliverables", "$12,400" sat in their own three-column band under the
+ *    table. They are part of the packet, so they are in the packet's footer row —
+ *    same three facts, no second surface.
+ *
+ * C-002 governs this section: the packet contains NO AI. The page must never
+ * describe it as AI-generated or AI-written, because the route that builds it
+ * imports no model code.
+ */
 
 const svg = {
   viewBox: "0 0 24 24",
@@ -11,7 +32,7 @@ const svg = {
   strokeWidth: 1.6,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
-  className: "h-[20px] w-[20px]",
+  className: "h-[18px] w-[18px]",
   "aria-hidden": true,
 };
 
@@ -20,7 +41,6 @@ type SeatRow = {
   code: string;
   holder: string | null;
   last: string;
-  reach: string;
   cards: number;
   shadow: string | null;
 };
@@ -32,7 +52,6 @@ const SEATS: SeatRow[] = [
     code: "SCC-PRES",
     holder: "Dana Osei",
     last: "Marcus Lee ’26",
-    reach: "m.lee@u.rochester.edu",
     cards: 22,
     shadow: "Ariel Fonseca",
   },
@@ -41,7 +60,6 @@ const SEATS: SeatRow[] = [
     code: "SCC-VP-FINA-OPER",
     holder: "Marcus Lee",
     last: "Maya Chen ’25",
-    reach: "maya.chen@alum.rochester.edu",
     cards: 34,
     shadow: "Priya Nair",
   },
@@ -50,7 +68,6 @@ const SEATS: SeatRow[] = [
     code: "SCC-VP-EVEN-PART",
     holder: "Sana Ali",
     last: "Ines Duarte ’25",
-    reach: "i.duarte@alum.rochester.edu",
     cards: 19,
     shadow: null,
   },
@@ -59,16 +76,13 @@ const SEATS: SeatRow[] = [
     code: "SCC-VP-SPON",
     holder: null,
     last: "Tomas Reyes ’26",
-    reach: "t.reyes@u.rochester.edu",
     cards: 27,
     shadow: "Jordan Kim",
   },
 ];
 
-type Standing = { label: string; value: string; note: string; icon: ReactNode };
-
 /** The three standings the packet carries alongside the seat table. */
-const STANDING: Standing[] = [
+const STANDING: { label: string; value: string; note: string; icon: ReactNode }[] = [
   {
     label: "Awaiting approval",
     value: "3 requests",
@@ -108,104 +122,50 @@ const STANDING: Standing[] = [
   },
 ];
 
-const TONE: Record<string, string> = {
-  shadow: "bg-warning-subtle text-warning",
-  active: "bg-grove text-on-accent",
-  alumni: "bg-surface-subtle text-text-secondary",
-};
-
-type Stage = { tone: keyof typeof TONE; label: string; when: string; body: string };
-
-const STAGES: Stage[] = [
-  {
-    tone: "shadow",
-    label: "Shadow",
-    when: "Before the term begins",
-    body: "Read-only access to everything the seat knows, including the knowledge cards counted above.",
-  },
-  {
-    tone: "active",
-    label: "Active",
-    when: "Day one",
-    body: "The same access becomes write access. Nothing is copied, nothing is rebuilt.",
-  },
-  {
-    tone: "alumni",
-    label: "Alumni",
-    when: "After the term",
-    // "The outgoing officer keeps the record" made the departing person the subject
-    // of "keeps" — read literally by a records reviewer, the exact outcome /privacy
-    // and /terms were written to foreclose. The record stays with the seat.
-    body: "The record stays on the seat; the outgoing officer's access does not. Seats carrying history are retired, never deleted.",
-  },
-];
-
 /**
- * Stacked label above the value on mobile, where the table collapses to one
- * cell per line. Must be block: some cells hold an inline value (the Vacant
- * pill, the Shadow badge, "not yet named"), and an inline label would sit on
- * the same line as those with no separation.
+ * Stacked label above the value on mobile, where the table collapses to one cell
+ * per line. Must be block: some cells hold an inline value (the Vacant pill, the
+ * Shadow badge, "not yet named"), and an inline label would sit on the same line.
  */
 function ColumnLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="label-mono mb-0.5 block text-[0.55rem] md:hidden">
-      {children}
-    </span>
+    <span className="label-mono mb-0.5 block text-[0.55rem] md:hidden">{children}</span>
   );
 }
 
 export function Handoff() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-line bg-paper py-24 sm:py-32">
-      <SectionContour place="cl" seed={5} className="text-grove/[0.06]" />
-      <Container className="relative">
-        <div className="mx-auto max-w-2xl text-center">
-          <Reveal>
-            <Eyebrow className="justify-center">The handoff</Eyebrow>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
+    <Section tone="subtle" backdrop="drafting">
+      <Container>
+        <SectionHead
+          align="center"
+          eyebrow="The handoff"
+          title={
+            <>
               The handoff document nobody has to{" "}
               <span className="text-gradient">write</span>.
-            </h2>
-          </Reveal>
-          <Reveal delay={0.12}>
-            <p className="mx-auto mt-6 text-lg leading-relaxed text-ink-soft">
-              Tenure assembles it from the database when you open it. No AI, and
-              nothing for the outgoing officer to remember.
-            </p>
-          </Reveal>
-        </div>
+            </>
+          }
+          lead="Tenure assembles it from the database when you open it. No AI, and nothing for the outgoing holder to remember."
+        />
 
-        {/* the packet itself */}
-        <Reveal delay={0.1} className="mt-14">
-          <div className="overflow-hidden rounded-3xl border border-line bg-cloud shadow-[var(--shadow-sm),var(--shadow-lg)]">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-7">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-grove-soft text-grove">
-                  <svg {...svg}>
-                    <path d="M7 3.5h7l4.5 4.5v11.25A1.25 1.25 0 0 1 17.25 20.5H7A1.25 1.25 0 0 1 5.75 19.25V4.75A1.25 1.25 0 0 1 7 3.5z" />
-                    <path d="M14 3.5V8h4.5" />
-                    <path d="M9 12h6M9 15.5h4" />
-                  </svg>
-                </span>
-                <div>
-                  <p className="font-display text-[1.05rem] font-semibold text-ink">
-                    Handoff packet
-                  </p>
-                  <p className="font-mono text-[0.66rem] text-ink-faint">
-                    Student Culture Council · every seat
-                  </p>
-                </div>
-              </div>
-              <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/60 px-2.5 py-1.5 text-[0.7rem] text-ink-faint">
-                <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-grove" />
-                assembled from the record
-              </span>
-            </div>
+        <Reveal delay={0.14} className="mt-10">
+          <Panel>
+            <PanelBar
+              icon={
+                <svg {...svg}>
+                  <path d="M7 3.5h7l4.5 4.5v11.25A1.25 1.25 0 0 1 17.25 20.5H7A1.25 1.25 0 0 1 5.75 19.25V4.75A1.25 1.25 0 0 1 7 3.5z" />
+                  <path d="M14 3.5V8h4.5" />
+                  <path d="M9 12h6M9 15.5h4" />
+                </svg>
+              }
+              title="Handoff packet"
+              meta="Student Culture Council · every seat · worked example"
+              aside={<PanelTag>assembled from the record</PanelTag>}
+            />
 
             {/* column heads, wide screens only */}
-            <div className="hidden gap-4 border-b border-line px-7 py-2.5 md:grid md:grid-cols-[1.35fr_1fr_1.3fr_0.6fr_1fr]">
+            <div className="hidden gap-4 border-b border-line px-6 py-2.5 md:grid md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr]">
               <span className="label-mono text-[0.55rem]">Seat</span>
               <span className="label-mono text-[0.55rem]">Holds it now</span>
               <span className="label-mono text-[0.55rem]">Held it last term</span>
@@ -217,17 +177,17 @@ export function Handoff() {
               {SEATS.map((s) => (
                 <li
                   key={s.code}
-                  className="grid gap-3 border-b border-line-soft px-5 py-4 last:border-b-0 sm:px-7 md:grid-cols-[1.35fr_1fr_1.3fr_0.6fr_1fr] md:items-center md:gap-4"
+                  className="grid gap-2 border-b border-line-soft px-5 py-3.5 last:border-b-0 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr] md:items-center md:gap-4"
                 >
                   <div>
-                    <p className="text-[0.92rem] font-medium text-ink">{s.seat}</p>
+                    <p className="text-[0.9rem] font-medium text-ink">{s.seat}</p>
                     <p className="font-mono text-[0.6rem] text-text-secondary">{s.code}</p>
                   </div>
 
                   <div>
                     <ColumnLabel>Holds it now</ColumnLabel>
                     {s.holder ? (
-                      <p className="text-[0.9rem] text-ink">{s.holder}</p>
+                      <p className="text-[0.88rem] text-ink">{s.holder}</p>
                     ) : (
                       <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-danger">
                         Vacant
@@ -237,13 +197,12 @@ export function Handoff() {
 
                   <div>
                     <ColumnLabel>Held it last term</ColumnLabel>
-                    <p className="text-[0.9rem] text-ink-soft">{s.last}</p>
-                    <p className="font-mono text-[0.6rem] text-text-secondary">{s.reach}</p>
+                    <p className="text-[0.88rem] text-ink-soft">{s.last}</p>
                   </div>
 
                   <div>
                     <ColumnLabel>Cards</ColumnLabel>
-                    <p className="font-mono text-[0.9rem] tnum text-ink">{s.cards}</p>
+                    <p className="font-mono text-[0.88rem] tnum text-ink">{s.cards}</p>
                   </div>
 
                   <div>
@@ -253,78 +212,38 @@ export function Handoff() {
                         <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-warning">
                           Shadow
                         </span>
-                        <span className="text-[0.85rem] text-ink-soft">{s.shadow}</span>
+                        <span className="text-[0.84rem] text-ink-soft">{s.shadow}</span>
                       </span>
                     ) : (
-                      <span className="text-[0.85rem] text-ink-faint">not yet named</span>
+                      <span className="text-[0.84rem] text-ink-faint">not yet named</span>
                     )}
                   </div>
                 </li>
               ))}
             </ul>
 
+            {/* The three standings, in the packet's own footer rather than in a
+                second band below it. `gap-px` on a line-coloured background is what
+                draws the two dividers without three nested borders. */}
             <div className="grid gap-px border-t border-line bg-line sm:grid-cols-3">
               {STANDING.map((st) => (
-                <div key={st.label} className="bg-cloud px-5 py-5 sm:px-7">
+                <div key={st.label} className="bg-cloud px-5 py-4 sm:px-6">
                   <div className="flex items-center gap-2.5">
-                    <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-grove-soft text-grove">
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-grove-soft text-grove">
                       {st.icon}
                     </span>
                     <span className="label-mono text-[0.55rem]">{st.label}</span>
                   </div>
-                  <p className="mt-3 font-display text-[1.15rem] font-semibold tnum text-ink">
+                  <p className="mt-2.5 font-display text-[1.1rem] font-semibold tnum text-ink">
                     {st.value}
                   </p>
-                  <p className="text-[0.82rem] text-ink-soft">{st.note}</p>
+                  <p className="text-[0.8rem] text-ink-soft">{st.note}</p>
                 </div>
               ))}
             </div>
-          </div>
+          </Panel>
         </Reveal>
-
-        {/* shadow access */}
-        <div className="mt-16 grid items-center gap-10 rounded-3xl border border-line bg-cloud p-7 sm:p-10 lg:grid-cols-2 lg:gap-16">
-          <Reveal>
-            <Eyebrow>Shadow access</Eyebrow>
-            <h3 className="font-display mt-5 text-[1.5rem] font-semibold leading-tight tracking-[-0.02em] text-ink sm:text-[1.85rem]">
-              They read the seat before they{" "}
-              <span className="text-grove">sit in it</span>.
-            </h3>
-            <p className="mt-5 text-[1rem] leading-relaxed text-ink-soft">
-              Access attaches to the seat, so a handoff is a change of status,
-              not a transfer of files, passwords and folders.
-            </p>
-          </Reveal>
-
-          <Reveal delay={0.1}>
-            <ol>
-              {STAGES.map((st, i) => (
-                <li key={st.label}>
-                  <div className="rounded-2xl border border-line bg-paper/60 p-4 sm:p-5">
-                    <div className="flex items-center gap-2.5">
-                      <span
-                        className={cn(
-                          "rounded-md px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide",
-                          TONE[st.tone],
-                        )}
-                      >
-                        {st.label}
-                      </span>
-                      <span className="text-[0.72rem] text-ink-faint">{st.when}</span>
-                    </div>
-                    <p className="mt-2.5 text-[0.88rem] leading-relaxed text-ink-soft">
-                      {st.body}
-                    </p>
-                  </div>
-                  {i < STAGES.length - 1 && (
-                    <span aria-hidden className="mx-auto my-2 block h-5 w-px bg-line" />
-                  )}
-                </li>
-              ))}
-            </ol>
-          </Reveal>
-        </div>
       </Container>
-    </section>
+    </Section>
   );
 }

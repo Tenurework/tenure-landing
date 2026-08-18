@@ -10,7 +10,7 @@ export const site = {
 
   tagline: "The operating system that keeps the memory when the people change.",
   description:
-    "Tenure is the system of record for organizations where people rotate faster than knowledge transfers. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next leader inherits the record instead of rebuilding it.",
+    "Tenure is the system of record for organizations where people rotate faster than knowledge transfers — universities, nonprofits and NGOs, small and mid-sized businesses, associations and chapters. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next holder inherits the record instead of rebuilding it.",
 
   /**
    * Scheduling. Reached only from /contact, after an explicit click — never
@@ -81,11 +81,36 @@ export const site = {
     scopeShort: "Proposed across the office's organizations",
   },
 
+  /**
+   * The top ribbon. Renamed 2026-08-18 from Product / Pilot / Trust / Story.
+   *
+   * The old labels named the PAGE; these name the question the visitor arrived
+   * with, which is the only thing a four-item ribbon has room to do:
+   *
+   *   Product -> Platform   the site's own word for what it runs (the home page
+   *                         section is "The platform" and its anchor is #platform).
+   *                         "Product" is what a company calls the page; "Platform"
+   *                         is what the thing is.
+   *   Pilot   -> Pilot      kept. It is already the operational word, and every
+   *                         alternative ("Rollout", "Deploy", "Get started")
+   *                         implies a commitment C-021 forbids implying — the
+   *                         Fall 2026 pilot is verbally agreed and not contracted.
+   *   Trust   -> Security   what a procurement or IT reviewer scans a nav for.
+   *                         Nobody has ever looked for a link called "Trust".
+   *                         The page keeps its /trust URL and its "Trust &
+   *                         security" <title>, so nothing indexed moves.
+   *   Story   -> About      the convention, and it also covers the founders and
+   *                         the where-it-stands record, which "Story" did not.
+   *
+   * `nav.spec.ts` derives its header assertions from this list, so renaming here
+   * renames them. The one literal that is NOT derived is the footer navigation
+   * check, which names a label directly.
+   */
   nav: [
-    { label: "Product", href: "/product" },
+    { label: "Platform", href: "/product" },
     { label: "Pilot", href: "/pilot" },
-    { label: "Trust", href: "/trust" },
-    { label: "Story", href: "/story" },
+    { label: "Security", href: "/trust" },
+    { label: "About", href: "/story" },
   ],
 
   legal: [
@@ -183,41 +208,74 @@ export const site = {
   /**
    * Who the seat model serves. Same mechanism, a durable position that keeps
    * its knowledge, applied across every organization with turnover.
+   *
+   * WHY EACH ROW CARRIES A `sector` AND A PHOTO NOW.
+   *
+   * The site described a cross-industry product in university-only language. The
+   * hero opened "Every spring the treasurer graduates", the problem section
+   * measured the cost in "a semester", the FAQ priced "per club" — and the four
+   * audiences below, the one place that said otherwise, were three routes deep on
+   * /product where an SME or an NGO would never reach them. Read end to end, the
+   * site was for student government.
+   *
+   * So this list is now the source for a compact sector card on the HOME page
+   * (`components/home/Audiences.tsx`), one sector visible at a time, and it was
+   * removed from /product rather than rendered in both places. `sector` is the
+   * short tab label; `title` is the full heading inside the panel. The
+   * university-flavoured product surfaces elsewhere on the site stay, and are
+   * labelled as one worked example instead of standing in for the whole market.
    */
   audiences: [
     {
-      title: "University organizations",
+      sector: "Universities",
+      title: "University organizations & the offices above them",
+      photo: "/photos/students-laptop.jpg",
+      alt: "Student organization members gathered around a laptop in a lecture hall",
       seat: "VP Finance & Operations · SCC-VP-FINA-OPER",
       cadence: "Leadership turns over every spring",
-      // "No lost passwords" was removed: Tenure stores no credentials and has
-      // no vault, so it implied a capability that does not exist.
-      body: "Run the club and hand it off clean, finances, events, members, and a record the next board inherits on day one. No scattered drives, no knowledge stranded in a graduating officer's inbox, no starting from zero.",
+      // Two rows merged into one on 2026-08-18. "University organizations" and
+      // "University administrations" were separate entries, which meant two of the
+      // four audiences on the site were universities — the skew this list exists to
+      // correct, restated inside the list itself. Both halves are kept: the org
+      // sentence first, the office sentence second, because they are two seats on
+      // one record rather than two markets.
+      //
+      // "No lost passwords" stays out: Tenure stores no credentials and has no
+      // vault. "Compliance" stays out too — the six transcribed policies have no
+      // enforcement path (C-020), while deadlines that persist by role are real and
+      // shipped (C-018).
+      body: "Run the organization and hand it off clean: finances, events, members, and a record the next board inherits on day one. The office above them gets the same record from the other side — approvals, spending and deadlines that persist by role, without approving every bake sale.",
     },
     {
-      title: "University administrations",
-      seat: "Office of Student Engagement · Director",
-      cadence: "Oversees dozens of orgs at once",
-      // "Compliance" claimed a control the product does not have — the six
-      // transcribed policies have no enforcement path (C-020). Deadlines are
-      // real and shipped (C-018). The closing line now names the mechanism
-      // (C-001, C-011) instead of promising an outcome no term has measured.
-      body: "Govern every organization you steward from one seat, approvals, spending, and deadlines that persist by role, without approving every bake sale. The knowledge you fund stays with the seat that produced it.",
-    },
-    {
-      title: "SMEs & growing teams",
-      seat: "Head of Operations · OPS-HEAD-OPER",
-      cadence: "Employees leave, roles remain",
-      body: "When someone resigns, their vendors, playbooks, and hard-won context shouldn't leave with them. The same seat model applies outside a university: knowledge attaches to the role, and whoever takes it next reads the seat's record before their first day in it.",
-    },
-    {
-      title: "Nonprofits, chapters & boards",
+      sector: "NGOs & nonprofits",
+      title: "Nonprofits, NGOs and volunteer boards",
+      photo: "/photos/team-charts.jpg",
+      alt: "A board reviewing plans and charts together, seen from above",
       seat: "Board Chair · BRD-CHAI",
       cadence: "Annual board & volunteer rotation",
       // "The same engine already configures ... programs, committees, sites and
       // funder relations" asserted shipped, configured support for an entity
       // type nothing in the deploying repo evidences. The seat model genuinely
       // does generalise — that is the honest version of the same point.
-      body: "Volunteer boards reset every year and relearn the same lessons. The same seat model applies: a board chair or committee lead is a position with the record attached, so donor context and deadlines can persist across every term instead of resetting with the slate.",
+      body: "Volunteer boards reset every year and relearn the same lessons. A board chair or a programme lead is a position with the record attached, so funder context, grant deadlines and the reasoning behind last year's decisions can persist across every term instead of resetting with the slate.",
+    },
+    {
+      sector: "SMEs",
+      title: "Small and mid-sized businesses",
+      photo: "/photos/small-business.jpg",
+      alt: "Two small-business owners packing and labelling orders in their studio",
+      seat: "Head of Operations · OPS-HEAD-OPER",
+      cadence: "Employees leave, roles remain",
+      body: "When someone resigns, their vendors, pricing, playbooks and hard-won context should not leave with them. The seat model does not care that there is no term: an operations lead is still a position, and whoever takes it next reads the seat's record before their first day in it.",
+    },
+    {
+      sector: "Associations",
+      title: "Associations, chapters and committees",
+      photo: "/photos/admin-boardroom.jpg",
+      alt: "Members of a governing body seated at a formal table with microphones",
+      seat: "Chapter President · CHP-PRES",
+      cadence: "New slate every year, in every chapter",
+      body: "A federated body runs the same seats dozens of times over, and every chapter relearns the same lessons in parallel. The seat is the unit that survives the slate, so a chapter's sponsors, budget history and run-of-show stay where the next holder will look for them.",
     },
   ],
 } as const;

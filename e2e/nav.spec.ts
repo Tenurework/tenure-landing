@@ -332,8 +332,12 @@ test("footer links cover nav, legal, contact and social, and every internal one 
   }
   expect(broken, "footer links returning an error status").toEqual([]);
 
-  // And the footer nav genuinely navigates, not just points.
-  await page.locator("footer").getByRole("link", { name: "Trust", exact: true }).click();
+  // And the footer nav genuinely navigates, not just points. Derived from
+  // site.nav rather than pinned to a label: the ribbon was renamed once
+  // (Product/Pilot/Trust/Story -> Platform/Pilot/Security/About) and this line
+  // was the only place in the suite that hard-coded one of the old words.
+  const security = site.nav.find((n) => n.href === "/trust")!;
+  await page.locator("footer").getByRole("link", { name: security.label, exact: true }).click();
   await expect(page).toHaveURL(/\/trust$/);
   await expect(page.locator("h1")).toHaveText(H1["/trust"]);
 });

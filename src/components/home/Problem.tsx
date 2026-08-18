@@ -1,45 +1,58 @@
-import { Container, Eyebrow } from "@/components/ui/layout";
+import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionContour } from "@/components/visuals/SectionContour";
+import { Panel, PanelBar, PanelTag } from "@/components/ui/Panel";
 
-/* What today's cold handoff costs. Three rows, not four: "weeks of ramp before
-   anyone is useful" was the paragraph's "spends a semester relearning" again,
-   and disagreed with it on the duration. No vendor is named — a shared drive
-   folder is the habit, not a connector (C-029). */
-const lost = [
-  "A cold handoff through a shared folder",
-  "Sponsors and vendors go quiet",
-  "The same mistakes repeat every year",
+/**
+ * What today's cold handoff costs, and what the seat keeps instead.
+ *
+ * WAS: two side-by-side cards, "Without Tenure" and "With Tenure", each with its
+ * own heading, its own eyebrow and its own three-item list. Six list items and
+ * four headings across two surfaces, and the reader had to hold the left column
+ * in their head while reading the right one to see the point at all.
+ *
+ * NOW: one ledger. Each row is a loss on the left and the mechanism that answers
+ * it on the right, so the comparison is read across a line instead of across a
+ * gap. That is the same six facts in a third of the height, and it is the only
+ * arrangement in which "the org pays for it twice" is legible as a structure
+ * rather than asserted as a sentence.
+ *
+ * The copy is also no longer measured in semesters. "The next person spends a
+ * semester relearning" put a university calendar on a claim that applies to an
+ * operations lead at a 30-person company and a volunteer board chair, neither of
+ * whom has one.
+ */
+
+/** Each row: the loss today, and the mechanism that answers it. Ordered so the
+ *  pairs line up — a cold handoff answered by an assembled packet, and so on. */
+const LEDGER: { lost: string; kept: string }[] = [
+  {
+    lost: "A cold handoff through a shared folder",
+    kept: "A handoff packet assembled from the record itself",
+  },
+  {
+    lost: "Sponsors, vendors and funders go quiet",
+    kept: "Contacts, deals and terms stay attached to the seat",
+  },
+  {
+    lost: "The same mistakes repeat every cycle",
+    kept: "The next holder reads the seat before day one",
+  },
 ];
 
-/* What the seat keeps, answering each loss in order. "The next leader is
-   productive in days" was an outcome nothing measures; shadow access before the
-   term starts is the mechanism that was meant by it. */
-const kept = [
-  "A handoff packet assembled from the record",
-  "Vendors, contacts and deals stay on the seat",
-  "The next leader reads the seat before day one",
-];
-
-function CrossMark() {
+function Cross() {
   return (
     <span
       aria-hidden
       className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px] bg-brand-coral/90 text-on-accent"
     >
       <svg width="11" height="11" viewBox="0 0 12 12" fill="none">
-        <path
-          d="M3 3l6 6M9 3l-6 6"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
+        <path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
     </span>
   );
 }
 
-function CheckMark() {
+function Check() {
   return (
     <span
       aria-hidden
@@ -60,78 +73,62 @@ function CheckMark() {
 
 export function Problem() {
   return (
-    <section className="relative isolate overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
-      <SectionContour place="bl" seed={5} className="text-ink/[0.06]" />
+    <Section tone="subtle" backdrop="drafting">
       <Container>
-        <div className="max-w-2xl">
-          <Reveal>
-            <Eyebrow>The cost of turnover</Eyebrow>
-          </Reveal>
-
-          <Reveal delay={0.06}>
-            <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
-              When a leader leaves, the org pays for it{" "}
+        <SectionHead
+          eyebrow="The cost of turnover"
+          title={
+            <>
+              When a leader leaves, the organization pays for it{" "}
               <span className="text-grove">twice</span>.
-            </h2>
-          </Reveal>
+            </>
+          }
+          lead="Once when a year of relationships, vendor terms, budgets and playbooks walk out the door, and again while the next person relearns what the organization already knew."
+        />
 
-          <Reveal delay={0.12}>
-            <p className="mt-6 text-lg leading-relaxed text-ink-soft">
-              A year of relationships, vendor deals, budgets and playbooks walks
-              out the door, and the next person spends a semester relearning what
-              the org already knew.
-            </p>
-          </Reveal>
-        </div>
+        <Reveal delay={0.14} className="mt-10">
+          <Panel>
+            <PanelBar
+              title="The handoff, both ways"
+              meta="one row per thing that is lost, and what keeps it"
+              aside={<PanelTag>read across, not down</PanelTag>}
+            />
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2">
-          {/* Without Tenure, the cold handoff. */}
-          <Reveal delay={0.16}>
-            <div className="h-full rounded-2xl border border-line bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-lg)] sm:p-7">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
-                  Without Tenure
-                </h3>
-                <span className="label-mono text-brand-coral">The handoff today</span>
-              </div>
-              <ul className="mt-6 space-y-3.5">
-                {lost.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-[0.97rem] leading-relaxed text-ink-faint"
-                  >
-                    <CrossMark />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+            {/* Column heads, wide screens only: on a phone each row stacks and the
+                icons carry the distinction, so a header row would be noise. */}
+            <div className="hidden gap-6 border-b border-line px-6 py-2.5 md:grid md:grid-cols-2">
+              <span className="label-mono text-[0.55rem] text-brand-coral">
+                Without Tenure &mdash; the handoff today
+              </span>
+              <span className="label-mono text-[0.55rem] text-grove">
+                With Tenure &mdash; the seat remembers
+              </span>
             </div>
-          </Reveal>
 
-          {/* With Tenure, the seat remembers. */}
-          <Reveal delay={0.22}>
-            <div className="h-full rounded-2xl border border-grove/25 bg-cloud p-6 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_-24px_color-mix(in_oklab,var(--accent)_28%,transparent)] sm:p-7">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-display text-lg font-semibold tracking-[-0.02em] text-ink">
-                  With Tenure
-                </h3>
-                <span className="label-mono text-grove">The seat remembers</span>
-              </div>
-              <ul className="mt-6 space-y-3.5">
-                {kept.map((item) => (
-                  <li
-                    key={item}
-                    className="flex items-start gap-3 text-[0.97rem] leading-relaxed text-ink"
-                  >
-                    <CheckMark />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
-        </div>
+            <ul>
+              {LEDGER.map((row) => (
+                <li
+                  key={row.lost}
+                  className="grid gap-3 border-b border-line-soft px-5 py-4 last:border-b-0 sm:px-6 md:grid-cols-2 md:gap-6"
+                >
+                  <div className="flex items-start gap-3">
+                    <Cross />
+                    <span className="text-[0.97rem] leading-relaxed text-ink-faint">
+                      {row.lost}
+                    </span>
+                  </div>
+                  {/* The hairline is on the cell, not between the columns: a
+                      full-height divider would imply the rows are independent. */}
+                  <div className="flex items-start gap-3 md:border-l md:border-line md:pl-6">
+                    <Check />
+                    <span className="text-[0.97rem] leading-relaxed text-ink">{row.kept}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+        </Reveal>
       </Container>
-    </section>
+    </Section>
   );
 }
