@@ -13,13 +13,22 @@ export const site = {
     "Tenure is the system of record for organizations where people rotate faster than knowledge transfers — universities, nonprofits and NGOs, small and mid-sized businesses, associations and chapters. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next holder inherits the record instead of rebuilding it.",
 
   /**
-   * Scheduling. Reached only from /contact, after an explicit click — never
-   * loaded globally. Every path to it also has a plain-anchor fallback, because
-   * calendly.com is routinely blocked on university networks.
+   * Scheduling. Reached only from /contact, and only as a plain outbound anchor
+   * — there is no embed and no Calendly script on this origin any more. What
+   * replaced the embed is first-party (components/site/WalkthroughRequest.tsx)
+   * and transmits nothing: it composes the request in the browser and hands it
+   * to the visitor's own mail client.
+   *
+   * The anchor is kept because some people would simply rather pick a slot, and
+   * an anchor cannot fail the way the old control did: that one was a <button>
+   * that awaited Calendly's script and only then called window.open, outside the
+   * user-gesture window — so with calendly.com blocked, which is routine on
+   * university networks and with any content blocker, it silently did nothing.
+   *
+   * `bookingUrl` was removed on 2026-08-18: a "back-compat alias" whose only
+   * reference in the entire repository was its own declaration.
    */
   calendlyUrl: "https://calendly.com/satvikwithtenure",
-  // Back-compat alias used by older links; points at the same scheduler.
-  bookingUrl: "https://calendly.com/satvikwithtenure",
   /**
    * One conversion phrase, used everywhere. "Contact Sales" oversold a
    * two-founder company and set the wrong expectation for who picks up.

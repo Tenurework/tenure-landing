@@ -100,7 +100,12 @@ export function RailList({
   className?: string;
 }) {
   return (
-    <ul role="group" aria-label={label} className={cn("space-y-0.5", className)}>
+    /* No role="group" here. Overriding a <ul> with role=group removes its list
+       role, which orphans every <li> inside it — axe reported one serious
+       "listitem" violation per row, eleven of them on the home page alone. A
+       named list is already the right semantics for a rail, and each button
+       reports its own state through aria-pressed, so the role bought nothing. */
+    <ul aria-label={label} className={cn("space-y-0.5", className)}>
       {items.map((item) => {
         const on = item.key === active;
         return (

@@ -1074,6 +1074,60 @@ test.describe("rendered spacing", () => {
     expect(violations, report(violations)).toHaveLength(0);
   });
 
+  /**
+   * THE GENERAL FORM OF THE DEFECT, CAUGHT AT THE TAG BOUNDARY.
+   *
+   * `GLUE_PATTERNS` above matches the two shapes that shipped — a contraction and
+   * a domain — and it took a third occurrence to notice that it only ever
+   * described those two. On 2026-08-18 a sweep of the rendered HTML found ELEVEN
+   * dropped spaces across four routes, none of which any existing rule could see:
+   *
+   *     …to the <span>seat</span>rather than the person in it
+   *     …Student Engagement<!-- -->— proposed, not contracted
+   *     …<strong>Amazon Web Services</strong>— hosting, database and…
+   *     …<a href="/trust">trust page</a>states the same limit…
+   *
+   * The cause is one rule, not four typos: SWC drops the leading space of a JSX
+   * text node when that node spans multiple lines and follows an element or an
+   * expression. So `</span> rather\n than…` compiles to `</span>rather than…`,
+   * and it happens silently — the source looks correct, and only the rendered
+   * output is wrong.
+   *
+   * This checks the SERVED MARKUP rather than innerText, because that is where
+   * the evidence is: by the time it reaches innerText the two words are simply
+   * one word, indistinguishable from a compound. A word character, then a closing
+   * inline tag or React's `<!-- -->` text separator, then a letter or a dash, is
+   * the signature — and the fix is always the same, an explicit {" "}.
+   */
+  test("no space is dropped at a JSX element boundary", async ({ page }) => {
+    const pages = await siteText(page);
+    const BOUNDARY = /(\w)(?:<\/(?:span|a|strong|em|b|i)>|<!-- -->)([A-Za-z—–])/g;
+    const violations: string[] = [];
+
+    for (const text of pages) {
+      BOUNDARY.lastIndex = 0;
+      let m: RegExpExecArray | null;
+      while ((m = BOUNDARY.exec(text.html)) !== null) {
+        const context = text.html
+          .slice(Math.max(0, m.index - 70), m.index + 70)
+          .replace(/\s+/g, " ");
+        violations.push(
+          [
+            `DROPPED BOUNDARY SPACE on ${text.route}`,
+            `  glued     : "${m[1]}…${m[2]}"`,
+            `  context   : …${context}…`,
+            `  because   : SWC removes the leading space of a multi-line JSX text`,
+            `              node that follows an element or an expression, so`,
+            `              \`</span> word\\n more\` compiles to \`</span>word more\`.`,
+            `  fix       : put an explicit {" "} at that boundary.`,
+          ].join("\n"),
+        );
+      }
+    }
+
+    expect(violations, report(violations)).toHaveLength(0);
+  });
+
   test("the two spacing defects that shipped stay fixed", async ({ page }) => {
     const pages = await siteText(page);
     const violations: string[] = [];

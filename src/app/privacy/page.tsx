@@ -15,11 +15,11 @@ export default function PrivacyPage() {
       />
 
       <Container>
-        <div className="legal max-w-2xl pb-24">
+        <div className="legal max-w-2xl pb-16">
           {/* Publishing the current position honestly is better than publishing
               nothing, but an institution must not mistake a founder draft for a
               reviewed instrument. */}
-          <div className="mb-10 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
             <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
             It has not been reviewed by counsel, and Tenure is not yet an
             incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
@@ -100,12 +100,14 @@ export default function PrivacyPage() {
             */}
             <li>
               <strong>Institution staff at the office that stewards your
-              organization.</strong> Today that means any institution account can
+              organization.</strong>{" "}
+              Today that means any institution account can
               read every organization in the portfolio, not only the ones it
               advises.
             </li>
             <li>
-              <strong>Not the public.</strong> Records are separated per
+              <strong>Not the public.</strong>{" "}
+              Records are separated per
               institution at the database layer; separation between organizations
               inside one institution is enforced by access rules rather than by
               that boundary.
@@ -124,7 +126,8 @@ export default function PrivacyPage() {
           </p>
           <ul>
             <li>
-              <strong>Amazon Web Services</strong> &mdash; hosting, database and
+              <strong>Amazon Web Services</strong>{" "}
+              &mdash; hosting, database and
               document storage for the application. Data is held in AWS&rsquo;s
               United States regions. Encryption at rest uses AWS-managed keys;
               there is no customer-managed key option today.
@@ -140,7 +143,8 @@ export default function PrivacyPage() {
                 a file to be included, and /trust's "document file contents are not
                 indexed" made that reading more likely, not less.
               */}
-              <strong>Anthropic</strong> &mdash; the model provider. Receives
+              <strong>Anthropic</strong>{" "}
+              &mdash; the model provider. Receives
               permission-filtered record text in three cases: when someone asks a
               question, the records retrieved for it; when someone asks for a
               summary of a text document, the contents of that document; and when
@@ -149,11 +153,13 @@ export default function PrivacyPage() {
               terms rather than ours &mdash; ask us for the terms in force.
             </li>
             <li>
-              <strong>Vercel</strong> &mdash; hosting for this marketing website
+              <strong>Vercel</strong>{" "}
+              &mdash; hosting for this marketing website
               only. It does not touch your organization&rsquo;s record.
             </li>
             <li>
-              <strong>Calendly</strong> &mdash; scheduling, and only if you open
+              <strong>Calendly</strong>{" "}
+              &mdash; scheduling, and only if you open
               the scheduler on our <a href="/contact">contact page</a>. It sets
               its own cookies and shows its own consent prompt when you do.
             </li>
@@ -230,20 +236,23 @@ export default function PrivacyPage() {
                 fixture cleanup. Stating it as an available control implied a
                 self-service or automated path that does not exist.
               */}
-              <strong>Your personal account details</strong> &mdash; name, email,
+              <strong>Your personal account details</strong>{" "}
+              &mdash; name, email,
               profile &mdash; can be removed or anonymised on request. There is no
               self-service control for this and no automated routine behind it: we
               do it by hand, and assignments and audit rows that reference you are
               kept.
             </li>
             <li>
-              <strong>An organization&rsquo;s whole record</strong> can be
+              <strong>An organization&rsquo;s whole record</strong>{" "}
+              can be
               exported and deleted at the end of the relationship, on the
               instruction of that organization&rsquo;s current leadership.
             </li>
             <li>
               <strong>Individual entries you made cannot be erased from a
-              seat&rsquo;s history on your own say-so.</strong> That is the
+              seat&rsquo;s history on your own say-so.</strong>{" "}
+              That is the
               product working as designed: a seat carrying history refuses
               deletion, and an outgoing officer is moved to alumni rather than
               removed. If a departing treasurer could delete the budget decisions
@@ -257,7 +266,8 @@ export default function PrivacyPage() {
             work with your organization&rsquo;s leadership on it &mdash; but we
             will not quietly delete institutional history at the request of one
             person who is leaving. The{" "}
-            <a href="/trust">trust page</a> states the same limit from the
+            <a href="/trust">trust page</a>{" "}
+            states the same limit from the
             product&rsquo;s side.
           </p>
 

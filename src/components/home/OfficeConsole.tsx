@@ -227,7 +227,7 @@ export function OfficeConsole() {
       <Container>
         <SectionHead
           align="center"
-          eyebrow="For the body above"
+          eyebrow="Oversight"
           title={
             <>
               The office gets its own system, not a login to{" "}

@@ -383,7 +383,12 @@ export const claims: Claim[] = [
     evidence: [
       "infrastructure/terraform (ECS, RDS, S3, CloudFront — AWS US regions)",
       "apps/web/src/lib/ai.ts:35 (Anthropic)",
-      "tenure-landing: Vercel response headers; src/lib/calendly.ts (Calendly, /contact only)",
+      // src/lib/calendly.ts was deleted on 2026-08-18 along with the inline embed:
+      // the scheduler is now a plain outbound anchor and no Calendly script loads
+      // on this origin at all. Calendly stays on the subprocessor list because a
+      // visitor who follows that anchor still books with them — only the citation
+      // changes, to a file that exists.
+      "tenure-landing: Vercel response headers; src/app/contact/page.tsx (Calendly reached only by a plain outbound link, /contact only)",
     ],
     availability: "live",
     qualification:

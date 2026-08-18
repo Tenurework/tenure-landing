@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { Backdrop } from "@/components/visuals/Backdrop";
-import { HeroFloatingCards } from "@/components/home/HeroFloatingCards";
 import { site } from "@/lib/site";
 
 /**
@@ -83,8 +82,9 @@ export function Hero() {
             <p className="mx-auto mt-5 max-w-lg text-[1.05rem] leading-relaxed text-ink-soft sm:text-lg lg:mx-0">
               Someone leaves, and the budget, the vendors and the reasons leave
               with them. Tenure attaches the money, the events, the approvals and
-              what the last holder learned to the <span className="font-medium text-ink">seat</span> rather
-              than the person in it &mdash; so the next one opens a record instead
+              what the last holder learned to the{" "}
+              <span className="font-medium text-ink">seat</span>{" "}
+              rather than the person in it &mdash; so the next one opens a record instead
               of an empty folder.
             </p>
 
@@ -119,11 +119,22 @@ export function Hero() {
           </div>
 
           {/* RIGHT, the product surface, bleeding off the right edge.
-              `pt-6` on mobile keeps the floating cards (xl only) clear of the
-              copy above; they used to overlap the dashboard's own ledger rows
-              and cut four transaction labels in half. */}
+
+              HeroFloatingCards was removed here. Two "notification" cards floated
+              over the dashboard's left edge at xl and above, and at 1440px they
+              sat directly on top of the ledger — "Membership dues, 28 paid" read
+              as "mbership dues", "Aramark, fall sponsorship" as "ark, fall
+              sponsorship". Four rows of the most concrete thing on the page were
+              cut in half by decoration.
+
+              Narrowing them would have been a fix for that screenshot rather than
+              for the class: they are absolutely positioned over a surface whose
+              internal layout is fluid, so any width that clears the ledger at one
+              viewport collides at another. And they were duplicating the mock
+              anyway — the conflict they announced is in its Calendar panel and the
+              cleared approval is in its Approvals panel. Removing them takes out a
+              component, a class of overlap bug, and one more piece of repetition. */}
           <div className="relative pt-2 lg:-mr-[10vw] lg:pt-0 xl:-mr-[6vw]">
-            <HeroFloatingCards />
             <DashboardMock tilt auto className="relative z-0" />
           </div>
         </div>
@@ -180,8 +191,8 @@ export function Hero() {
               The pilot hedge is load-bearing: C-021 requires "planned" or
               "proposed" in the same sentence as the season and the office. */}
           <p className="mt-5 text-center text-[0.8rem] leading-relaxed text-ink-faint lg:text-left">
-            Planned {site.pilot.season} pilot with {site.origin.office} &mdash; proposed,
-            not contracted. The product surfaces on this page are illustrations,
+            Planned {site.pilot.season} pilot with {site.origin.office}{" "}
+            &mdash; proposed, not contracted. The product surfaces on this page are illustrations,
             not screenshots: they draw behaviour the product really has, with
             representative names and figures.
           </p>

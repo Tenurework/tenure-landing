@@ -1,4 +1,4 @@
-import { Container, Eyebrow } from "@/components/ui/layout";
+import { Container, Section, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
@@ -51,21 +51,21 @@ export default function StoryPage() {
       />
 
       {/* 1, Why Tenure exists */}
-      <section className="relative border-t border-line py-24 sm:py-32">
+      <Section tone="canvas" backdrop="quiet">
         <Container>
           <div className="max-w-2xl">
             <Reveal>
               <Eyebrow index="01">Why Tenure exists</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
+              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
                 Every fall, the same{" "}
                 <span className="text-grove">cold start</span>.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-7 text-lg leading-relaxed text-ink-soft">
+              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
                 At Simon, we watched it up close. A capable board spends a year
                 building real things, sponsor relationships, an events
                 playbook, a budget that finally works, then hands all of
@@ -74,7 +74,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.16}>
-              <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
                 So the next team starts from memory and guesswork. Sponsor
                 contacts go cold because no one knew they existed. The same
                 mistakes get repeated, not from carelessness, but because
@@ -84,7 +84,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="mt-5 text-lg leading-relaxed text-ink-soft">
+              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
                 None of that is a people problem. It&rsquo;s a memory problem.
                 Institutional knowledge shouldn&rsquo;t depend on whether one
                 person remembered to write it down on the way out. It
@@ -94,31 +94,31 @@ export default function StoryPage() {
             </Reveal>
 
             <Reveal delay={0.24}>
-              <blockquote className="mt-10 border-l-2 border-grove pl-6 font-display text-2xl font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-[1.75rem]">
+              <blockquote className="mt-8 border-l-2 border-grove pl-5 font-display text-xl font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-[1.5rem]">
                 The role should keep what it knows, even after the people who
                 built it have graduated.
               </blockquote>
             </Reveal>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* 2, Founders */}
-      <section className="relative border-t border-line bg-sand py-24 sm:py-32">
+      <Section tone="subtle" backdrop="drafting">
         <Container>
           <div className="max-w-2xl">
             <Reveal>
               <Eyebrow index="02">Founders</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
+              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
                 The people building the{" "}
                 <span className="text-grove">record</span>.
               </h2>
             </Reveal>
           </div>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-2">
+          <div className="mt-9 grid gap-5 sm:grid-cols-2">
             {site.founders.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.08}>
                 <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
@@ -146,10 +146,10 @@ export default function StoryPage() {
             ))}
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* 3, Mission */}
-      <section className="relative overflow-hidden border-t border-line-dark bg-band py-24 text-inverse sm:py-32">
+      <Section tone="band" backdrop="band">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_70%)]"
@@ -162,7 +162,7 @@ export default function StoryPage() {
               </Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-6 text-[2.2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-inverse sm:text-[2.8rem] lg:text-[3.1rem]">
+              <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.3rem]">
                 Serve any organization where people rotate faster than{" "}
                 <span className="text-grove-bright">knowledge transfers</span>.
               </h2>
@@ -177,25 +177,26 @@ export default function StoryPage() {
             </Reveal>
           </div>
         </Container>
-      </section>
+      </Section>
 
       {/* 4, Where it stands */}
-      <section className="relative border-t border-line py-24 sm:py-32">
-        <Container className="grid gap-14 lg:grid-cols-2 lg:items-center lg:gap-20">
+      <Section tone="canvas" backdrop="quiet">
+        <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <Reveal>
               <Eyebrow index="04">Where it stands</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
+              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
                 Early, and honest{" "}
                 <span className="text-grove">about it</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mt-6 text-lg leading-relaxed text-ink-soft">
+              <p className="mt-6 text-[1.02rem] leading-relaxed text-ink-soft">
                 Here is exactly where things stand. We are planning a{" "}
-                {site.pilot.season} pilot with Simon&rsquo;s Office of Student
+                {site.pilot.season}{" "}
+                pilot with Simon&rsquo;s Office of Student
                 Engagement, covering the organizations it stewards and the
                 office itself. That scope is one we have proposed and discussed
                 with the office &mdash; nothing is agreed in either direction,
@@ -223,7 +224,7 @@ export default function StoryPage() {
             </div>
           </Reveal>
         </Container>
-      </section>
+      </Section>
 
       <CtaBand />
     </>

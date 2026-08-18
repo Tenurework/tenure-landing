@@ -20,8 +20,8 @@ export default function TermsPage() {
       />
 
       <Container>
-        <div className="legal max-w-2xl pb-24">
-          <div className="mb-10 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+        <div className="legal max-w-2xl pb-16">
+          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
             <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
             It has not been reviewed by counsel, and Tenure is not yet an
             incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
@@ -48,8 +48,10 @@ export default function TermsPage() {
 
           <h2>The service</h2>
           <p>
-            Tenure is an early-stage ERP for organizations where leadership turns over faster than knowledge does, starting with university administrations and
-            student organizations, offered through a pilot and early access. It
+            Tenure is an early-stage system of record for organizations where
+            leadership turns over faster than knowledge does &mdash; universities,
+            nonprofits and NGOs, small and mid-sized businesses, associations and
+            chapters &mdash; offered through a pilot and early access. It
             keeps an organization&rsquo;s operations, finance, events,
             members, documents, and institutional memory, in one place, so
             the role persists even as the people in it rotate. Because the

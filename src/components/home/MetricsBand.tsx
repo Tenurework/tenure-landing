@@ -63,9 +63,21 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
   const value = zero && !NEVER_COUNTS_UP.has(metric.claimId) ? 0 : metric.value;
 
   return (
-    <div className="relative">
+    /*
+      THE NOTE IS PINNED TO THE BOTTOM, and that is an alignment fix rather than a
+      preference. It used to sit between the number and the label, and only two of
+      the four tiles carry one — so in a row of four, two labels started directly
+      under their number and two started ~34px lower. Four big numbers whose
+      captions do not share a baseline read as a broken grid, which is the last
+      impression a section headed "counted, not projected" should give.
+
+      Putting it last also puts the qualifier after the thing it qualifies:
+      "26 / organizations modelled / … / Seeded model — not customers, not users"
+      reads in the order a sceptical reader asks the questions in.
+    */
+    <div className="flex h-full flex-col">
       <div className="flex items-baseline gap-1">
-        <span className="font-display text-[3rem] font-semibold leading-none tracking-[-0.04em] tnum text-grove-bright sm:text-[3.6rem]">
+        <span className="font-display text-[2.7rem] font-semibold leading-none tracking-[-0.04em] tnum text-grove-bright sm:text-[3.2rem]">
           <NumberFlow
             value={value}
             transformTiming={{ duration: 1200, easing: "cubic-bezier(.22,1,.36,1)" }}
@@ -78,19 +90,14 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
         )}
       </div>
 
+      <p className="mt-2.5 text-[1rem] font-medium text-inverse">{metric.label}</p>
+      <p className="mt-1 text-[0.85rem] leading-relaxed text-inverse/75">{metric.sub}</p>
+
       {note && (
-        <p className="mt-3 inline-flex rounded-md border border-line-dark bg-band-raised px-2 py-1 font-mono text-[0.66rem] leading-tight text-inverse/85">
+        <p className="mt-3 inline-flex w-fit rounded-md border border-line-dark bg-band-raised px-2 py-1 font-mono text-[0.64rem] leading-tight text-inverse/85">
           {note}
         </p>
       )}
-
-      {/* The struck-through "was: a semester" comparison that used to sit here
-          was removed with the unmeasured metrics it belonged to. Nothing in
-          either product repository measures onboarding duration, so there was
-          no before to strike through. */}
-
-      <p className="mt-3 text-[1.02rem] font-medium text-inverse">{metric.label}</p>
-      <p className="mt-1 text-[0.86rem] leading-relaxed text-inverse/75">{metric.sub}</p>
     </div>
   );
 }
@@ -138,7 +145,7 @@ export function MetricsBand() {
   return (
     <section
       ref={attach}
-      className="relative isolate overflow-hidden border-t border-line-dark bg-band py-24 text-inverse sm:py-28"
+      className="relative isolate overflow-hidden border-t border-line-dark bg-band py-14 text-inverse sm:py-18"
     >
       <SectionContour place="cr" seed={4} className="text-inverse/[0.06]" />
       <div
@@ -160,11 +167,11 @@ export function MetricsBand() {
           </p>
         </div>
 
-        <div className="mt-14 grid gap-y-12 gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid items-stretch gap-y-8 gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
           {/* Reveal rather than motion: these four tiles carry real copy, and
               a server-rendered opacity:0 hid all of it without JavaScript. */}
           {site.metrics.map((m, i) => (
-            <Reveal key={m.label} delay={i * 0.08} y={16} className="border-l border-line-dark pl-5">
+            <Reveal key={m.label} delay={i * 0.08} y={16} className="h-full border-l border-line-dark pl-5">
               <Tile metric={m} zero={zero} />
             </Reveal>
           ))}

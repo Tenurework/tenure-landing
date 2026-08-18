@@ -1,10 +1,12 @@
-import type { ReactNode } from "react";
-import { Container, Eyebrow } from "@/components/ui/layout";
+import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
+import { Dossier } from "@/components/ui/Dossier";
+import { Panel, PanelBar, PanelNote } from "@/components/ui/Panel";
+import { Backdrop } from "@/components/visuals/Backdrop";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -341,38 +343,6 @@ const DECISION: { n: string; t: string; d: string }[] = [
   },
 ];
 
-function SectionIntro({
-  index,
-  eyebrow,
-  title,
-  children,
-}: {
-  index: string;
-  eyebrow: string;
-  title: ReactNode;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="max-w-2xl">
-      <Reveal>
-        <Eyebrow index={index}>{eyebrow}</Eyebrow>
-      </Reveal>
-      <Reveal delay={0.06}>
-        <h2 className="font-display mt-6 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-text sm:text-[2.4rem] lg:text-[2.7rem]">
-          {title}
-        </h2>
-      </Reveal>
-      {children && (
-        <Reveal delay={0.12}>
-          <div className="mt-6 max-w-2xl text-lg leading-relaxed text-text-secondary">
-            {children}
-          </div>
-        </Reveal>
-      )}
-    </div>
-  );
-}
-
 function ProvidesCard({
   heading,
   sub,
@@ -418,10 +388,10 @@ export default function PilotPage() {
             We are proposing a {site.pilot.season} pilot with{" "}
             {site.origin.office}, covering the organizations it stewards and the
             office&rsquo;s own administrators, so the record below and the
-            oversight above run on one system. Scope and timing are proposed, not contracted. What
-            follows is the operational detail rather than the pitch: who does
-            what, what you would hand over, what does not work yet, and what we
-            would be judged on.
+            oversight above run on one system. Scope and timing are proposed, not
+            contracted. What follows is the operational detail rather than the
+            pitch: who does what, what you would hand over, what does not work
+            yet, and what we would be judged on.
           </>
         }
       >
@@ -435,10 +405,19 @@ export default function PilotPage() {
         </Button>
       </PageHeader>
 
-      {/* 01 — where this stands */}
-      <section className="relative border-t border-line py-24 sm:py-32">
+      {/*
+        01 — STATUS. This one is never collapsed.
+
+        The page's whole job is to stop somebody believing their office has
+        already committed to something. Putting that behind a disclosure the
+        reader has to choose to open would be exactly the wrong compaction: it is
+        the one section a visitor must see whether they came looking for it or
+        not. Everything after it is operational detail that a reader seeks out,
+        and that detail is what moved into the dossier.
+      */}
+      <Section tone="canvas" backdrop="quiet" divide={false}>
         <Container>
-          <SectionIntro
+          <SectionHead
             index="01"
             eyebrow="Status"
             title={
@@ -446,423 +425,380 @@ export default function PilotPage() {
                 Planned. <span className="text-grove">Nothing is signed</span>.
               </>
             }
-          >
-            <p>
-              This is a proposal we have talked through with the office. There is
-              no agreement, no purchase order, no start date and no enrolled
-              organization behind it. If you came here to find out whether your
-              office has already committed to something &mdash; it has not, and
-              this page is the whole basis on which it might.
-            </p>
-          </SectionIntro>
+            lead="This is a proposal we have talked through with the office. There is no agreement, no purchase order, no start date and no enrolled organization behind it. If you came here to find out whether your office has already committed to something — it has not, and this page is the whole basis on which it might."
+          />
 
-          <dl className="mt-14 grid gap-x-12 border-t border-line sm:grid-cols-2">
-            {STATUS.map((row, i) => (
-              <Reveal
-                key={row.k}
-                delay={(i % 2) * 0.06}
-                className="border-b border-line py-5"
-              >
-                <dt className="label-mono">{row.k}</dt>
-                <dd className="mt-2 text-[1.02rem] leading-relaxed text-text-secondary">
-                  {row.v}
-                </dd>
-              </Reveal>
-            ))}
-          </dl>
-        </Container>
-      </section>
-
-      {/* 02 — who takes part */}
-      <section className="relative border-t border-line bg-surface-subtle py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="02"
-            eyebrow="Who takes part"
-            title={
-              <>
-                Both sides of the{" "}
-                <span className="text-grove">same record</span>.
-              </>
-            }
-          >
-            <p>
-              The proposed scope is the whole portfolio at once: every
-              organization the office stewards, and the office&rsquo;s own seats
-              alongside them. Each row below is a real seat with a real
-              obligation attached to it.
-            </p>
-          </SectionIntro>
-
-          <ul className="mt-14 border-t border-line">
-            {PARTICIPANTS.map((p, i) => (
-              <Reveal
-                as="li"
-                key={p.who}
-                delay={Math.min(i, 3) * 0.05}
-                className="grid gap-3 border-b border-line py-7 lg:grid-cols-[0.85fr_1.55fr] lg:gap-12"
-              >
-                <div>
-                  <h3 className="font-display text-[1.2rem] font-semibold tracking-tight text-text">
-                    {p.who}
-                  </h3>
-                  <p className="mt-1.5 font-mono text-[0.78rem] leading-relaxed text-text-muted">
-                    {p.seat}
-                  </p>
-                </div>
-                <p className="text-[0.98rem] leading-relaxed text-text-secondary">
-                  {p.ask}
-                </p>
-              </Reveal>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      {/* 03 — who does what */}
-      <section className="relative border-t border-line py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="03"
-            eyebrow="Who does what"
-            title={
-              <>
-                Two columns, so nobody{" "}
-                <span className="text-grove">discovers this later</span>.
-              </>
-            }
-          >
-            <p>
-              A pilot fails on the work nobody agreed to do. Here is the split we
-              would propose, and it belongs in the written scope before the term
-              rather than in an email during it.
-            </p>
-          </SectionIntro>
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
-            <Reveal className="h-full">
-              <ProvidesCard
-                heading="Tenure provides"
-                sub="Us, and the product as it is actually built today."
-                items={TENURE_PROVIDES}
+          <Reveal delay={0.12} className="mt-8">
+            <Panel>
+              <PanelBar
+                title="Where this stands today"
+                meta={`${STATUS.length} questions a procurement reviewer asks first`}
               />
-            </Reveal>
-            <Reveal delay={0.08} className="h-full">
-              <ProvidesCard
-                heading="The office provides"
-                sub="The parts nobody outside your institution can do for you."
-                items={OFFICE_PROVIDES}
-              />
-            </Reveal>
-          </div>
-        </Container>
-      </section>
-
-      {/* 04 — onboarding inputs */}
-      <section className="relative border-t border-line bg-surface-subtle py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="04"
-            eyebrow="Onboarding inputs"
-            title={
-              <>
-                What you would actually{" "}
-                <span className="text-grove">hand over</span>.
-              </>
-            }
-          >
-            <p>
-              Concretely, and in the shape you already have it. Nothing here has
-              to be tidied up first: the first pass over the mess is the work we
-              are offering to do.
-            </p>
-          </SectionIntro>
-
-          <ul className="mt-14 border-t border-line">
-            {INPUTS.map((x, i) => (
-              <Reveal
-                as="li"
-                key={x.item}
-                delay={Math.min(i, 3) * 0.05}
-                className="grid gap-4 border-b border-line py-7 lg:grid-cols-[1fr_1.5fr] lg:gap-12"
-              >
-                <h3 className="font-display text-[1.12rem] font-semibold leading-snug tracking-tight text-text">
-                  {x.item}
-                </h3>
-                <div>
-                  <p className="text-[0.95rem] leading-relaxed text-text-secondary">
-                    <span className="font-medium text-text">Shape: </span>
-                    {x.shape}
-                  </p>
-                  <p className="mt-2 text-[0.95rem] leading-relaxed text-text-secondary">
-                    <span className="font-medium text-text">
-                      Who does the work:{" "}
-                    </span>
-                    {x.who}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      {/* 05 — the sequence */}
-      <section className="relative border-t border-line py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="05"
-            eyebrow="Implementation"
-            title={
-              <>
-                The sequence. <span className="text-grove">Not a schedule</span>.
-              </>
-            }
-          >
-            <p>
-              There <em>is</em> a new system to learn. It is where the work
-              happens, or the record does not fill, and no page on this site is
-              going to tell you otherwise. What there is not is a migration
-              project: we do the first import from your existing drives with
-              you, and after that the record fills as officers do the work they
-              were already doing.
-            </p>
-            <p className="mt-4">
-              The five moves below are an order of operations, not dates. No
-              calendar exists yet, and we are not going to invent one on a public
-              page.
-            </p>
-          </SectionIntro>
-
-          <div className="relative mt-16">
-            {/* connector rail (desktop) */}
-            <div
-              aria-hidden
-              className="absolute left-0 right-0 top-6 hidden h-px bg-gradient-to-r from-grove/20 via-grove/40 to-grove lg:block"
-            />
-            <ol className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">
-              {STEPS.map((s, i) => (
-                <Reveal as="li" key={s.n} delay={i * 0.07} className="relative">
-                  <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-xl border border-line bg-accent-subtle font-mono text-sm text-accent-text">
-                    {s.n}
-                  </span>
-                  <h3 className="mt-5 text-lg font-medium text-text">{s.t}</h3>
-                  <p className="mt-2 text-[0.95rem] leading-relaxed text-text-secondary">
-                    {s.d}
-                  </p>
-                </Reveal>
-              ))}
-            </ol>
-          </div>
-        </Container>
-      </section>
-
-      {/* 06 — support model */}
-      <section className="relative border-t border-line bg-surface-subtle py-24 sm:py-32">
-        <Container>
-          <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
-            <div>
-              <SectionIntro
-                index="06"
-                eyebrow="Support"
-                title={
-                  <>
-                    Two founders.{" "}
-                    <span className="text-grove">No support desk</span>.
-                  </>
-                }
-              >
-                <p>
-                  You would work directly with {site.founders[0].name} and{" "}
-                  {site.founders[1].name} for the whole pilot. One address
-                  reaches both of us, and we answer the same day, most days
-                  &mdash; which is a description of how we work, not a service
-                  level anyone has agreed to.
-                </p>
-                <p className="mt-4">
-                  What that buys you: the people who wrote the code are the
-                  people who answer, and what your office needs shapes what gets
-                  built next. What it costs you: there is no ticket queue, no
-                  on-call rotation and no second line behind us. If a committed
-                  response time or a named escalation contact is a procurement
-                  requirement, it has to be negotiated into an agreement &mdash;
-                  it cannot be read off a web page.
-                </p>
-              </SectionIntro>
-            </div>
-
-            <ul className="self-center border-t border-line">
-              {SUPPORT.map((s, i) => (
-                <Reveal
-                  as="li"
-                  key={s}
-                  delay={Math.min(i, 3) * 0.05}
-                  className="flex items-start gap-4 border-b border-line py-5"
-                >
-                  <span
-                    aria-hidden
-                    className="mt-[0.5rem] h-2.5 w-2.5 shrink-0 rounded-[3px] bg-accent"
-                  />
-                  <span className="text-[1rem] leading-relaxed text-text-secondary">
-                    {s}
-                  </span>
-                </Reveal>
-              ))}
-            </ul>
-          </div>
-        </Container>
-      </section>
-
-      {/* 07 — data handling, approvals, limits */}
-      <section className="relative border-t border-line py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="07"
-            eyebrow="Data and approvals"
-            title={
-              <>
-                What happens to the record &mdash; and what{" "}
-                <span className="text-grove">does not work yet</span>.
-              </>
-            }
-          >
-            <p>
-              The parts an office and its security reviewer should hear from us
-              before they hear from anyone else.{" "}
-              <a
-                href="/trust"
-                className="text-accent-text underline underline-offset-4 hover:text-accent"
-              >
-                /trust
-              </a>{" "}
-              carries the full list with its sources; these are the entries a
-              pilot decision actually turns on.
-            </p>
-          </SectionIntro>
-
-          <ul className="mt-14 grid gap-x-12 gap-y-10 lg:grid-cols-2">
-            {HANDLING.map((h, i) => (
-              <Reveal as="li" key={h.t} delay={(i % 2) * 0.06}>
-                <h3 className="font-display text-[1.1rem] font-semibold tracking-tight text-text">
-                  {h.t}
-                </h3>
-                <p className="mt-2.5 text-[0.95rem] leading-relaxed text-text-secondary">
-                  {h.d}
-                </p>
-                {h.limit && (
-                  <p className="mt-3 border-l-2 border-border-strong pl-4 text-[0.9rem] leading-relaxed text-text-muted">
-                    <span className="font-medium text-text-secondary">
-                      Limit:{" "}
-                    </span>
-                    {h.limit}
-                  </p>
-                )}
-              </Reveal>
-            ))}
-          </ul>
-        </Container>
-      </section>
-
-      {/* 08 — measures */}
-      <section className="relative border-t border-line bg-surface-subtle py-24 sm:py-32">
-        <Container>
-          <SectionIntro
-            index="08"
-            eyebrow="How success is measured"
-            title={
-              <>
-                Targets we would accept{" "}
-                <span className="text-grove">being judged on</span>.
-              </>
-            }
-          >
-            <p>
-              Every line below is a target, not a result. No pilot has run,
-              nothing here has been measured, and any outcome number on this page
-              would be invented. Each one is countable from the record itself,
-              which means each one can fail visibly &mdash; that is the point.
-              They would be agreed and written down before the term starts.
-            </p>
-          </SectionIntro>
-
-          <ul className="mt-14 grid gap-6 sm:grid-cols-2">
-            {MEASURES.map((m, i) => (
-              <Reveal as="li" key={m.t} delay={(i % 2) * 0.06} className="h-full">
-                <div className="h-full rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-sm)]">
-                  <span className="inline-flex items-center rounded-lg border border-accent/25 bg-accent-subtle px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.08em] text-accent-text">
-                    Target
-                  </span>
-                  <h3 className="mt-4 text-[1.05rem] font-medium leading-snug text-text">
-                    {m.t}
-                  </h3>
-                  <p className="mt-2 text-[0.94rem] leading-relaxed text-text-secondary">
-                    {m.d}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
-          </ul>
-
-          <Reveal delay={0.1}>
-            <p className="mt-10 max-w-2xl text-[0.98rem] leading-relaxed text-text-muted">
-              A measure that cannot be counted out of the record does not go on
-              the list. If we miss one, you get the number rather than the
-              narrative.
-            </p>
+              <dl className="grid sm:grid-cols-2">
+                {STATUS.map((row, i) => (
+                  <div
+                    key={row.k}
+                    className={[
+                      "border-line-soft px-5 py-4 sm:px-6",
+                      // Hairlines per cell: the final row must not carry a bottom
+                      // border, and in one column the vertical divider disappears.
+                      i < STATUS.length - 2 ? "border-b" : "",
+                      i % 2 === 0 ? "sm:border-r" : "",
+                      i === STATUS.length - 2 ? "border-b sm:border-b-0" : "",
+                    ].join(" ")}
+                  >
+                    <dt className="label-mono">{row.k}</dt>
+                    <dd className="mt-1.5 text-[0.95rem] leading-relaxed text-text-secondary">
+                      {row.v}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </Panel>
           </Reveal>
         </Container>
-      </section>
+      </Section>
 
-      {/* 09 — the decision */}
-      <section className="relative border-t border-line py-24 sm:py-32">
+      {/*
+        02–08 — THE PROPOSAL ITSELF.
+
+        Seven sections, each of which was a full-viewport band with its own
+        eyebrow, heading, lead paragraph and grid: 14.4 desktop viewports and 25.8
+        on a phone, which is more than three times any other route. Not one word
+        of it is padding — it is a written proposal, and the limits in section 07
+        are the part a security reviewer needs most — so nothing here is cut. It
+        is collapsed instead, with a summary line that says what is inside, and
+        native <details> so Ctrl+F and a no-JavaScript reader both still work.
+      */}
+      <Section tone="subtle" backdrop="drafting">
+        <Container>
+          <SectionHead
+            index="02"
+            eyebrow="The proposal"
+            title={
+              <>
+                The operational detail,{" "}
+                <span className="text-grove">section by section</span>.
+              </>
+            }
+            lead="Open whichever answers the question you arrived with. A pilot fails on the work nobody agreed to do, so all of it is written down rather than left to a conversation."
+          />
+
+          <Reveal delay={0.12} className="mt-8">
+            <Dossier
+              name="pilot"
+              title="Pilot proposal"
+              meta="seven sections · nothing here is a commitment"
+              openFirst={false}
+              items={[
+                {
+                  key: "who",
+                  title: "Who takes part",
+                  blurb:
+                    "The five parties and the real obligation attached to each — including what we would owe you.",
+                  tally: [{ label: `${PARTICIPANTS.length} parties` }],
+                  children: (
+                    <ul className="space-y-5">
+                      {PARTICIPANTS.map((p) => (
+                        <li
+                          key={p.who}
+                          className="grid gap-2 lg:grid-cols-[0.8fr_1.6fr] lg:gap-8"
+                        >
+                          <div>
+                            <h3 className="font-display text-[1.05rem] font-semibold tracking-tight text-text">
+                              {p.who}
+                            </h3>
+                            <p className="mt-1 font-mono text-[0.74rem] leading-relaxed text-text-muted">
+                              {p.seat}
+                            </p>
+                          </div>
+                          <p className="text-[0.94rem] leading-relaxed text-text-secondary">
+                            {p.ask}
+                          </p>
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+                },
+                {
+                  key: "split",
+                  title: "Who does what",
+                  blurb:
+                    "The split we would propose, in two columns, so nobody discovers it halfway through the term.",
+                  tally: [
+                    { label: `${TENURE_PROVIDES.length} ours`, tone: "good" },
+                    { label: `${OFFICE_PROVIDES.length} yours` },
+                  ],
+                  children: (
+                    <div className="grid gap-6 lg:grid-cols-2">
+                      <ProvidesCard
+                        heading="Tenure provides"
+                        sub="Us, and the product as it is actually built today."
+                        items={TENURE_PROVIDES}
+                      />
+                      <ProvidesCard
+                        heading="The office provides"
+                        sub="The parts nobody outside your institution can do for you."
+                        items={OFFICE_PROVIDES}
+                      />
+                    </div>
+                  ),
+                },
+                {
+                  key: "inputs",
+                  title: "What you would hand over",
+                  blurb:
+                    "Concretely, and in the shape you already have it. Nothing has to be tidied up first.",
+                  tally: [{ label: `${INPUTS.length} inputs` }],
+                  children: (
+                    <ul className="space-y-5">
+                      {INPUTS.map((x) => (
+                        <li
+                          key={x.item}
+                          className="grid gap-2 lg:grid-cols-[1fr_1.5fr] lg:gap-8"
+                        >
+                          <h3 className="font-display text-[1.02rem] font-semibold leading-snug tracking-tight text-text">
+                            {x.item}
+                          </h3>
+                          <div>
+                            <p className="text-[0.94rem] leading-relaxed text-text-secondary">
+                              <span className="font-medium text-text">Shape: </span>
+                              {x.shape}
+                            </p>
+                            <p className="mt-1.5 text-[0.94rem] leading-relaxed text-text-secondary">
+                              <span className="font-medium text-text">
+                                Who does the work:{" "}
+                              </span>
+                              {x.who}
+                            </p>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+                },
+                {
+                  key: "sequence",
+                  title: "The sequence",
+                  blurb:
+                    "Five moves in order — an order of operations, not a schedule. No calendar exists yet.",
+                  tally: [{ label: "not dates", tone: "warn" }],
+                  children: (
+                    <>
+                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                        There <em>is</em> a new system to learn. It is where the
+                        work happens, or the record does not fill, and no page on
+                        this site is going to tell you otherwise. What there is not
+                        is a migration project: we do the first import from your
+                        existing drives with you, and after that the record fills as
+                        officers do the work they were already doing.
+                      </p>
+                      <ol className="mt-5 space-y-3">
+                        {STEPS.map((s) => (
+                          <li
+                            key={s.n}
+                            className="flex gap-4 rounded-xl border border-line bg-surface p-4"
+                          >
+                            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-accent-subtle font-mono text-[0.8rem] text-accent-text">
+                              {s.n}
+                            </span>
+                            <div>
+                              <h3 className="text-[1rem] font-medium text-text">{s.t}</h3>
+                              <p className="mt-1 text-[0.93rem] leading-relaxed text-text-secondary">
+                                {s.d}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                      </ol>
+                    </>
+                  ),
+                },
+                {
+                  key: "support",
+                  title: "Support",
+                  blurb:
+                    "Two founders, no support desk. What that buys you, and what it costs you.",
+                  tally: [{ label: "no SLA", tone: "warn" }],
+                  children: (
+                    <>
+                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                        You would work directly with {site.founders[0].name} and{" "}
+                        {site.founders[1].name}{" "}
+                        for the whole pilot. One address reaches both of us, and we answer the same day, most days
+                        &mdash; which is a description of how we work, not a service
+                        level anyone has agreed to.
+                      </p>
+                      <p className="mt-3 max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                        What that buys you: the people who wrote the code are the
+                        people who answer, and what your office needs shapes what
+                        gets built next. What it costs you: there is no ticket
+                        queue, no on-call rotation and no second line behind us. If a
+                        committed response time or a named escalation contact is a
+                        procurement requirement, it has to be negotiated into an
+                        agreement &mdash; it cannot be read off a web page.
+                      </p>
+                      <ul className="mt-5 space-y-2.5">
+                        {SUPPORT.map((s) => (
+                          <li key={s} className="flex items-start gap-3">
+                            <span
+                              aria-hidden
+                              className="mt-[0.45rem] h-2 w-2 shrink-0 rounded-[3px] bg-accent"
+                            />
+                            <span className="text-[0.94rem] leading-relaxed text-text-secondary">
+                              {s}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ),
+                },
+                {
+                  key: "data",
+                  title: "Data, approvals and what does not work yet",
+                  blurb:
+                    "The entries a pilot decision actually turns on — every one of them carries its limit.",
+                  tally: [
+                    { label: `${HANDLING.length} areas` },
+                    {
+                      label: `${HANDLING.filter((h) => h.limit).length} limits`,
+                      tone: "bad",
+                    },
+                  ],
+                  children: (
+                    <>
+                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                        The parts an office and its security reviewer should hear
+                        from us before they hear from anyone else.{" "}
+                        <a
+                          href="/trust"
+                          className="text-accent-text underline underline-offset-4 hover:text-accent"
+                        >
+                          Security
+                        </a>{" "}
+                        carries the full list with its sources; these are the ones a
+                        pilot decision turns on.
+                      </p>
+                      <ul className="mt-5 grid gap-x-10 gap-y-6 lg:grid-cols-2">
+                        {HANDLING.map((h) => (
+                          <li key={h.t}>
+                            <h3 className="font-display text-[1.02rem] font-semibold tracking-tight text-text">
+                              {h.t}
+                            </h3>
+                            <p className="mt-2 text-[0.93rem] leading-relaxed text-text-secondary">
+                              {h.d}
+                            </p>
+                            {h.limit && (
+                              <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-[0.88rem] leading-relaxed text-text-muted">
+                                <span className="font-medium text-text-secondary">
+                                  Limit:{" "}
+                                </span>
+                                {h.limit}
+                              </p>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  ),
+                },
+                {
+                  key: "measures",
+                  title: "How success is measured",
+                  blurb:
+                    "Six targets we would accept being judged on, each countable from the record itself.",
+                  tally: [
+                    { label: `${MEASURES.length} targets` },
+                    { label: "none measured yet", tone: "warn" },
+                  ],
+                  children: (
+                    <>
+                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                        Every line below is a target, not a result. No pilot has
+                        run, nothing here has been measured, and any outcome number
+                        on this page would be invented. Each one is countable from
+                        the record itself, which means each one can fail visibly
+                        &mdash; that is the point. They would be agreed and written
+                        down before the term starts.
+                      </p>
+                      <ul className="mt-5 grid gap-4 sm:grid-cols-2">
+                        {MEASURES.map((m) => (
+                          <li
+                            key={m.t}
+                            className="rounded-xl border border-line bg-surface p-4"
+                          >
+                            <span className="inline-flex items-center rounded-lg border border-accent/25 bg-accent-subtle px-2 py-0.5 font-mono text-[0.62rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+                              Target
+                            </span>
+                            <h3 className="mt-2.5 text-[1rem] font-medium leading-snug text-text">
+                              {m.t}
+                            </h3>
+                            <p className="mt-1.5 text-[0.9rem] leading-relaxed text-text-secondary">
+                              {m.d}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                      <p className="mt-5 max-w-2xl text-[0.94rem] leading-relaxed text-text-muted">
+                        A measure that cannot be counted out of the record does not
+                        go on the list. If we miss one, you get the number rather
+                        than the narrative.
+                      </p>
+                    </>
+                  ),
+                },
+              ]}
+              footer={
+                <PanelNote>
+                  Nothing in these seven sections is a substitute for the written
+                  scope in step 01 of the sequence. A sentence on a marketing page
+                  is not a commitment, and we will not pretend otherwise.
+                </PanelNote>
+              }
+            />
+          </Reveal>
+        </Container>
+      </Section>
+
+      {/* 03 — the decision */}
+      <Section tone="canvas" backdrop="quiet">
         <Container>
           <Reveal>
-            <div className="relative overflow-hidden rounded-2xl bg-band p-8 text-inverse sm:p-12">
-              <div
-                aria-hidden
-                className="pointer-events-none absolute inset-0 [background:radial-gradient(60%_70%_at_85%_15%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_65%)]"
-              />
-              {/* angular accents */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute right-[8%] top-[18%] hidden h-6 w-6 rotate-[18deg] rounded-[6px] bg-brand-coral/70 sm:block"
-              />
-              <div
-                aria-hidden
-                className="pointer-events-none absolute right-[16%] bottom-[20%] hidden h-5 w-5 rotate-45 rounded-[4px] bg-brand-violet/70 sm:block"
-              />
+            <div className="relative isolate overflow-hidden rounded-[26px] bg-band p-7 text-inverse sm:p-10">
+              <Backdrop variant="signal" />
               <div className="relative">
                 <div className="max-w-2xl">
-                  <p className="label-mono text-grove-bright">09 · The decision</p>
-                  <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.4rem]">
+                  <p className="label-mono text-grove-bright">03 · The decision</p>
+                  <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.2rem]">
                     The next step is a{" "}
-                    <span className="text-grove-bright">conversation</span>, and
-                    then a document.
+                    <span className="text-grove-bright">conversation</span>, and then
+                    a document.
                   </h2>
-                  <p className="mt-6 text-lg leading-relaxed text-inverse/70">
-                    There is nothing to sign on this page and no button that
-                    enrols anyone. If the office decides not to run a pilot, the
-                    honest cost of having read this far is an hour.
+                  <p className="mt-5 text-[1.05rem] leading-relaxed text-inverse/70">
+                    There is nothing to sign on this page and no button that enrols
+                    anyone. If the office decides not to run a pilot, the honest cost
+                    of having read this far is an hour.
                   </p>
                 </div>
 
-                <ol className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                   {DECISION.map((d) => (
                     <li key={d.n}>
                       <span className="font-mono text-[0.78rem] text-grove-bright">
                         {d.n}
                       </span>
-                      <h3 className="mt-2 text-[1.05rem] font-medium text-inverse">
+                      <h3 className="mt-1.5 text-[1.02rem] font-medium text-inverse">
                         {d.t}
                       </h3>
-                      <p className="mt-1.5 text-[0.93rem] leading-relaxed text-inverse/70">
+                      <p className="mt-1.5 text-[0.92rem] leading-relaxed text-inverse/70">
                         {d.d}
                       </p>
                     </li>
                   ))}
                 </ol>
 
-                <div className="mt-10 flex flex-wrap items-center gap-4">
+                <div className="mt-8 flex flex-wrap items-center gap-4">
                   <ContactSales size="lg" arrow />
                   <a
                     href={`mailto:${site.email}?subject=Tenure%20pilot`}
@@ -875,7 +811,7 @@ export default function PilotPage() {
             </div>
           </Reveal>
         </Container>
-      </section>
+      </Section>
 
       <CtaBand />
     </>

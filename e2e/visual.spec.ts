@@ -188,7 +188,10 @@ const HOME_COMPONENTS: { name: string; find: (page: Page) => Locator }[] = [
   },
   {
     name: "home-faq",
-    find: (page) => sectionByHeading(page, 2, /^FAQ$/),
+    // The heading was the bare word "FAQ", set larger than every section heading
+    // on the page — the loudest type on the home page was its least informative
+    // word. It now says what the section is.
+    find: (page) => sectionByHeading(page, 2, /questions we get asked first/i),
   },
   {
     name: "home-footer",
@@ -215,16 +218,18 @@ test("the contact surface matches its baseline", async ({ page }) => {
   // The deepest element that holds both halves of the surface: the scheduler
   // column and the email card. Deepest rather than first, so we frame the grid
   // itself and not the page container that also happens to contain both.
-  const surface = page
-    .locator("main div")
-    .filter({ has: page.getByRole("heading", { name: "Book a walkthrough", exact: true }) })
-    .filter({ has: page.getByRole("heading", { name: "Or email us", exact: true }) })
-    .last();
+  // The whole conversion surface: the first-party request composer on the left
+  // and the email fallback on the right. The old locator framed a grid defined by
+  // two headings that no longer exist — the Calendly embed it wrapped has been
+  // replaced by components/site/WalkthroughRequest.tsx.
+  const surface = page.getByRole("main").locator("div.grid").first();
 
-  // The baseline is of the *idle* scheduler. If the third-party embed had
-  // already been requested, the shot would be of a different surface entirely.
-  await expect(page.getByRole("button", { name: "Or pick a time here" })).toBeVisible();
-  await expect(page.locator("#scheduler-embed")).toBeHidden();
+  // The baseline is of the surface at REST, with the dialog closed. If the
+  // composer were already open the shot would be of a different thing entirely,
+  // and the point of this baseline — that the page reads correctly before any
+  // interaction — would be lost.
+  await expect(page.getByRole("button", { name: "Request a walkthrough" })).toBeVisible();
+  await expect(page.getByRole("dialog")).toBeHidden();
 
   await shoot(surface, "contact-surface");
 });

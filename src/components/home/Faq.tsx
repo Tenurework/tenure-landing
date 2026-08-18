@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Ribbons } from "@/components/visuals/Ribbons";
-import { Container } from "@/components/ui/layout";
+import { Container, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { ContactSalesLink } from "@/components/ui/ContactSales";
@@ -54,13 +54,13 @@ const ITEMS: { q: string; a: ReactNode }[] = [
   },
   {
     q: "What does it cost?",
-    a: "Pricing is per portfolio, not per club: one budget line for every organization an office stewards. The Fall 2026 pilot with Simon's Office of Student Engagement is planned, not contracted.",
+    a: "Pricing is per portfolio, not per organization: one budget line covers every organization a body stewards, whether that is a university office, a national association or a nonprofit with regional chapters. A single organization is priced on its own. Nothing is published as a figure yet — the planned Fall 2026 pilot is free for its term, and anything beyond it would be a written agreement rather than an update to a page.",
   },
 ];
 
 export function Faq() {
   return (
-    <section className="relative overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
+    <Section tone="subtle" backdrop="quiet">
       {/* vibrant flowing ribbons cutting in from the top-right (no background) */}
       <div
         aria-hidden
@@ -71,12 +71,15 @@ export function Faq() {
 
       <Container className="relative">
         <Reveal>
-          <h2 className="font-display text-[2.4rem] font-semibold leading-[1] tracking-[-0.035em] text-ink sm:text-[3rem]">
-            FAQ
+          {/* Was text-[3rem] — the single word "FAQ" was set larger than every
+              section heading on the page, so the loudest type on the home page
+              was its least informative word. */}
+          <h2 className="font-display text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
+            Questions we get asked first
           </h2>
         </Reveal>
 
-        <div className="mt-10 max-w-3xl border-t border-line/70 pt-8">
+        <div className="mt-7 max-w-3xl border-t border-line/70 pt-6">
           <div className="flex flex-col gap-3.5">
             {ITEMS.map((item, i) => (
               <Reveal as="div" key={item.q} delay={Math.min(i * 0.05, 0.3)}>
@@ -100,7 +103,7 @@ export function Faq() {
             ))}
           </div>
 
-          <p className="mt-8 text-ink-soft">
+          <p className="mt-6 text-ink-soft">
             Something we haven&rsquo;t answered?{" "}
             <ContactSalesLink className="font-medium text-grove underline-offset-4 transition-colors hover:text-grove-deep hover:underline">
               {site.ctaLabel}
@@ -109,6 +112,6 @@ export function Faq() {
           </p>
         </div>
       </Container>
-    </section>
+    </Section>
   );
 }

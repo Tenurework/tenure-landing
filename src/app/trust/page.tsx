@@ -1,5 +1,8 @@
-import { Container } from "@/components/ui/layout";
+import { Container, Section } from "@/components/ui/layout";
+import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
+import { Dossier, type DossierItem } from "@/components/ui/Dossier";
+import { Panel, PanelBar, PanelNote } from "@/components/ui/Panel";
 import { StatusBadge, STATUSES, type StatusKey } from "@/components/ui/StatusBadge";
 import { pageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
@@ -304,6 +307,36 @@ const GROUPS: Group[] = [
   },
 ];
 
+/**
+ * The summary-row tally for one group.
+ *
+ * A reviewer opening this page has one question first — "what here is NOT
+ * supported?" — and as a flat list of thirty controls the only way to answer it
+ * was to read all thirty. Counting the statuses onto the collapsed row answers it
+ * up front, and it costs nothing to keep accurate because it is derived from the
+ * same GROUPS data the controls render from rather than typed alongside it.
+ *
+ * "live" folds together `live` and `ci`: the distinction between shipped and
+ * shipped-with-a-test matters on the control itself, where the badge says which,
+ * and not in a one-word count.
+ */
+function tallyFor(group: Group) {
+  const n = (...keys: StatusKey[]) =>
+    group.controls.filter((c) => keys.includes(c.status)).length;
+
+  const shipped = n("live", "ci");
+  const roadmap = n("roadmap");
+  const missing = n("unsupported");
+  const validating = n("validating");
+
+  const out: { label: string; tone?: "quiet" | "good" | "warn" | "bad" }[] = [];
+  if (shipped) out.push({ label: `${shipped} live`, tone: "good" });
+  if (validating) out.push({ label: `${validating} validating`, tone: "quiet" });
+  if (roadmap) out.push({ label: `${roadmap} roadmap`, tone: "warn" });
+  if (missing) out.push({ label: `${missing} not supported`, tone: "bad" });
+  return out;
+}
+
 export default function TrustPage() {
   return (
     <>
@@ -313,68 +346,95 @@ export default function TrustPage() {
         intro="Tenure is an early-stage product run by two founders. The fastest way to lose an institution's trust is to blur what is shipped with what is planned, so this page separates them explicitly."
       />
 
-      <Container>
-        {/* Status vocabulary — defined once, up front. */}
-        <div className="border-b border-line py-12">
-          <h2 className="font-display text-xl font-semibold tracking-tight text-text">
-            How to read this page
-          </h2>
-          <dl className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-            {(Object.keys(STATUSES) as StatusKey[]).map((key) => (
-              <div key={key} className="flex items-start gap-3">
-                <dt className="pt-0.5">
-                  <StatusBadge status={key} />
-                </dt>
-                <dd className="text-[0.9rem] leading-relaxed text-text-secondary">
-                  {STATUSES[key].hint}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div className="pb-6">
-          {GROUPS.map((group) => (
-            <section key={group.heading} className="border-b border-line py-12">
-              <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
-                <div>
-                  <h2 className="font-display text-2xl font-semibold tracking-tight text-text">
-                    {group.heading}
-                  </h2>
-                  <p className="mt-3 leading-relaxed text-text-secondary">
-                    {group.blurb}
-                  </p>
+      <Section tone="canvas" backdrop="quiet" divide={false}>
+        <Container>
+          {/* Status vocabulary — defined once, up front. It is the key to the
+              whole page, so it stays expanded and above the dossier rather than
+              becoming one more thing to open. */}
+          <Panel>
+            <PanelBar
+              title="How to read this page"
+              meta="five words, used precisely, on every row below"
+            />
+            <dl className="grid gap-x-8 gap-y-3.5 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
+              {(Object.keys(STATUSES) as StatusKey[]).map((key) => (
+                <div key={key} className="flex items-start gap-3">
+                  <dt className="pt-0.5">
+                    <StatusBadge status={key} />
+                  </dt>
+                  <dd className="text-[0.88rem] leading-relaxed text-text-secondary">
+                    {STATUSES[key].hint}
+                  </dd>
                 </div>
+              ))}
+            </dl>
+            <PanelNote>
+              Every entry below is written from the deploying application&rsquo;s code,
+              not from an architecture document. Where the two disagree, the
+              deployed behaviour wins and the gap is stated as a limit rather than
+              left out.
+            </PanelNote>
+          </Panel>
 
-                <ul className="space-y-7">
-                  {group.controls.map((c) => (
-                    <li key={c.title}>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                        <h3 className="font-display text-[1.05rem] font-semibold tracking-tight text-text">
-                          {c.title}
-                        </h3>
-                        <StatusBadge status={c.status} />
-                      </div>
-                      <p className="mt-2.5 text-[0.95rem] leading-relaxed text-text-secondary">
-                        {c.body}
-                      </p>
-                      {c.limit && (
-                        <p className="mt-3 border-l-2 border-border-strong pl-4 text-[0.9rem] leading-relaxed text-text-muted">
-                          <span className="font-medium text-text-secondary">
-                            Limit:{" "}
-                          </span>
-                          {c.limit}
-                        </p>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-          ))}
-        </div>
+          {/*
+            Seven groups, thirty controls. As a flat list this was 8.9 desktop
+            viewports of continuous prose, and the thing a reviewer actually wants
+            — "which of these is not supported?" — could only be found by reading
+            all of it. Each group now carries its tally on the summary row, so the
+            shape of the answer is visible before anything is opened.
 
-        <div className="grid gap-8 py-14 sm:grid-cols-2">
+            Native <details>, deliberately: see the note in components/ui/Dossier.tsx.
+            Ctrl+F has to find "SOC 2" and "backup retention" inside a collapsed
+            section, and claims.spec.ts has to be able to audit every word of this
+            page — content held in React state that is not rendered would make the
+            ratchet pass by saying nothing at all.
+          */}
+          <Reveal delay={0.08} className="mt-6">
+            <Dossier
+              name="trust"
+              title="Controls, by area"
+              meta={`${GROUPS.reduce((n, g) => n + g.controls.length, 0)} controls across ${GROUPS.length} areas · open any one`}
+              items={GROUPS.map(
+                (group): DossierItem => ({
+                  key: group.heading,
+                  title: group.heading,
+                  blurb: group.blurb,
+                  tally: tallyFor(group),
+                  children: (
+                    <ul className="space-y-6">
+                      {group.controls.map((c) => (
+                        <li key={c.title}>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                            <h3 className="font-display text-[1.02rem] font-semibold tracking-tight text-text">
+                              {c.title}
+                            </h3>
+                            <StatusBadge status={c.status} />
+                          </div>
+                          <p className="mt-2 text-[0.94rem] leading-relaxed text-text-secondary">
+                            {c.body}
+                          </p>
+                          {c.limit && (
+                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-[0.89rem] leading-relaxed text-text-muted">
+                              <span className="font-medium text-text-secondary">
+                                Limit:{" "}
+                              </span>
+                              {c.limit}
+                            </p>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  ),
+                }),
+              )}
+            />
+          </Reveal>
+        </Container>
+      </Section>
+
+      <Section tone="subtle" backdrop="drafting">
+        <Container>
+        <div className="grid gap-8 sm:grid-cols-2">
           <div>
             <h2 className="font-display text-xl font-semibold tracking-tight text-text">
               Security issues, in both directions
@@ -451,7 +511,8 @@ export default function TrustPage() {
             </p>
           </div>
         </div>
-      </Container>
+        </Container>
+      </Section>
     </>
   );
 }

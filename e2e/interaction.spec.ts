@@ -246,12 +246,11 @@ test.describe("conversion CTA", () => {
       ).toEqual([]);
 
       for (const cta of ctas) {
-        // /contact carries one extra CTA — the scheduler's own plain anchor
-        // straight to the booking page, which is the whole point of that page.
-        const expected = route === "/contact" && cta.href !== "/contact"
-          ? site.calendlyUrl
-          : "/contact";
-        expect(cta.href, `${route}: CTA "${cta.text}" points at ${cta.href}`).toBe(expected);
+        // Every control carrying site.ctaLabel is a link to /contact, on every
+        // route including /contact itself. The scheduler's outbound anchor used to
+        // be the one exception; it now reads "Open our calendar", so it is not a
+        // CTA by this test's definition and needs no exemption.
+        expect(cta.href, `${route}: CTA "${cta.text}" points at ${cta.href}`).toBe("/contact");
       }
     }
   });
@@ -261,8 +260,11 @@ test.describe("conversion CTA", () => {
     await hydrated(page);
     await page.getByRole("link", { name: site.ctaLabel }).first().click();
     await expect(page).toHaveURL(/\/contact$/);
-    // The destination is the real scheduling page, not just a matching URL.
-    await expect(page.getByRole("button", { name: "Or pick a time here" })).toBeVisible();
+    // The destination is the real conversion surface, not just a matching URL —
+    // and what opens there is Tenure's own composer, not a third party's widget.
+    await expect(
+      page.getByRole("button", { name: "Request a walkthrough" }),
+    ).toBeVisible();
   });
 
   test("the CTA works with JavaScript disabled", async ({ browser }) => {
@@ -310,103 +312,165 @@ test.describe("third-party loading", () => {
     expect(requested).toEqual([]);
   });
 
-  test("/contact loads calendly only once the disclosure is pressed", async ({ page }) => {
+  /**
+   * The inline Calendly embed is gone, so the assertion that used to prove it
+   * loaded ONLY after a click is now stronger and simpler: it must never load at
+   * all, on any route, no matter what the visitor does. /contact is exercised
+   * here specifically — including opening the request dialog, which is the
+   * interaction that replaced the embed — because it is the one route that even
+   * mentions Calendly.
+   */
+  test("/contact never loads calendly, not even when the composer is opened", async ({
+    page,
+  }) => {
     const requested: string[] = [];
     page.on("request", (r) => {
       if (CALENDLY.test(r.url())) requested.push(r.url());
     });
-    await page.route(CALENDLY, (route) => {
-      const url = route.request().url();
-      if (url.endsWith(".css")) {
-        return route.fulfill({ contentType: "text/css", body: "" });
-      }
-      return route.fulfill({
-        contentType: "application/javascript",
-        body: `window.Calendly={initInlineWidget:function(o){
-          var d=document.createElement("div");
-          d.setAttribute("data-stub-calendly",o.url);
-          d.textContent="stub calendar";
-          o.parentElement.appendChild(d);}};`,
-      });
-    });
+    await page.route(CALENDLY, (route) => route.abort());
 
     await page.goto("/contact");
     await page.waitForLoadState("networkidle");
     await hydrated(page);
-    expect(requested, "calendly loaded before the visitor asked for it").toEqual([]);
 
-    const disclosure = page.getByRole("button", { name: "Or pick a time here" });
-    await expect(disclosure).toHaveAttribute("aria-expanded", "false");
-    await disclosure.click();
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await page.getByLabel("Your name").fill("Alex Mercer");
+    await page.waitForLoadState("networkidle");
 
-    const embed = page.locator("#scheduler-embed [data-stub-calendly]");
-    await expect(embed).toBeVisible();
-    await expect(embed).toHaveAttribute(
-      "data-stub-calendly",
-      new RegExp(`^${site.calendlyUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\?`),
-    );
-    expect(requested.some((u) => u.endsWith("widget.js"))).toBe(true);
-
-    // A real disclosure: the control stays put, reports its state, and collapses.
-    const collapse = page.getByRole("button", { name: "Hide the calendar" });
-    await expect(collapse).toHaveAttribute("aria-expanded", "true");
-    await collapse.click();
-    await expect(page.locator("#scheduler-embed")).toBeHidden();
+    expect(
+      requested,
+      "the request composer is first-party and must reach no third party",
+    ).toEqual([]);
   });
 });
 
 /* ========================================================================== */
-/* 4. SCHEDULER FALLBACK                                                       */
+/* 4. THE FIRST-PARTY REQUEST COMPOSER                                         */
 /* ========================================================================== */
 
-test.describe("scheduler with calendly blocked", () => {
-  test.beforeEach(async ({ page }) => {
-    await page.route(CALENDLY, (route) => route.abort("blockedbyclient"));
-  });
-
-  test("the booking anchor and the email fallback both still work", async ({ page }) => {
+/**
+ * What replaced the Calendly embed.
+ *
+ * The tests below are the same three guarantees the scheduler had to satisfy,
+ * pointed at a surface this repository owns:
+ *
+ *   1. nothing third-party loads (above, in the third-party block);
+ *   2. the visitor is never stranded — the email address is a plain anchor
+ *      rendered from the start, and the outbound scheduler link is a plain
+ *      anchor too, so both survive JavaScript being off entirely;
+ *   3. the composer does what it says: it builds the request from what was
+ *      typed, and hands it over by mailto rather than pretending to submit it.
+ *
+ * (3) is the one genuinely new assertion, and it is the one that matters most:
+ * a form on a site with no backend is a lie unless the handoff is real, so the
+ * mailto href is checked to actually carry the typed values.
+ */
+test.describe("the walkthrough composer", () => {
+  test("it opens, traps focus, and closes back onto its trigger", async ({ page }) => {
     await page.goto("/contact");
     await hydrated(page);
 
-    // Scoped to <main>. This used to be `page.getByRole(...).last()`, which worked
-    // only because the footer's CTA said "Contact Sales" and therefore did not match
-    // site.ctaLabel. That was itself the defect — site.ts retired that phrase and the
-    // footer was overriding the decision — so once the footer started rendering
-    // site.ctaLabel too, `.last()` began selecting the footer's /contact link instead
-    // of this page's scheduler anchor. Scoping says what the test actually means.
-    const anchor = page
-      .getByRole("main")
-      .getByRole("link", { name: new RegExp(`^${site.ctaLabel}`) })
-      .last();
-    await expect(anchor).toBeVisible();
-    await expect(anchor).toHaveAttribute("href", site.calendlyUrl);
-    await expect(anchor).toHaveAttribute("target", "_blank");
-    await expect(anchor).toHaveAttribute("rel", /noopener/);
+    const trigger = page.getByRole("button", { name: "Request a walkthrough" });
+    await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
 
-    const email = page.getByRole("link", { name: site.email });
-    await expect(email.first()).toBeVisible();
-    await expect(email.first()).toHaveAttribute("href", `mailto:${site.email}`);
+    const dialog = page.getByRole("dialog");
+    await expect(dialog).toBeHidden();
+
+    await trigger.click();
+    await expect(dialog).toBeVisible();
+    // A native <dialog> opened with showModal() is modal by definition; this is
+    // what proves showModal() was used rather than the `open` attribute, which
+    // renders a non-modal dialog with no focus trap and no inert background.
+    await expect(dialog).toHaveJSProperty("open", true);
+    expect(
+      await dialog.evaluate((el) => el.matches(":modal")),
+      "the dialog must be modal — a non-modal one traps nothing",
+    ).toBe(true);
+
+    // Escape closes it and focus comes back to the control that opened it.
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
+    await expect(trigger, "focus must return to the trigger").toBeFocused();
   });
 
-  test("a blocked embed surfaces the failure instead of an empty box", async ({ page }) => {
+  test("what is typed reaches the mailto, so nothing is silently dropped", async ({
+    page,
+  }) => {
     await page.goto("/contact");
     await hydrated(page);
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
 
-    await page.getByRole("button", { name: "Or pick a time here" }).click();
+    await page.getByLabel("Your name").fill("Alex Mercer");
+    await page.getByLabel("Organization name").fill("Northside Community Trust");
+    await page.getByLabel("Kind of organization").selectOption("NGOs & nonprofits");
+    await page.getByRole("checkbox", { name: /handoff packet/i }).check();
 
-    const status = page.getByRole("status");
-    await expect(status).toBeVisible();
-    await expect(status).toContainText(/could not load/i);
-    await expect(status.getByRole("link", { name: site.email })).toHaveAttribute(
-      "href",
+    // The visitor is shown the request before sending it, and that preview must
+    // be the same text the mail client receives.
+    const preview = page.getByLabel("The composed request");
+    await expect(preview).toHaveValue(/Alex Mercer/);
+    await expect(preview).toHaveValue(/Northside Community Trust/);
+    await expect(preview).toHaveValue(/NGOs & nonprofits/);
+
+    const send = page.getByRole("link", { name: "Open in your email app" });
+    const href = await send.getAttribute("href");
+    expect(href, "the send control is a mailto to the address in site.ts").toContain(
       `mailto:${site.email}`,
     );
 
-    // No blank rectangle left behind, and the control is usable again.
-    await expect(page.locator("#scheduler-embed")).toBeHidden();
-    const disclosure = page.getByRole("button", { name: "Or pick a time here" });
-    await expect(disclosure).toBeEnabled();
-    await expect(disclosure).toHaveAttribute("aria-expanded", "false");
+    const url = new URL(href!);
+    const params = new URLSearchParams(url.search);
+    expect(params.get("subject")).toContain("Northside Community Trust");
+    const body = params.get("body") ?? "";
+    expect(body).toContain("Alex Mercer");
+    expect(body).toContain("NGOs & nonprofits");
+    expect(body, "the chosen topic travels with the request").toMatch(/handoff packet/i);
+  });
+
+  test("the email address and the scheduler link work with JavaScript disabled", async ({
+    browser,
+  }) => {
+    // The composer needs JavaScript — a <dialog> cannot open without it. So the
+    // two paths that never needed it are rendered BESIDE it rather than behind
+    // it, and this is the test that keeps them there.
+    const context = await browser.newContext({ javaScriptEnabled: false });
+    const page = await context.newPage();
+    try {
+      await page.goto("/contact");
+
+      const email = page.getByRole("main").getByRole("link", { name: site.email });
+      await expect(email.first()).toBeVisible();
+      await expect(email.first()).toHaveAttribute("href", `mailto:${site.email}`);
+
+      const scheduler = page
+        .getByRole("main")
+        .getByRole("link", { name: /Open our calendar/ });
+      await expect(scheduler).toBeVisible();
+      await expect(scheduler).toHaveAttribute("href", site.calendlyUrl);
+      await expect(scheduler).toHaveAttribute("target", "_blank");
+      await expect(scheduler).toHaveAttribute("rel", /noopener/);
+    } finally {
+      await context.close();
+    }
+  });
+
+  test("with calendly blocked, both fallbacks are still reachable", async ({ page }) => {
+    await page.route(CALENDLY, (route) => route.abort("blockedbyclient"));
+    await page.goto("/contact");
+    await hydrated(page);
+
+    // A blocked third party cannot affect a first-party dialog. That is the whole
+    // point of the change: the conversion path no longer has a dependency to break.
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Open in your email app" }),
+    ).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    const email = page.getByRole("main").getByRole("link", { name: site.email });
+    await expect(email.first()).toHaveAttribute("href", `mailto:${site.email}`);
   });
 });
 
@@ -698,11 +762,21 @@ test.describe("without JavaScript", () => {
         "the headline is transparent without JavaScript",
       ).toBe("1");
 
-      // Body copy from three separately-revealed regions: the hero paragraph,
-      // a metrics tile (driven from site.ts) and the FAQ. The reveal's hidden
-      // state is scoped to a `.js` class the inline script adds, so with no
-      // script runtime it must never apply.
-      const heroCopy = page.locator("h1 ~ [data-reveal] p").first();
+      // The hero's own lead is deliberately NOT a reveal — nothing in the first
+      // viewport animates in, so it paints with the document. This used to select
+      // `h1 ~ [data-reveal] p`, which silently depended on that not being true.
+      //
+      // What the test is actually for is the reveal mechanism: its hidden state
+      // is scoped to a `.js` class the inline script adds, so with no script
+      // runtime it must never apply and every revealed paragraph must be legible.
+      // So it now asserts against the first revealed paragraph anywhere in the
+      // document, whichever section that happens to be.
+      const revealed = page.locator("main [data-reveal] p").first();
+      await expect(revealed).toBeVisible();
+      expect((await revealed.innerText()).trim().length).toBeGreaterThan(80);
+
+      // And the hero lead is still there and still legible, by its own text.
+      const heroCopy = page.locator("h1 ~ p").first();
       await expect(heroCopy).toBeVisible();
       expect((await heroCopy.innerText()).trim().length).toBeGreaterThan(80);
 

@@ -14,7 +14,7 @@ export function CtaBand({
   sub?: string;
 }) {
   return (
-    <section className="relative overflow-hidden bg-band py-24 sm:py-28">
+    <section className="relative isolate overflow-hidden bg-band py-14 sm:py-18">
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_45%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_70%)]"
@@ -47,12 +47,12 @@ export function CtaBand({
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
-          <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-inverse/70">
+          <p className="mx-auto mt-5 max-w-xl text-[1.05rem] leading-relaxed text-inverse/70">
             {sub}
           </p>
         </Reveal>
         <Reveal delay={0.14}>
-          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-4">
             <ContactSales size="lg" arrow />
             <a
               href={`mailto:${site.email}`}

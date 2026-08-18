@@ -3,9 +3,8 @@
 import { LazyMotion, domAnimation, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import type { ReactNode } from "react";
-import { Container, Eyebrow } from "@/components/ui/layout";
+import { Container, Section, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { SectionContour } from "@/components/visuals/SectionContour";
 import { cn } from "@/lib/cn";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -181,8 +180,7 @@ export function ProductAtWork() {
     // motion.* — see the note in HeroShapes.tsx for why this file no longer imports
     // the full-feature `motion` proxy.
     <LazyMotion features={domAnimation} strict>
-    <section className="relative isolate overflow-hidden border-t border-line bg-sand py-24 sm:py-32">
-      <SectionContour place="cr" seed={6} className="text-grove/[0.06]" />
+    <Section tone="canvas" backdrop="quiet">
       <Container>
         <div className="max-w-2xl">
           <Reveal>
@@ -212,11 +210,11 @@ export function ProductAtWork() {
           </Reveal>
         </div>
 
-        <div className="mt-16 space-y-20 sm:space-y-28">
+        <div className="mt-10 space-y-12 sm:space-y-16">
           {FEATURES.map((f, i) => (
             <div
               key={f.eyebrow}
-              className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16"
+              className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12"
             >
               <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
                 <Eyebrow>{f.eyebrow}</Eyebrow>
@@ -232,7 +230,7 @@ export function ProductAtWork() {
           ))}
         </div>
       </Container>
-    </section>
+    </Section>
     </LazyMotion>
   );
 }
