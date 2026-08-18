@@ -62,7 +62,7 @@ export function Audiences() {
               items={TABS}
               active={active}
               onSelect={setActive}
-              className="w-full sm:w-auto"
+              className="max-w-full"
             />
           </div>
         </Reveal>

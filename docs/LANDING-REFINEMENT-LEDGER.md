@@ -515,6 +515,66 @@ fixed; all 42 affected baselines are regenerated and stable across two runs.
 
 ---
 
+## Phase 9 — Compaction pass, 2026-08-18
+
+Two commits: `31d709c` (structure and backdrops) and `568e06d` (the contact composer and the
+reference pages).
+
+### The problem, stated as a number
+
+The site measured **65.4 desktop viewport-heights** across eight routes — 13.5 on the home page,
+23.8 on a phone. Length was the symptom. The cause was that almost every section answered its
+heading with a **grid**: nine platform cards, four audience cards, three console cards, two
+problem cards, three integration lanes. A reader met three to nine arguments at once and
+finished none. Twenty sections also hard-coded `py-24 sm:py-32` — ~2,700px of padding on the
+home page alone.
+
+| Item | Status | Evidence |
+|---|---|---|
+| Every section reduced to one card, one thing in view | PASS | Rails/tabs inside a single `Panel` for the genuinely-many cases: 11 platform modules, 6 console sections, 4 sectors, 7 trust groups |
+| Vertical rhythm centralised | PASS | `SECTION`/`SECTION_TIGHT`/`SECTION_BAND` + `<Section>` in `ui/layout.tsx` replace 20 hard-coded declarations; `SectionHead` replaces 22 copy-pasted header blocks with 3 heading scales |
+| Composed backdrops per section | PASS | `visuals/Backdrop.tsx`: mesh + grid/dots/contour + Memphis figure + grain, five variants. Every layer an `aria-hidden` **sibling**, masked |
+| Memphis ornament, token-filled | PASS | `visuals/MemphisArt.tsx`, ~14 nodes per variant, every fill a `--chart-*` token so dark mode repaints without a `dark:` variant |
+| Data visualisations | PASS | `visuals/Charts.tsx` — MemoryCurve, Share, TierNest, GateRail. One axis per chart, fixed categorical order, labels in text tokens |
+| Total site length | PASS | **65.4 → 45.0** desktop screens. `/trust` 8.9 → 3.6, `/pilot` 14.4 → 5.0, `/` 13.5 → 10.5. Measured by `scripts/measure.mjs` |
+| Reference pages compacted without cutting a word | PASS | `ui/Dossier.tsx` — native `<details>`, not a JS rail. Content in unrendered React state cannot be audited, and `claims.spec.ts` must still see /trust say "separation of duties", "hash chain", "SOC 2" with their disclaimers |
+| Top ribbon renamed | PASS | Product/Pilot/Trust/Story → **Platform/Pilot/Security/About**. URLs, titles and canonicals unchanged; `nav.spec.ts` derives from `site.nav` |
+| Calendly window replaced with first-party UI | PASS | `site/WalkthroughRequest.tsx` — native `<dialog>`, composes the request in-browser, hands off by `mailto` or clipboard. `Scheduler.tsx` and `lib/calendly.ts` deleted |
+| Connector story de-duplicated | PASS | `Integrations` + `ToolLogos` were near-verbatim copies on two routes, each listing `.xlsx` twice. One `ConnectorMatrix` on /product, naming Slack/Drive/Teams/Box in the sentence that denies them |
+| Cross-industry narrative | PASS | Hero, Problem, FAQ, /privacy, /terms and metadata no longer university-only; `site.audiences` covers universities, NGOs, SMEs, associations, surfaced on the **home** page |
+| Visual baselines regenerated | PASS | All 96, across desktop/mobile × light/dark |
+| Full suite green | PASS | **1120 tests**, four projects. Plus lint, typecheck, 72/72 contrast pairs, 112 links |
+
+### Removed as duplicates, not as cuts
+
+`TrustStrip`, `MockDisclosure`, `Integrations`, `ToolLogos`, `WhoFor`, `HeroShapes`,
+`HeroFloatingCards`, `Scheduler`, `lib/calendly.ts`, `SupporterStrip` (already dead), and the
+`.tn-float`/`.tn-rise` CSS once its last consumer went. `Handoff`'s "Shadow access" h3 and
+`AiOnboarding`'s h2 were **the same sentence, word for word**, over a lifecycle `SeatMechanism`
+was already animating.
+
+### Defects the gates caught that review would not have
+
+| Defect | Found by | Why it mattered |
+|---|---|---|
+| **Eleven dropped spaces** across four routes — `<span>seat</span>rather`, `Student Engagement<!-- -->—`, six `<strong>…</strong>—` in /privacy | Rendered-HTML sweep | One cause, not eleven typos: SWC drops the leading space of a multi-line JSX text node following an element. **Third occurrence in this repo**; the previous two fixes were one-offs. `claims.spec.ts` now scans served markup — by `innerText` the two words are one word |
+| `well` utility at 4.40:1 | axe + the independent contrast walk | A hand-mixed `color-mix()` surface is outside `check-contrast.mjs`, which checks token **pairs**. A new surface must be an existing token or be added to `THEME_PAIRS` |
+| `role="group"` on a `<ul>` | axe | Strips the list role and orphans every `<li>` — 11 serious violations on the home page |
+| Dossier titles were `<span>` | `expectSaneHeadings` | /trust went h1 → h3, breaking the way a reviewer navigates a long reference document |
+| Eight vendor chips under one badge | `claims.spec.ts` | The matcher excuses by line proximity, so the badge fell out of range by the third name. Right twice over — a chip row **is** a logo wall, which is what C-029 exists to prevent |
+| `<label>` wrapping a `<select>` | Playwright strict mode | The control's own value joined its accessible name: "Kind of organization Choose one…" |
+| Metric tiles misaligned | Screenshot review | Only 2 of 4 carry a note chip, and it sat above the label, so half the captions in a four-across row started 34px lower |
+| `HeroFloatingCards` over the ledger | Screenshot review | At 1440px "Membership dues, 28 paid" rendered as "mbership dues". Removed rather than narrowed: absolutely positioned over a fluid surface, any width that clears at one viewport collides at another |
+| Tab labels wrapping to 3 lines at 390px | Screenshot review | `flex-wrap` + `flex-1`; now a single `whitespace-nowrap` scrolling row |
+
+### Known, accepted
+
+Playwright occasionally trips one `page.evaluate` timeout on a full four-project run: `settle()`
+scrolls the whole document and the a11y tests carry a 30s budget. It is pre-existing, it did not
+reproduce in isolation on either occurrence, and CI sets `retries: 1`.
+
+---
+
 ## Blocked on something engineering cannot resolve
 
 | ID | Item | Owner | Needs |

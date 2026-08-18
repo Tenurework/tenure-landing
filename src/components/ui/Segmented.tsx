@@ -49,11 +49,26 @@ export function Segmented({
   className?: string;
 }) {
   return (
+    /*
+      ONE ROW THAT SCROLLS, never a wrapping one.
+
+      This was `flex-wrap` with `flex-1 sm:flex-none`, and on a 390px viewport the
+      connector matrix's four tabs stretched to fill and then broke their own
+      labels: "What comes in" and "What goes out" each wrapped to three lines, at
+      two different heights, on two rows. A control that changes shape depending
+      on how long its labels are is not a control, it is a paragraph with borders.
+
+      `whitespace-nowrap` plus horizontal overflow keeps every tab one line at
+      every width. The overflow container is also what exempts these from the
+      320px reflow check — a11y.spec.ts skips elements inside an `overflow-x`
+      ancestor, because a pane that scrolls sideways on purpose is not a
+      page-level reflow bug.
+    */
     <div
       role="group"
       aria-label={label}
       className={cn(
-        "flex flex-wrap items-center gap-1 rounded-2xl border border-line bg-paper/70 p-1",
+        "flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/70 p-1",
         className,
       )}
     >
@@ -66,7 +81,7 @@ export function Segmented({
             onClick={() => onSelect(item.key)}
             aria-pressed={on}
             className={cn(
-              "inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-3.5 text-[0.86rem] transition-colors duration-200 sm:flex-none",
+              "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-[0.86rem] transition-colors duration-200",
               on
                 ? "bg-cloud font-medium text-ink shadow-[var(--shadow-sm)]"
                 : "text-ink-soft hover:bg-cloud/60 hover:text-ink",
@@ -100,25 +115,47 @@ export function RailList({
   className?: string;
 }) {
   return (
-    /* No role="group" here. Overriding a <ul> with role=group removes its list
-       role, which orphans every <li> inside it — axe reported one serious
-       "listitem" violation per row, eleven of them on the home page alone. A
-       named list is already the right semantics for a rail, and each button
-       reports its own state through aria-pressed, so the role bought nothing. */
-    <ul aria-label={label} className={cn("space-y-0.5", className)}>
+    /*
+      No role="group" here. Overriding a <ul> with role=group removes its list
+      role, which orphans every <li> inside it — axe reported one serious
+      "listitem" violation per row, eleven of them on the home page alone. A
+      named list is already the right semantics for a rail, and each button
+      reports its own state through aria-pressed, so the role bought nothing.
+
+      HORIZONTAL BELOW `md`, VERTICAL ABOVE IT. Stacked, eleven module names ran
+      about 480px — so on a phone the reader scrolled a full screen of labels
+      before reaching the one module's detail that the section exists to show,
+      which inverts the whole point of the rewrite. As a scrolling chip row the
+      same eleven names cost one line and the content starts immediately.
+
+      The overflow container is also what keeps this out of the 320px reflow
+      check: `a11y.spec.ts` exempts elements inside an `overflow-x` ancestor,
+      because a pane that scrolls sideways on purpose is not a page-level
+      reflow bug.
+    */
+    <ul
+      aria-label={label}
+      className={cn(
+        "flex gap-1 overflow-x-auto pb-1 md:block md:space-y-0.5 md:overflow-visible md:pb-0",
+        className,
+      )}
+    >
       {items.map((item) => {
         const on = item.key === active;
         return (
-          <li key={item.key}>
+          <li key={item.key} className="shrink-0 md:shrink">
             <button
               type="button"
               onClick={() => onSelect(item.key)}
               aria-pressed={on}
               className={cn(
-                "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2.5 text-left text-[0.85rem] transition-colors duration-200",
+                "flex min-h-11 w-full items-center gap-2.5 whitespace-nowrap rounded-lg px-2.5 py-2.5 text-left text-[0.85rem] transition-colors duration-200",
                 on
                   ? "bg-cloud font-medium text-ink shadow-[var(--shadow-sm)]"
                   : "text-ink-soft hover:bg-cloud/60 hover:text-ink",
+                // Chips need their own boundary when they sit in a row; in the
+                // vertical rail the surface change alone is enough.
+                on && "border border-line md:border-0",
               )}
             >
               {item.icon && (
@@ -132,11 +169,13 @@ export function RailList({
                   {item.hint}
                 </span>
               ) : (
-                /* The marker, so "selected" is not carried by colour alone. */
+                /* The marker, so "selected" is not carried by colour alone.
+                   Hidden in the chip row, where the border and fill already
+                   carry it and a trailing dot would just widen every chip. */
                 <span
                   aria-hidden
                   className={cn(
-                    "h-1.5 w-1.5 shrink-0 rounded-full transition-colors",
+                    "hidden h-1.5 w-1.5 shrink-0 rounded-full transition-colors md:block",
                     on ? "bg-grove" : "bg-transparent",
                   )}
                 />
