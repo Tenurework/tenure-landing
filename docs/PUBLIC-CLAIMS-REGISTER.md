@@ -101,7 +101,7 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 - infrastructure/terraform (ECS, RDS, S3, CloudFront — AWS US regions)
 - apps/web/src/lib/ai.ts:35 (Anthropic)
-- tenure-landing: Vercel response headers; src/lib/calendly.ts (Calendly, /contact only)
+- tenure-landing: Vercel response headers; src/app/contact/page.tsx (Calendly reached only by a plain outbound link, /contact only)
 
 **Qualification that must travel with this claim:** This list must stay complete. Adding anything that touches organizational records requires updating /privacy and notifying active organizations before it starts processing.
 
