@@ -16,4 +16,7 @@ Retired: students-hall.jpg and team-meeting.jpg were near-duplicate frames from
 the same two shoots as the Unsplash pair above, so all four audience cards read
 as one photoshoot. Replaced by the two Pexels images.
 
-Unused decorative textures: grass-soft.jpg, green-leaves.jpg
+Deleted 2026-08-19: grass-soft.jpg and green-leaves.jpg (1.27 MB). They were
+recorded here as unused decorative textures and referenced by nothing in src/.
+Everything under public/ is deployed whether or not it is referenced, so an
+unused image is bytes on the origin rather than a harmless leftover.

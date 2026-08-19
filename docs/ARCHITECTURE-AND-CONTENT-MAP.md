@@ -60,13 +60,13 @@ names scan faster than nine cards) while only one item is being read.
 | Route | Before | After |
 |---|---|---|
 | `/` | 13.5 | 10.5 |
-| `/product` | 9.2 | 8.3 |
+| `/product` | 9.2 | 7.7 |
 | `/pilot` | 14.4 | 5.0 |
 | `/trust` | 8.9 | 3.6 |
 | `/story` | 4.9 | 4.2 |
 | `/privacy` | 5.9 | 5.4 |
 | `/terms` | 6.3 | 5.7 |
-| **Total** | **65.4** | **45.0** |
+| **Total** | **65.4** | **44.4** |
 
 Measured by `scripts/measure.mjs`, which reports viewport-heights, word count and section count
 per route at both desktop and mobile widths.
@@ -81,7 +81,7 @@ are collapsed instead — see `Dossier` below.
 |---|---|
 | `TrustStrip` | A full bordered band for two logos and four chips. Now the hero's closing rail — same words, one less section boundary. |
 | `MockDisclosure` | A standalone strip for one sentence, which now closes the hero rail next to the pilot hedge it belongs with. |
-| `Integrations` + `ToolLogos` | Near-verbatim copies of each other on two routes — same three headings, same sentences, and `.xlsx` listed twice inside each. Replaced by one `ConnectorMatrix`. |
+| `Integrations` + `ToolLogos` | Near-verbatim copies of each other on two routes — same three headings, same sentences, and `.xlsx` listed twice inside each. Replaced by one `ConnectorMatrix`, itself later rebuilt on `Dossier`: as a flat nine-row table behind a tab filter it was 1,698px, the tallest section on the site, showing nine rows at once — the nine-card platform grid again wearing a table. |
 | `WhoFor` | Four audience cards, three routes deep on `/product` — the only place saying Tenure serves nonprofits, SMEs and associations, where none of them would look. Now `Audiences` on the home page. |
 | `Handoff`'s "Shadow access" block | Its h3 and `AiOnboarding`'s h2 were the **same sentence, word for word**, over a lifecycle `SeatMechanism` was already animating. Stated once, in the seat panel. |
 | `HeroShapes` | Four floating squares in a client component behind `hidden lg:block`. The Memphis figure in `Backdrop`'s aurora variant does the job with real composition. |
