@@ -50,13 +50,35 @@ const label = (p: string) => (p === "/" ? "/ (home)" : p);
 async function open(page: Page, path: string) {
   await page.goto(path, { waitUntil: "load" });
 
+  /**
+   * SMOOTH SCROLLING OFF **BEFORE** THE LOOP BELOW, NOT AFTER IT.
+   *
+   * globals.css sets `html { scroll-behavior: smooth }`. The loop that follows
+   * calls `window.scrollBy` on every poll, and with smooth scrolling on, each
+   * call starts an animation that the next poll interrupts and restarts — so the
+   * page advances a few pixels per poll instead of a viewport, and the loop
+   * crawls. Measured on the home page at 320px: **28,549ms with smooth on, 30ms
+   * with it off.** Same page, same loop, same assertion.
+   *
+   * `settle()` already sets this, but it runs after the loop, which is exactly
+   * too late. The cost was invisible while some reveal happened to sit high on
+   * the page — the crawl is linear in distance, so a reveal ~900px down took
+   * ~13s and still passed. When the hero's last `Reveal` was removed (nothing
+   * above the fold animates in, deliberately), the first one moved to 1,969px
+   * and the same latent defect became a 28.5s test against a 30s budget: green
+   * on a fast machine, red on a two-core CI runner.
+   *
+   * This is a determinism fix, not a masking one. Nothing under test scrolls
+   * itself; the smooth behaviour is chrome, and every assertion below is about
+   * layout and colour.
+   */
+  await page.addStyleTag({ content: "html{scroll-behavior:auto!important}" });
+
   // Proof the observer is live. It used to simply wait for the first reveal,
   // which assumed one sat in the opening viewport — true until the hero's
   // above-the-fold reveals were removed so its copy and CTAs paint with the
-  // document. At 320px the first remaining reveal is ~900px down, so nothing
-  // ever intersected and this waited forever. It now nudges the page down until
-  // something reveals, which proves the same thing without assuming where the
-  // first reveal happens to live.
+  // document. It now nudges the page down until something reveals, which proves
+  // the same thing without assuming where the first reveal happens to live.
   await page.waitForFunction(
     () => {
       const all = document.querySelectorAll("[data-reveal]");

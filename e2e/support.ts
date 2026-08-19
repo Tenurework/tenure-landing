@@ -55,6 +55,23 @@ export async function settle(page: Page) {
  * scroll position to the top so callers see the page as a visitor would.
  */
 export async function waitForHydration(page: Page) {
+  /**
+   * Smooth scrolling off first — the same defect, and the same fix, as in
+   * `a11y.spec.ts`'s `open()`, where it is documented at length.
+   *
+   * The loop below calls `window.scrollBy` per poll. With
+   * `html { scroll-behavior: smooth }` each call starts an animation the next
+   * poll interrupts, so the page crawls: 28,549ms to reach a reveal 1,969px
+   * down, against 30ms with it off.
+   *
+   * `.catch()` because this helper is also called on pages that may already
+   * have navigated away under it; a style tag that cannot attach must not fail
+   * a hydration wait.
+   */
+  await page
+    .addStyleTag({ content: "html{scroll-behavior:auto!important}" })
+    .catch(() => {});
+
   await page.waitForFunction(
     () => {
       const all = document.querySelectorAll("[data-reveal]");
