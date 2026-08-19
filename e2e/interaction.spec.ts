@@ -232,6 +232,7 @@ test.describe("conversion CTA", () => {
             tag: el.tagName,
             href: el.getAttribute("href"),
             text: (el.textContent ?? "").replace(/\s+/g, " ").trim(),
+            inFooter: !!el.closest("footer"),
           }))
           .filter((c) => c.text.includes(label));
       }, site.ctaLabel);
@@ -246,11 +247,32 @@ test.describe("conversion CTA", () => {
       ).toEqual([]);
 
       for (const cta of ctas) {
-        // Every control carrying site.ctaLabel is a link to /contact, on every
-        // route including /contact itself. The scheduler's outbound anchor used to
-        // be the one exception; it now reads "Open our calendar", so it is not a
-        // CTA by this test's definition and needs no exemption.
-        expect(cta.href, `${route}: CTA "${cta.text}" points at ${cta.href}`).toBe("/contact");
+        /*
+          Every control carrying site.ctaLabel is a real anchor — that is the
+          guarantee this test exists for, after a <button> calling a third-party
+          popup API silently did nothing in production.
+          ON /contact it points at "#request" instead of "/contact". Linking the
+          page to itself made the site's single conversion button inert in its
+          most prominent slot: measured at scrollY=900, clicking it changed
+          neither the URL nor the scroll position. It is an in-page jump to the
+          request composer there, which is still an anchor and still works with
+          JavaScript off.
+        */
+        /*
+          On /contact the HEADER CTA is an in-page jump to the composer. Linking
+          the page to itself made the site's single conversion button inert in its
+          most prominent slot: measured at scrollY=900, clicking it changed
+          neither the URL nor the scroll position.
+
+          The FOOTER keeps /contact even on /contact. A footer is a site map, and
+          a site map listing the page you are on is correct — that is not a dead
+          control in the way a conversion button is. Making it route-aware would
+          mean pushing usePathname, and a client boundary, onto a component
+          rendered at every CTA on the site in order to change one chrome link.
+        */
+        const expected =
+          route === "/contact" && !cta.inFooter ? "#request" : "/contact";
+        expect(cta.href, `${route}: CTA "${cta.text}" points at ${cta.href}`).toBe(expected);
       }
     }
   });

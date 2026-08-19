@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { ContactSales } from "@/components/ui/ContactSales";
+import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
@@ -145,7 +146,16 @@ export function SiteHeader() {
 
         <div className="hidden min-w-0 items-center gap-3 lg:flex">
           <ThemeToggle />
-          <ContactSales size="sm" arrow />
+          {/* On /contact the CTA would otherwise link to the page it is already
+              on — a dead control in the most prominent slot on the site. There it
+              becomes an in-page jump to the request composer instead. */}
+          {pathname === "/contact" ? (
+            <Button href="#request" size="sm" arrow>
+              {site.ctaLabel}
+            </Button>
+          ) : (
+            <ContactSales size="sm" arrow />
+          )}
         </div>
 
         <button
@@ -185,22 +195,57 @@ export function SiteHeader() {
       {open && (
         <div id="mobile-menu" ref={panelRef} className="lg:hidden">
           <nav aria-label="Main" className="flex flex-col gap-1 px-5 pb-6 pt-2">
-            {site.nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={pathname === item.href ? "page" : undefined}
-                onClick={() => setOpen(false)}
-                className="rounded-md px-2 py-3 text-lg text-ink/90 hover:text-ink"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {site.nav.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  onClick={() => setOpen(false)}
+                  /*
+                    The current page is MARKED here, not only announced.
+
+                    This branch rendered one fixed className for every link, so
+                    the four rows were byte-identical in the open panel: the
+                    desktop ribbon shows where you are with an underline, and the
+                    phone panel showed nothing at all. `aria-current` was already
+                    set — so a screen-reader user was told the current page and a
+                    sighted phone user was not, which is the wrong way round for a
+                    marker that costs one class.
+
+                    The accent bar carries it rather than colour alone, so it
+                    survives greyscale and forced-colors.
+                  */
+                  className={cn(
+                    "flex items-center gap-3 rounded-md py-3 pl-2 pr-2 text-lg transition-colors",
+                    active
+                      ? "bg-grove-soft/50 font-medium text-ink"
+                      : "text-ink/90 hover:text-ink",
+                  )}
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "h-5 w-0.5 rounded-full transition-colors",
+                      active ? "bg-grove" : "bg-transparent",
+                    )}
+                  />
+                  {item.label}
+                </Link>
+              );
+            })}
             <div className="mt-3 flex items-center justify-between gap-3 px-2">
               <ThemeToggle />
             </div>
             <div className="mt-3 px-2">
-              <ContactSales size="md" arrow className="w-full" />
+              {pathname === "/contact" ? (
+                <Button href="#request" size="md" arrow className="w-full">
+                  {site.ctaLabel}
+                </Button>
+              ) : (
+                <ContactSales size="md" arrow className="w-full" />
+              )}
             </div>
           </nav>
         </div>

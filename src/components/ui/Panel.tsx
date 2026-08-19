@@ -26,14 +26,20 @@ import { cn } from "@/lib/cn";
  */
 
 export function Panel({
+  id,
   className,
   children,
 }: {
+  /** Anchor target, for in-page links (see /contact, where the header CTA
+      jumps to the composer rather than linking to the page it is already on). */
+  id?: string;
   className?: string;
   children: ReactNode;
 }) {
   return (
-    <div className={cn("panel overflow-hidden", className)}>{children}</div>
+    <div id={id} className={cn("panel overflow-hidden", className)}>
+      {children}
+    </div>
   );
 }
 

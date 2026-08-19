@@ -31,8 +31,10 @@ export default function PrivacyPage() {
 
           <h2>Overview</h2>
           <p>
-            Tenure is an early-stage ERP for organizations where leadership turns over faster than knowledge does, starting with university administrations and
-            student organizations. The platform holds an organization&rsquo;s
+            Tenure is an early-stage system of record for organizations where
+            leadership turns over faster than knowledge does &mdash; universities,
+            nonprofits and NGOs, small and mid-sized businesses, associations and
+            chapters. The platform holds an organization&rsquo;s
             operations and institutional memory, finance, events, members,
             documents, and the decisions behind them, so the record stays with
             the seat when the people in it rotate. This page explains, in plain
@@ -136,7 +138,7 @@ export default function PrivacyPage() {
               {/*
                 This row previously disclosed one of three outbound flows. The
                 deploying app calls api.anthropic.com from three places: answer
-                synthesis, document summarisation (which reads the file out of S3
+                synthesis, document summarization (which reads the file out of S3
                 and sends up to 24,000 characters of its text), and Draft Assist
                 (which sends the instruction the user typed). A reader of "record
                 text needed to answer a question" would not expect the contents of
@@ -188,7 +190,7 @@ export default function PrivacyPage() {
             whoever inherits the role.
           </p>
 
-          <h2>Student data</h2>
+          <h2>Sensitive records</h2>
           <p>
             Access is scoped to the seat a person holds, and the institution or
             organization owns its records &mdash; not Tenure, and not the
@@ -203,7 +205,7 @@ export default function PrivacyPage() {
             fit your institution. That is a statement of intent, not a compliance
             assertion: no FERPA-specific control is implemented in the product,
             and this page has not been reviewed by counsel. The{" "}
-            <a href="/trust">trust page</a> lists what is and is not built.
+            <a href="/trust">security page</a> lists what is and is not built.
           </p>
 
           <h2>Security</h2>
@@ -231,14 +233,14 @@ export default function PrivacyPage() {
           <ul>
             <li>
               {/*
-                There is no anonymisation or user-deletion routine in the deploying
+                There is no anonymization or user-deletion routine in the deploying
                 app — a repo-wide search for one returns only integration-test
                 fixture cleanup. Stating it as an available control implied a
                 self-service or automated path that does not exist.
               */}
               <strong>Your personal account details</strong>{" "}
               &mdash; name, email,
-              profile &mdash; can be removed or anonymised on request. There is no
+              profile &mdash; can be removed or anonymized on request. There is no
               self-service control for this and no automated routine behind it: we
               do it by hand, and assignments and audit rows that reference you are
               kept.
@@ -266,7 +268,7 @@ export default function PrivacyPage() {
             work with your organization&rsquo;s leadership on it &mdash; but we
             will not quietly delete institutional history at the request of one
             person who is leaving. The{" "}
-            <a href="/trust">trust page</a>{" "}
+            <a href="/trust">security page</a>{" "}
             states the same limit from the
             product&rsquo;s side.
           </p>

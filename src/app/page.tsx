@@ -67,12 +67,12 @@ export default function HomePage() {
     <>
       <Hero />
       <Problem />
+      <Audiences />
       <SeatMechanism />
       <Platform />
       <Handoff />
       <AiOnboarding />
       <OfficeConsole />
-      <Audiences />
       <MetricsBand />
       <Faq />
       <CtaBand />

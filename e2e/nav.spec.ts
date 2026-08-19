@@ -172,7 +172,10 @@ test("the 404 page links back to the home page", async ({ page }) => {
 
 test("the 404 page links to the product page", async ({ page }) => {
   await page.goto(UNKNOWN);
-  await page.getByRole("link", { name: "See the product" }).click();
+  // "See the platform", not "See the product": every nav, footer and in-body
+  // link to this destination says Platform since the ribbon was renamed, and the
+  // 404 was the last place still calling it something else.
+  await page.getByRole("link", { name: "See the platform" }).click();
   await expect(page).toHaveURL(/\/product$/);
   await expect(page.locator("h1")).toHaveText(H1["/product"]);
 });

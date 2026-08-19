@@ -64,7 +64,7 @@ export function Faq() {
       {/* vibrant flowing ribbons cutting in from the top-right (no background) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-12 -top-24 h-[82%] w-[60%] [mask-image:linear-gradient(250deg,black,black_42%,transparent_82%)]"
+        className="pointer-events-none absolute -right-12 -top-24 hidden h-[82%] w-[60%] sm:block [mask-image:linear-gradient(250deg,black,black_42%,transparent_82%)]"
       >
         <Ribbons className="h-full w-full" />
       </div>

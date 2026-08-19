@@ -219,7 +219,8 @@ export default function TermsPage() {
           </p>
           <ul>
             <li>
-              <strong>Governing law and venue.</strong> These terms are governed
+              <strong>Governing law and venue.</strong>{" "}
+              These terms are governed
               by the laws of the State of New York, without regard to its
               conflict-of-laws rules, and the state and federal courts located in
               Monroe County, New York have exclusive jurisdiction. A pilot
@@ -228,35 +229,41 @@ export default function TermsPage() {
               negotiation.
             </li>
             <li>
-              <strong>Confidentiality.</strong> Each side will protect the
+              <strong>Confidentiality.</strong>{" "}
+              Each side will protect the
               other&rsquo;s non-public information with at least reasonable care
               and use it only for the purpose it was shared. This runs both ways.
             </li>
             <li>
-              <strong>Publicity.</strong> Neither side may use the other&rsquo;s
+              <strong>Publicity.</strong>{" "}
+              Neither side may use the other&rsquo;s
               name, marks or logo, or describe the relationship publicly, without
               prior written permission. This is the clause that governs how we may
               describe an institution on this website, and we hold ourselves to it.
             </li>
             <li>
-              <strong>Notices.</strong> Notices to us go to{" "}
+              <strong>Notices.</strong>{" "}
+              Notices to us go to{" "}
               <a href={`mailto:${site.email}`}>{site.email}</a>. Notices to you go
               to the address your organization gives us. Email is sufficient for
               both, including for the notice periods above.
             </li>
             <li>
-              <strong>Assignment.</strong> Neither side may assign these terms
+              <strong>Assignment.</strong>{" "}
+              Neither side may assign these terms
               without the other&rsquo;s written consent, except that we may assign
               them to a legal entity we form to operate Tenure &mdash; which,
               given that no such entity exists yet, is a foreseeable event rather
               than a hypothetical.
             </li>
             <li>
-              <strong>Severability.</strong> If any provision is held
+              <strong>Severability.</strong>{" "}
+              If any provision is held
               unenforceable, the rest stays in force.
             </li>
             <li>
-              <strong>Entire agreement.</strong> These terms and the Privacy
+              <strong>Entire agreement.</strong>{" "}
+              These terms and the Privacy
               notice are the whole agreement about the website and early access.
               They are not a pilot agreement, and they do not override one.
             </li>

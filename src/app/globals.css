@@ -723,3 +723,105 @@ html.lenis body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Supporter marks.
+
+   These are PNGs with a white box around the artwork. `mix-blend-multiply`
+   knocks that box out against the warm paper canvas, which is why it was there —
+   but multiply against the near-black dark canvas drives the mark toward black
+   and it all but disappears. The one row on the page that establishes where
+   Tenure came from was invisible to every dark-theme visitor.
+
+   So the blend is scoped to light only. The selector mirrors how the theme is
+   decided everywhere else in this file: an explicit `data-theme` wins in both
+   directions, and `prefers-color-scheme` applies only when the visitor has not
+   chosen — a bare `[data-theme="dark"]` rule would miss every dark-by-system
+   visitor, which is most of them.
+   --------------------------------------------------------------------------- */
+.logo-mark {
+  mix-blend-mode: multiply;
+}
+
+/* In dark, dropping the blend is not enough on its own: both marks are DARK-INK
+   artwork, so against a near-black canvas they stay invisible whatever the blend
+   mode is — measured at 1.09:1 against their own background. They get a light
+   plate instead, which is the standard treatment for partner marks on a dark
+   ground and preserves the artwork exactly.
+
+   Recolouring them would not preserve it, and that matters here beyond taste:
+   C-022 permits these marks for origin and support only, and altering a mark is
+   the one thing a permission grant does not cover. */
+.logo-plate {
+  border-radius: var(--radius-md);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logo-mark {
+    mix-blend-mode: normal;
+  }
+  :root:not([data-theme="light"]) .logo-plate {
+    background: oklch(96% 0.004 85);
+    padding: 0.6rem 1rem;
+  }
+}
+:root[data-theme="dark"] .logo-mark {
+  mix-blend-mode: normal;
+}
+:root[data-theme="dark"] .logo-plate {
+  background: oklch(96% 0.004 85);
+  padding: 0.6rem 1rem;
+}
+
+/* ---------------------------------------------------------------------------
+   The walkthrough request dialog.
+
+   RESTORED. This block was collateral damage: the commit that deleted the dead
+   `.tn-float` / `.tn-rise` hero animations did it by truncating the file at the
+   start of that block — and this stylesheet had been appended AFTER it, so the
+   truncation took it too. The dialog kept working (it is a native <dialog>) but
+   lost its backdrop, its entrance and, most visibly, its scroll lock: the page
+   scrolled freely behind an open modal, which is what made a genuinely
+   first-party dialog read as unfinished.
+
+   The lesson worth keeping: deleting a block by slicing to its start index is
+   only safe if that block is genuinely last in the file. Verify, or delete the
+   exact range.
+
+   A native <dialog> gives the focus trap, the inert background, Escape and the
+   aria-modal semantics for free. Only two things need styling: the UA backdrop,
+   which is a hard black that reads as browser chrome rather than as this site,
+   and the entrance.
+   --------------------------------------------------------------------------- */
+.tn-dialog::backdrop {
+  background: var(--overlay);
+  backdrop-filter: blur(3px);
+}
+
+/* Forwards only: a closing animation would need the element kept alive past
+   close(), which is not worth a frame of polish. `backwards` fill holds the
+   `from` frame during any delay — safe because the global reduced-motion block
+   zeroes delays as well as durations, so this resolves instantly at rest. */
+@keyframes tn-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+}
+@keyframes tn-backdrop-in {
+  from {
+    opacity: 0;
+  }
+}
+.tn-dialog[open] {
+  animation: tn-dialog-in 0.22s var(--ease-out) backwards;
+}
+.tn-dialog[open]::backdrop {
+  animation: tn-backdrop-in 0.22s var(--ease-out) backwards;
+}
+
+/* The page behind a modal must not scroll. `:has()` keeps this in CSS rather
+   than a body-class effect that has to be undone on every close path — Escape,
+   the backdrop, the close button, a browser back. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}

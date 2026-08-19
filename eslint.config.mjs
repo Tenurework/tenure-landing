@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local scratch. `.shots/` holds screenshots and the one-off inspection
+    // scripts written while auditing the rendered site; it is gitignored, and
+    // holding throwaway probes to the same standard as shipped source turns the
+    // lint gate into noise the moment anyone investigates anything.
+    ".shots/**",
+    "playwright-report/**",
+    "test-results/**",
   ]),
 ]);
 

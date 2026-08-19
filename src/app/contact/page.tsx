@@ -73,8 +73,10 @@ export default function ContactPage() {
       <Section tone="canvas" backdrop="quiet" divide={false}>
         <Container>
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
-            {/* The composer */}
-            <Panel>
+            {/* The composer. `id` is the target of the header CTA when the
+                visitor is already on /contact — see SiteHeader. `scroll-mt`
+                clears the fixed header so the panel is not tucked under it. */}
+            <Panel className="scroll-mt-24" id="request">
               <PanelBar
                 title="Ask for a walkthrough"
                 meta="composed here, sent from your own mail app"

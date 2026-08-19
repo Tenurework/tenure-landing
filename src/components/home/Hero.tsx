@@ -151,7 +151,20 @@ export function Hero() {
                 permits these marks for origin and support only.
               */}
               <p className="label-mono shrink-0">Origin &amp; support</p>
-              <div className="flex items-center gap-8 sm:gap-10">
+              {/* The plate is applied in dark mode only — see globals.css. Both
+                  marks are dark-ink PNGs, so on the near-black canvas they were
+                  invisible whatever the blend mode was, measured at 1.09:1
+                  against their own background. A light plate preserves the
+                  artwork exactly, which also matters under C-022: the marks are
+                  permitted for origin and support only, and recolouring them is
+                  the one thing that permission does not cover. */}
+              {/* shrink-0 is load-bearing. As a flex item in the rail this box
+                  shrank below its own content width when the scope chips
+                  competed for space, and the two marks simply overflowed it.
+                  Invisible while the box had no background — which is how it
+                  went unnoticed — and obvious the moment the dark-mode plate
+                  gave it one, with the plate ending mid-row. */}
+              <div className="logo-plate flex shrink-0 items-center gap-8 sm:gap-10">
                 {site.supporters.map((s) => (
                   <Image
                     key={s.name}
@@ -159,7 +172,7 @@ export function Hero() {
                     alt={s.name}
                     width={s.width}
                     height={s.height}
-                    className="w-auto object-contain opacity-90 mix-blend-multiply"
+                    className="logo-mark w-auto object-contain opacity-90"
                     style={{ height: s.displayHeight }}
                   />
                 ))}

@@ -288,7 +288,7 @@ export const claims: Claim[] = [
     // GENERATED in the deploying repo — the bible forbids a hardcoded metric with no
     // generated source, and this is exactly why.
     qualification:
-      "Coverage is PARTIAL and no fraction may be published until a count is generated in the deploying repo. Verified action-by-action: administrative actions are audited through the capability guard, including denials; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not, and search queries are not recorded — of the AI paths only document summarisation is. Never say 100%. There is no hash, prevHash, signature or checksum column — never say hash-chained, tamper-proof, cryptographically immutable or WORM.",
+      "Coverage is PARTIAL and no fraction may be published until a count is generated in the deploying repo. Verified action-by-action: administrative actions are audited through the capability guard, including denials; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not, and search queries are not recorded — of the AI paths only document summarization is. Never say 100%. There is no hash, prevHash, signature or checksum column — never say hash-chained, tamper-proof, cryptographically immutable or WORM.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,

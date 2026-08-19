@@ -110,11 +110,11 @@ const MODULES: Module[] = [
               removal, so "How do we run elections?" is a five-term AND including
               "how", "do" and "we" and returns nothing (C-007). */}
           <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.78rem] text-ink-soft">
-            election nominations
+            venue deposit
           </p>
           <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
             <p className="text-[0.78rem] leading-relaxed text-ink">
-              Nominations open week 10, two-week window, ranked-choice ballot.
+              Held against the Spring Gala booking: $1,500, refundable to 14 days out.
             </p>
             <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
               2 records ↗
@@ -401,11 +401,15 @@ const RAIL: SegmentItem[] = MODULES.map((m) => ({
 }));
 
 export function Platform() {
-  const [active, setActive] = useState(MODULES[0].key);
+  // Defaults to Finance, not the first module. Tenure AI is the shortest pane of
+  // the eleven and left 267px of the 549px right-hand pane empty on load — the
+  // tallest card on the page, opening half blank. Finance renders a real chart
+  // and fills it.
+  const [active, setActive] = useState("finance");
   const mod = MODULES.find((m) => m.key === active) ?? MODULES[0];
 
   return (
-    <Section id="platform" tone="canvas" backdrop="quiet">
+    <Section id="platform" tone="surface" backdrop="aurora">
       <Container>
         <SectionHead
           align="center"

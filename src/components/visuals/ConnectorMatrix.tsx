@@ -73,93 +73,89 @@ const GROUPS: Group[] = [
   {
     key: "in",
     title: "What comes in",
-    blurb:
-      "The files you already keep, opened and edited in place — no migration, no accounts to connect.",
+    blurb: "The files you already keep, opened and edited in place. Nothing to migrate.",
     rows: [
       {
         what: "Documents",
         via: [".pdf", ".docx", ".pptx"],
         status: "live",
-        body: "Contracts, letters and decks open inside Tenure rather than downloading to somebody's laptop — PowerPoint with its speaker notes intact.",
+        body: "Open them inside Tenure instead of downloading them to somebody's laptop. Speaker notes come through with the deck.",
       },
       {
         what: "Spreadsheets",
         via: [".xlsx", ".csv"],
         status: "ci",
-        body: "They open and edit in place, with a save-conflict check that warns if someone else saved first. A budget spreadsheet also imports: Tenure works out which column is which however your treasurer named them, drops subtotal rows so nothing double-counts, and shows you what it read before anything is saved.",
+        body: "Edit in place, with a warning if someone else saved first. The budget you already keep imports as it is: Tenure works out which column is which whatever you named them, and shows you what it read before anything saves.",
       },
       {
-        what: "Plain text and data files",
+        what: "Text and data files",
         via: [".txt", ".md", ".json", ".xml"],
         status: "live",
-        body: "Edit in place like the spreadsheets. These are also the only file types the assistant will summarise on request, and only under 200KB.",
-        limit:
-          "AI summarisation is gated to text, JSON, CSV and XML. It does not summarise PDF or Office files, and file contents are never indexed for search — only titles and descriptions are.",
+        body: "Edit in place like the spreadsheets. These four are also the only files the assistant will summarize — not PDF, not Office.",
       },
     ],
   },
   {
     key: "out",
     title: "What goes out",
-    blurb:
-      "The three things Tenure sends outward, and the one it cannot yet do for you on demand.",
+    blurb: "Three things Tenure sends outward, and the one it cannot yet do on demand.",
     rows: [
       {
-        what: "Calendar subscription",
+        what: "Your calendar",
         via: ["Outlook", "Google Calendar", "Apple Calendar"],
         status: "ci",
-        body: "One signed link per person, pasted into whichever calendar they already open. No account is connected and no password is shared, and the feed carries only what that seat is already allowed to see.",
-        limit:
-          "One-way. Tenure fills your calendar and never reads it back, so an event you create in Outlook does not appear in Tenure.",
+        body: "One signed link per person, pasted into whichever calendar they already open — no account connected, no password shared. One-way: Tenure fills your calendar and never reads it back.",
       },
       {
         what: "Deadline reminders",
         via: ["in-app"],
         status: "live",
-        body: "A deadline the overseeing body publishes once reaches every organization, and reminders fire from scheduled infrastructure without anyone opening the app — once per person, not once per visit.",
-        limit:
-          "Delivery is in-app only. Every delivery record hardcodes the in-app channel and no application code sends mail or push notifications, so nobody is emailed about anything.",
+        body: "Publish a deadline once and every organization sees it, with each person reminded once. In-app only — nobody is emailed.",
       },
       {
-        what: "Bulk export of your record",
-        via: ["on request"],
+        what: "Your record, on request",
+        via: ["by hand"],
         status: "roadmap",
-        body: "There is no self-service export path in the application today. Export and deletion requests are handled by us, by hand, when you ask.",
-        limit:
-          "That is a dependency on two people being reachable, and it matters most in exactly the scenario where you would least want it. Worth writing into an agreement rather than assuming.",
+        body: "Ask and we export or delete it. There is no button for it yet, which makes it a dependency on two people being reachable.",
       },
     ],
   },
   {
     key: "no",
     title: "What does not exist",
-    blurb:
-      "Named here rather than discovered in week three. If your integration plan depends on any of it, it is not met today.",
+    blurb: "Named here, so nothing on this list is a surprise later.",
     rows: [
       {
         what: "Third-party connectors",
-        // The vendor names are in the SENTENCE, not in a chip row — see the note
-        // at the top of this file. `claims.spec.ts` was right to fail the chip
-        // version twice over: mechanically the badge fell out of the matcher's
-        // window by the third name, and substantively eight vendor chips ARE a
-        // logo wall, which is the shape C-029 exists to prevent.
+        // The vendor names live in the SENTENCE, not in a chip row — see the note
+        // at the top of this file. As chips the badge falls out of the ratchet's
+        // window by the third name, and eight vendor chips read as a logo wall.
         via: ["none"],
         status: "unsupported",
-        body: "Tenure does not connect to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord. There is no integration framework, no OAuth client and no vendor SDK anywhere in the product — files, decisions and documents live in Tenure itself. We would rather list them here than let you find out in week three.",
+        body: "Tenure does not connect to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord. Files, decisions and documents live in Tenure itself.",
       },
       {
         what: "Public API and webhooks",
         via: ["REST", "webhooks"],
         status: "unsupported",
-        body: "There is no public API to build against and nothing Tenure will call when something changes.",
+        body: "Nothing to build against, and nothing Tenure will call when something changes.",
       },
       {
+        /*
+          "single sign-on" belongs in the TITLE, next to the badge.
+
+          The rewrite moved it into the body and the claims ratchet failed —
+          correctly. C-023's rule is that the phrase may not appear without
+          "roadmap"/"not deployed"/"planned" close to it, and the matcher excuses
+          it by LINE PROXIMITY to a status badge. In the title the ROADMAP badge
+          renders on the very next line; in the body it was five lines below the
+          badge, past the window, so the page was asserting SSO with no
+          qualification anywhere near it. The body no longer repeats the phrase.
+        */
         what: "Institutional single sign-on",
-        via: ["SAML", "OIDC"],
+        via: ["SAML", "OIDC", "MFA"],
         status: "roadmap",
-        body: "Not deployed. It is the gating item for taking Tenure past a pilot, and if it is a procurement precondition then that precondition is not met.",
-        limit:
-          "There is also no multi-factor authentication in any form today. Accounts are created by us in advance against a named person; the full access model, and its weaknesses, are set out on Security.",
+        body: "Not deployed, in any form — multi-factor authentication included. If it is a procurement precondition, that precondition is not met today.",
       },
     ],
   },
@@ -241,17 +237,17 @@ export function ConnectorMatrix() {
       )}
       footer={
         <PanelNote>
-          The status words above mean exactly what they mean on{" "}
+          These are the short answers.{" "}
           <Link
             href="/trust"
             className="font-medium text-accent-text underline underline-offset-4"
           >
             Security
-          </Link>
-          , where each is defined and every control is listed with its evidence. No
-          vendor logo appears anywhere on this site, because a logo reads as a
-          connector whatever the sentence under it says &mdash; and there is no
-          connector code to back one.
+          </Link>{" "}
+          covers the same ground as a reviewed control list &mdash; every status word
+          defined, and the limit and evidence behind each row. No vendor logo appears
+          anywhere on this site: a logo reads as a connector whatever the sentence
+          under it says, and there is no connector code to back one.
         </PanelNote>
       }
     />

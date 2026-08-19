@@ -84,6 +84,22 @@ function HandoffCard() {
         <Zone className="left-0" label="Outgoing" dim />
         <Zone className="right-0" label="Incoming" />
 
+        {/* The trace the record leaves behind. Without it the OUTGOING zone rests
+            as an empty dashed rectangle — 29% of the card showing nothing, which
+            reads as a diagram that failed to render rather than as a handoff that
+            completed. It also states the actual mechanism: the seat keeps its
+            history, so the outgoing term is not blanked. */}
+        <div className="absolute bottom-3 left-[3.5%] z-0 w-[40%] rounded-lg border border-dashed border-line bg-paper/40 p-2">
+          <div className="flex items-center gap-1.5">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.55rem] uppercase text-text-secondary">
+              Kept
+            </span>
+            <span className="truncate text-[0.7rem] text-text-secondary">
+              Aramark &middot; on the seat
+            </span>
+          </div>
+        </div>
+
         {/* a record already inherited, so the incoming side is never empty */}
         <div className="absolute bottom-3 right-[3.5%] z-0 w-[40%] rounded-lg border border-line bg-paper/70 p-2">
           <div className="flex items-center gap-1.5">

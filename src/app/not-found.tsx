@@ -35,7 +35,7 @@ export default function NotFound() {
             Back to home
           </Button>
           <Button href="/product" variant="secondary">
-            See the product
+            See the platform
           </Button>
         </div>
 

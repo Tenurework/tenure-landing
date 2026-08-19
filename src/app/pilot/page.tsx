@@ -114,7 +114,7 @@ const TENURE_PROVIDES: { t: string; d: string }[] = [
   },
   {
     t: "Approvals that leave a record",
-    d: "Two gates across seven request types. Each decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat's behalf.",
+    d: "Every approval runs the same two gates, across all seven request types. Each decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat's behalf.",
   },
   {
     t: "The handoff packet",
@@ -752,8 +752,8 @@ export default function PilotPage() {
               footer={
                 <PanelNote>
                   Nothing in these seven sections is a substitute for the written
-                  scope in step 01 of the sequence. A sentence on a marketing page
-                  is not a commitment, and we will not pretend otherwise.
+                  scope in step 01 of the sequence. Read them as the detail we
+                  would put into that document, not as the document.
                 </PanelNote>
               }
             />

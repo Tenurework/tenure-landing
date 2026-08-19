@@ -63,7 +63,7 @@ export function Backdrop({
             <ContourMask seed={1} />
           </div>
           <div className="absolute inset-0 text-ink/[0.05] hairline-grid [--grid:88px] [mask-image:radial-gradient(62%_58%_at_20%_86%,black,transparent_74%)]" />
-          <div className="absolute -right-16 top-[6%] hidden h-[26rem] w-[26rem] opacity-[0.14] lg:block [mask-image:linear-gradient(255deg,black,transparent_72%)]">
+          <div className="absolute -right-20 top-[2%] hidden h-[30rem] w-[30rem] opacity-[0.42] sm:block [mask-image:linear-gradient(250deg,black,black_35%,transparent_78%)]">
             <MemphisArt variant="arcs" />
           </div>
           <div className="absolute inset-0 grain opacity-[0.035] mix-blend-overlay" />
@@ -75,8 +75,8 @@ export function Backdrop({
           <div className="absolute inset-0 text-ink/[0.055] hairline-grid [--grid:56px] [mask-image:radial-gradient(70%_65%_at_78%_18%,black,transparent_76%)]" />
           <div className="absolute left-[-14%] top-[10%] h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--chart-2)_9%,transparent),transparent_66%)]" />
           <div className="absolute bottom-[-24%] right-[6%] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_10%,transparent),transparent_68%)]" />
-          <div className="absolute -left-20 bottom-[-8%] hidden h-[22rem] w-[22rem] opacity-[0.13] lg:block [mask-image:linear-gradient(70deg,black,transparent_74%)]">
-            <MemphisArt variant="terrazzo" />
+          <div className="absolute -left-24 bottom-[-12%] hidden h-[26rem] w-[26rem] opacity-[0.38] sm:block [mask-image:linear-gradient(65deg,black,black_30%,transparent_76%)]">
+            <MemphisArt variant="signal" />
           </div>
           <div className="absolute inset-0 grain opacity-[0.03] mix-blend-overlay" />
         </>
@@ -98,7 +98,7 @@ export function Backdrop({
             <ContourMask seed={11} />
           </div>
           <div className="absolute inset-0 text-inverse/[0.05] hairline-grid [--grid:72px] [mask-image:radial-gradient(58%_56%_at_14%_84%,black,transparent_72%)]" />
-          <div className="absolute -left-14 top-[-4%] hidden h-[20rem] w-[20rem] opacity-[0.2] lg:block [mask-image:linear-gradient(120deg,black,transparent_76%)]">
+          <div className="absolute -left-16 top-[-8%] hidden h-[24rem] w-[24rem] opacity-[0.5] sm:block [mask-image:linear-gradient(115deg,black,black_32%,transparent_80%)]">
             <MemphisArt variant="terrazzo" />
           </div>
           <div className="absolute inset-0 grain opacity-[0.05] mix-blend-overlay" />
@@ -111,10 +111,10 @@ export function Backdrop({
           <div className="absolute inset-0 text-inverse/[0.09] [mask-image:radial-gradient(76%_76%_at_50%_50%,black,transparent_80%)]">
             <ContourMask seed={3} />
           </div>
-          <div className="absolute -left-12 bottom-[-12%] hidden h-[18rem] w-[18rem] opacity-[0.22] sm:block [mask-image:linear-gradient(60deg,black,transparent_78%)]">
+          <div className="absolute -left-14 bottom-[-14%] h-[20rem] w-[20rem] opacity-[0.55] [mask-image:linear-gradient(58deg,black,black_34%,transparent_80%)]">
             <MemphisArt variant="signal" />
           </div>
-          <div className="absolute -right-12 top-[-14%] hidden h-[18rem] w-[18rem] opacity-[0.18] sm:block [mask-image:linear-gradient(240deg,black,transparent_78%)]">
+          <div className="absolute -right-14 top-[-16%] hidden h-[22rem] w-[22rem] opacity-[0.45] sm:block [mask-image:linear-gradient(238deg,black,black_34%,transparent_80%)]">
             <MemphisArt variant="arcs" />
           </div>
           <div className="absolute inset-0 grain opacity-[0.05] mix-blend-overlay" />

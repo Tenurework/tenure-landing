@@ -109,13 +109,13 @@ const GROUPS: Group[] = [
         // a recount. Three methods over the deploying repo at 819aec0e produced three
         // different answers, and the exclusion list was wrong on its own terms:
         // resources/actions.ts routes both of its writes through an audited helper in
-        // resources-data.ts, and document summarisation writes a Document.Summarized
+        // resources-data.ts, and document summarization writes a Document.Summarized
         // row, so "resource writes" and "AI ... not recorded at all" were both false.
         // Publishing a precise figure again needs a count generated in the deploying
         // repo, not one typed here — see the bible's rule on hardcoded metrics. What
         // is stated below is what was verified action-by-action.
         limit:
-          "Coverage is partial and is not yet counted by anything that would fail if it drifted, so no fraction is published here. Verified today: administrative actions are audited through the capability guard, which records the denial as well as the allow; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not. Search queries are not recorded; of the AI paths, only document summarisation is.",
+          "Coverage is partial and is not yet counted by anything that would fail if it drifted, so no fraction is published here. Verified today: administrative actions are audited through the capability guard, which records the denial as well as the allow; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not. Search queries are not recorded; of the AI paths, only document summarization is.",
       },
       {
         title: "Decisions record the deciding seat",
@@ -249,7 +249,7 @@ const GROUPS: Group[] = [
           // security property — that access is not gated on a per-user secret — is
           // what an institution actually needs in order to assess the risk, and it
           // stops short of publishing the mechanism C-023 holds back.
-          "This is a pilot-grade access model, and it is the weakest control on this page. Access is not gated on a secret held by one person and nobody else, so an action recorded under a name is not proof that person took it — which is why our Terms do not make you liable for activity under your account. There is no MFA, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold student data your institution would classify as sensitive, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
+          "This is a pilot-grade access model, and it is the weakest control on this page. Access is not gated on a secret held by one person and nobody else, so an action recorded under a name is not proof that person took it — which is why our Terms do not make you liable for activity under your account. There is no MFA, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold records your organization would classify as sensitive — student data, donor or beneficiary records, payroll, anything you would have to notify someone about, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
       },
       {
         title: "Multi-factor authentication",
@@ -331,7 +331,7 @@ function tallyFor(group: Group) {
 
   const out: { label: string; tone?: "quiet" | "good" | "warn" | "bad" }[] = [];
   if (shipped) out.push({ label: `${shipped} live`, tone: "good" });
-  if (validating) out.push({ label: `${validating} validating`, tone: "quiet" });
+  if (validating) out.push({ label: `${validating} in pilot validation`, tone: "quiet" });
   if (roadmap) out.push({ label: `${roadmap} roadmap`, tone: "warn" });
   if (missing) out.push({ label: `${missing} not supported`, tone: "bad" });
   return out;

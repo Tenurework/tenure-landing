@@ -37,7 +37,8 @@ export const routes = [
   },
   {
     path: "/product",
-    title: "Product",
+    // Matches the ribbon label. Renamed with it — see site.nav.
+    title: "Platform",
     description:
       "How the durable seat works: finance, events, approvals, members and memory in one governed record, plus the handoff packet the next officer inherits.",
     priority: 0.9,
@@ -64,7 +65,8 @@ export const routes = [
   },
   {
     path: "/story",
-    title: "Story",
+    // Matches the ribbon label. Renamed with it — see site.nav.
+    title: "About",
     description:
       "Why Tenure exists: what we watched happen to good organizations every spring at Simon Business School, and who is building the answer.",
     priority: 0.6,
