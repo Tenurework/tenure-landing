@@ -866,3 +866,52 @@ pages are a wall of clauses somebody reads end to end under obligation.
 
 Gate: lint, typecheck, 72/72 contrast, build, 113 links, **1,046 Playwright tests, zero
 failures** — including the 24×24 target-size checks a shrinking scale could have broken.
+
+---
+
+## Phase 13 — Twenty days of work had never deployed, 2026-08-20
+
+Every phase above passed its gates, went green in GitHub Actions, and **was never served to
+anybody**. `tenurework.com` was returning a build from **2026-07-31 19:02 UTC** — a cached
+response measured at `age: 1740398` seconds, 20.1 days old.
+
+### The mechanism
+
+| Fact | Source |
+|---|---|
+| Vercel's last production deployment was `fb6a3bd`, 2026-07-31 | `latestDeployment` on `prj_PlEIkXTDY2sHpOxIlAvNvQjfrwiR` |
+| Its metadata records `githubOrg: satvikOS`, `githubRepoOwnerType: **User**` | deployment `meta` |
+| The same repo id `1281852471` is now owned by `Tenurework`, an **Organization** | `gh api repos/Tenurework/tenure-landing` |
+| The only GitHub App installed on the `Tenurework` org is `greptile-apps` | `gh api orgs/Tenurework/installations` |
+| GitHub's own deployment records for the repo stop at 2026-07-31T19:03:02Z | `gh api repos/Tenurework/tenure-landing/deployments` |
+| **29 commits** on `main` since | `git rev-list --count fb6a3bd..HEAD` |
+
+The repository was transferred from the `satvikOS` **user account** to the `Tenurework`
+**organization**. Vercel's GitHub App installation lived on the user account, and a transfer does
+not carry it. Vercel stopped receiving push webhooks that day, so no build was ever triggered
+again — silently, because nothing fails when a webhook simply never arrives. CI stayed green the
+whole time and proved only that the code was correct, never that it shipped.
+
+**This is the failure mode a verification-only CI cannot catch, and it is worth naming: every
+gate in this repository answers "is the code right", and not one of them answers "is the code
+served".**
+
+### What was done
+
+`vercel deploy --prod` from the local checkout, which reaches the existing project directly and
+does not depend on the Git integration. Verified afterwards, not assumed: all eight routes 200;
+`Platform` in the ribbon and no `Product`; `Twelve modules`; `Board resources`; `18 of 41`;
+`Term allocation` present and `Membership dues` absent; `Bedrock` and `Cognito` on /trust;
+`Slack` on /product; `Riverside Literacy Alliance` on /product; the Dossier on /privacy; and
+**no `calendly` token anywhere in the /contact CSP header**.
+
+`.vercelignore` added: `e2e/` alone is ~64 MB of committed visual baselines that no build needs.
+
+### Still to do, and only the account owner can
+
+The CLI deploy is a workaround, not a fix — the next `git push` still deploys nothing. Install
+the **Vercel GitHub App on the `Tenurework` organization** and reconnect the project's Git
+integration. Until that is done, every deployment has to be pushed by hand.
+
+Worth adding afterwards: a check that the deployed commit matches `origin/main`. A green CI badge
+above a three-week-old site is a worse signal than a red one.

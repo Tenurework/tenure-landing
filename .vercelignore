@@ -1,0 +1,10 @@
+# Nothing here is needed to BUILD the site, and e2e/ alone is ~64 MB of
+# committed visual-regression baselines — uploading them lengthens every
+# deployment for no benefit. Vercel runs `npm ci` and `next build`; the tests
+# run in GitHub Actions, which is where the baselines are actually used.
+e2e/
+playwright.config.ts
+playwright-report/
+test-results/
+docs/
+tsconfig.tsbuildinfo
