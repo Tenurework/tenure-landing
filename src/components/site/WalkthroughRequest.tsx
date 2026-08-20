@@ -86,7 +86,7 @@ const EMPTY: Form = {
  * five empty ones.
  */
 function compose(form: Form) {
-  const lines: string[] = ["I’d like a walkthrough of Tenure.", ""];
+  const lines: string[] = ["I’d like a demo of Tenure.", ""];
 
   const facts: [string, string][] = [
     ["Name", form.name],
@@ -112,7 +112,7 @@ function compose(form: Form) {
 
 function subjectFor(form: Form) {
   const who = form.org.trim() || form.name.trim();
-  return who ? `Walkthrough request — ${who}` : "Walkthrough request";
+  return who ? `Demo request — ${who}` : "Demo request";
 }
 
 /**
@@ -185,7 +185,7 @@ export function WalkthroughRequest() {
   const descId = useId();
 
   const body = compose(form);
-  const mailto = `mailto:${site.email}?subject=${encodeURIComponent(
+  const mailto = `mailto:${site.email.sales}?subject=${encodeURIComponent(
     subjectFor(form),
   )}&body=${encodeURIComponent(body)}`;
 
@@ -276,7 +276,7 @@ export function WalkthroughRequest() {
         aria-haspopup="dialog"
       >
         <span className="relative z-10 inline-flex items-center gap-2">
-          Request a walkthrough
+          Request a demo
           <svg viewBox="0 0 16 16" width="15" height="15" fill="none" aria-hidden="true">
             <path
               d="M3 8h10M9 4l4 4-4 4"
@@ -323,7 +323,7 @@ export function WalkthroughRequest() {
                 id={titleId}
                 className="font-display text-title font-semibold tracking-tight text-ink"
               >
-                Request a walkthrough
+                Request a demo
               </h2>
               <p id={descId} className="mt-1 text-body-sm leading-relaxed text-ink-soft">
                 Tell us what you want to see and we will open exactly that. Every
@@ -476,7 +476,7 @@ export function WalkthroughRequest() {
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <span className="label-mono">Your request, as it will send</span>
                 <span className="font-mono text-meta text-ink-faint">
-                  to {site.email}
+                  to {site.email.sales}
                 </span>
               </div>
               <textarea
@@ -533,7 +533,7 @@ export function WalkthroughRequest() {
                 <>
                   <span className="font-medium text-grove">Handed to your mail app.</span>{" "}
                   If no draft opened, this browser has no mail client set — use
-                  Copy the request and paste it to {site.email}.
+                  Copy the request and paste it to {site.email.sales}.
                 </>
               ) : (
                 <>

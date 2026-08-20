@@ -40,12 +40,12 @@ export default function TermsPage() {
         */}
         <div className="mx-auto max-w-3xl pb-16">
           <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
-            <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
-            It has not been reviewed by counsel, and Tenure is not yet an
-            incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
-            name for the two founders. These terms are published so an
-            institution can see the current position; they are not a finished
-            contract, and a pilot agreement would be negotiated separately.
+            <strong className="font-semibold">Early access terms.</strong>{" "}
+            Tenure is operated by its founders and is not yet incorporated. These
+            terms cover early access and the Fall 2026 deployment; an
+            institution&rsquo;s agreement is negotiated separately. Write to{" "}
+            <a href={`mailto:${site.email.legal}`}>{site.email.legal}</a> for the
+            version your review needs.
           </div>
 
           <p>
@@ -83,7 +83,7 @@ export default function TermsPage() {
                 children: (
                   <div className="legal">
                     <p>
-                    Tenure is an early-stage system of record for organizations where
+                    Tenure is the system of record for organizations where
                     leadership turns over faster than knowledge does &mdash; universities,
                     nonprofits and NGOs, small and mid-sized businesses, associations and
                     chapters &mdash; offered through a pilot and early access. It
@@ -251,14 +251,12 @@ export default function TermsPage() {
                     applicable law. Keep your own copies of anything truly critical.
                     </p>
                     <p>
-                    Stated plainly for anyone doing vendor due diligence: Tenure is not an
-                    incorporated entity. There is no corporate liability shield, no
-                    professional indemnity or cyber insurance, and no balance sheet behind
-                    these terms. We are not able to offer the indemnities, insurance
-                    certificates or liability caps an institutional contract would
-                    normally require. If your procurement process needs those, it needs
-                    them from a company that exists, and we would rather you learned that
-                    here than three weeks into a review.
+                    For vendor due diligence: Tenure is not yet incorporated, and these
+                    terms are not backed by a corporate liability shield, professional
+                    indemnity or cyber insurance. Indemnities, insurance certificates and
+                    liability caps are therefore out of scope until incorporation
+                    completes. Where your procurement process requires them, raise it with
+                    us at the start and we will tell you the current position.
                     </p>
                   </div>
                 ),
@@ -356,7 +354,7 @@ export default function TermsPage() {
                     <li>
                     <strong>Notices.</strong>{" "}
                     Notices to us go to{" "}
-                    <a href={`mailto:${site.email}`}>{site.email}</a>. Notices to you go
+                    <a href={`mailto:${site.email.legal}`}>{site.email.legal}</a>. Notices to you go
                     to the address your organization gives us. Email is sufficient for
                     both, including for the notice periods above.
                     </li>
@@ -391,7 +389,7 @@ export default function TermsPage() {
                   <div className="legal">
                     <p>
                     Questions about these terms? Write to us at{" "}
-                    <a href={`mailto:${site.email}`}>{site.email}</a> and a founder will
+                    <a href={`mailto:${site.email.legal}`}>{site.email.legal}</a> and we will
                     reply.
                     </p>
                   </div>

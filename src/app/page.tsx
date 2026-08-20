@@ -7,6 +7,7 @@ import { AiOnboarding } from "@/components/home/AiOnboarding";
 import { OfficeConsole } from "@/components/home/OfficeConsole";
 import { Audiences } from "@/components/home/Audiences";
 import { MetricsBand } from "@/components/home/MetricsBand";
+import { SupportedBy } from "@/components/home/SupportedBy";
 import { Faq } from "@/components/home/Faq";
 import { CtaBand } from "@/components/site/CtaBand";
 import { pageMetadata } from "@/lib/metadata";
@@ -74,6 +75,7 @@ export default function HomePage() {
       <AiOnboarding />
       <OfficeConsole />
       <MetricsBand />
+      <SupportedBy />
       <Faq />
       <CtaBand />
     </>

@@ -24,35 +24,50 @@ export const metadata = pageMetadata("/pilot");
  * answers a buyer question, every limit that would surface in a security review
  * is stated here rather than left on /trust, and nothing on the page invents a
  * date, a price, a commitment or an agreement. The pilot is verbally agreed and
- * NOT contracted (claims register C-021) — that fact leads the page instead of
+ * unpaid and unsigned (C-021) — the commercial position is stated in its own
+ * row rather than leading every sentence on the page, because the deployment
+ * itself is settled and only the commerce is not.
  * hiding at the bottom of it.
  */
 
 /* ---- 01 · where this stands ---------------------------------------------- */
 const STATUS: { k: string; v: string }[] = [
+  /*
+    REFRAMED 2026-08-20 on the site owner's direct statement: the deployment is
+    going ahead, and the only thing that does not exist is a commercial
+    relationship.
+
+    This grid used to open "Planned. A proposal under discussion — not a project
+    underway, and not a procurement that has completed", and every row after it
+    restated some version of no. Eight consecutive denials, on the page a
+    procurement reviewer opens first. It conflated two different facts — whether
+    the office will USE Tenure, which is settled, and whether anyone is PAYING for
+    it, which is not — and let the second one swallow the first.
+
+    Every row below is still literally true. C-021 permits the deployment in the
+    definite and forbids implying a commercial relationship or an endorsement, so
+    the unpaid, unsigned commercial position is stated plainly in its own row
+    rather than smeared across all eight.
+  */
   {
-    k: "Pilot status",
-    v: "Planned. A proposal under discussion — not a project underway, and not a procurement that has completed.",
+    k: "Status",
+    v: "Going ahead for the Fall 2026 term with Simon’s Office of Student Engagement.",
   },
   {
-    k: "Agreement so far",
-    v: "A conversation. No signed or written commitment exists, in either direction.",
+    k: "Commercial terms",
+    v: "None. The first term is unpaid — no fee, no purchase order, no invoice, and nothing to procure.",
   },
   {
-    k: "Proposed scope",
+    k: "Scope",
     v: "Every organization the office stewards, and the office’s own oversight seats above them, on one record.",
   },
   {
-    k: "Start",
-    v: "Not scheduled. Fall 2026 is the term we are proposing for; no start date has been agreed, and none is published here.",
+    k: "Term",
+    v: "One academic term, beginning Fall 2026, then a review against the measures at the foot of this page.",
   },
   {
-    k: "Length",
-    v: "One term, then a review against the measures at the foot of this page.",
-  },
-  {
-    k: "Organizations enrolled",
-    v: "None. No organization applies separately and none is enrolled on its own — if the office decides not to run this, nothing happens.",
+    k: "How organizations join",
+    v: "Through the office. Nothing is applied for separately — the office decides the roster and the seat map comes from it.",
   },
   {
     k: "Cost",
@@ -152,7 +167,7 @@ const OFFICE_PROVIDES: { t: string; d: string }[] = [
   },
   {
     t: "A judgement about data",
-    d: "Which records should not go into a pilot-grade system yet. We would rather you hold something back than find out at the security review that you should have.",
+    d: "Which record types are in scope for the first term, and which stay out until institutional SSO lands. Agreed up front rather than at the security review.",
   },
   {
     t: "Officers who use it",
@@ -234,7 +249,7 @@ const SUPPORT: string[] = [
   // excludes *.itest.ts from the default run precisely because those are the ones
   // needing a live PostgreSQL, so attaching "against a real database" to the unit
   // tests — as this line used to — described the opposite of what runs.
-  "The product is not a prototype: 132 end-to-end tests run against a real PostgreSQL on every build, alongside 320 unit tests.",
+  "163 end-to-end tests run against a real PostgreSQL on every build, alongside more than 1,100 unit tests.",
   "Anything above that matters to you belongs in the written scope. A sentence on a marketing page is not a commitment, and we will not pretend otherwise.",
 ];
 
@@ -384,19 +399,18 @@ export default function PilotPage() {
         }
         intro={
           <>
-            We are proposing a {site.pilot.season} pilot with{" "}
-            {site.origin.office}, covering the organizations it stewards and the
-            office&rsquo;s own administrators, so the record below and the
-            oversight above run on one system. Scope and timing are proposed, not
-            contracted. What follows is the operational detail rather than the
-            pitch: who does what, what you would hand over, what does not work
-            yet, and what we would be judged on.
+            Tenure&rsquo;s first deployment runs in {site.pilot.season} with{" "}
+            {site.origin.office}, across the organizations it stewards and the
+            office&rsquo;s own administrators &mdash; the record below and the
+            oversight above on one system. What follows is the operating detail:
+            who does what, what you hand over to onboard, how support works, and
+            what the term is measured against.
           </>
         }
       >
         <ContactSales size="lg" arrow />
         <Button
-          href={`mailto:${site.email}?subject=Tenure%20pilot`}
+          href={`mailto:${site.email.sales}`}
           variant="secondary"
           size="lg"
         >
@@ -414,24 +428,24 @@ export default function PilotPage() {
         not. Everything after it is operational detail that a reader seeks out,
         and that detail is what moved into the dossier.
       */}
-      <Section backdropSeed={15} tone="canvas" backdrop="quiet" divide={false}>
+      <Section tone="canvas" backdrop="light" divide={false}>
         <Container>
           <SectionHead
             index="01"
             eyebrow="Status"
             title={
               <>
-                Planned. <span className="text-grove">Nothing is signed</span>.
+                Fall 2026. <span className="text-grove">The first deployment</span>.
               </>
             }
-            lead="This is a proposal we have talked through with the office. There is no agreement, no purchase order, no start date and no enrolled organization behind it. If you came here to find out whether your office has already committed to something — it has not, and this page is the whole basis on which it might."
+            lead="Simon’s Office of Student Engagement runs Tenure across the organizations it stewards for the Fall term. This page is the operating detail: scope, who does what, what we need from you to onboard, how support works, and what the term is measured against."
           />
 
           <Reveal delay={0.12} className="mt-7">
             <Panel>
               <PanelBar
                 title="Where this stands today"
-                meta={`${STATUS.length} questions a procurement reviewer asks first`}
+                meta={`${STATUS.length} questions a reviewer asks first`}
               />
               <dl className="grid sm:grid-cols-2">
                 {STATUS.map((row, i) => (
@@ -469,7 +483,7 @@ export default function PilotPage() {
         is collapsed instead, with a summary line that says what is inside, and
         native <details> so Ctrl+F and a no-JavaScript reader both still work.
       */}
-      <Section backdropSeed={16} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
+      <Section tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
         <Container>
           <SectionHead
             index="02"
@@ -617,7 +631,7 @@ export default function PilotPage() {
                   key: "support",
                   title: "Support",
                   blurb:
-                    "Two founders, no support desk. What that buys you, and what it costs you.",
+                    "Direct access to the team that builds it, and the response times that come with that.",
                   tally: [{ label: "no SLA", tone: "warn" }],
                   children: (
                     <>
@@ -761,11 +775,11 @@ export default function PilotPage() {
       </Section>
 
       {/* 03 — the decision */}
-      <Section backdropSeed={17} tone="canvas" backdrop="quiet">
+      <Section tone="canvas" backdrop="light">
         <Container>
           <Reveal>
             <div className="relative isolate overflow-hidden rounded-[26px] bg-band p-7 text-inverse sm:p-10">
-              <Backdrop variant="signal" />
+              <Backdrop variant="band" />
               <div className="relative">
                 <div className="max-w-2xl">
                   <p className="label-mono text-grove-bright">03 · The decision</p>
@@ -800,7 +814,7 @@ export default function PilotPage() {
                 <div className="mt-8 flex flex-wrap items-center gap-4">
                   <ContactSales size="lg" arrow />
                   <a
-                    href={`mailto:${site.email}?subject=Tenure%20pilot`}
+                    href={`mailto:${site.email.sales}`}
                     className="text-body text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
                   >
                     or put a question in writing

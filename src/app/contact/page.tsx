@@ -8,57 +8,47 @@ import { site } from "@/lib/site";
 export const metadata = pageMetadata("/contact");
 
 /**
- * /contact — first-party conversion.
+ * /contact — first-party, and addressed.
  *
- * WHAT CHANGED, AND THE ORDER OF RELIABILITY IT PRESERVES.
+ * TWO THINGS CHANGED HERE, AND THE SECOND IS THE ONE THAT MATTERS.
  *
- * The primary surface here used to be Calendly's inline widget: a third party's
- * typography, form controls and cookie banner opening in the middle of a page
- * that had spent eight sections establishing that this product is careful about
- * where data goes. The first interactive thing a prospect touched was somebody
- * else's software.
+ * Calendly is gone entirely — the embed first, then the outbound link, then the
+ * CSP allowance that outlived both. A prospect's first interaction with a system
+ * of record should not be somebody else's software asking for their details.
  *
- * It is now a Tenure component — `WalkthroughRequest` — which composes the
- * request in the browser and hands it to the visitor's own mail client or
- * clipboard. Nothing is transmitted by this page, which is both the honest
- * description of a statically-exported site with no backend and a better outcome
- * than a form that POSTs: the visitor keeps a copy in their own sent items.
- *
- * The three paths are still offered in the same order of reliability, and the
- * two that never depended on JavaScript still do not:
- *
- *   1. the email address, as a plain `mailto:` anchor — works with scripts off,
- *      works with everything blocked, cannot fail;
- *   2. the request composer, which needs JavaScript and degrades to (1) without
- *      it, because it is rendered *beside* the address rather than instead of it;
- *   3. the scheduler, as a plain `<a target="_blank">` to Calendly — never an
- *      embed, never a script on this origin, and never a `window.open` call.
- *
- * (3) is deliberately still here and deliberately still an anchor. The old CTA
- * was a `<button>` that awaited Calendly's script and only then called
- * `window.open`, outside the user-gesture window — so with calendly.com blocked,
- * which is routine on university networks and with any content blocker, every
- * CTA on the site silently did nothing. A plain anchor cannot have that failure
- * mode. Calendly is a disclosed subprocessor (C-036) and stays disclosed.
+ * And mail is ADDRESSED now. Every route on this page used to end at one
+ * `hello@` inbox: a demo request, a security questionnaire, a data-protection
+ * question and a legal notice all landed in the same place. An enterprise buyer
+ * reads a single generic address as a company too small to have functions, and a
+ * security reviewer who cannot find a security address assumes nobody owns it.
+ * Each address below is a real group with an owner, and the page routes by what
+ * the visitor is actually trying to do.
  */
 
 const EXPECT = [
   {
-    title: "You talk to a founder",
-    body: "There is no SDR and no qualification call. Whoever picks up built the thing you are asking about.",
+    title: "You talk to the people who built it",
+    body: "No qualification call and no discovery deck. The first conversation is with someone who can answer a question about the schema.",
   },
   {
-    // This used to promise "a real organization's record". Offering to
-    // screen-share a real organization's record with anyone who books a slot is a
-    // privacy problem, not a copy problem — the walkthrough runs on a
-    // demonstration organization and always did.
-    title: "30 minutes, screen shared",
-    body: "We open a demonstration organization built on the same model — seats, approvals, the budget, the handoff packet — and you ask what you want to see. It carries representative data, never a real organization’s records.",
+    title: "Thirty minutes, on a live workspace",
+    body: "Seats, approvals, the ledger and a handoff packet, opened in the product. The workspace carries representative data rather than another organization’s records.",
   },
   {
-    title: "We will tell you what is not built",
-    body: "Some of what you might want is planned rather than shipped. You will hear which is which on the call, not after a contract.",
+    title: "You leave knowing the roadmap",
+    body: "What is shipped, what is in validation and what is scheduled — separated, on the call, in writing afterwards.",
   },
+];
+
+/**
+ * Where to write, by what you need. These are real groups, each with an owner —
+ * see the map in lib/site.ts.
+ */
+const DESKS = [
+  { label: "Sales and procurement", address: site.email.sales },
+  { label: "Security review", address: site.email.security },
+  { label: "Data protection", address: site.email.privacy },
+  { label: "Legal and contracts", address: site.email.legal },
 ];
 
 export default function ContactPage() {
@@ -66,11 +56,11 @@ export default function ContactPage() {
     <>
       <PageHeader
         eyebrow="Contact"
-        title="See your own handoff in Tenure."
-        intro="Tell us what you want to see, or just email us. Whichever is less friction for you — both reach the same two people."
+        title="See Tenure on your own handoff."
+        intro="Tell us what you run and which parts matter. We open exactly those."
       />
 
-      <Section backdropSeed={24} tone="canvas" backdrop="quiet" divide={false}>
+      <Section tone="canvas" backdrop="light" divide={false}>
         <Container>
           <div className="grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
             {/* The composer. `id` is the target of the header CTA when the
@@ -78,59 +68,48 @@ export default function ContactPage() {
                 clears the fixed header so the panel is not tucked under it. */}
             <Panel className="scroll-mt-24" id="request">
               <PanelBar
-                title="Ask for a walkthrough"
+                title="Request a demo"
                 meta="composed here, sent from your own mail app"
               />
               <div className="p-5 sm:p-7">
                 <p className="max-w-lg leading-relaxed text-ink-soft">
                   Tell us what kind of organization you run and which parts of
-                  Tenure you want to see. We will open exactly those, on a
-                  demonstration organization, and answer what is not built yet.
+                  Tenure you want to see. We open exactly those, on a live
+                  workspace, and answer what sits where on the roadmap.
                 </p>
 
                 <div className="mt-6">
                   <WalkthroughRequest />
                 </div>
 
-                <p className="mt-4 text-caption leading-relaxed text-ink-faint">
-                  Prefer to pick a slot yourself?{" "}
-                  {/*
-                    A plain anchor, always rendered, never a script-dependent
-                    handler. This is the path that survives a blocked third party,
-                    a popup blocker and JavaScript being off entirely — which is
-                    exactly what the old button-plus-popup CTA did not.
-                  */}
-                  <a
-                    href={site.calendlyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-accent-text underline underline-offset-4 hover:text-accent"
-                  >
-                    Open our calendar
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>{" "}
-                  &mdash; that one is Calendly, a third party: it sets its own
-                  cookies and receives the details you enter. Nothing from it loads
-                  on this site.
-                </p>
               </div>
             </Panel>
 
             {/* The fallback that cannot be blocked */}
             <div className="space-y-6">
               <Panel>
-                <PanelBar title="Or just email us" meta="straight to both founders" />
+                <PanelBar title="Write to us directly" meta="every address reaches an owner" />
                 <div className="p-5 sm:p-7">
                   <p className="text-body leading-relaxed text-ink-soft">
-                    No form, no dialog, no script. We answer the same day, most
-                    days.
+                    No form and no routing queue. Pick the desk that matches what
+                    you need.
                   </p>
-                  <a
-                    href={`mailto:${site.email}`}
-                    className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-canvas px-4 py-2.5 font-mono text-body-sm text-accent-text transition-colors hover:border-accent/40 hover:bg-accent-muted"
-                  >
-                    {site.email}
-                  </a>
+                  <ul className="mt-4 space-y-2.5">
+                    {DESKS.map((d) => (
+                      <li
+                        key={d.address}
+                        className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1"
+                      >
+                        <span className="text-body-sm text-ink-soft">{d.label}</span>
+                        <a
+                          href={`mailto:${d.address}`}
+                          className="font-mono text-body-sm text-accent-text underline-offset-4 transition-colors hover:text-accent hover:underline"
+                        >
+                          {d.address}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
                 <PanelNote>
                   Evaluating Tenure for an institution? The{" "}
@@ -140,9 +119,9 @@ export default function ContactPage() {
                   >
                     security page
                   </a>{" "}
-                  documents tenant isolation, the access model, audit behaviour and
-                  our AI subprocessor, with what is live separated from what is
-                  planned. Send it to your reviewer before you send us.
+                  covers tenant isolation, the access model, audit behaviour and
+                  the AI subprocessor, written for review. Send it to your
+                  reviewer before you send us.
                 </PanelNote>
               </Panel>
 

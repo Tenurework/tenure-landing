@@ -77,7 +77,7 @@ function Check() {
 
 export function AiOnboarding() {
   return (
-    <Section from="subtle" tone="band" backdrop="band" backdropSeed={6} space={SECTION_TIGHT}>
+    <Section from="subtle" tone="band" backdrop="band" space={SECTION_TIGHT}>
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* LEFT, copy */}

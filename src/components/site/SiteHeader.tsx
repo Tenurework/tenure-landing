@@ -6,7 +6,6 @@ import { useEffect, useRef, useState } from "react";
 import { Wordmark } from "@/components/brand/Wordmark";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { Button } from "@/components/ui/Button";
-import { ThemeToggle } from "@/components/site/ThemeToggle";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
@@ -145,7 +144,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden min-w-0 items-center gap-3 lg:flex">
-          <ThemeToggle />
           {/* On /contact the CTA would otherwise link to the page it is already
               on — a dead control in the most prominent slot on the site. There it
               becomes an in-page jump to the request composer instead. */}
@@ -236,7 +234,6 @@ export function SiteHeader() {
               );
             })}
             <div className="mt-3 flex items-center justify-between gap-3 px-2">
-              <ThemeToggle />
             </div>
             <div className="mt-3 px-2">
               {pathname === "/contact" ? (

@@ -16,7 +16,7 @@ export function StructuredData() {
     "@id": `${site.url}/#organization`,
     name: site.name,
     url: site.url,
-    email: site.email,
+    email: site.email.general,
     logo: {
       "@type": "ImageObject",
       url: `${site.url}/og.png`,

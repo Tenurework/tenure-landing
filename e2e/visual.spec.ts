@@ -228,7 +228,7 @@ test("the contact surface matches its baseline", async ({ page }) => {
   // composer were already open the shot would be of a different thing entirely,
   // and the point of this baseline — that the page reads correctly before any
   // interaction — would be lost.
-  await expect(page.getByRole("button", { name: "Request a walkthrough" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Request a demo" })).toBeVisible();
   await expect(page.getByRole("dialog")).toBeHidden();
 
   await shoot(surface, "contact-surface");

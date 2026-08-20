@@ -57,8 +57,8 @@ check("C-003", "18 of 41 models carry institutionId", () => {
     registry.match(/export const TENANT_SCOPED = \[(.*?)\] as const/s)?.[1].match(/"[^"]+"/g)
       ?.length ?? 0;
   return {
-    ok: models === 41 && scoped === 18,
-    detail: `${scoped} of ${models} (site publishes 18 of 41)`,
+    ok: models === 41 && scoped === 22,
+    detail: `${scoped} of ${models} (site publishes 22 of 41)`,
   };
 });
 
@@ -141,8 +141,8 @@ check("C-015", "published test counts are still a floor, not an overstatement", 
   const unitFiles = files.filter(collected).length;
   const e2e = count((f) => /^apps\/web\/e2e\/.*\.spec\.ts$/.test(f), /^\s*test\s*\(/gm);
   return {
-    ok: unit > 950 && e2e === 161,
-    detail: `${unit} declared unit cases across ${unitFiles} files (site: "more than 950"), ${e2e} e2e (site: 161)`,
+    ok: unit > 1100 && e2e === 163,
+    detail: `${unit} declared unit cases across ${unitFiles} files (site: "more than 1,100"), ${e2e} e2e (site: 163)`,
   };
 });
 

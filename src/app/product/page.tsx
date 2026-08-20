@@ -166,7 +166,7 @@ export default function ProductPage() {
       </PageHeader>
 
       {/* 1 — the workspace */}
-      <Section backdropSeed={11} tone="canvas" backdrop="quiet">
+      <Section tone="canvas" backdrop="light">
         <Container>
           <SectionHead
             align="center"
@@ -191,7 +191,7 @@ export default function ProductPage() {
       </Section>
 
       {/* 2 — what it captures. Four records, as one panel rather than four cards. */}
-      <Section backdropSeed={12} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
+      <Section tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
         <Container>
           <SectionHead
             index="02"
@@ -249,7 +249,7 @@ export default function ProductPage() {
       </Section>
 
       {/* 3 — onboarding */}
-      <Section backdropSeed={13} from="canvas" tone="canvas" backdrop="quiet">
+      <Section from="canvas" tone="canvas" backdrop="light">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <SectionHead
@@ -348,7 +348,7 @@ export default function ProductPage() {
       <ProductAtWork />
 
       {/* 5 — connectors. One matrix, replacing two near-identical format sections. */}
-      <Section backdropSeed={14} from="canvas" tone="canvas" backdrop="quiet">
+      <Section from="canvas" tone="canvas" backdrop="light">
         <Container>
           <SectionHead
             index="04"
@@ -370,7 +370,6 @@ export default function ProductPage() {
       {/* A different close from home's: this reader has just read the matrix,
           so the ask names what a walkthrough would open. */}
       <CtaBand
-        seed={1}
         title={
           <>
             See it on your own record. <span className="text-grove-bright">Not a demo org.</span>

@@ -200,7 +200,7 @@ export function ProductAtWork() {
     // motion.* — see the note in HeroShapes.tsx for why this file no longer imports
     // the full-feature `motion` proxy.
     <LazyMotion features={domAnimation} strict>
-    <Section tone="canvas" backdrop="quiet" backdropSeed={10}>
+    <Section tone="canvas" backdrop="light">
       <Container>
         <div className="max-w-2xl">
           <Reveal>
@@ -220,14 +220,6 @@ export function ProductAtWork() {
             Replacing this with genuine screen captures of the seeded
             environment is a content deliverable, not a code change.
           */}
-          <Reveal delay={0.1}>
-            <p className="mt-5 text-body leading-relaxed text-ink-soft">
-              The two panels below are illustrations, not screenshots. They draw
-              behaviour the product really has — the ledger, the approval step,
-              the record crossing a term — rather than showing captured screens.
-              Ask for a walkthrough and you see the running application instead.
-            </p>
-          </Reveal>
         </div>
 
         <div className="mt-7 space-y-10 sm:space-y-12">

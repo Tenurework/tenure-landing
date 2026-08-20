@@ -41,7 +41,7 @@ export function Audiences() {
   const a = site.audiences.find((x) => x.sector === active) ?? site.audiences[0];
 
   return (
-    <Section from="subtle" tone="canvas" backdrop="quiet" backdropSeed={2}>
+    <Section from="subtle" tone="canvas" backdrop="light">
       <Container>
         <SectionHead
           align="center"

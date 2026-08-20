@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { ALL_ROUTES, contrastRatio } from "./support";
+import {ALL_ROUTES} from "./support";
 import { site } from "../src/lib/site";
 
 /**
@@ -25,8 +25,6 @@ import { site } from "../src/lib/site";
  */
 test.describe.configure({ timeout: 90_000 });
 
-/** localStorage key written by the inline head script (`ThemeScript.tsx`). */
-const THEME_KEY = "tenure-theme";
 
 /** Any calendly.com host, whichever asset it is serving. */
 const CALENDLY = /https?:\/\/([a-z0-9-]+\.)*calendly\.com\//i;
@@ -52,53 +50,8 @@ async function hydrated(page: Page) {
   );
 }
 
-/**
- * Returns a getter for the theme radios, opening the mobile menu first when the
- * header control is collapsed. The desktop control is `display:none` below the
- * `md` breakpoint, so it is not in the accessibility tree and `getByRole` will
- * not match it — which is exactly the behaviour we want to rely on.
- */
-async function themeRadios(page: Page) {
-  const get = (label: "System" | "Light" | "Dark") =>
-    page.getByRole("radio", { name: label, exact: true });
-  if ((await get("Dark").count()) === 0) {
-    await page.getByRole("button", { name: "Open menu" }).click();
-    await expect(get("Dark")).toBeVisible();
-  }
-  return get;
-}
 
-/** Picks a theme through the real control and waits for it to land. */
-async function choose(page: Page, label: "System" | "Light" | "Dark") {
-  const get = await themeRadios(page);
-  await get(label).check();
-  await expect(get(label)).toBeChecked();
-}
 
-/**
- * The page background as real sRGB bytes.
- *
- * The tokens are authored in OKLCH and Chromium serialises `backgroundColor`
- * in that same space, so the string cannot be read as rgb(). Painting it to a
- * 1x1 canvas asks the engine for the colour it would actually put on screen,
- * which is the thing under test.
- */
-async function bodyBackground(page: Page): Promise<[number, number, number]> {
-  const rgb = await page.evaluate(() => {
-    const value = getComputedStyle(document.body).backgroundColor;
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = 1;
-    const ctx = canvas.getContext("2d")!;
-    ctx.fillStyle = "#ff00ff";
-    ctx.fillStyle = value;
-    const parsed = ctx.fillStyle !== "#ff00ff";
-    ctx.fillRect(0, 0, 1, 1);
-    const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
-    return { value, parsed, rgb: [r, g, b] as [number, number, number] };
-  });
-  expect(rgb.parsed, `unreadable background colour: ${rgb.value}`).toBe(true);
-  return rgb.rgb;
-}
 
 /** Walks the whole document so reveal/in-view content has been triggered. */
 async function scrollThrough(page: Page) {
@@ -119,101 +72,38 @@ async function scrollThrough(page: Page) {
 }
 
 /* ========================================================================== */
-/* 1. THEME                                                                    */
+/* 1. THEME — deleted 2026-08-20                                               */
 /* ========================================================================== */
+/*
+  The site renders one way now. The toggle, the inline pre-paint script and the
+  second palette were all removed, so the eleven tests that lived here — which
+  asserted data-theme round-tripping, localStorage persistence and no flash of
+  the wrong theme — were asserting machinery that no longer exists.
 
-test.describe("theme control", () => {
-  test("dark and light write data-theme; system removes it", async ({ page }) => {
+  What replaced them is smaller and stronger, in the "one theme" test below:
+  nothing writes data-theme, and the served CSS carries no dark palette. That
+  catches a reintroduction, which is the only regression left to catch.
+*/
+test.describe("one theme", () => {
+  test("nothing sets data-theme, and no dark palette ships", async ({ page }) => {
     await page.goto("/");
-    await hydrated(page);
-    const html = page.locator("html");
+    await expect(page.locator("html")).not.toHaveAttribute("data-theme", /.*/);
 
-    await choose(page, "Dark");
-    await expect(html).toHaveAttribute("data-theme", "dark");
-    expect(await page.evaluate((k) => localStorage.getItem(k), THEME_KEY)).toBe("dark");
+    // The toggle's controls are gone from the header, both viewports.
+    await expect(page.getByRole("radiogroup", { name: /colou?r theme/i })).toHaveCount(0);
 
-    await choose(page, "Light");
-    await expect(html).toHaveAttribute("data-theme", "light");
-    expect(await page.evaluate((k) => localStorage.getItem(k), THEME_KEY)).toBe("light");
-
-    // "System" must remove the attribute outright rather than write a value,
-    // so the prefers-color-scheme rules in globals.css take over again and keep
-    // following the OS if it changes mid-session.
-    await choose(page, "System");
-    await expect(html).not.toHaveAttribute("data-theme", /.*/);
-    expect(await page.evaluate((k) => localStorage.getItem(k), THEME_KEY)).toBeNull();
-
-    // …and the page really is following the OS again.
-    const prefersDark = await page.evaluate(
-      () => matchMedia("(prefers-color-scheme: dark)").matches,
-    );
-    const systemBg = await bodyBackground(page);
-    await choose(page, prefersDark ? "Dark" : "Light");
-    expect(await bodyBackground(page)).toEqual(systemBg);
-  });
-
-  test("the choice survives a reload", async ({ page }) => {
-    await page.goto("/");
-    await hydrated(page);
-    await choose(page, "Dark");
-
-    await page.reload();
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await hydrated(page);
-
-    // The control itself must come back showing the restored choice, not the
-    // "system" default it server-renders.
-    const get = await themeRadios(page);
-    await expect(get("Dark")).toBeChecked();
-    await expect(get("System")).not.toBeChecked();
-  });
-
-  test("the theme is applied during parsing, so there is no flash", async ({ page }) => {
-    await page.goto("/");
-    await hydrated(page);
-    await choose(page, "Dark");
-
-    // Records `data-theme` the instant <body> joins the document. The inline
-    // head script is parser-blocking, so it has already run by then; anything
-    // that waited for hydration (useEffect, next/script) would record "none"
-    // and this assertion would fail — which is precisely the flash.
-    await page.addInitScript(() => {
-      (window as unknown as { __themeAtParse?: string }).__themeAtParse = "unset";
-      new MutationObserver((_records, observer) => {
-        if (!document.body) return;
-        (window as unknown as { __themeAtParse?: string }).__themeAtParse =
-          document.documentElement.getAttribute("data-theme") ?? "none";
-        observer.disconnect();
-      }).observe(document, { childList: true, subtree: true });
+    // And the palette itself: a dark block in the served CSS would mean the
+    // theme came back through the stylesheet rather than through the UI.
+    const css = await page.evaluate(async () => {
+      const href = [...document.querySelectorAll("link[rel=stylesheet]")]
+        .map((l) => (l as HTMLLinkElement).href)
+        .find(Boolean);
+      return href ? await (await fetch(href)).text() : "";
     });
-
-    await page.reload();
-    expect(
-      await page.evaluate(
-        () => (window as unknown as { __themeAtParse?: string }).__themeAtParse,
-      ),
-      "data-theme must already be set when <body> is parsed",
-    ).toBe("dark");
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  });
-
-  test("switching theme changes the rendered background", async ({ page }) => {
-    await page.goto("/");
-    await hydrated(page);
-
-    await choose(page, "Light");
-    const light = await bodyBackground(page);
-    await choose(page, "Dark");
-    const dark = await bodyBackground(page);
-
-    expect(dark).not.toEqual(light);
-    // Not merely different — genuinely inverted. A theme that only shifts a
-    // hue would pass an inequality check and fail a user.
-    expect(
-      contrastRatio(light, dark),
-      `light ${light} vs dark ${dark} are barely distinguishable`,
-    ).toBeGreaterThan(5);
-    expect(light[0] + light[1] + light[2]).toBeGreaterThan(dark[0] + dark[1] + dark[2]);
+    expect(css.length, "the stylesheet was fetched").toBeGreaterThan(1000);
+    expect(css).not.toContain('data-theme="dark"');
+    expect(css).not.toContain("prefers-color-scheme:dark");
+    expect(css).not.toContain("prefers-color-scheme: dark");
   });
 });
 
@@ -233,20 +123,35 @@ test.describe("conversion CTA", () => {
             href: el.getAttribute("href"),
             text: (el.textContent ?? "").replace(/\s+/g, " ").trim(),
             inFooter: !!el.closest("footer"),
+            // A control that OPENS THE COMPOSER is a dialog trigger, not
+            // navigation. It declares itself as one, and that declaration is
+            // what exempts it below.
+            opensDialog: el.getAttribute("aria-haspopup") === "dialog",
           }))
           .filter((c) => c.text.includes(label));
       }, site.ctaLabel);
 
       expect(ctas.length, `${route} has no "${site.ctaLabel}" CTA`).toBeGreaterThan(0);
 
-      // The production bug: a <button> that called a third-party popup API and
-      // did nothing at all when that third party was blocked.
+      /*
+        The production bug this guards: a <button> that called a third-party
+        popup API and did nothing at all when that third party was blocked.
+
+        The one legitimate button is the composer's own trigger on /contact. It
+        was previously excluded by accident — it carried a different label
+        ("Request a walkthrough" against a CTA reading "Book a walkthrough"),
+        which is exactly the four-names-for-one-action problem that got fixed.
+        Now that every control says the same thing, the exemption has to be
+        stated: a dialog trigger declares `aria-haspopup="dialog"`, and nothing
+        else may be a button.
+      */
       expect(
-        ctas.filter((c) => c.tag === "BUTTON"),
-        `${route} renders the CTA as a button`,
+        ctas.filter((c) => c.tag === "BUTTON" && !c.opensDialog),
+        `${route} renders the CTA as a button that does not open a dialog`,
       ).toEqual([]);
 
       for (const cta of ctas) {
+        if (cta.opensDialog) continue;
         /*
           Every control carrying site.ctaLabel is a real anchor — that is the
           guarantee this test exists for, after a <button> calling a third-party
@@ -285,7 +190,7 @@ test.describe("conversion CTA", () => {
     // The destination is the real conversion surface, not just a matching URL —
     // and what opens there is Tenure's own composer, not a third party's widget.
     await expect(
-      page.getByRole("button", { name: "Request a walkthrough" }),
+      page.getByRole("button", { name: "Request a demo" }),
     ).toBeVisible();
   });
 
@@ -299,9 +204,9 @@ test.describe("conversion CTA", () => {
       // A plain anchor still navigates with no script runtime at all.
       await cta.click();
       await expect(page).toHaveURL(/\/contact$/);
-      await expect(page.getByRole("link", { name: site.email }).first()).toHaveAttribute(
+      await expect(page.getByRole("link", { name: site.email.sales }).first()).toHaveAttribute(
         "href",
-        `mailto:${site.email}`,
+        `mailto:${site.email.sales}`,
       );
     } finally {
       await context.close();
@@ -355,7 +260,7 @@ test.describe("third-party loading", () => {
     await page.waitForLoadState("networkidle");
     await hydrated(page);
 
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await page.getByLabel("Your name").fill("Alex Mercer");
     await page.waitForLoadState("networkidle");
@@ -393,7 +298,7 @@ test.describe("the walkthrough composer", () => {
     await page.goto("/contact");
     await hydrated(page);
 
-    const trigger = page.getByRole("button", { name: "Request a walkthrough" });
+    const trigger = page.getByRole("button", { name: "Request a demo" });
     await expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
 
     const dialog = page.getByRole("dialog");
@@ -421,7 +326,7 @@ test.describe("the walkthrough composer", () => {
   }) => {
     await page.goto("/contact");
     await hydrated(page);
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
 
     await page.getByLabel("Your name").fill("Alex Mercer");
     await page.getByLabel("Organization name").fill("Northside Community Trust");
@@ -437,9 +342,10 @@ test.describe("the walkthrough composer", () => {
 
     const send = page.getByRole("link", { name: "Open in your email app" });
     const href = await send.getAttribute("href");
-    expect(href, "the send control is a mailto to the address in site.ts").toContain(
-      `mailto:${site.email}`,
-    );
+    expect(
+      href,
+      "the composer is a SALES motion and must reach the sales desk, not a catch-all",
+    ).toContain(`mailto:${site.email.sales}`);
 
     const url = new URL(href!);
     const params = new URLSearchParams(url.search);
@@ -466,7 +372,7 @@ test.describe("the walkthrough composer", () => {
     */
     await page.goto("/contact");
     await hydrated(page);
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
 
     const status = page.getByRole("dialog").getByText(/This page sends nothing on its own/);
     await expect(status, "before the handoff, the standing disclaimer shows").toBeVisible();
@@ -492,7 +398,7 @@ test.describe("the walkthrough composer", () => {
     // and presses Enter expects it to submit.
     await page.goto("/contact");
     await hydrated(page);
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
 
     const form = page.getByRole("dialog").locator("form");
     await expect(form, "the composer body is a <form>").toHaveCount(1);
@@ -510,7 +416,7 @@ test.describe("the walkthrough composer", () => {
     // beside it.
     await page.goto("/contact");
     await hydrated(page);
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
 
     const select = page.getByLabel("Kind of organization");
     await expect(select).toBeVisible();
@@ -536,38 +442,34 @@ test.describe("the walkthrough composer", () => {
     try {
       await page.goto("/contact");
 
-      const email = page.getByRole("main").getByRole("link", { name: site.email });
+      const email = page.getByRole("main").getByRole("link", { name: site.email.sales });
       await expect(email.first()).toBeVisible();
-      await expect(email.first()).toHaveAttribute("href", `mailto:${site.email}`);
+      await expect(email.first()).toHaveAttribute("href", `mailto:${site.email.sales}`);
 
-      const scheduler = page
-        .getByRole("main")
-        .getByRole("link", { name: /Open our calendar/ });
-      await expect(scheduler).toBeVisible();
-      await expect(scheduler).toHaveAttribute("href", site.calendlyUrl);
-      await expect(scheduler).toHaveAttribute("target", "_blank");
-      await expect(scheduler).toHaveAttribute("rel", /noopener/);
+      // The scheduler anchor was deleted with Calendly on 2026-08-20. The email
+      // address below is now the only path that needs no JavaScript, which is why
+      // it is asserted rather than merely present.
     } finally {
       await context.close();
     }
   });
 
-  test("with calendly blocked, both fallbacks are still reachable", async ({ page }) => {
+  test("with every third party blocked, the conversion path still works", async ({ page }) => {
     await page.route(CALENDLY, (route) => route.abort("blockedbyclient"));
     await page.goto("/contact");
     await hydrated(page);
 
     // A blocked third party cannot affect a first-party dialog. That is the whole
     // point of the change: the conversion path no longer has a dependency to break.
-    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+    await page.getByRole("button", { name: "Request a demo" }).click();
     await expect(page.getByRole("dialog")).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Open in your email app" }),
     ).toBeVisible();
 
     await page.keyboard.press("Escape");
-    const email = page.getByRole("main").getByRole("link", { name: site.email });
-    await expect(email.first()).toHaveAttribute("href", `mailto:${site.email}`);
+    const email = page.getByRole("main").getByRole("link", { name: site.email.sales });
+    await expect(email.first()).toHaveAttribute("href", `mailto:${site.email.sales}`);
   });
 });
 

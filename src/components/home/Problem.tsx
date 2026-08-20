@@ -73,7 +73,7 @@ function Check() {
 
 export function Problem() {
   return (
-    <Section from="canvas" tone="subtle" backdrop="drafting" backdropSeed={1} space={SECTION_TIGHT}>
+    <Section from="canvas" tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           eyebrow="The cost of turnover"

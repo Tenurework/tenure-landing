@@ -49,7 +49,7 @@ export const routes = [
     path: "/pilot",
     title: "Pilot",
     description:
-      "A planned Fall 2026 pilot with Simon’s Office of Student Engagement: scope, who does what, onboarding inputs, support model and how success is measured.",
+      "Tenure’s first deployment: Fall 2026 with Simon’s Office of Student Engagement. Scope, responsibilities, onboarding, support and how the term is measured.",
     priority: 0.9,
     changeFrequency: "monthly",
     indexable: true,
@@ -77,7 +77,7 @@ export const routes = [
     path: "/contact",
     title: "Contact",
     description:
-      "Book a walkthrough of Tenure or email the founders directly. No form required — scheduling opens only when you ask for it.",
+      "Request a demo of Tenure, or write to the desk that matches what you need: sales, security review, data protection or legal.",
     priority: 0.7,
     changeFrequency: "yearly",
     indexable: true,
@@ -95,7 +95,7 @@ export const routes = [
     path: "/terms",
     title: "Terms",
     description:
-      "The terms for using Tenure during early access and the planned Fall 2026 pilot.",
+      "The terms for using Tenure during early access and the Fall 2026 deployment.",
     priority: 0.3,
     changeFrequency: "yearly",
     indexable: true,

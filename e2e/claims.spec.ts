@@ -554,7 +554,6 @@ test.describe("forbidden phrases", () => {
 
 /** The office, however its possessive is typeset. */
 const OFFICE = /(?:Simon's\s+)?Office of Student Engagement/i;
-const HEDGES = /\b(?:plan|plans|planned|planning|propose|proposed|proposal|proposing|target|targets|targeting|intend|intended)\b/i;
 
 test.describe("pilot language", () => {
   test("no phrase from the register's pilot blocklist appears", async ({ page }) => {
@@ -628,62 +627,101 @@ test.describe("pilot language", () => {
     expect(violations, report(violations)).toHaveLength(0);
   });
 
-  test(`"${site.pilot.season}" beside the office name is always hedged`, async ({ page }) => {
+  /*
+    THIS GUARD USED TO REQUIRE A HEDGE, AND IT WAS RIGHT TO.
+
+    Until 2026-08-20 C-021 read "MUST be described as planned or proposed",
+    because the deployment itself was unsettled. The site owner has since
+    confirmed the opposite: the Fall 2026 deployment IS going ahead, and the only
+    thing that does not exist is a commercial relationship — it is unpaid and
+    unsigned.
+
+    Those are two different facts and the old rule conflated them, which is what
+    produced eight consecutive denials on /pilot and the "proposed, not
+    contracted" strip under the hero.
+
+    So the ratchet turns rather than being deleted. The season beside the office
+    no longer needs a hedge. What it must never carry is an assertion of
+    commerce or endorsement, because that is the half that is still untrue — and
+    that half is now enforced harder than the hedge ever was.
+  */
+  test(`"${site.pilot.season}" beside the office never implies commerce or endorsement`, async ({
+    page,
+  }) => {
     const pages = await siteText(page);
     const season = new RegExp(`\\b${site.pilot.season}\\b`, "i");
 
-    const unhedged: string[] = [];
+    const violations: string[] = [];
     let checked = 0;
 
     for (const text of pages) {
       for (const sentence of text.sentences) {
         if (!season.test(sentence) || !OFFICE.test(sentence)) continue;
         checked += 1;
-        if (HEDGES.test(sentence)) continue;
-        unhedged.push(
-          [
-            `UNHEDGED PILOT CLAIM on ${text.route}`,
-            `  sentence  : "${sentence.slice(0, 300)}"`,
-            `  because   : C-021 — verbal agreement only, confirmed 2026-08-02. No signed`,
-            `              or written commitment exists, so ${site.pilot.season} with the office`,
-            `              may only be stated as planned, proposed or targeted.`,
-            `  fix       : add "planned" / "proposed" / "targeting" to THIS sentence.`,
-          ].join("\n"),
-        );
+        for (const re of forbiddenPilotPhrases) {
+          if (!re.test(sentence)) continue;
+          violations.push(
+            [
+              `PILOT RELATIONSHIP OVERSTATED on ${text.route}`,
+              `  sentence  : "${sentence.slice(0, 300)}"`,
+              `  matched   : ${re}`,
+              `  because   : C-021 — the Fall 2026 deployment is real and may be stated`,
+              `              definitely, but it is UNPAID and UNSIGNED. Never imply a`,
+              `              customer, a contract, a partnership or an endorsement.`,
+            ].join("\n"),
+          );
+        }
       }
     }
 
-    // A silent zero would make this test unfalsifiable: the site does name the
-    // office next to the season, and it must keep doing so hedged.
-    expect(checked, "no sentence names the office beside the pilot season — has the copy moved?")
+    // A silent zero would make this unfalsifiable: the site does name the office
+    // beside the season, and it must keep doing so.
+    expect(checked, "no sentence names the office beside the season — has the copy moved?")
       .toBeGreaterThan(0);
-    expect(unhedged, report(unhedged)).toHaveLength(0);
+    expect(violations, report(violations)).toHaveLength(0);
   });
 
-  test("the register never calls a verbal pilot settled", () => {
+  test("the register never claims a commercial relationship that does not exist", () => {
+    /*
+      The previous form of this test asserted that site.pilot.status stayed in
+      {planned, proposed, targeting} for as long as the agreement was verbal. That
+      guarded the wrong fact — the deployment being real was never in doubt, and
+      forcing "planned" made the site understate it.
+
+      What must stay true is the COMMERCIAL position: while C-021's evidence says
+      the deployment is unpaid and unsigned, the register may not carry an
+      availability that asserts a completed commercial arrangement, and the
+      forbidden-phrase list has to keep protecting against it.
+    */
     const pilot = claimById.get("C-021")!;
-    const verbalOnly = pilot.evidence.some((e) =>
-      /\bverbal\b|\bno (?:written|signed)\b|\bunsigned\b/i.test(e),
+    const unpaid = pilot.evidence.some((e) =>
+      /\bunpaid\b|\bno (?:written|signed)\b|\bunsigned\b|\bno commercial terms\b/i.test(e),
     );
 
-    if (verbalOnly) {
+    if (unpaid) {
       expect(
         ASSERTS_EXISTENCE,
-        `C-021 is availability "${pilot.availability}" while its only evidence is verbal:\n` +
+        `C-021 is availability "${pilot.availability}" while its evidence says the ` +
+          `arrangement is unpaid and unsigned:\n` +
           pilot.evidence.map((e) => `    - ${e}`).join("\n"),
       ).not.toContain(pilot.availability);
-      expect(
-        site.pilot.status,
-        "site.pilot.status must stay hedged while the pilot is verbal-only",
-      ).toMatch(/^(?:planned|proposed|targeting)$/);
+
+      // The guard that replaced the hedge has to actually exist.
+      const src = forbiddenPilotPhrases.map((r) => r.source).join(" ");
+      for (const word of ["customer", "partner", "sponsored by", "paying"]) {
+        expect(
+          src,
+          `forbiddenPilotPhrases must still block "${word}" while the pilot is unpaid`,
+        ).toContain(word.split(" ")[0]);
+      }
     } else {
-      // The pilot was upgraded — the register must now cite the document.
+      // Upgraded — the register must now cite the document.
       expect(
         pilot.evidence.join(" "),
-        "C-021 no longer says the agreement is verbal, so it must cite the signed document",
+        "C-021 no longer says the arrangement is unpaid, so it must cite the signed document",
       ).toMatch(/\bsigned\b|\bexecuted\b|\bcountersigned\b/i);
     }
-  });
+  })
 });
 
 /* ========================================================================== */

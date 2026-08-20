@@ -35,7 +35,7 @@ These need a signature, counsel, or a third party. They are not defects and cann
   - The 'not by us' half is verifiable in code. The 'not by Anthropic' half is a statement about a third party’s contractual terms and has NOT been grounded in a reviewed agreement. Until it is, the site must attribute that half to Anthropic’s terms rather than asserting it as Tenure’s guarantee.
 - **C-021** — A Fall 2026 pilot with Simon’s Office of Student Engagement.
   - Owner: Almamy Diaby · review by 2026-09-02
-  - MUST be described as planned or proposed. Forbidden: 'partner', 'customer', 'sponsor', 'is rolling out', 'will deploy', or any implication of completed procurement or university endorsement. Upgrade to 'live' only when a signed document exists and is referenced here.
+  - The Fall 2026 deployment with the office MAY be stated definitely — 'first deployment', 'goes live', 'deploying in Fall 2026'. It is UNPAID and unsigned, so never imply a commercial relationship or an endorsement: forbidden are 'customer', 'client', 'partner', 'sponsor', 'sponsored by', 'in partnership with', 'contract', 'paying', 'revenue', 'ARR', and any claim the university selected, procured, endorses or recommends Tenure. Never state a number of customers. The office is where Tenure deploys first, not a reference account. If a signed agreement later exists, cite it here and this row can carry commercial language.
 - **C-027** — FERPA-conscious handling of education records.
   - Owner: Almamy Diaby · review by 2026-09-02
   - Aspirational only, and NOT yet reviewed by counsel. Never 'FERPA compliant' or 'FERPA aligned'. Must always be accompanied by a statement that it is intent rather than a compliance answer.
@@ -49,9 +49,9 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-007` | Tenure AI answers only from records the person asking can already see, links its sources, and sends retrieved record text to Amazon Bedrock — running an Anthropic model — to compose the answer. | `/` `/product` `/trust` `/privacy` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-008` | If the model is unavailable, the ranked permission-scoped sources are still returned and the interface says which happened. | `/product` `/trust` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-030` | Customer records are never used to train any model. | `/privacy` `/trust` `components/home/AiOnboarding.tsx` | **BLOCKED — external** | Tenure | `276978b9` | Almamy Diaby | 2026-08-19 | 2026-09-02 |
+| `C-007` | Tenure AI answers only from records the person asking can already see, links its sources, and sends retrieved record text to Amazon Bedrock — running an Anthropic model — to compose the answer. | `/` `/product` `/trust` `/privacy` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-008` | If the model is unavailable, the ranked permission-scoped sources are still returned and the interface says which happened. | `/product` `/trust` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-030` | Customer records are never used to train any model. | `/privacy` `/trust` `components/home/AiOnboarding.tsx` | **BLOCKED — external** | Tenure | `84e61dcf` | Almamy Diaby | 2026-08-19 | 2026-09-02 |
 
 <details><summary><code>C-007</code> — evidence and limits</summary>
 
@@ -97,7 +97,7 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-036` | The subprocessors are AWS (hosting, database, documents), Anthropic (model provider), Vercel (this website only) and Calendly (scheduling, on /contact after an explicit click). | `/privacy` `/trust` | **Live in production** | Tenure | `276978b9` | Almamy Diaby | 2026-08-19 | 2026-11-19 |
+| `C-036` | The subprocessors are AWS (hosting, database, documents, and Bedrock for model inference), Anthropic (model provider on the fallback path) and Vercel (this website only). | `/privacy` `/trust` | **Live in production** | Tenure | `84e61dcf` | Almamy Diaby | 2026-08-19 | 2026-11-19 |
 | `C-026` | SOC 2. | `/trust (roadmap)` | **Roadmap** | none | `n/a` | Almamy Diaby | 2026-08-19 | 2026-11-19 |
 | `C-027` | FERPA-conscious handling of education records. | `/privacy` `/trust` | **BLOCKED — external** | none | `n/a` | Almamy Diaby | 2026-08-19 | 2026-09-02 |
 | `C-032` | The legal entity operating Tenure. | `/privacy` `/terms` | **BLOCKED — external** | external | `n/a` | Almamy Diaby | 2026-08-19 | 2026-09-02 |
@@ -108,7 +108,7 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 - infrastructure/terraform (ECS, RDS, S3, CloudFront — AWS US regions)
 - apps/web/src/lib/ai.ts:35 (Anthropic)
-- tenure-landing: Vercel response headers; src/app/contact/page.tsx (Calendly reached only by a plain outbound link, /contact only)
+- tenure-landing: Vercel response headers; no third-party origin is permitted by the CSP on any route
 
 **Qualification that must travel with this claim:** This list must stay complete. Adding anything that touches organizational records requires updating /privacy and notifying active organizations before it starts processing.
 
@@ -156,9 +156,10 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 **Evidence**
 
-- Verbal agreement only, confirmed by the site owner on 2026-08-02. NO written or signed commitment exists.
+- Agreed with the office and going ahead for Fall 2026; confirmed by the site owner 2026-08-20. It is UNPAID — no commercial terms are agreed and no money changes hands.
+- No signed procurement document exists. The deployment is real; the contract is not.
 
-**Qualification that must travel with this claim:** MUST be described as planned or proposed. Forbidden: 'partner', 'customer', 'sponsor', 'is rolling out', 'will deploy', or any implication of completed procurement or university endorsement. Upgrade to 'live' only when a signed document exists and is referenced here.
+**Qualification that must travel with this claim:** The Fall 2026 deployment with the office MAY be stated definitely — 'first deployment', 'goes live', 'deploying in Fall 2026'. It is UNPAID and unsigned, so never imply a commercial relationship or an endorsement: forbidden are 'customer', 'client', 'partner', 'sponsor', 'sponsored by', 'in partnership with', 'contract', 'paying', 'revenue', 'ARR', and any claim the university selected, procured, endorses or recommends Tenure. Never state a number of customers. The office is where Tenure deploys first, not a reference account. If a signed agreement later exists, cite it here and this row can carry commercial language.
 
 </details>
 
@@ -176,12 +177,12 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-009` | A signed per-user calendar feed that Outlook, Google Calendar and Apple Calendar can subscribe to with one link. | `/` `/product` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-010` | PDF, Word, Excel and PowerPoint files open inside Tenure; text files and spreadsheets can be edited in place with a save-conflict check. | `/` `/product` `/trust` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-012` | An existing budget spreadsheet can be uploaded and Tenure matches the columns however they were named, dropping subtotal rows, with a preview before anything is saved. | `/` `/product` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-029a` | A Slack workspace connector: OAuth install, channel routing and posting. | `/product` `/trust` | **Built in Parent, pending cutover** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-029b` | An integration catalog of 18 products, each declaring the credentials it needs, with availability computed from whether those credentials are present. | `/product` `/trust` | **Roadmap** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-029c` | Two-way sync, a public API, webhooks, or a connector to any product outside the catalog. | `/product (stated as NOT supported)` `/trust (stated as NOT supported)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-009` | A signed per-user calendar feed that Outlook, Google Calendar and Apple Calendar can subscribe to with one link. | `/` `/product` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-010` | PDF, Word, Excel and PowerPoint files open inside Tenure; text files and spreadsheets can be edited in place with a save-conflict check. | `/` `/product` `/trust` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-012` | An existing budget spreadsheet can be uploaded and Tenure matches the columns however they were named, dropping subtotal rows, with a preview before anything is saved. | `/` `/product` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-029a` | A Slack workspace connector: OAuth install, channel routing and posting. | `/product` `/trust` | **Built in Parent, pending cutover** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-029b` | An integration catalog of 18 products, each declaring the credentials it needs, with availability computed from whether those credentials are present. | `/product` `/trust` | **Roadmap** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-029c` | Two-way sync, a public API, webhooks, or a connector to any product outside the catalog. | `/product (stated as NOT supported)` `/trust (stated as NOT supported)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
 
 <details><summary><code>C-009</code> — evidence and limits</summary>
 
@@ -266,9 +267,9 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-006` | A two-gate approval chain across seven request types. | `/` `/product` `site.ts metrics` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-014` | 26 organizations and 209 seats modelled from the office’s own leadership roster. | `/` `site.ts metrics` `/pilot` | **Live in production** | Tenure | `276978b9` | Almamy Diaby | 2026-08-19 | 2026-11-19 |
-| `C-015` | 161 end-to-end tests and more than 950 unit tests run on every build. | `/` `site.ts metrics` `/pilot` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-006` | A two-gate approval chain across seven request types. | `/` `/product` `site.ts metrics` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-014` | 26 organizations and 209 seats modelled from the office’s own leadership roster. | `/` `site.ts metrics` `/pilot` | **Live in production** | Tenure | `84e61dcf` | Almamy Diaby | 2026-08-19 | 2026-11-19 |
+| `C-015` | 163 end-to-end tests and more than 1,100 unit tests run on every build. | `/` `site.ts metrics` `/pilot` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
 
 <details><summary><code>C-006</code> — evidence and limits</summary>
 
@@ -296,11 +297,11 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 **Evidence**
 
-- 33 e2e spec files containing 161 test() cases
+- e2e spec files containing 163 test() cases
 - apps/web/jest.config.js (testPathIgnorePatterns excludes *.itest.ts — those need a live PostgreSQL)
-- 78 unit test files containing 974 declared it()/test() cases — a FLOOR, see the qualification
+- 90 unit test files containing 1,156 declared it()/test() cases — a FLOOR, see the qualification
 
-**Qualification that must travel with this claim:** The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 974 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 950' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.
+**Qualification that must travel with this claim:** The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 1,156 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 1,100' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.
 
 </details>
 
@@ -308,17 +309,17 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-001` | Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and when a term ends the record stays on the seat while the outgoing officer’s access does not. | `/` `/product` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-002` | The handoff packet is assembled from the record itself — seats, current and previous holders, open approvals, deadlines and budget position — rather than written by the outgoing officer. | `/` `/product` `/pilot` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-005` | Every approval decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat’s behalf. | `/` `/product` `/trust` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-011` | History cannot be deleted: a seat carrying assignments, holdings or knowledge refuses deletion and must be retired; an active assignment is revoked to alumni rather than removed. | `/` `/trust` `site.ts metrics` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-013` | Two-party administrative succession: the outgoing administrator keeps authority until the named successor accepts, then the grant and step-down happen together. | `/trust` `/product` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-017` | An administration console with sixteen named capabilities across three strictly nested staff tiers, where navigation follows the capabilities the seat holds. | `/` `/product` `/pilot` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-019` | Approvals show how long they have sat in a gate (flagged at three and six days), and an approver can name a backup whose decisions are recorded as made on their behalf. | `/product` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-020` | Six of the office’s handbooks are transcribed as structured policies with their source document named. | `/product` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-018` | Deadlines published once by the office reach every organization, and reminders fire from infrastructure without anyone opening the app, once per person. | `/product` `/pilot` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-038` | Membership dues, per-member payment tracking, or any incoming-money transaction type. | `/ (not claimed)` `/product (not claimed)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-028` | Self-service bulk export of an organization’s record. | `/trust (roadmap)` `/privacy (manual, on request)` | **Roadmap** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-001` | Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and when a term ends the record stays on the seat while the outgoing officer’s access does not. | `/` `/product` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-002` | The handoff packet is assembled from the record itself — seats, current and previous holders, open approvals, deadlines and budget position — rather than written by the outgoing officer. | `/` `/product` `/pilot` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-005` | Every approval decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat’s behalf. | `/` `/product` `/trust` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-011` | History cannot be deleted: a seat carrying assignments, holdings or knowledge refuses deletion and must be retired; an active assignment is revoked to alumni rather than removed. | `/` `/trust` `site.ts metrics` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-013` | Two-party administrative succession: the outgoing administrator keeps authority until the named successor accepts, then the grant and step-down happen together. | `/trust` `/product` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-017` | An administration console with sixteen named capabilities across three strictly nested staff tiers, where navigation follows the capabilities the seat holds. | `/` `/product` `/pilot` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-019` | Approvals show how long they have sat in a gate (flagged at three and six days), and an approver can name a backup whose decisions are recorded as made on their behalf. | `/product` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-020` | Six of the office’s handbooks are transcribed as structured policies with their source document named. | `/product` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-018` | Deadlines published once by the office reach every organization, and reminders fire from infrastructure without anyone opening the app, once per person. | `/product` `/pilot` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-038` | Membership dues, per-member payment tracking, or any incoming-money transaction type. | `/ (not claimed)` `/product (not claimed)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-028` | Self-service bulk export of an organization’s record. | `/trust (roadmap)` `/privacy (manual, on request)` | **Roadmap** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
 
 <details><summary><code>C-001</code> — evidence and limits</summary>
 
@@ -443,17 +444,17 @@ These need a signature, counsel, or a third party. They are not defects and cann
 
 | ID | Claim | Where | Availability | Evidence repo | Commit | Owner | Verified | Review by |
 |---|---|---|---|---|---|---|---|---|
-| `C-003` | Multi-tenant isolation is enforced at the query layer by the database client itself, not by convention at each call site. | `/` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-004` | An append-only audit trail records both allows and denials; audit rows are only ever created, never updated or deleted. | `/` `/trust` | **Live, verified in CI** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-016` | The database and uploaded documents are encrypted at rest, and documents are served only through signed links that expire in ten minutes. | `/trust` `/privacy` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-033` | All traffic is redirected to HTTPS at the edge, with a TLS 1.2 minimum. | `/trust` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-034` | The database takes automated daily backups with deletion protection and a final snapshot on teardown; the document bucket has object versioning. | `/trust` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-035` | Restore testing, a documented recovery objective, or multi-region failover. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-037` | A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both approval gates. Every use is audited. | `/` `/trust` `/pilot` | **Live in production** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-03 | 2026-11-19 |
-| `C-024` | Separation of duties on approvals (a requester cannot approve their own request). | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-025` | Institution staff are scoped to their assigned organizations. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-031` | Cryptographic tamper-evidence on the audit trail. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
-| `C-023` | Institutional single sign-on (SAML / OIDC). | `/trust (stated as roadmap)` | **Roadmap** | Tenure | `276978b9` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-003` | Multi-tenant isolation is enforced at the query layer by the database client itself, not by convention at each call site. | `/` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-004` | An append-only audit trail records both allows and denials; audit rows are only ever created, never updated or deleted. | `/` `/trust` | **Live, verified in CI** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-016` | The database and uploaded documents are encrypted at rest, and documents are served only through signed links that expire in ten minutes. | `/trust` `/privacy` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-033` | All traffic is redirected to HTTPS at the edge, with a TLS 1.2 minimum. | `/trust` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-034` | The database takes automated daily backups with deletion protection and a final snapshot on teardown; the document bucket has object versioning. | `/trust` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-035` | Restore testing, a documented recovery objective, or multi-region failover. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-037` | A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both approval gates. Every use is audited. | `/` `/trust` `/pilot` | **Live in production** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-03 | 2026-11-19 |
+| `C-024` | Separation of duties on approvals (a requester cannot approve their own request). | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-025` | Institution staff are scoped to their assigned organizations. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-031` | Cryptographic tamper-evidence on the audit trail. | `/trust (stated as NOT supported)` | **Not supported** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
+| `C-023` | Institutional single sign-on (SAML / OIDC). | `/trust (stated as roadmap)` | **Roadmap** | Tenure | `84e61dcf` | Satvik Adyanthaya | 2026-08-19 | 2026-11-19 |
 
 <details><summary><code>C-003</code> — evidence and limits</summary>
 
@@ -464,7 +465,7 @@ These need a signature, counsel, or a third party. They are not defects and cann
 - .github/workflows/ci.yml:224
 - apps/web/src/lib/tenancy/isolation.itest.ts (real PostgreSQL, cross-tenant cases)
 
-**Qualification that must travel with this claim:** NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 18 of 41 models carry institutionId; eighteen more are registered as not independently enforceable at the query layer, and five are registered platform-global by design. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.
+**Qualification that must travel with this claim:** NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 22 of 41 models carry institutionId; the rest are registered either platform-global by design or not independently enforceable at the query layer. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.
 
 </details>
 
@@ -606,7 +607,6 @@ Enforced by `e2e/claims.spec.ts` against the rendered text of every route. A neg
 | `\bnever (invents\|hallucinates)\b` | Grounding is prompt-instructed, not verified | `C-007` |
 | `\b100% of actions\b` | Audit coverage is partial and not generated; messaging, feed and profile writes append nothing | `C-004` |
 | `\bevery answer (cites\|links)\b` | Citation is prompt-instructed and unverified; the route calls the model even with zero sources | `C-007` |
-| `\bcontact sales\b` | site.ts retired the phrase for overselling a two-founder company; use site.ctaLabel | `C-014` |
 | `\bversioned\b` | Document.version is an optimistic-lock counter; there is no DocumentVersion model, history or restore | `C-010` |
 | `\bexport everything,? anytime\b` | There is no bulk export path | `C-028` |
 | `\bseparation of duties\b` | No SoD control exists | `C-024` |
@@ -619,10 +619,12 @@ Enforced by `e2e/claims.spec.ts` against the rendered text of every route. A neg
 
 The Fall 2026 pilot is verbally agreed and **not contracted**, so nothing may present it as settled or imply university endorsement. Governed by `C-021`.
 
-- `Office of Student Engagement[^.]{0,40}\bis (rolling out\|deploying\|standing up)\b`
 - `\b(our\|a) (university )?partner\b`
 - `\bsponsored by\b`
 - `\bin partnership with\b`
+- `\b(our\|first\|founding) (customer\|client)s?\b`
+- `\bpaying (customer\|client\|institution)s?\b`
+- `\b(selected\|chose\|chosen\|procured\|endorse[sd]?\|recommends?) (us\|Tenure)\b`
 
 ## Revalidating
 

@@ -1086,7 +1086,13 @@ test.describe("prefers-reduced-motion", () => {
 test.describe("mobile chrome has accessible names", () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
-  test("menu button and theme radios are named and stay named", async ({ page }) => {
+  /*
+    This test used to cover TWO controls: the hamburger and the theme radios. The
+    theme control was deleted on 2026-08-20 along with the theme; the hamburger is
+    still icon-only and still the only way into navigation on a phone, so its half
+    of the coverage is kept rather than lost with it.
+  */
+  test("the menu button is named, and is renamed by its own state", async ({ page }) => {
     await page.goto("/", { waitUntil: "load" });
 
     const openBtn: Locator = page.getByRole("button", { name: "Open menu", exact: true });
@@ -1105,18 +1111,7 @@ test.describe("mobile chrome has accessible names", () => {
     // The same control, renamed for its new state — not a second button.
     await expect(closeBtn).toHaveAttribute("aria-expanded", "true");
 
-    const group = page.getByRole("group", { name: "Colour theme" });
-    await expect(group, "the theme control needs a group name").toBeVisible();
-
-    for (const name of ["System", "Light", "Dark"]) {
-      await expect(
-        group.getByRole("radio", { name, exact: true }),
-        `theme radio "${name}" must expose its name`,
-      ).toHaveCount(1);
-    }
-
-    // Names are only useful if the control does something.
-    await group.getByRole("radio", { name: "Dark", exact: true }).check();
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    // And the theme control it used to sit beside is gone for good.
+    await expect(page.getByRole("group", { name: "Colour theme" })).toHaveCount(0);
   });
 });

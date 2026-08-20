@@ -135,7 +135,7 @@ function ColumnLabel({ children }: { children: ReactNode }) {
 
 export function Handoff() {
   return (
-    <Section from="surface" tone="subtle" backdrop="drafting" backdropSeed={5} space={SECTION_TIGHT}>
+    <Section from="surface" tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           align="center"

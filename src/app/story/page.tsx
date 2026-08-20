@@ -51,7 +51,7 @@ export default function StoryPage() {
       />
 
       {/* 1, Why Tenure exists */}
-      <Section backdropSeed={20} tone="canvas" backdrop="quiet">
+      <Section tone="canvas" backdrop="light">
         <Container>
           <div className="max-w-2xl">
             <Reveal>
@@ -104,7 +104,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 2, Founders */}
-      <Section backdropSeed={21} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
+      <Section tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
         <Container>
           <div className="max-w-2xl">
             <Reveal>
@@ -149,7 +149,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 3, Mission */}
-      <Section backdropSeed={22} tone="band" backdrop="band" space={SECTION_BAND}>
+      <Section tone="band" backdrop="band" space={SECTION_BAND}>
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_70%)]"
@@ -180,7 +180,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 4, Where it stands */}
-      <Section backdropSeed={23} tone="canvas" backdrop="quiet">
+      <Section tone="canvas" backdrop="light">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <Reveal>
@@ -188,19 +188,24 @@ export default function StoryPage() {
             </Reveal>
             <Reveal delay={0.06}>
               <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
-                Early, and honest{" "}
-                <span className="text-grove">about it</span>.
+                Where it{" "}
+                <span className="text-grove">stands</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
               <p className="mt-6 text-lead leading-relaxed text-ink-soft">
-                Here is exactly where things stand. We are planning a{" "}
-                {site.pilot.season}{" "}
-                pilot with Simon&rsquo;s Office of Student
-                Engagement, covering the organizations it stewards and the
-                office itself. That scope is one we have proposed and discussed
-                with the office &mdash; nothing is agreed in either direction,
-                nothing is contracted, and no organization has been enrolled.
+                Tenure&rsquo;s first deployment is {site.pilot.season}, with
+                Simon&rsquo;s Office of Student Engagement &mdash; the
+                organizations it stewards and the office&rsquo;s own oversight
+                seats, on one record. The first term is unpaid, and the operating
+                detail is set out in full on the{" "}
+                <a
+                  href="/pilot"
+                  className="font-medium text-accent-text underline underline-offset-4 hover:text-accent"
+                >
+                  deployment page
+                </a>
+                .
               </p>
             </Reveal>
           </div>
@@ -228,13 +233,12 @@ export default function StoryPage() {
 
       {/* /story closes on the people, so the ask is to talk to them. */}
       <CtaBand
-        seed={2}
         title={
           <>
             Two founders. <span className="text-grove-bright">One conversation.</span>
           </>
         }
-        sub="There is no sales team to route you through. Ask for a walkthrough and one of the two people on this page runs it."
+        sub="You will not be routed through a qualification call. Ask for a demo and the people who built Tenure run it."
       />
     </>
   );

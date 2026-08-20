@@ -109,39 +109,16 @@ function extractBlock(startPattern) {
   return tokens;
 }
 
+/*
+  ONE THEME. The dark palette and its drift guard were deleted on 2026-08-20 with
+  the theme itself. The guard existed because the dark values were declared twice
+  — once under `prefers-color-scheme` and once under `[data-theme="dark"]` — and
+  could drift apart. Neither block exists now, so there is nothing to keep in sync
+  and every pair below is checked against the one palette the site ships.
+*/
 const themes = {
   light: extractBlock(":root {"),
-  dark: extractBlock(':root[data-theme="dark"]'),
 };
-
-/**
- * The dark palette is declared twice — once under `prefers-color-scheme: dark`
- * for users who have not chosen, and once under `[data-theme="dark"]` for users
- * who have. CSS cannot share one block across a media boundary, so the two are
- * kept in sync by this guard rather than by hope. A value edited in one block
- * and not the other fails here instead of silently shipping two dark themes.
- */
-const darkPreferred = extractBlock(':root:not([data-theme="light"])');
-{
-  const a = themes.dark;
-  const b = darkPreferred;
-  const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])].sort();
-  const drift = keys.filter((k) => {
-    const x = a[k];
-    const y = b[k];
-    if (!x || !y) return true;
-    return x.L !== y.L || x.C !== y.C || x.H !== y.H;
-  });
-  if (drift.length) {
-    console.error(
-      `\nDARK THEME DRIFT — these tokens differ between the media-query block and ` +
-        `the [data-theme="dark"] block:\n  ${drift.join("\n  ")}\n`,
-    );
-    process.exitCode = 1;
-  } else {
-    console.log(`Dark theme blocks agree on all ${keys.length} tokens.\n`);
-  }
-}
 
 /* ------------------------------------------------------------------ pairs --- */
 

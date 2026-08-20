@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { Ribbons } from "@/components/visuals/Ribbons";
 import { Container, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
@@ -55,7 +54,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
           page carried the headline and left both numbers on /trust, so this read as
           blanket enforcement. The numbers travel now.
         */}
-        Isolation is enforced at the query layer by the database client itself, on the 18 of 41
+        Isolation is enforced at the query layer by the database client itself, on the 22 of 41
         models that carry a tenant column, and privileged actions append to a create-only audit
         trail that records refusals as well as approvals.
         Documents are encrypted at rest and served through signed links that expire in ten
@@ -74,14 +73,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
 
 export function Faq() {
   return (
-    <Section from="band" tone="subtle" backdrop="quiet" backdropSeed={8} space={SECTION_TIGHT}>
-      {/* vibrant flowing ribbons cutting in from the top-right (no background) */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-12 -top-24 hidden h-[82%] w-[60%] sm:block [mask-image:linear-gradient(250deg,black,black_42%,transparent_82%)]"
-      >
-        <Ribbons className="h-full w-full" />
-      </div>
+    <Section from="band" tone="subtle" backdrop="light" space={SECTION_TIGHT}>
 
       <Container className="relative">
         <Reveal>

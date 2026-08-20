@@ -38,23 +38,22 @@ export default defineConfig({
     locale: "en-US",
   },
 
+  /*
+    TWO PROJECTS, NOT FOUR. The dark-theme projects were deleted on 2026-08-20
+    with the theme itself — the site now renders one way, so a dark run was
+    asserting a palette that no longer exists and doubling the suite for nothing.
+  */
   projects: [
     {
       name: "desktop-light",
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 }, colorScheme: "light" },
     },
-    {
-      name: "desktop-dark",
-      use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 1000 }, colorScheme: "dark" },
-    },
+
     {
       name: "mobile-light",
       use: { ...devices["Pixel 7"], colorScheme: "light" },
     },
-    {
-      name: "mobile-dark",
-      use: { ...devices["Pixel 7"], colorScheme: "dark" },
-    },
+
   ],
 
   webServer: {

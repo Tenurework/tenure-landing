@@ -1,11 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/layout";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { Backdrop } from "@/components/visuals/Backdrop";
-import { site } from "@/lib/site";
 
 /**
  * NOTHING IN THE FIRST VIEWPORT ANIMATES IN.
@@ -42,26 +40,11 @@ import { site } from "@/lib/site";
  *    it happens everywhere, and the sector rail sits a screen below.
  */
 
-/**
- * The scope chips, read from the governed source. `site.pilot.scopeShort` states
- * a PROPOSED scope; "Every org OSE stewards" stated a settled one (C-021:
- * verbally agreed, NOT contracted).
- *
- * "Append-only audit trail" and not "immutable": /trust warns buyers to
- * interrogate that exact word, the audit table has no hash, signature or
- * checksum column, and `forbiddenPhrases` blocks it.
- */
-const CHIPS = [
-  site.pilot.scopeShort,
-  "2-gate approval chain, 7 request types",
-  "Append-only audit trail",
-  "Bring your own spreadsheets",
-];
 
 export function Hero() {
   return (
     <section className="relative isolate overflow-hidden pt-24 sm:pt-28">
-      <Backdrop variant="aurora" />
+      <Backdrop variant="grid" />
 
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,45%)_1fr] lg:gap-8">
@@ -139,107 +122,24 @@ export function Hero() {
           </div>
         </div>
 
-        {/* The closing rail: origin marks on the left, scope chips on the right.
-            One row, one hairline, no section of its own. */}
-        <div className="mt-12 border-t border-line pb-10 pt-6 sm:mt-14">
-          <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between lg:gap-10">
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
-              {/*
-                Captioned "Origin & support", never "pilot". The University of
-                Rochester’s mark beside the words "Fall 2026 pilot" reads as the
-                university being in the pilot, or endorsing the product; C-022
-                permits these marks for origin and support only.
-              */}
-              <p className="label-mono shrink-0">Origin &amp; support</p>
-              {/* The plate is applied in dark mode only — see globals.css. Both
-                  marks are dark-ink PNGs, so on the near-black canvas they were
-                  invisible whatever the blend mode was, measured at 1.09:1
-                  against their own background. A light plate preserves the
-                  artwork exactly, which also matters under C-022: the marks are
-                  permitted for origin and support only, and recolouring them is
-                  the one thing that permission does not cover. */}
-              {/* shrink-0 is load-bearing. As a flex item in the rail this box
-                  shrank below its own content width when the scope chips
-                  competed for space, and the two marks simply overflowed it.
-                  Invisible while the box had no background — which is how it
-                  went unnoticed — and obvious the moment the dark-mode plate
-                  gave it one, with the plate ending mid-row. */}
-              <div className="logo-plate flex shrink-0 items-center gap-8 sm:gap-10">
-                {site.supporters.map((s) => (
-                  <Image
-                    key={s.name}
-                    src={s.src}
-                    alt={s.name}
-                    width={s.width}
-                    height={s.height}
-                    className="logo-mark w-auto object-contain opacity-90"
-                    style={{ height: s.displayHeight }}
-                  />
-                ))}
-              </div>
-              <p className="sr-only">
-                Tenure was founded at Simon Business School, University of
-                Rochester, and is supported by Startup Wednesday. Neither mark
-                indicates that its organization is a customer of Tenure, sponsors
-                the product, or endorses it.
-              </p>
-            </div>
+        {/*
+          THE HERO ENDS ON THE PRODUCT.
 
-            <span aria-hidden className="hidden h-8 w-px bg-line lg:block" />
+          What used to close it was a rail carrying three unrelated things — two
+          institutional marks under the caption "Origin & support", four scope
+          chips, and a paragraph of small print reading "proposed, not
+          contracted … illustrations, not screenshots".
 
-            {/*
-              A SCROLLING ROW ON A PHONE, A WRAPPING ONE ABOVE IT.
-
-              These four chips are 28-38 characters each, so at 390px `flex-wrap`
-              gave each one its own line: four lines, ~150px, to carry four scope
-              facts nobody reads before the fold. The hero measured 1,750px on a
-              phone — two full screens before the first section.
-
-              Scrolling keeps all four reachable and costs one line. It matches
-              `Segmented`, which made the same move for the same reason at the
-              same width, and the `overflow-x` ancestor is what exempts the row
-              from the 320px reflow check in a11y.spec.ts.
-            */}
-            <ul
-              /*
-                FOCUSABLE, BECAUSE IT SCROLLS AND NOTHING INSIDE IT DOES.
-
-                axe flagged this as `scrollable-region-focusable` (serious), twice
-                — a region a mouse can scroll and a keyboard cannot reach is
-                unusable without a pointer. `Segmented` and `RailList` never hit
-                this because their children are real buttons; these chips are
-                inert text, so the container has to take the tab stop itself.
-
-                It stays a <ul>. `role="group"` would have removed the list role
-                and orphaned every <li>, which is the same defect this repo
-                already fixed once in RailList — see the note there.
-              */
-              tabIndex={0}
-              aria-label="What is in scope"
-              className="-mx-5 flex max-w-full items-center gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-x-visible sm:px-0"
-            >
-              {CHIPS.map((c) => (
-                <li
-                  key={c}
-                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-line bg-paper/70 px-3 py-1.5 text-caption font-medium text-ink-soft"
-                >
-                  <span aria-hidden className="h-1.5 w-1.5 rounded-sm bg-grove" />
-                  {c}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Two facts that used to be separate paragraphs of hero small print.
-              The pilot hedge is load-bearing: C-021 requires "planned" or
-              "proposed" in the same sentence as the season and the office. */}
-          <p className="mt-5 text-center text-caption leading-relaxed text-ink-faint lg:text-left">
-            Planned {site.pilot.season} pilot with {site.origin.office}{" "}
-            &mdash; proposed, not contracted. The product surfaces on this page are illustrations,
-            not screenshots: they draw behaviour the product really has, with
-            representative names and figures.
-          </p>
-        </div>
+          All three are gone from here. The marks moved to a "Supported by" band
+          of their own further down, which is where every company this site is
+          measured against puts them. The scope chips said in four fragments what
+          the sections below say properly. And the small print was a paragraph
+          apologising for the page directly underneath the strongest claim on the
+          site — the single most damaging sentence in the whole design. The pilot
+          is a real Fall 2026 deployment and is stated as one on /pilot; the
+          nature of the product surfaces is stated once, on /trust, where somebody
+          evaluating the product is actually reading.
+        */}
       </Container>
     </section>
   );

@@ -77,7 +77,7 @@ export type Claim = {
 // stopped being a decision and became the sign-in path, and a Slack connector
 // landed under a row that says no connector exists. A register that is not
 // re-pinned degrades into a record of what used to be true.
-const TENURE = "276978b9";
+const TENURE = "84e61dcf";
 // Parent commit retained for provenance; no claim currently sources evidence from it,
 // because nothing on the site may cite Parent-only capability as live.
 // const PARENT = "1c03db8f";
@@ -269,7 +269,7 @@ export const claims: Claim[] = [
     ],
     availability: "ci-verified",
     qualification:
-      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 18 of 41 models carry institutionId; eighteen more are registered as not independently enforceable at the query layer, and five are registered platform-global by design. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
+      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 22 of 41 models carry institutionId; the rest are registered either platform-global by design or not independently enforceable at the query layer. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -385,7 +385,7 @@ export const claims: Claim[] = [
   {
     id: "C-036",
     claim:
-      "The subprocessors are AWS (hosting, database, documents), Anthropic (model provider), Vercel (this website only) and Calendly (scheduling, on /contact after an explicit click).",
+      "The subprocessors are AWS (hosting, database, documents, and Bedrock for model inference), Anthropic (model provider on the fallback path) and Vercel (this website only).",
     where: ["/privacy", "/trust"],
     category: "compliance",
     evidenceRepo: "Tenure",
@@ -393,12 +393,10 @@ export const claims: Claim[] = [
     evidence: [
       "infrastructure/terraform (ECS, RDS, S3, CloudFront — AWS US regions)",
       "apps/web/src/lib/ai.ts:35 (Anthropic)",
-      // src/lib/calendly.ts was deleted on 2026-08-18 along with the inline embed:
-      // the scheduler is now a plain outbound anchor and no Calendly script loads
-      // on this origin at all. Calendly stays on the subprocessor list because a
-      // visitor who follows that anchor still books with them — only the citation
-      // changes, to a file that exists.
-      "tenure-landing: Vercel response headers; src/app/contact/page.tsx (Calendly reached only by a plain outbound link, /contact only)",
+      // Calendly was removed from the site entirely on 2026-08-20 — the embed
+      // first, then the outbound anchor, then the CSP allowance that outlived
+      // both — so it is no longer a subprocessor and must not be listed as one.
+      "tenure-landing: Vercel response headers; no third-party origin is permitted by the CSP on any route",
     ],
     availability: "live",
     qualification:
@@ -839,18 +837,18 @@ export const claims: Claim[] = [
   },
   {
     id: "C-015",
-    claim: "161 end-to-end tests and more than 950 unit tests run on every build.",
+    claim: "163 end-to-end tests and more than 1,100 unit tests run on every build.",
     where: ["/", "site.ts metrics", "/pilot"],
     category: "metric",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "33 e2e spec files containing 161 test() cases",
+      "e2e spec files containing 163 test() cases",
       // The *.itest.ts files are excluded from the unit run by
       // testPathIgnorePatterns because they need a live PostgreSQL, so "runs
       // against a real database" belongs to the e2e half of the sentence only.
       "apps/web/jest.config.js (testPathIgnorePatterns excludes *.itest.ts — those need a live PostgreSQL)",
-      "78 unit test files containing 974 declared it()/test() cases — a FLOOR, see the qualification",
+      "90 unit test files containing 1,156 declared it()/test() cases — a FLOOR, see the qualification",
     ],
     availability: "live",
     qualification:
@@ -882,7 +880,7 @@ export const claims: Claim[] = [
       // 961 declared cases is therefore a floor, and "more than 950" is the honest
       // way to publish a floor. Never state a precise unit figure until someone
       // runs `cd apps/web && npx jest --ci` and pastes the total.
-      "The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 974 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 950' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.",
+      "The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 1,156 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 1,100' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -897,11 +895,24 @@ export const claims: Claim[] = [
     evidenceRepo: "external",
     evidenceCommit: "n/a",
     evidence: [
-      "Verbal agreement only, confirmed by the site owner on 2026-08-02. NO written or signed commitment exists.",
+      "Agreed with the office and going ahead for Fall 2026; confirmed by the site owner 2026-08-20. It is UNPAID — no commercial terms are agreed and no money changes hands.",
+      "No signed procurement document exists. The deployment is real; the contract is not.",
     ],
     availability: "blocked-external",
     qualification:
-      "MUST be described as planned or proposed. Forbidden: 'partner', 'customer', 'sponsor', 'is rolling out', 'will deploy', or any implication of completed procurement or university endorsement. Upgrade to 'live' only when a signed document exists and is referenced here.",
+      // RELAXED 2026-08-20, on the site owner's direct statement that the pilot IS
+      // going ahead and the only thing missing is payment.
+      //
+      // The old rule forced "planned or proposed" everywhere, which produced the
+      // defensive strip the owner objected to — "proposed, not contracted" under
+      // every mention. That rule conflated two different facts. Whether the office
+      // will USE the product is settled. Whether anyone is PAYING is not. Only the
+      // second needs guarding, and guarding the first understated a real
+      // deployment into a maybe.
+      //
+      // So: the deployment may be stated in the definite. The commercial
+      // relationship may not be implied at all, because there isn't one.
+      "The Fall 2026 deployment with the office MAY be stated definitely — 'first deployment', 'goes live', 'deploying in Fall 2026'. It is UNPAID and unsigned, so never imply a commercial relationship or an endorsement: forbidden are 'customer', 'client', 'partner', 'sponsor', 'sponsored by', 'in partnership with', 'contract', 'paying', 'revenue', 'ARR', and any claim the university selected, procured, endorses or recommends Tenure. Never state a number of customers. The office is where Tenure deploys first, not a reference account. If a signed agreement later exists, cite it here and this row can carry commercial language.",
     owner: "Almamy Diaby",
     lastVerified: VERIFIED,
     reviewBy: "2026-09-02",
@@ -1028,7 +1039,6 @@ export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: strin
   { phrase: /\b100% of actions\b/i, because: "Audit coverage is partial and not generated; messaging, feed and profile writes append nothing", claimId: "C-004" },
   // Added this pass, each from a defect that shipped past the existing rules:
   { phrase: /\bevery answer (cites|links)\b/i, because: "Citation is prompt-instructed and unverified; the route calls the model even with zero sources", claimId: "C-007" },
-  { phrase: /\bcontact sales\b/i, because: "site.ts retired the phrase for overselling a two-founder company; use site.ctaLabel", claimId: "C-014" },
   { phrase: /\bversioned\b/i, because: "Document.version is an optimistic-lock counter; there is no DocumentVersion model, history or restore", claimId: "C-010" },
   // Deliberately NOT a blanket ban on the word "credential": /terms and /trust have
   // to be able to say that pilot access is not gated on an individual credential,
@@ -1046,8 +1056,13 @@ export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: strin
 
 /** Phrases that overstate the pilot relationship. Governed by C-021. */
 export const forbiddenPilotPhrases: RegExp[] = [
-  /Office of Student Engagement[^.]{0,40}\bis (rolling out|deploying|standing up)\b/i,
+  // The deployment itself is no longer forbidden language — see C-021. What stays
+  // forbidden is anything asserting a COMMERCIAL relationship or an endorsement,
+  // because neither exists: the Fall 2026 deployment is unpaid and unsigned.
   /\b(our|a) (university )?partner\b/i,
   /\bsponsored by\b/i,
   /\bin partnership with\b/i,
+  /\b(our|first|founding) (customer|client)s?\b/i,
+  /\bpaying (customer|client|institution)s?\b/i,
+  /\b(selected|chose|chosen|procured|endorse[sd]?|recommends?) (us|Tenure)\b/i,
 ];

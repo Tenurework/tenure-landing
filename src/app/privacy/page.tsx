@@ -38,13 +38,13 @@ export default function PrivacyPage() {
               nothing, but an institution must not mistake a founder draft for a
               reviewed instrument. */}
           <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
-            <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
-            It has not been reviewed by counsel, and Tenure is not yet an
-            incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading
-            name for the two founders named on the{" "}
-            <a href="/story">story page</a>. If you are evaluating Tenure for an
-            institution, treat this as a statement of current practice and ask us
-            for the reviewed version before signing anything.
+            <strong className="font-semibold">Current practice, not a negotiated instrument.</strong>{" "}
+            Tenure is operated by its founders and is not yet incorporated, so this
+            notice states how information is handled today rather than forming part
+            of a signed agreement. An institution&rsquo;s deployment terms are
+            agreed separately &mdash; write to{" "}
+            <a href={`mailto:${site.email.privacy}`}>{site.email.privacy}</a> for
+            the version your review needs.
           </div>
 
           <Dossier
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
                 children: (
                   <div className="legal">
                     <p>
-                    Tenure is an early-stage system of record for organizations where
+                    Tenure is the system of record for organizations where
                     leadership turns over faster than knowledge does &mdash; universities,
                     nonprofits and NGOs, small and mid-sized businesses, associations and
                     chapters. The platform holds an organization&rsquo;s
@@ -125,8 +125,7 @@ export default function PrivacyPage() {
                     We do not train or fine-tune models on customer data, and there is no
                     pipeline anywhere in the product that could. Each provider&rsquo;s own
                     handling of data sent to it is governed by that provider&rsquo;s
-                    commercial terms rather than ours; ask us for the terms in force
-                    rather than taking a sentence on a marketing page for it.
+                    commercial terms rather than ours; ask us for the terms in force.
                     </p>
                   </div>
                 ),
@@ -218,12 +217,6 @@ export default function PrivacyPage() {
                     <strong>Vercel</strong>{" "}
                     &mdash; hosting for this marketing website
                     only. It does not touch your organization&rsquo;s record.
-                    </li>
-                    <li>
-                    <strong>Calendly</strong>{" "}
-                    &mdash; scheduling, and only if you open
-                    the scheduler on our <a href="/contact">contact page</a>. It sets
-                    its own cookies and shows its own consent prompt when you do.
                     </li>
                     </ul>
                     <p>
@@ -393,7 +386,7 @@ export default function PrivacyPage() {
                   <div className="legal">
                     <p>
                     Questions about privacy, or a request about your information? Email us
-                    at <a href={`mailto:${site.email}`}>{site.email}</a>{" "}
+                    at <a href={`mailto:${site.email.privacy}`}>{site.email.privacy}</a>{" "}
                     and we&rsquo;ll help.
                     </p>
                   </div>

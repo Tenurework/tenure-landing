@@ -84,10 +84,10 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href={`mailto:${site.email}`}
+                  href={`mailto:${site.email.general}`}
                   className="text-body text-inverse/65 transition-colors hover:text-inverse"
                 >
-                  {site.email}
+                  {site.email.general}
                 </a>
               </li>
             </ul>

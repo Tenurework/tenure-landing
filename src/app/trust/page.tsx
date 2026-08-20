@@ -30,16 +30,16 @@ const GROUPS: Group[] = [
       "Each institution’s record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
-        title: "Tenant filter attached to the database client — directly on 18 of 41 models",
+        title: "Tenant filter attached to the database client — directly on 22 of 41 models",
         status: "ci",
-        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 18 of 41 is the honest headline.",
+        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
         // Every figure in this row comes from apps/web/src/lib/tenancy/registry.ts —
         // the three bucket arrays, whose lengths sum to the schema's model count —
         // and is re-checked by scripts/verify-product-claims.mjs. Read the arrays,
         // never the registry's own prose about them: its header sentence has been
         // stale twice, and so was this row.
         limit:
-          "Of the other 23: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen carry no column the query layer can filter on and are reached through a parent relation the tenancy registry names, so they are protected by whatever check the calling code performs rather than by the extension. Sixteen of those hang off a tenant-scoped parent. The exceptions are the two notification tables, which hang off the user rather than the institution and so are scoped per person instead. DirectoryPerson, which holds contact details and used to be the one parentless row on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
+          "Of the other 19: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen carry no column the query layer can filter on and are reached through a parent relation the tenancy registry names, so they are protected by whatever check the calling code performs rather than by the extension. Sixteen of those hang off a tenant-scoped parent. The exceptions are the two notification tables, which hang off the user rather than the institution and so are scoped per person instead. DirectoryPerson, which holds contact details and used to be the one parentless row on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",
@@ -255,7 +255,7 @@ const GROUPS: Group[] = [
         // institution is not caution, it is just a different inaccuracy.
         body: "Accounts live in an Amazon Cognito user pool and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a Cognito account is not access to an organization, which is decided from the roster.",
         limit:
-          "Institutional SSO is the gating item for going beyond a pilot, and it is not deployed. An interim access path is still provisioned alongside per-user sign-in for the pilot term; ask us directly and we will walk you through the current arrangement under NDA. Until SSO lands, Tenure should not hold records your organization would classify as sensitive — student data, donor or beneficiary records, payroll, anything you would have to notify someone about, and we will not tell you otherwise to win a pilot.",
+          "Institutional SSO is the gating item for going beyond a pilot, and it is not deployed. A second access path is provisioned alongside per-user sign-in for the first deployment; we will walk your reviewer through it under NDA. Until SSO lands, Tenure should not hold records your organization would classify as sensitive: student data, donor or beneficiary records, payroll, or anything carrying a notification duty.",
       },
       {
         title: "Multi-factor authentication",
@@ -355,10 +355,10 @@ export default function TrustPage() {
       <PageHeader
         eyebrow="Trust"
         title="What is actually built, and what is not."
-        intro="Tenure is an early-stage product run by two founders. The fastest way to lose an institution’s trust is to blur what is shipped with what is planned, so this page separates them explicitly."
+        intro="Blurring what is shipped with what is planned is how a security review goes wrong. This page separates them explicitly, control by control, with the limit stated next to each one."
       />
 
-      <Section backdropSeed={18} tone="canvas" backdrop="quiet" divide={false}>
+      <Section tone="canvas" backdrop="light" divide={false}>
         <Container>
           {/* Status vocabulary — defined once, up front. It is the key to the
               whole page, so it stays expanded and above the dossier rather than
@@ -444,7 +444,7 @@ export default function TrustPage() {
         </Container>
       </Section>
 
-      <Section backdropSeed={19} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
+      <Section tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
         <Container>
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
@@ -454,10 +454,10 @@ export default function TrustPage() {
             <p className="mt-3 leading-relaxed text-text-secondary">
               To report one: email{" "}
               <a
-                href={`mailto:${site.email}`}
+                href={`mailto:${site.email.security}`}
                 className="text-accent-text underline underline-offset-4 hover:text-accent"
               >
-                {site.email}
+                {site.email.security}
               </a>
               . It reaches both founders directly. We will confirm receipt and
               tell you what we are doing about it — we do not have a bug bounty,
@@ -476,7 +476,7 @@ export default function TrustPage() {
               into the <a href="/terms" className="text-accent-text underline underline-offset-4 hover:text-accent">terms</a>.
             </p>
             <p className="mt-3 leading-relaxed text-text-secondary">
-              The full subprocessor list — AWS (including Bedrock), Anthropic, Vercel and Calendly,
+              The full subprocessor list — AWS including Bedrock, Anthropic and Vercel,
               with what each one touches and where — is on the{" "}
               <a href="/privacy" className="text-accent-text underline underline-offset-4 hover:text-accent">
                 privacy page

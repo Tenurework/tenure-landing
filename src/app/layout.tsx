@@ -4,7 +4,6 @@ import { site } from "@/lib/site";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
-import { ThemeScript } from "@/components/site/ThemeScript";
 import { StructuredData } from "@/components/site/StructuredData";
 import "./globals.css";
 
@@ -72,7 +71,6 @@ export default function RootLayout({
       className={`${generalSans.variable} ${plexMono.variable} antialiased`}
     >
       <head>
-        <ThemeScript />
       </head>
       <body className="flex min-h-dvh flex-col bg-canvas text-text">
         {/* First focusable element on every page. */}

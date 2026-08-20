@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/*
+  DOCUMENTATION IS NOT SOURCE.
+
+  Tailwind v4 auto-detects sources from the project root, so it was scanning
+  docs/*.md and emitting utilities for class names that appear inside PROSE. One
+  of them — `dark:rounded-md`, quoted in a review finding as an example of a fix
+  nobody applied — was enough to put a `prefers-color-scheme: dark` media query
+  into the production stylesheet of a site that has no dark theme.
+
+  A markdown file describing a change cannot be allowed to ship CSS.
+*/
+@source not "../../docs";
+@source not "../../e2e";
+
 /* ============================================================================
    TENURE — design tokens.
 
@@ -100,123 +114,25 @@
 }
 
 /* ---------------------------------------------------------------------------
-   DARK — applied either by explicit choice (`data-theme="dark"`) or by system
-   preference when the user has not chosen. The explicit attribute wins in both
-   directions, which is why the media query excludes `data-theme="light"`.
-   --------------------------------------------------------------------------- */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
+   ONE THEME, ON PURPOSE.
 
-    --canvas: oklch(17.5% 0.018 250);
-    --surface: oklch(21.5% 0.021 250);
-    --surface-subtle: oklch(19.5% 0.020 250);
-    --surface-elevated: oklch(25% 0.024 250);
+   This file used to carry a full second palette — a `prefers-color-scheme`
+   block and a `[data-theme="dark"]` block — plus a three-way toggle in the
+   header and an inline script that wrote the choice before first paint.
 
-    --inverse: oklch(25% 0.024 250);
-    --inverse-deep: oklch(21% 0.022 250);
-    --inverse-raised: oklch(29% 0.026 250);
+   It is gone. An enterprise system of record is not a personal tool, and the
+   toggle put a preference control in the most valuable pixels on the page,
+   beside the primary CTA. No Fortune 500 or enterprise-SaaS marketing site
+   ships one; the brand decides how it looks.
 
-    --text: oklch(94% 0.008 250);
-    --text-secondary: oklch(78% 0.018 250);
-    --text-muted: oklch(66.5% 0.022 250);
-    --text-inverse: oklch(94% 0.008 250);
+   The navy bands are unaffected — `--inverse*` is a light-theme DEVICE for
+   inverted sections, not a dark theme, and it never depended on any of this.
 
-    --border: oklch(30% 0.024 250);
-    --border-subtle: oklch(25.5% 0.022 250);
-    --border-strong: oklch(52% 0.030 250);
-    --border-inverse: oklch(34% 0.026 250);
 
-    --accent: oklch(72% 0.135 158);
-    --accent-hover: oklch(77% 0.140 158);
-    --accent-active: oklch(67% 0.130 158);
-    --accent-text: oklch(78% 0.130 158);
-    --accent-subtle: oklch(27% 0.045 158);
-    --accent-muted: oklch(23% 0.032 158);
-    --on-accent: oklch(16% 0.030 158);
-
-    --success: oklch(75% 0.135 158);
-    --success-subtle: oklch(27% 0.045 158);
-    --warning: oklch(80% 0.115 80);
-    --warning-subtle: oklch(28% 0.040 80);
-    --danger: oklch(72% 0.140 27);
-    --danger-subtle: oklch(28% 0.050 27);
-    --info: oklch(76% 0.100 245);
-    --info-subtle: oklch(27% 0.040 245);
-
-    --focus-ring: oklch(80% 0.140 158);
-    --focus-ring-inverse: oklch(80% 0.140 158);
-
-    --chart-1: oklch(72% 0.135 158);
-    --chart-2: oklch(72% 0.110 245);
-    --chart-3: oklch(80% 0.115 80);
-    --chart-4: oklch(70% 0.140 27);
-    --chart-5: oklch(72% 0.120 300);
-    --chart-6: oklch(70% 0.025 250);
-
-    --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.4);
-    --shadow-md: 0 6px 18px -8px oklch(0% 0 0 / 0.55);
-    --shadow-lg: 0 18px 40px -22px oklch(0% 0 0 / 0.7);
-    --overlay: oklch(0% 0 0 / 0.6);
-  }
-}
 
 /* Explicit dark choice — same values, higher specificity than the media query
    so a user who picks dark on a light system still gets dark. */
-:root[data-theme="dark"] {
-  color-scheme: dark;
 
-  --canvas: oklch(17.5% 0.018 250);
-  --surface: oklch(21.5% 0.021 250);
-  --surface-subtle: oklch(19.5% 0.020 250);
-  --surface-elevated: oklch(25% 0.024 250);
-
-  --inverse: oklch(25% 0.024 250);
-  --inverse-deep: oklch(21% 0.022 250);
-  --inverse-raised: oklch(29% 0.026 250);
-
-  --text: oklch(94% 0.008 250);
-  --text-secondary: oklch(78% 0.018 250);
-  --text-muted: oklch(66.5% 0.022 250);
-  --text-inverse: oklch(94% 0.008 250);
-
-  --border: oklch(30% 0.024 250);
-  --border-subtle: oklch(25.5% 0.022 250);
-  --border-strong: oklch(52% 0.030 250);
-  --border-inverse: oklch(34% 0.026 250);
-
-  --accent: oklch(72% 0.135 158);
-  --accent-hover: oklch(77% 0.140 158);
-  --accent-active: oklch(67% 0.130 158);
-  --accent-text: oklch(78% 0.130 158);
-  --accent-subtle: oklch(27% 0.045 158);
-  --accent-muted: oklch(23% 0.032 158);
-  --on-accent: oklch(16% 0.030 158);
-
-  --success: oklch(75% 0.135 158);
-  --success-subtle: oklch(27% 0.045 158);
-  --warning: oklch(80% 0.115 80);
-  --warning-subtle: oklch(28% 0.040 80);
-  --danger: oklch(72% 0.140 27);
-  --danger-subtle: oklch(28% 0.050 27);
-  --info: oklch(76% 0.100 245);
-  --info-subtle: oklch(27% 0.040 245);
-
-  --focus-ring: oklch(80% 0.140 158);
-  --focus-ring-inverse: oklch(80% 0.140 158);
-
-  --chart-1: oklch(72% 0.135 158);
-  --chart-2: oklch(72% 0.110 245);
-  --chart-3: oklch(80% 0.115 80);
-  --chart-4: oklch(70% 0.140 27);
-  --chart-5: oklch(72% 0.120 300);
-  --chart-6: oklch(70% 0.025 250);
-
-  --shadow-sm: 0 1px 2px oklch(0% 0 0 / 0.4);
-  --shadow-md: 0 6px 18px -8px oklch(0% 0 0 / 0.55);
-  --shadow-lg: 0 18px 40px -22px oklch(0% 0 0 / 0.7);
-  --overlay: oklch(0% 0 0 / 0.6);
-}
 
 /* ---------------------------------------------------------------------------
    Tailwind mapping. `inline` keeps these as var() references so they follow the
@@ -353,12 +269,22 @@
   --text-hero: 3.8rem;
 
   /* Radius */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --radius-xl: 26px;
-  --radius-2xl: 32px;
-  --radius-3xl: 40px;
+  /*
+    TIGHTENED 2026-08-20. Every step was roughly double Tailwind's default, which
+    put the whole site one full register toward consumer software — a 26px card
+    radius is a mobile app, not an instrument an institution buys. Enterprise
+    surfaces at this tier sit between 8px and 18px, and the difference is most of
+    what separates "premium" from "friendly".
+
+    `rounded-full` is untouched: it is correct on avatars, status dots and pill
+    tags, which is a different job from a card corner.
+  */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 22px;
+  --radius-3xl: 28px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -418,6 +344,7 @@
   }
 
   body {
+    color-scheme: light;
     background-color: var(--canvas);
     color: var(--text);
     /* The inherited size, so prose with no size class of its own still lands on
@@ -538,12 +465,6 @@
   background-position: center;
 }
 
-/* The same grid as dots, for surfaces where lines would fight the content. */
-@utility dot-grid {
-  background-image: radial-gradient(currentColor 1px, transparent 1px);
-  background-size: var(--grid, 22px) var(--grid, 22px);
-  background-position: center;
-}
 
 /* Film grain: one 120px tile of fractal noise, inlined at ~300 bytes. Tiling a
    single small raster is what keeps this off the paint path — a full-viewport
@@ -569,9 +490,23 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-xl);
+  /*
+    DIRECTIONAL LIGHT, AND A TWO-STAGE SHADOW.
+
+    The old recipe was one inset highlight `color-mix`ed against `--surface` —
+    which is pure white, so the highlight resolved to white-on-white and did
+    nothing at all — over a single mid shadow. A card lit from nowhere and
+    floating on one blur is what a div with a border looks like.
+
+    Three layers instead, which is how a physical sheet reads: a contact shadow
+    tight to the edge that says the card is ON something, a wide soft shadow that
+    places it above the field, and a top-edge highlight in the WARM neutral
+    rather than white, so the light has a direction and a temperature.
+  */
   box-shadow:
-    inset 0 1px 0 color-mix(in oklab, var(--surface) 100%, white 45%),
-    var(--shadow-md);
+    inset 0 1px 0 color-mix(in oklab, var(--canvas) 60%, white 40%),
+    0 1px 2px color-mix(in oklab, var(--text) 6%, transparent),
+    var(--shadow-lg);
 }
 
 /* The recessed well a panel puts its live surfaces into — a mock, a table, a
@@ -589,7 +524,9 @@
      silently puts every muted label on it outside the gate, because the gate
      checks token pairs and this was not one. */
   background: var(--surface-subtle);
-  border: 1px solid var(--border);
+  /* A recess is bounded by a SOFTER line than the sheet that contains it — the
+     same weight reads as a second card sitting inside the first. */
+  border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
 }
 
@@ -785,11 +722,8 @@ html.lenis body {
    Tenure came from was invisible to every dark-theme visitor.
 
    So the blend is scoped to light only. The selector mirrors how the theme is
-   decided everywhere else in this file: an explicit `data-theme` wins in both
-   directions, and `prefers-color-scheme` applies only when the visitor has not
-   chosen — a bare `[data-theme="dark"]` rule would miss every dark-by-system
-   visitor, which is most of them.
-   --------------------------------------------------------------------------- */
+   the logo mark paints one way, because the site paints one way.
+
 .logo-mark {
   mix-blend-mode: multiply;
 }
@@ -806,22 +740,7 @@ html.lenis body {
 .logo-plate {
   border-radius: var(--radius-md);
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .logo-mark {
-    mix-blend-mode: normal;
-  }
-  :root:not([data-theme="light"]) .logo-plate {
-    background: oklch(96% 0.004 85);
-    padding: 0.6rem 1rem;
-  }
-}
-:root[data-theme="dark"] .logo-mark {
-  mix-blend-mode: normal;
-}
-:root[data-theme="dark"] .logo-plate {
-  background: oklch(96% 0.004 85);
-  padding: 0.6rem 1rem;
-}
+
 
 /* ---------------------------------------------------------------------------
    The walkthrough request dialog.

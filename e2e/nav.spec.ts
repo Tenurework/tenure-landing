@@ -34,7 +34,7 @@ const H1: Record<string, string> = {
   "/pilot": "Every org. And the office that stewards them.",
   "/trust": "What is actually built, and what is not.",
   "/story": "We kept watching good organizations start over.",
-  "/contact": "See your own handoff in Tenure.",
+  "/contact": "See Tenure on your own handoff.",
   "/privacy": "Privacy",
   "/terms": "Terms of Use",
 };
@@ -322,7 +322,7 @@ test("footer links cover nav, legal, contact and social, and every internal one 
     expect(hrefs, `footer is missing a link to ${item.href}`).toContain(item.href);
   }
   expect(hrefs, "footer is missing the contact CTA").toContain("/contact");
-  expect(hrefs, "footer is missing the email link").toContain(`mailto:${site.email}`);
+  expect(hrefs, "footer is missing the email link").toContain(`mailto:${site.email.general}`);
   expect(hrefs).toContain(site.socials.linkedin);
   expect(hrefs).toContain(site.socials.x);
 
@@ -351,7 +351,7 @@ test("footer links cover nav, legal, contact and social, and every internal one 
 
 test.describe("external links", () => {
   // Stub every off-origin request. Popup behaviour is then verified for real
-  // without the suite depending on linkedin.com or calendly.com being up.
+  // without the suite depending on linkedin.com or x.com being up.
   test.beforeEach(async ({ context, baseURL }) => {
     const host = new URL(baseURL!).hostname;
     await context.route(
@@ -390,7 +390,7 @@ test.describe("external links", () => {
 
     // The site really does link off-site; an empty crawl must not pass.
     expect([...seen].sort()).toEqual(
-      [site.socials.linkedin, site.socials.x, site.calendlyUrl].sort(),
+      [site.socials.linkedin, site.socials.x].sort(),
     );
     expect(offenders, "external links without a safe new-tab contract").toEqual([]);
   });
@@ -413,23 +413,14 @@ test.describe("external links", () => {
     await popup.close();
   });
 
-  test("the Calendly link on /contact opens a new tab that cannot reach window.opener", async ({
-    page,
-  }) => {
-    await page.goto("/contact");
-    const link = page.locator(`a[href="${site.calendlyUrl}"]`).first();
-    await expect(link).toHaveAttribute("target", "_blank");
-    await expect(link).toHaveAttribute("rel", /noopener/);
-    await expect(link).toHaveAttribute("rel", /noreferrer/);
-
-    const [popup] = await Promise.all([page.waitForEvent("popup"), link.click()]);
-    await popup.waitForLoadState("domcontentloaded");
-
-    expect(popup.url()).toBe(site.calendlyUrl);
-    expect(await popup.evaluate(() => window.opener === null)).toBe(true);
-    await expect(page).toHaveURL(/\/contact$/);
-    await popup.close();
-  });
+  /*
+    The Calendly test was deleted with Calendly, 2026-08-20. It asserted that the
+    outbound scheduler link opened a new tab that could not reach window.opener.
+    There is no outbound scheduler link any more — no embed, no anchor, and no CSP
+    allowance — so the behaviour it guarded cannot regress. What replaces it is
+    the assertion in interaction.spec.ts that NO calendly request is made on any
+    route, which is the stronger form of the same guarantee.
+  */
 });
 
 test("every mailto link points at the address in site.ts", async ({ page }) => {
@@ -443,7 +434,12 @@ test("every mailto link points at the address in site.ts", async ({ page }) => {
       if (a.protocol !== "mailto:") continue;
       count++;
       const address = a.href.replace(/^mailto:/, "").split("?")[0];
-      if (address !== site.email) offenders.push(`${route}: ${a.href}`);
+      // Mail is addressed by desk now, so a single-address check would fail on
+      // every page that correctly routes to security@, privacy@ or legal@. The
+      // rule that still matters is that every mailto is one of OURS — a typo or a
+      // stale personal address is the defect this guards.
+      const known = Object.values(site.email) as string[];
+      if (!known.includes(address)) offenders.push(`${route}: ${a.href}`);
     }
   }
 

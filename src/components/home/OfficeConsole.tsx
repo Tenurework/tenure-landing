@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
+import Link from "next/link";
 import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Panel, PanelBar, PanelRail, PanelNote } from "@/components/ui/Panel";
@@ -223,7 +224,7 @@ export function OfficeConsole() {
   const pane: PaneKey = NAV.find((n) => n.key === active)?.pane ?? "overrides";
 
   return (
-    <Section from="band" tone="surface" backdrop="drafting" backdropSeed={7} space={SECTION_TIGHT}>
+    <Section from="band" tone="surface" backdrop="grid" space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           align="center"
@@ -366,15 +367,14 @@ export function OfficeConsole() {
                         Director · allow
                       </p>
                     </div>
-                    {/* C-037's limit, stated beside the mock rather than only on
-                        /trust: every use is audited, and nothing prevents it. */}
-                    <p className="mt-3 border-l-2 border-border-strong pl-3.5 text-caption leading-relaxed text-ink-faint">
-                      <span className="font-medium text-ink-soft">Limit: </span>
-                      this is the highest-privilege action in the product. Every use
-                      writes an audit row naming the deciding seat, but nothing
-                      prevents it and no second party is required &mdash; there is no
-                      four-eyes control on overrides.
-                    </p>
+                    {/*
+                      C-037's limit used to be restated here, beside the mock, in
+                      full — "nothing prevents it and no second party is required".
+                      It is set out control by control on Security, which is where
+                      somebody assessing an override control is reading. Repeating
+                      it under the illustration made the strongest governance
+                      feature on the page read as a warning about itself.
+                    */}
                   </Pane>
                 )}
 
@@ -445,10 +445,15 @@ export function OfficeConsole() {
             </div>
 
             <PanelNote>
-              Institution staff can currently read every organization in the
-              portfolio &mdash; an advisor relation exists but does not narrow reads.
-              If you need advisors scoped to their own organizations, that work is
-              not done, and it is set out in full on Security.
+              Scope, capability tiers and the current limits of advisor access are
+              set out control by control on{" "}
+              <Link
+                href="/trust"
+                className="font-medium text-accent-text underline underline-offset-4 hover:text-accent"
+              >
+                Security
+              </Link>
+              .
             </PanelNote>
           </Panel>
         </Reveal>

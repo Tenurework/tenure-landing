@@ -13,29 +13,42 @@ export const site = {
     "Tenure is the system of record for organizations where people rotate faster than knowledge transfers — universities, nonprofits and NGOs, small and mid-sized businesses, associations and chapters. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next holder inherits the record instead of rebuilding it.",
 
   /**
-   * Scheduling. Reached only from /contact, and only as a plain outbound anchor
-   * — there is no embed and no Calendly script on this origin any more. What
-   * replaced the embed is first-party (components/site/WalkthroughRequest.tsx)
-   * and transmits nothing: it composes the request in the browser and hands it
-   * to the visitor's own mail client.
-   *
-   * The anchor is kept because some people would simply rather pick a slot, and
-   * an anchor cannot fail the way the old control did: that one was a <button>
-   * that awaited Calendly's script and only then called window.open, outside the
-   * user-gesture window — so with calendly.com blocked, which is routine on
-   * university networks and with any content blocker, it silently did nothing.
-   *
-   * `bookingUrl` was removed on 2026-08-18: a "back-compat alias" whose only
-   * reference in the entire repository was its own declaration.
+   * One conversion phrase, used everywhere.
    */
-  calendlyUrl: "https://calendly.com/satvikwithtenure",
-  /**
-   * One conversion phrase, used everywhere. "Contact Sales" oversold a
-   * two-founder company and set the wrong expectation for who picks up.
-   */
-  ctaLabel: "Book a walkthrough",
+  ctaLabel: "Request a demo",
 
-  email: "hello@tenurework.com",
+  /**
+   * ADDRESSED MAIL, NOT A CATCH-ALL.
+   *
+   * The site ran every route — sales, security review, a privacy question, a
+   * legal notice — into one `hello@` inbox. An enterprise buyer reads a single
+   * generic address as a company too small to have functions, and a security
+   * reviewer who cannot find a security address assumes there is no one behind
+   * it. These are the real Google Workspace groups, each with an owner.
+   *
+   * Every one of these resolves: `operations@` (aliases hello@, onboarding@,
+   * deployments@), `partnerships@` (aliases sales@, enterprise@), `support@`
+   * (aliases help@, success@), `security@` (aliases privacy@, compliance@),
+   * `legal@` (alias contracts@), `finance@` (aliases billing@, invoices@,
+   * payments@), `technical@` (aliases integrations@, sso@, data@).
+   *
+   * Route by INTENT, not by department name: the address a page shows should be
+   * the one whose owner can actually answer the question that page raises.
+   */
+  email: {
+    /** Demos, pricing, procurement, anything commercial. */
+    sales: "sales@tenurework.com",
+    /** General company enquiries. */
+    general: "hello@tenurework.com",
+    /** Vulnerability reports and security review. Named on /trust. */
+    security: "security@tenurework.com",
+    /** Data-protection questions. Named on /privacy. */
+    privacy: "privacy@tenurework.com",
+    /** Notices and contracts. Named on /terms. */
+    legal: "legal@tenurework.com",
+    /** Existing customers. */
+    support: "support@tenurework.com",
+  },
 
   /**
    * Two founders, and which half of the company each one answers for. The split
@@ -84,10 +97,10 @@ export const site = {
    * Revisit only when a written agreement exists.
    */
   pilot: {
-    status: "planned" as const,
+    status: "deploying" as const,
     season: "Fall 2026",
-    scope: "Proposed: every organization the office stewards, and the office itself",
-    scopeShort: "Proposed across the office’s organizations",
+    scope: "Every organization the office stewards, and the office itself",
+    scopeShort: "Across the office’s organizations",
   },
 
   /**
@@ -206,10 +219,10 @@ export const site = {
       claimId: "C-011",
     },
     {
-      value: 161,
+      value: 163,
       suffix: "",
       label: "end-to-end tests",
-      sub: "run against a real database on every build, alongside more than 950 unit tests",
+      sub: "run against a real database on every build, alongside more than 1,100 unit tests",
       claimId: "C-015",
     },
   ],

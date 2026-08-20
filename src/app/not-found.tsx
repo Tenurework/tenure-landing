@@ -50,10 +50,10 @@ export default function NotFound() {
             </Link>{" "}
             or email{" "}
             <a
-              href={`mailto:${site.email}`}
+              href={`mailto:${site.email.general}`}
               className="text-accent-text underline underline-offset-4 hover:text-accent"
             >
-              {site.email}
+              {site.email.general}
             </a>
             .
           </p>

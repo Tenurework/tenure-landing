@@ -454,7 +454,7 @@ export function Platform() {
   const mod = MODULES.find((m) => m.key === active) ?? MODULES[0];
 
   return (
-    <Section id="platform" from="canvas" tone="surface" backdrop="aurora" backdropSeed={4}>
+    <Section id="platform" from="canvas" tone="surface" backdrop="grid">
       <Container>
         <SectionHead
           align="center"

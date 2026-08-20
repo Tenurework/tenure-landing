@@ -5,7 +5,6 @@ import NumberFlow from "@number-flow/react";
 
 import { Reveal } from "@/components/ui/Reveal";
 import { Container, Eyebrow } from "@/components/ui/layout";
-import { SectionContour } from "@/components/visuals/SectionContour";
 import { site } from "@/lib/site";
 
 type Metric = (typeof site.metrics)[number];
@@ -152,7 +151,6 @@ export function MetricsBand() {
       ref={attach}
       className="relative isolate overflow-hidden border-t border-line-dark bg-band py-14 text-inverse sm:py-18"
     >
-      <SectionContour place="cr" seed={4} className="text-inverse/[0.06]" />
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_25%_20%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_68%)]"
@@ -160,15 +158,32 @@ export function MetricsBand() {
 
       <Container className="relative">
         <div className="max-w-2xl">
+          {/*
+            THE HEADLINE USED TO OPEN WITH WHAT TENURE COULD NOT DO.
+
+            It read "We can't show you outcomes yet. We can show you exactly how
+            it's built", over a paragraph beginning "The pilot hasn't run, so
+            there is nothing measured to report". Three sentences of apology at
+            the top of the one section whose entire job is proof — and the
+            substance underneath is genuinely strong: these are counted from the
+            deploying repository, which is a harder standard than the outcome
+            numbers most companies put here.
+
+            Same facts, stated by a company that believes them. The qualifier
+            that has to survive is that these are STRUCTURAL counts, not adoption
+            — it now travels on the tiles themselves, where the register requires
+            it, instead of as a preamble that discounts the section before the
+            reader reaches it.
+          */}
           <Eyebrow className="text-inverse/75">Counted, not projected</Eyebrow>
           <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
-            We can&rsquo;t show you outcomes yet. We can show you{" "}
-            <span className="text-grove-bright">exactly how it&rsquo;s built</span>.
+            Every number here is counted from the{" "}
+            <span className="text-grove-bright">code that ships</span>.
           </h2>
           <p className="mt-4 max-w-xl text-body leading-relaxed text-inverse/75">
-            The pilot hasn&rsquo;t run, so there is nothing measured to report. Every number below
-            is counted from the repository that deploys &mdash; not an estimate, not a projection,
-            and not a count of anyone using Tenure.
+            Not a projection, not a survey, not a slide. Each figure below is read
+            out of the repository that deploys Tenure, and re-counted on every
+            release.
           </p>
         </div>
 

@@ -61,7 +61,6 @@ export type Tone = "canvas" | "surface" | "subtle" | "band" | "none";
 export function Section({
   id,
   backdrop,
-  backdropSeed = 0,
   from,
   tone = "canvas",
   space = SECTION,
@@ -71,12 +70,6 @@ export function Section({
 }: {
   id?: string;
   backdrop?: BackdropVariant;
-  /**
-   * Which composition of the backdrop variant to paint. Two sections sharing a
-   * variant MUST pass different seeds — `quiet` is used twelve times site-wide
-   * and `drafting` eight, and without this they rendered identically.
-   */
-  backdropSeed?: number;
   /**
    * The tone of the section immediately ABOVE this one, so the boundary can ramp
    * between two fills instead of stepping between them.
@@ -199,7 +192,7 @@ export function Section({
           )}
         </>
       )}
-      {backdrop && <Backdrop variant={backdrop} seed={backdropSeed} />}
+      {backdrop && <Backdrop variant={backdrop} />}
       {children}
     </section>
   );

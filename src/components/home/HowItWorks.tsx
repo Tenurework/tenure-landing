@@ -67,7 +67,7 @@ const STEPS: Step[] = [
 
 export function HowItWorks() {
   return (
-    <Section id="how" tone="subtle" backdrop="drafting" backdropSeed={9}>
+    <Section id="how" tone="subtle" backdrop="grid">
       <Container>
         <SectionHead
           align="center"
