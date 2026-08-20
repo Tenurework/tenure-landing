@@ -121,6 +121,39 @@ export function PanelWell({
   return <div className={cn("well p-4 sm:p-5", className)}>{children}</div>;
 }
 
+/**
+ * THE LABEL EVERY DRAWN SURFACE CARRIES.
+ *
+ * The product surfaces on this site are React components, not screenshots. That
+ * has to be disclosed, and for a while it was — in three sentences of
+ * pre-emptive defence in the LEAD position: "The two panels below are
+ * illustrations, not screenshots… Ask for a walkthrough and you see the running
+ * application instead." Deleting that was right; it apologised for the page
+ * before the reader had looked at it.
+ *
+ * Deleting it WITHOUT REPLACING IT was not. The site then rendered eight drawn
+ * application interfaces — a treasury balance, named people, vendor figures —
+ * with no label anywhere, and a comment in Hero.tsx asserting the disclosure
+ * "is stated once, on /trust", which was simply false: a rendered-text sweep of
+ * all eight routes found no such sentence. That is the failure mode this
+ * component exists to make impossible.
+ *
+ * Six words bound to the artwork is a STRONGER disclosure than a paragraph on
+ * another route, and it reads as a spec-sheet caption rather than a hedge — the
+ * way a museum label or an annual report captions a figure. Precision is not
+ * apology.
+ *
+ * Do not delete a caption without adding one to the same surface in the same
+ * commit.
+ */
+export function MockCaption({
+  children = "Illustrated interface, with representative data.",
+}: {
+  children?: ReactNode;
+}) {
+  return <p className="mt-3 text-caption text-ink-faint">{children}</p>;
+}
+
 export function PanelNote({
   className,
   children,

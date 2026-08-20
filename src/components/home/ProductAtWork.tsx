@@ -3,6 +3,7 @@
 import { LazyMotion, domAnimation, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import type { ReactNode } from "react";
+import { MockCaption } from "@/components/ui/Panel";
 import { Container, Section, Eyebrow } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
@@ -240,6 +241,7 @@ export function ProductAtWork() {
               </Reveal>
             </div>
           ))}
+          <MockCaption>Illustrated interfaces, with representative data.</MockCaption>
         </div>
       </Container>
     </Section>

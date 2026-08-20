@@ -1375,6 +1375,41 @@ const UNSUPPORTED_VENDORS = [
   { name: "Gmail", re: /\bGmail\b/i },
 ];
 
+test.describe("drawn surfaces", () => {
+  /*
+    THE SITE RENDERS APPLICATION INTERFACES THAT ARE REACT COMPONENTS.
+
+    A treasury balance, named people, vendor figures and an approval chain, drawn
+    rather than captured. That has to be labelled, and for one commit it was not:
+    the hero's three-sentence disclosure was deleted as apologetic — correctly —
+    and the comment left behind asserted the disclosure now lived "once, on
+    /trust". It did not. A rendered-text sweep of all eight routes found no such
+    sentence anywhere, and nothing failed, because nothing was checking.
+
+    This is that check. It does not care WHERE the label is or how it is worded;
+    it cares that a route rendering a drawn surface carries one.
+  */
+  test("every route with a drawn product surface labels it", async ({ page }) => {
+    const pages = await siteText(page);
+    // The routes that mount DashboardMock or ProductAtWork.
+    const DRAWN = ["/", "/product"];
+    const LABEL = /\billustrated\b|\bnot screenshots\b|\brepresentative (?:data|names|figures)\b|\bworked example\b/i;
+
+    const missing: string[] = [];
+    for (const route of DRAWN) {
+      const text = pages.find((p) => p.route === route);
+      if (!text) continue;
+      if (!LABEL.test(text.flat)) {
+        missing.push(
+          `${route} renders a drawn application interface and carries no label saying so.\n` +
+            `    Add <MockCaption /> beside the surface — see components/ui/Panel.tsx.`,
+        );
+      }
+    }
+    expect(missing, report(missing)).toHaveLength(0);
+  });
+});
+
 test.describe("integrations", () => {
   test("no unsupported vendor is named as something Tenure connects to", async ({ page }) => {
     const pages = await siteText(page);

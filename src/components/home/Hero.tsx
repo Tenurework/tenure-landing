@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { Backdrop } from "@/components/visuals/Backdrop";
+import { MockCaption } from "@/components/ui/Panel";
 
 /**
  * NOTHING IN THE FIRST VIEWPORT ANIMATES IN.
@@ -119,6 +120,7 @@ export function Hero() {
               component, a class of overlap bug, and one more piece of repetition. */}
           <div className="relative pt-2 lg:-mr-[10vw] lg:pt-0 xl:-mr-[6vw]">
             <DashboardMock tilt auto className="relative z-0" />
+            <MockCaption />
           </div>
         </div>
 
@@ -137,8 +139,15 @@ export function Hero() {
           apologising for the page directly underneath the strongest claim on the
           site — the single most damaging sentence in the whole design. The pilot
           is a real Fall 2026 deployment and is stated as one on /pilot; the
-          nature of the product surfaces is stated once, on /trust, where somebody
-          evaluating the product is actually reading.
+          nature of the product surfaces is carried by a caption on each drawn
+          surface — `MockCaption`, in components/ui/Panel.tsx.
+
+          An earlier version of this comment claimed that disclosure lived "once,
+          on /trust". It did not. A rendered-text sweep of all eight routes found
+          no such sentence anywhere, so for one commit the site shipped eight
+          drawn application interfaces — a treasury balance, named people, vendor
+          figures — with no label at all. Deleting the apology was right;
+          deleting it without replacing it was not.
         */}
       </Container>
     </section>

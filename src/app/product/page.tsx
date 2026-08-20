@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
-import { Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
+import { MockCaption, Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { ConnectorMatrix } from "@/components/visuals/ConnectorMatrix";
 import { pageMetadata } from "@/lib/metadata";
@@ -186,6 +186,7 @@ export default function ProductPage() {
                 the same chrome twice, four screens apart, on a site whose whole
                 claim is that the model is not university-specific. */}
             <DashboardMock initialModule="Memory" dataset="nonprofit" className="mx-auto max-w-5xl" />
+            <MockCaption />
           </Reveal>
         </Container>
       </Section>
