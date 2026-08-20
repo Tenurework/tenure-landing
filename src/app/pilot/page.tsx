@@ -3,7 +3,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
-import { CtaBand } from "@/components/site/CtaBand";
 import { Dossier } from "@/components/ui/Dossier";
 import { Panel, PanelBar, PanelNote } from "@/components/ui/Panel";
 import { Backdrop } from "@/components/visuals/Backdrop";
@@ -813,7 +812,13 @@ export default function PilotPage() {
         </Container>
       </Section>
 
-      <CtaBand />
+      {/*
+        NO CtaBand HERE. This page closed with the navy ask twice, about 400px
+        apart: section 03 above already ends on the same dark band with the same
+        request, and it is the better close because it carries the C-021 hedge
+        that the generic band cannot. Two identical asks in one viewport read as
+        a page that does not know it already asked.
+      */}
     </>
   );
 }

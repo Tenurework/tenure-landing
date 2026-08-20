@@ -10,7 +10,6 @@ import { Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
 import { ConnectorMatrix } from "@/components/visuals/ConnectorMatrix";
 import { pageMetadata } from "@/lib/metadata";
-import { HowItWorks } from "@/components/home/HowItWorks";
 import { ProductAtWork } from "@/components/home/ProductAtWork";
 
 export const metadata = pageMetadata("/product");
@@ -250,7 +249,7 @@ export default function ProductPage() {
       </Section>
 
       {/* 3 — onboarding */}
-      <Section backdropSeed={13} tone="canvas" backdrop="quiet">
+      <Section backdropSeed={13} from="canvas" tone="canvas" backdrop="quiet">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <SectionHead
@@ -331,12 +330,25 @@ export default function ProductPage() {
         </Container>
       </Section>
 
-      {/* 4 — how a handoff actually works, and two surfaces at work */}
-      <HowItWorks />
+      {/*
+        4 — two surfaces at work.
+
+        `HowItWorks` used to sit here and was cut, not moved: its three steps
+        restate section 02 directly above it ("the record fills itself as the
+        team does the work") and home's SeatMechanism and Handoff, twice almost
+        verbatim, including "no separate wiki" and the no-handoff-document claim
+        printed a second time about a thousand pixels from the first. Two
+        independent audit lanes reached the same conclusion from different
+        angles. /product was also the one route this compaction pass made LONGER,
+        and this is the section that paid for it.
+
+        No claim id was attached to any of the three steps, so nothing in the
+        register loses a home.
+      */}
       <ProductAtWork />
 
       {/* 5 — connectors. One matrix, replacing two near-identical format sections. */}
-      <Section backdropSeed={14} tone="canvas" backdrop="quiet">
+      <Section backdropSeed={14} from="canvas" tone="canvas" backdrop="quiet">
         <Container>
           <SectionHead
             index="04"
@@ -355,7 +367,17 @@ export default function ProductPage() {
         </Container>
       </Section>
 
-      <CtaBand />
+      {/* A different close from home's: this reader has just read the matrix,
+          so the ask names what a walkthrough would open. */}
+      <CtaBand
+        seed={1}
+        title={
+          <>
+            See it on your own record. <span className="text-grove-bright">Not a demo org.</span>
+          </>
+        }
+        sub="Tell us which modules matter and we will open exactly those, on a demonstration organization built like yours."
+      />
     </>
   );
 }

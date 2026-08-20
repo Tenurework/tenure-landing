@@ -226,7 +226,16 @@ export default function StoryPage() {
         </Container>
       </Section>
 
-      <CtaBand />
+      {/* /story closes on the people, so the ask is to talk to them. */}
+      <CtaBand
+        seed={2}
+        title={
+          <>
+            Two founders. <span className="text-grove-bright">One conversation.</span>
+          </>
+        }
+        sub="There is no sales team to route you through. Ask for a walkthrough and one of the two people on this page runs it."
+      />
     </>
   );
 }

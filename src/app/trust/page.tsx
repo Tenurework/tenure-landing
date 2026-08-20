@@ -33,14 +33,13 @@ const GROUPS: Group[] = [
         title: "Tenant filter attached to the database client — directly on 18 of 41 models",
         status: "ci",
         body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 18 of 41 is the honest headline.",
-        // The old sentence said all 24 remaining models "are reached through their
-        // parent relation", which the registry it cites contradicts twice: five are
-        // platform-global by design and have no tenant parent, and DirectoryPerson is
-        // recorded with reachableVia "(none)". Describing the model that holds real
-        // student and advisor contact details as parent-protected made the disclosure
-        // less honest than the code it describes.
+        // Every figure in this row comes from apps/web/src/lib/tenancy/registry.ts —
+        // the three bucket arrays, whose lengths sum to the schema's model count —
+        // and is re-checked by scripts/verify-product-claims.mjs. Read the arrays,
+        // never the registry's own prose about them: its header sentence has been
+        // stale twice, and so was this row.
         limit:
-          "Of the other 23: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen are tenant-owned but carry no column the query layer can filter on, and are reachable only through a scoped parent, so they are protected by whatever check the calling code performs rather than by the extension. DirectoryPerson, which holds contact details and used to be the one parentless exception on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
+          "Of the other 23: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen carry no column the query layer can filter on and are reached through a parent relation the tenancy registry names, so they are protected by whatever check the calling code performs rather than by the extension. Sixteen of those hang off a tenant-scoped parent. The exceptions are the two notification tables, which hang off the user rather than the institution and so are scoped per person instead. DirectoryPerson, which holds contact details and used to be the one parentless row on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",

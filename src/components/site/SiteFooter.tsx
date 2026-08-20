@@ -9,7 +9,13 @@ export function SiteFooter() {
 
   return (
     <footer className="relative overflow-hidden border-t border-line-dark bg-band">
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pt-16 sm:px-8 sm:pt-20">
+      {/*
+        `pb-12` is the fix for a rule cutting through a link. The column block had
+        top padding and none at the bottom, and the bottom bar below it draws its
+        own `border-t` — so on a wide viewport the Explore column's last item
+        ("About") sat exactly on that line, with the rule crossing the text.
+      */}
+      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-12 pt-16 sm:px-8 sm:pb-14 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <Wordmark tone="paper" />

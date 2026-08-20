@@ -721,3 +721,92 @@ asked for. And **C-015's counts were left alone**: the register requires them to
 by *running* the suite, `apps/web` has no `node_modules` here, and installing dependencies
 into the product repo to publish a number was not a trade worth making. 320 unit and 132
 e2e are therefore understated at HEAD, which is the safe direction.
+
+---
+
+## Phase 11 — The other 54 findings, verified rather than assumed, 2026-08-19
+
+Phase 10 actioned 17 of 71 findings. The remaining 54 went through a second fanout — six
+verification lanes against the deploying repo and the running site, each followed by an
+adversarial pass. **Refutation did most of the work**: the structure lane lost 7 of 9, the
+numbers lane 4 of 7, and five more items were found already fixed by Phase 10. What follows
+is what survived, and it is almost entirely the site describing a product that is not there.
+
+### 11.1 The direction that matters: three overstatements
+
+| Claim | Product truth | Where |
+|---|---|---|
+| "Dues" as a shipped finance capability, in five visitor-visible places | `TransactionType` is ALLOCATION \| SPEND \| REIMBURSEMENT \| ADJUSTMENT. **No income type. No per-member payment state anywhere in the schema.** The word does not appear in the repo | Hero ledger opened on "Membership dues, 28 paid, +$840" — an income line with a per-member paid count, in the most-viewed illustration on the site |
+| "Two organizations co-hosting run the same approval path" | `CollabStatus` is PENDING_OSE \| APPROVED \| DECLINED — **one office decision**, not the two-gate chain | `Platform` module "Cross-org work" |
+| A "Deal" knowledge-card tag | The seven enforced kinds are Contact, Playbook, Budget, Vendor, Lesson, Thread, Deadline | Five mocks, on pages that print the real seven |
+
+C-038 and a forbidden phrase now hold "dues" shut. Overstating a governance control is the
+one direction this site must never round in.
+
+### 11.2 Six understatements, which cost credibility with the reader who checks
+
+- **"15 of 39 models carry a tenant column" is 18 of 41.** The registry's *own header comment*
+  said "17 of 40" at the same commit and was itself stale, which is why the qualification now
+  says to count the array and never quote prose about it.
+- **/trust published DirectoryPerson as the one parentless model** needing a schema change. It
+  carries the column now. The page was advertising a weakness that had been closed.
+- **"132 e2e and 320 unit tests" are 161 and more than 950.** Static counting reproduces the
+  previously published 132 *exactly* at the commit it was published against — that calibration
+  is what makes it trustworthy here. For the unit half it gives 279 where jest reported 320, so
+  974 declared cases is published as a floor and the qualification says why.
+- **The office console showed 25 of 26 seats held.** The seeded roster is 209 seats with **103
+  vacant**. The mock inverted the problem the product exists to solve, in the one pane whose
+  stated subject is how much of a seat map is filled.
+- **"Eleven modules" omitted Board resources**, which the product ships and routes by seat. A
+  completeness claim with a hole in it is worse than no claim.
+- **/trust never disclosed the per-person AI ceiling** — 40 requests and 120,000 tokens a day.
+  Saying only that no per-tenant quota exists reads as unlimited.
+
+### 11.3 The contact surface
+
+`/contact` still sent a CSP allowing `script-src` and `frame-src` for Calendly, written for an
+embed deleted in August. **An outbound anchor needs no CSP allowance at all** — CSP governs what
+a page loads, not where a link navigates — so every directive was permission for something that
+no longer exists, on the one route that collects a name, an organization and an email. It now
+inherits the site-wide policy: `frame-src 'none'`, no third-party script origin.
+
+The primary action was a bare anchor with no handler and no state, so on a machine with no mail
+handler it did nothing and said nothing. It now reports that it **handed over** — never that it
+sent, which this page cannot observe — and names the fallback beside it. The body is a real
+`<form>`, so Enter sends. Three tests cover the new behaviour.
+
+Also: the select had `appearance-none` and no chevron; no link anywhere was called "Contact";
+`/contact`'s left card stretched to 477px of blank; the footer rule crossed the word "About".
+
+### 11.4 Length and repetition
+
+44.1 → **36.5** desktop screens overall. Two whole sections deleted as duplicates, both agreed
+on by two independent lanes: `/product`'s `HowItWorks` restated the section directly above it
+plus two home sections, and `/pilot` closed with the navy ask twice ~400px apart.
+
+`CtaBand` was byte-identical on four routes — same headline, subhead, ornament positions and
+contour. It takes a `seed` now and each route makes its own ask. Nine section rules divided two
+backgrounds of the *same colour*; `Section` suppresses the hairline when the caller declares the
+surface does not change. The grain layer measured **0.32–0.63 levels of 255** — invisible — and
+its `mix-blend-overlay` was inert inside `isolate`, so it was not preventing the banding it
+exists to prevent.
+
+### 11.5 A gate for the thing that keeps going stale
+
+`scripts/verify-product-claims.mjs` re-checks all seven product-dependent claims and prints the
+commit they hold at. **Pin only after it passes.** The product repo moved four times during this
+session, and the temptation each time is to re-pin blindly to make `claims.spec.ts` green, which
+is exactly how a register stops meaning anything.
+
+It asserts **invariants, not headcounts** — the Slack test-file count went 6 → 7 mid-session,
+and a gate that fails on healthy growth trains people to re-pin without reading. What must not
+change is that the connector exists *and* that nothing calls it.
+
+It also caught its own first version being wrong: counting only `apps/web/src` missed
+`apps/web/scripts/db-bootstrap.test.mjs`, 13 cases that jest really collects, so the gate was
+proving a smaller number than the site published.
+
+### 11.6 Where it stands
+
+Lint, typecheck, **72/72** contrast pairs, build, **113** links, **1,046** Playwright tests
+across four projects, zero failures — including the `settle()` test that was flaky in Phase 10.

@@ -43,25 +43,25 @@ export function Ribbons({ className }: { className?: string }) {
           d="M700 -10 C 470 70, 360 30, 150 230 S -40 360, -120 470"
           stroke="url(#rb-a)"
           strokeWidth="64"
-          opacity="0.85"
+          opacity="0.3"
         />
         <path
           d="M720 60 C 500 120, 380 110, 200 300 S 20 430, -80 540"
           stroke="url(#rb-b)"
           strokeWidth="44"
-          opacity="0.8"
+          opacity="0.28"
         />
         <path
           d="M690 -30 C 520 30, 430 10, 280 170 S 110 300, 10 400"
           stroke="url(#rb-c)"
           strokeWidth="22"
-          opacity="0.9"
+          opacity="0.32"
         />
         <path
           d="M740 140 C 540 180, 430 200, 260 360 S 80 470, -40 560"
           stroke="url(#rb-c)"
           strokeWidth="14"
-          opacity="0.8"
+          opacity="0.28"
         />
       </g>
     </svg>

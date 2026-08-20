@@ -13,8 +13,14 @@ import { MemphisArt } from "@/components/visuals/MemphisArt";
  *   mesh      two or three wide radial washes in brand hues
  *   structure a drafting grid, a dot field, or the contour topography
  *   ornament  a Memphis figure, bled off one edge
- *   grain     a 120px noise tile at 2-4%, which is what stops a large gradient
- *             from banding on an 8-bit display
+ *   grain     a 120px noise tile, which is what stops a large gradient from
+ *             banding on an 8-bit display. It ran at 2.5-5% UNDER
+ *             `mix-blend-overlay`, and measured 0.32-0.63 levels of 255 on the
+ *             rendered page — under one level, i.e. invisible, so it was not
+ *             stopping anything. The blend mode was also inert: `Section` sets
+ *             `isolate`, so overlay had nothing beneath it to blend with inside
+ *             the stacking context. Dropping the blend and roughly doubling the
+ *             alpha makes it a real dither at a cost of nothing.
  *
  * THE INVARIANT: this renders an `aria-hidden` layer that is a SIBLING of the
  * section's content, never an ancestor of it, and it is always `-z-10` inside an
@@ -158,7 +164,7 @@ export function Backdrop({
           <div className={cn("absolute hidden h-[30rem] w-[30rem] opacity-[0.42] sm:block", orn.pos, orn.fade)}>
             <MemphisArt variant={orn.v} />
           </div>
-          <div className="absolute inset-0 grain opacity-[0.035] mix-blend-overlay" />
+          <div className="absolute inset-0 grain opacity-[0.07]" />
         </>
       )}
 
@@ -170,7 +176,7 @@ export function Backdrop({
           <div className={cn("absolute hidden h-[26rem] w-[26rem] opacity-[0.38] sm:block", orn.pos, orn.fade)}>
             <MemphisArt variant={orn.v} />
           </div>
-          <div className="absolute inset-0 grain opacity-[0.03] mix-blend-overlay" />
+          <div className="absolute inset-0 grain opacity-[0.065]" />
         </>
       )}
 
@@ -178,7 +184,7 @@ export function Backdrop({
         <>
           <div className={cn("absolute inset-0 text-ink/[0.07] dot-grid [--grid:26px]", origin)} />
           <div className={cn("absolute h-[36rem] w-[36rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_8%,transparent),transparent_70%)]", wash.a)} />
-          <div className="absolute inset-0 grain opacity-[0.025] mix-blend-overlay" />
+          <div className="absolute inset-0 grain opacity-[0.055]" />
         </>
       )}
 
@@ -193,7 +199,7 @@ export function Backdrop({
           <div className={cn("absolute hidden h-[24rem] w-[24rem] opacity-[0.5] sm:block", orn.pos, orn.fade)}>
             <MemphisArt variant={orn.v} />
           </div>
-          <div className="absolute inset-0 grain opacity-[0.05] mix-blend-overlay" />
+          <div className="absolute inset-0 grain opacity-[0.09]" />
         </>
       )}
 
@@ -206,7 +212,7 @@ export function Backdrop({
           <div className={cn("absolute h-[20rem] w-[20rem] opacity-[0.55]", orn.pos, orn.fade)}>
             <MemphisArt variant={orn.v} />
           </div>
-          <div className="absolute inset-0 grain opacity-[0.05] mix-blend-overlay" />
+          <div className="absolute inset-0 grain opacity-[0.09]" />
         </>
       )}
     </div>

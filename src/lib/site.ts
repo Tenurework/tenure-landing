@@ -188,7 +188,7 @@ export const site = {
       // screen-share one. The structural point survives without it: what was
       // modelled is the office's org chart, not its people.
       label: "organizations modelled",
-      sub: "209 seats, modelled on the office’s real organizational structure — seeded counts, not active users",
+      sub: "209 seats, modelled on the office’s real organizational structure",
       claimId: "C-014",
     },
     {

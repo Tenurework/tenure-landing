@@ -269,7 +269,7 @@ export const claims: Claim[] = [
     ],
     availability: "ci-verified",
     qualification:
-      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 18 of 41 models carry institutionId; the other 23 are registered as not independently enforceable at the query layer. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
+      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 18 of 41 models carry institutionId; eighteen more are registered as not independently enforceable at the query layer, and five are registered platform-global by design. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -850,7 +850,7 @@ export const claims: Claim[] = [
       // testPathIgnorePatterns because they need a live PostgreSQL, so "runs
       // against a real database" belongs to the e2e half of the sentence only.
       "apps/web/jest.config.js (testPathIgnorePatterns excludes *.itest.ts — those need a live PostgreSQL)",
-      "77 unit test files containing 961 declared it()/test() cases — a FLOOR, see the qualification",
+      "78 unit test files containing 974 declared it()/test() cases — a FLOOR, see the qualification",
     ],
     availability: "live",
     qualification:
@@ -870,14 +870,19 @@ export const claims: Claim[] = [
       // register's rule is to count by RUNNING the suite, and apps/web has no
       // installed dependencies in this checkout; installing them into the product
       // repo to publish a marketing number is not a trade worth making. So it is a
-      // static count of declared cases, and static counting is CALIBRATED AGAINST
+      // static count of declared cases over the files JEST REALLY COLLECTS — which is
+      // apps/web/**/*.{test,spec}.{ts,tsx,mjs} minus e2e/ and *.itest.ts, per
+      // apps/web/jest.config.js (moduleFileExtensions, testMatch,
+      // testPathIgnorePatterns). That glob is wider than apps/web/src: it also picks
+      // up apps/web/scripts/db-bootstrap.test.mjs, 13 cases a src-only count misses.
+      // Static counting is CALIBRATED AGAINST
       // THE OLD RUN: at the previous pin it gives 279 where jest reported 320, an
       // undercount of about 13% caused by `.each` blocks expanding at runtime.
       //
       // 961 declared cases is therefore a floor, and "more than 950" is the honest
       // way to publish a floor. Never state a precise unit figure until someone
       // runs `cd apps/web && npx jest --ci` and pastes the total.
-      "The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 961 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 950' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.",
+      "The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 974 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 950' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,

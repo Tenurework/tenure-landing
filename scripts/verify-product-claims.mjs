@@ -122,12 +122,28 @@ check("C-038", "no dues / income transaction type exists", () => {
 });
 
 check("C-015", "published test counts are still a floor, not an overstatement", () => {
-  const files = execFileSync("git", ["-C", repo, "ls-tree", "-r", "--name-only", "HEAD", "--", "apps/web/src", "apps/web/e2e"], { encoding: "utf8" }).trim().split("\n");
+  /*
+    Count over the files JEST REALLY COLLECTS, not over apps/web/src.
+    apps/web/jest.config.js matches any file ending .spec/.test with a js, jsx,
+    ts, tsx, mjs or cjs extension, anywhere under apps/web — `mjs` is in
+    moduleFileExtensions — and testPathIgnorePatterns excludes only
+    node_modules, .next, e2e/ and *.itest.ts. A src-only glob therefore misses
+    apps/web/scripts/db-bootstrap.test.mjs — 13 cases — and the gate would then
+    be proving a smaller number than the site publishes, which is the wrong way
+    round for a floor.
+  */
+  const files = execFileSync("git", ["-C", repo, "ls-tree", "-r", "--name-only", "HEAD", "--", "apps/web"], { encoding: "utf8" }).trim().split("\n");
   const count = (sel, pat) =>
     files.filter(sel).reduce((n, f) => n + (execFileSync("git", ["-C", repo, "show", `HEAD:${f}`], { encoding: "utf8" }).match(pat)?.length ?? 0), 0);
-  const unit = count((f) => /^apps\/web\/src\/.*\.test\.tsx?$/.test(f), /^\s*(?:it|test)\s*\(/gm);
+  const collected = (f) =>
+    /\.(spec|test)\.(m|c)?[jt]sx?$/.test(f) && !/^apps\/web\/e2e\//.test(f) && !/\.itest\.ts$/.test(f);
+  const unit = count(collected, /^\s*(?:it|test)\s*\(/gm);
+  const unitFiles = files.filter(collected).length;
   const e2e = count((f) => /^apps\/web\/e2e\/.*\.spec\.ts$/.test(f), /^\s*test\s*\(/gm);
-  return { ok: unit > 950 && e2e === 161, detail: `${unit} declared unit cases (site: "more than 950"), ${e2e} e2e (site: 161)` };
+  return {
+    ok: unit > 950 && e2e === 161,
+    detail: `${unit} declared unit cases across ${unitFiles} files (site: "more than 950"), ${e2e} e2e (site: 161)`,
+  };
 });
 
 const failed = checks.filter((c) => !c.ok);

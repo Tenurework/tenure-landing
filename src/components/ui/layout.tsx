@@ -128,6 +128,21 @@ export function Section({
   };
   const ramp = from && from !== tone ? RAMP[`${from}>${tone}`] : undefined;
 
+  /*
+    A RULE BETWEEN TWO IDENTICAL FILLS IS LINE NOISE.
+
+    A hairline drawn where the colour does not change divides nothing — it is a
+    full-width line across the page for no reason, and three of them were
+    measured on the running site (home SeatMechanism after Audiences, and two on
+    /product). The divider exists to mark a change of surface, so when the caller
+    tells us the surface does not change, it is suppressed.
+
+    Sections that do not declare `from` keep the rule: an unknown predecessor is
+    not the same as a known-identical one.
+  */
+  const sameSurface = from !== undefined && from === tone;
+  const showDivider = divide && !sameSurface;
+
   return (
     <section
       id={id}
@@ -165,7 +180,7 @@ export function Section({
            section's own fill token, so it inverts with the theme like everything
            else.
       */}
-      {divide && (
+      {showDivider && (
         <>
           <div
             aria-hidden

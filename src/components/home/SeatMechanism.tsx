@@ -161,7 +161,7 @@ export function SeatMechanism() {
 
   return (
     <LazyMotion features={domAnimation} strict>
-      <Section tone="canvas" backdrop="quiet" backdropSeed={3} className="lg:pb-24">
+      <Section from="canvas" tone="canvas" backdrop="quiet" backdropSeed={3} className="lg:pb-24">
         <Container>
           <div
             ref={sectionRef}
