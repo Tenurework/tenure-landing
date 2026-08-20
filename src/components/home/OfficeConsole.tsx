@@ -178,8 +178,8 @@ function Pane({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="p-5 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-display text-[1.1rem] font-semibold text-ink">{label}</h3>
-        <span className="label-mono text-[0.55rem]">institution-wide</span>
+        <h3 className="font-display text-title-sm font-semibold text-ink">{label}</h3>
+        <span className="label-mono text-mark-xs">institution-wide</span>
       </div>
       <div className="mt-4">{children}</div>
     </div>
@@ -201,12 +201,12 @@ function Row({
   return (
     <li className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 rounded-lg border border-line bg-paper/50 px-3 py-2">
       <span className="min-w-0">
-        <span className="block truncate text-[0.86rem] text-ink">{title}</span>
-        <span className="block font-mono text-[0.6rem] text-ink-faint">{meta}</span>
+        <span className="block truncate text-body-sm text-ink">{title}</span>
+        <span className="block font-mono text-mark text-ink-faint">{meta}</span>
       </span>
       <span
         className={cn(
-          "shrink-0 rounded-md px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide",
+          "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
           tone === "good" && "bg-grove-soft text-grove-deep",
           tone === "warn" && "bg-warning-subtle text-warning",
           tone === "quiet" && "bg-surface-subtle text-text-secondary",
@@ -243,7 +243,7 @@ export function OfficeConsole() {
               title="Administration console"
               meta="Office of Student Engagement · worked example"
               aside={
-                <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-cloud px-2.5 py-1 font-mono text-[0.62rem] text-ink-faint">
+                <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-cloud px-2.5 py-1 font-mono text-mark text-ink-faint">
                   signed in as Director
                 </span>
               }
@@ -263,7 +263,7 @@ export function OfficeConsole() {
               <div className="min-h-[19rem]">
                 {pane === "overview" && (
                   <Pane label="Overview">
-                    <p className="text-[0.92rem] leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft">
                       What needs a decision, across every organization at once. The
                       queue is the home screen because it is the only thing an
                       overseeing body opens a console to see.
@@ -293,7 +293,7 @@ export function OfficeConsole() {
 
                 {pane === "organizations" && (
                   <Pane label="Organizations">
-                    <p className="text-[0.92rem] leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft">
                       Every organization on one record, with how much of its seat map
                       is actually filled &mdash; which is the number that predicts
                       whether a handoff will go well.
@@ -321,7 +321,7 @@ export function OfficeConsole() {
 
                 {pane === "people" && (
                   <Pane label="People">
-                    <p className="text-[0.92rem] leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft">
                       People are listed by the seat they hold, not by an account.
                       Someone with no seat has no access, and someone who has left
                       appears here as alumni rather than disappearing.
@@ -339,36 +339,36 @@ export function OfficeConsole() {
                     <div className="well p-4">
                       <div className="flex flex-wrap items-start justify-between gap-3">
                         <div>
-                          <p className="text-[0.92rem] font-medium text-ink">
+                          <p className="text-body font-medium text-ink">
                             Spring Gala vendor contract
                           </p>
-                          <p className="font-mono text-[0.62rem] text-ink-faint">
+                          <p className="font-mono text-mark text-ink-faint">
                             $4,200 · Student Culture Council · SCC-VP-EVEN-PART
                           </p>
                         </div>
-                        <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium text-warning">
+                        <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-mark-xs font-medium text-warning">
                           6 days in gate 1
                         </span>
                       </div>
                       <div className="mt-3.5 flex flex-wrap items-center gap-2">
-                        <span className="rounded-lg border border-grove/30 bg-grove-soft px-2.5 py-1 font-mono text-[0.62rem] font-medium text-grove-deep">
+                        <span className="rounded-lg border border-grove/30 bg-grove-soft px-2.5 py-1 font-mono text-mark font-medium text-grove-deep">
                           Force approve
                         </span>
-                        <span className="rounded-lg border border-line bg-paper px-2.5 py-1 font-mono text-[0.62rem] text-ink-soft">
+                        <span className="rounded-lg border border-line bg-paper px-2.5 py-1 font-mono text-mark text-ink-soft">
                           Force reject
                         </span>
-                        <span className="text-[0.72rem] text-ink-faint">
+                        <span className="text-meta text-ink-faint">
                           both gates bypassed
                         </span>
                       </div>
-                      <p className="mt-3 rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.6rem] leading-relaxed text-inverse/70">
+                      <p className="mt-3 rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-mark leading-relaxed text-inverse/70">
                         <span className="text-grove-bright">approval.force_approved</span> ·
                         Director · allow
                       </p>
                     </div>
                     {/* C-037's limit, stated beside the mock rather than only on
                         /trust: every use is audited, and nothing prevents it. */}
-                    <p className="mt-3 border-l-2 border-border-strong pl-3.5 text-[0.84rem] leading-relaxed text-ink-faint">
+                    <p className="mt-3 border-l-2 border-border-strong pl-3.5 text-caption leading-relaxed text-ink-faint">
                       <span className="font-medium text-ink-soft">Limit: </span>
                       this is the highest-privilege action in the product. Every use
                       writes an audit row naming the deciding seat, but nothing
@@ -380,7 +380,7 @@ export function OfficeConsole() {
 
                 {pane === "capabilities" && (
                   <Pane label="Capabilities">
-                    <p className="text-[0.92rem] leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft">
                       Sixteen named capabilities across three strictly nested tiers.
                       A director inherits everything staff can do, and staff
                       everything an advisor can do &mdash; so the tiers are drawn as
@@ -394,7 +394,7 @@ export function OfficeConsole() {
                         { label: "Advisor", count: 1 },
                       ]}
                     />
-                    <p className="mt-3.5 text-[0.84rem] leading-relaxed text-ink-faint">
+                    <p className="mt-3.5 text-caption leading-relaxed text-ink-faint">
                       Navigation follows the capabilities the signed-in seat holds,
                       so a reviewer is never shown a surface they cannot use. The
                       capability guard writes an audit row for the denial as well as
@@ -405,7 +405,7 @@ export function OfficeConsole() {
 
                 {pane === "succession" && (
                   <Pane label="Succession">
-                    <p className="text-[0.92rem] leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft">
                       The body above hands off too. You keep every power until your
                       named successor accepts.
                     </p>
@@ -417,23 +417,23 @@ export function OfficeConsole() {
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <div className="flex items-center gap-2.5">
-                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove-soft font-mono text-[0.72rem] font-semibold text-grove-deep">
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove-soft font-mono text-meta font-semibold text-grove-deep">
                                 {s.n}
                               </span>
-                              <p className="text-[0.92rem] font-medium text-ink">
+                              <p className="text-body font-medium text-ink">
                                 {s.title}
                               </p>
                             </div>
                             <span
                               className={cn(
-                                "shrink-0 rounded-md px-2 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide",
+                                "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
                                 CHIP[s.tone],
                               )}
                             >
                               {s.chip}
                             </span>
                           </div>
-                          <p className="mt-2 text-[0.85rem] leading-relaxed text-ink-soft">
+                          <p className="mt-2 text-body-sm leading-relaxed text-ink-soft">
                             {s.body}
                           </p>
                         </li>

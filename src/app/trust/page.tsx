@@ -374,7 +374,7 @@ export default function TrustPage() {
                   <dt className="pt-0.5">
                     <StatusBadge status={key} />
                   </dt>
-                  <dd className="text-[0.88rem] leading-relaxed text-text-secondary">
+                  <dd className="text-body-sm leading-relaxed text-text-secondary">
                     {STATUSES[key].hint}
                   </dd>
                 </div>
@@ -417,16 +417,16 @@ export default function TrustPage() {
                       {group.controls.map((c) => (
                         <li key={c.title}>
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                            <h3 className="font-display text-[1.02rem] font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
                               {c.title}
                             </h3>
                             <StatusBadge status={c.status} />
                           </div>
-                          <p className="mt-2 text-[0.94rem] leading-relaxed text-text-secondary">
+                          <p className="mt-2 text-body leading-relaxed text-text-secondary">
                             {c.body}
                           </p>
                           {c.limit && (
-                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-[0.89rem] leading-relaxed text-text-muted">
+                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted">
                               <span className="font-medium text-text-secondary">
                                 Limit:{" "}
                               </span>
@@ -448,7 +448,7 @@ export default function TrustPage() {
         <Container>
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
-            <h2 className="font-display text-xl font-semibold tracking-tight text-text">
+            <h2 className="font-display text-title font-semibold tracking-tight text-text">
               Security issues, in both directions
             </h2>
             <p className="mt-3 leading-relaxed text-text-secondary">
@@ -485,7 +485,7 @@ export default function TrustPage() {
             </p>
           </div>
           <div>
-            <h2 className="font-display text-xl font-semibold tracking-tight text-text">
+            <h2 className="font-display text-title font-semibold tracking-tight text-text">
               Documents
             </h2>
             <p className="mt-3 leading-relaxed text-text-secondary">

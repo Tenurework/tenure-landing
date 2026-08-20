@@ -49,7 +49,7 @@ export function StatusBadge({
   return (
     <span
       className={cn(
-        "inline-flex shrink-0 items-center rounded-lg border px-2.5 py-1 font-mono text-[0.68rem] font-medium uppercase tracking-[0.08em]",
+        "inline-flex shrink-0 items-center rounded-lg border px-2.5 py-1 font-mono text-meta font-medium uppercase tracking-[0.08em]",
         s.className,
         className,
       )}

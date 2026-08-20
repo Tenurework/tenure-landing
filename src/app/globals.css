@@ -311,6 +311,47 @@
   --color-brand-sky: var(--info);
   --color-brand-violet: var(--chart-5);
 
+  /* ------------------------------------------------------------------ type */
+  /*
+    THE TYPE SCALE, WHICH DID NOT EXIST.
+
+    Measured before this block: 59 distinct arbitrary `text-[Nrem]` values across
+    304 uses, plus 28 uses of Tailwind's own steps — and on the rendered page, 54
+    distinct computed font sizes over 1,754 text nodes. Seventeen of those sat
+    between 13px and 16px, separated by as little as 0.08px.
+
+    That is not a range of sizes, it is the absence of a decision. Nobody can see
+    0.08px; what a reader sees is that no two components agree, which is the
+    thing that separates a designed page from an assembled one. It is also why
+    every new component invented its own size — there was nothing to reach for.
+
+    Fifteen steps, named for the job rather than numbered, so a call site says
+    what it means and cannot silently drift a hundredth of a rem. The names do
+    not collide with Tailwind's own scale, which is deliberate: `text-sm` still
+    means what it always meant, and the 28 places using it were folded into these
+    instead so the site has exactly one system rather than two.
+
+    Steps are closer together at the bottom, where a small absolute change is a
+    large relative one, and wider at display sizes. No value moved by more than
+    0.05rem in the body range; the largest single shift anywhere is a display
+    heading, and those were already inconsistent between routes.
+  */
+  --text-mark-xs: 0.55rem;
+  --text-mark: 0.62rem;
+  --text-meta: 0.72rem;
+  --text-caption: 0.8rem;
+  --text-body-sm: 0.88rem;
+  --text-body: 0.95rem;
+  --text-lead: 1.05rem;
+  --text-title-sm: 1.15rem;
+  --text-title: 1.3rem;
+  --text-h3: 1.55rem;
+  --text-h2: 1.9rem;
+  --text-h2-lg: 2.3rem;
+  --text-display-sm: 2.65rem;
+  --text-display: 3.15rem;
+  --text-hero: 3.8rem;
+
   /* Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -379,6 +420,12 @@
   body {
     background-color: var(--canvas);
     color: var(--text);
+    /* The inherited size, so prose with no size class of its own still lands on
+       a step. Without this, every unstyled <p> rendered at the browser's 16px —
+       which is not a step — and that was the largest single source of off-scale
+       text left after the sweep. rem values are relative to the ROOT, so setting
+       this changes inherited text only and no computed spacing. */
+    font-size: var(--text-body);
     font-family: var(--font-general), ui-sans-serif, system-ui, sans-serif;
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
@@ -429,7 +476,9 @@
    these are the smallest type on the page and need the extra contrast. */
 @utility label-mono {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  /* On the scale. This was 0.6875rem — a value that belongs to no step and
+     rendered at 11px, one of the three sizes left off-scale after the sweep. */
+  font-size: var(--text-meta);
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -577,6 +626,7 @@
 
 /* Skip link — first thing in the tab order, invisible until focused. */
 .skip-link {
+  font-size: var(--text-body-sm);
   position: absolute;
   left: 0.75rem;
   top: 0.75rem;
@@ -586,7 +636,6 @@
   background: var(--accent);
   color: var(--on-accent);
   padding: 0.7rem 1.1rem;
-  font-size: 0.9rem;
   font-weight: 500;
   transition: transform 0.16s var(--ease-out);
 }
@@ -627,7 +676,9 @@
      gaps come in. */
   .legal {
     color: var(--text-secondary);
-    font-size: 1rem;
+    /* On the scale, and one step up from running body on purpose: these two
+       pages are a wall of clauses somebody reads end to end under obligation. */
+    font-size: var(--text-lead);
     line-height: 1.68;
   }
   .legal > * + * {

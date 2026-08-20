@@ -97,10 +97,10 @@ export function Problem() {
             {/* Column heads, wide screens only: on a phone each row stacks and the
                 icons carry the distinction, so a header row would be noise. */}
             <div className="hidden gap-6 border-b border-line px-6 py-2.5 md:grid md:grid-cols-2">
-              <span className="label-mono text-[0.55rem] text-brand-coral">
+              <span className="label-mono text-mark-xs text-brand-coral">
                 Without Tenure &mdash; the handoff today
               </span>
-              <span className="label-mono text-[0.55rem] text-grove">
+              <span className="label-mono text-mark-xs text-grove">
                 With Tenure &mdash; the seat remembers
               </span>
             </div>
@@ -113,7 +113,7 @@ export function Problem() {
                 >
                   <div className="flex items-start gap-3">
                     <Cross />
-                    <span className="text-[0.97rem] leading-relaxed text-ink-faint">
+                    <span className="text-body leading-relaxed text-ink-faint">
                       {row.lost}
                     </span>
                   </div>
@@ -121,7 +121,7 @@ export function Problem() {
                       full-height divider would imply the rows are independent. */}
                   <div className="flex items-start gap-3 md:border-l md:border-line md:pl-6">
                     <Check />
-                    <span className="text-[0.97rem] leading-relaxed text-ink">{row.kept}</span>
+                    <span className="text-body leading-relaxed text-ink">{row.kept}</span>
                   </div>
                 </li>
               ))}

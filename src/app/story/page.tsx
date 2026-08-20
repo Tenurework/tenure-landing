@@ -58,14 +58,14 @@ export default function StoryPage() {
               <Eyebrow index="01">Why Tenure exists</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
+              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 Every fall, the same{" "}
                 <span className="text-grove">cold start</span>.
               </h2>
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
                 At Simon, we watched it up close. A capable board spends a year
                 building real things, sponsor relationships, an events
                 playbook, a budget that finally works, then hands all of
@@ -74,7 +74,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.16}>
-              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
                 So the next team starts from memory and guesswork. Sponsor
                 contacts go cold because no one knew they existed. The same
                 mistakes get repeated, not from carelessness, but because
@@ -84,7 +84,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="mt-5 text-[1.02rem] leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
                 None of that is a people problem. It&rsquo;s a memory problem.
                 Institutional knowledge shouldn&rsquo;t depend on whether one
                 person remembered to write it down on the way out. It
@@ -94,7 +94,7 @@ export default function StoryPage() {
             </Reveal>
 
             <Reveal delay={0.24}>
-              <blockquote className="mt-8 border-l-2 border-grove pl-5 font-display text-xl font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-[1.5rem]">
+              <blockquote className="mt-8 border-l-2 border-grove pl-5 font-display text-title font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-h3">
                 The role should keep what it knows, even after the people who
                 built it have graduated.
               </blockquote>
@@ -111,7 +111,7 @@ export default function StoryPage() {
               <Eyebrow index="02">Founders</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
+              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 The people building the{" "}
                 <span className="text-grove">record</span>.
               </h2>
@@ -124,11 +124,11 @@ export default function StoryPage() {
                 <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
                   <span
                     aria-hidden
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-grove-soft font-display text-lg font-semibold text-grove-deep"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-grove-soft font-display text-title-sm font-semibold text-grove-deep"
                   >
                     {f.name.charAt(0)}
                   </span>
-                  <h3 className="mt-6 font-display text-xl font-semibold text-ink">
+                  <h3 className="mt-6 font-display text-title font-semibold text-ink">
                     {f.name}
                   </h3>
                   <p className="mt-1.5 label-mono">{f.role}</p>
@@ -138,7 +138,7 @@ export default function StoryPage() {
                       answers for and nothing else — no biography, credentials,
                       employer, education or photograph is published, because
                       none of that has been verified. */}
-                  <p className="mt-4 text-[0.97rem] leading-relaxed text-ink-soft">
+                  <p className="mt-4 text-body leading-relaxed text-ink-soft">
                     {f.focus}
                   </p>
                 </div>
@@ -162,13 +162,13 @@ export default function StoryPage() {
               </Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.3rem]">
+              <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
                 Serve any organization where people rotate faster than{" "}
                 <span className="text-grove-bright">knowledge transfers</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-inverse/70">
+              <p className="mx-auto mt-7 max-w-2xl text-title-sm leading-relaxed text-inverse/70">
                 We start with student clubs, where the reset is sharpest and the
                 leadership changes every spring. The same record is built for
                 boards, chapters, and committees, anywhere the calendar
@@ -187,13 +187,13 @@ export default function StoryPage() {
               <Eyebrow index="04">Where it stands</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
+              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 Early, and honest{" "}
                 <span className="text-grove">about it</span>.
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mt-6 text-[1.02rem] leading-relaxed text-ink-soft">
+              <p className="mt-6 text-lead leading-relaxed text-ink-soft">
                 Here is exactly where things stand. We are planning a{" "}
                 {site.pilot.season}{" "}
                 pilot with Simon&rsquo;s Office of Student
@@ -214,10 +214,10 @@ export default function StoryPage() {
                     key={r.label}
                     className="flex flex-col gap-1 py-4 first:pt-0 sm:flex-row sm:items-baseline sm:gap-6"
                   >
-                    <dt className="w-32 shrink-0 font-mono text-[0.72rem] uppercase tracking-[0.14em] text-ink-faint">
+                    <dt className="w-32 shrink-0 font-mono text-meta uppercase tracking-[0.14em] text-ink-faint">
                       {r.label}
                     </dt>
-                    <dd className="min-w-0 break-words text-[1.02rem] text-ink">{r.value}</dd>
+                    <dd className="min-w-0 break-words text-lead text-ink">{r.value}</dd>
                   </div>
                 ))}
               </dl>

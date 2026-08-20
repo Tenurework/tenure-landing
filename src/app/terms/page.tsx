@@ -39,7 +39,7 @@ export default function TermsPage() {
           is the one thing on this page that must never be behind a click.
         */}
         <div className="mx-auto max-w-3xl pb-16">
-          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
             <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
             It has not been reviewed by counsel, and Tenure is not yet an
             incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading

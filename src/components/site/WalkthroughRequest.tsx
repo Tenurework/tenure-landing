@@ -147,7 +147,7 @@ function Field({
         {label}
       </label>
       {hint && (
-        <span id={`${id}-hint`} className="mt-1 block text-[0.78rem] text-ink-faint">
+        <span id={`${id}-hint`} className="mt-1 block text-caption text-ink-faint">
           {hint}
         </span>
       )}
@@ -157,7 +157,7 @@ function Field({
 }
 
 const inputClass =
-  "block min-h-11 w-full rounded-xl border border-border-strong bg-canvas px-3.5 py-2.5 text-[0.95rem] text-ink " +
+  "block min-h-11 w-full rounded-xl border border-border-strong bg-canvas px-3.5 py-2.5 text-body text-ink " +
   "placeholder:text-ink-faint focus-visible:border-grove focus-visible:outline-2 focus-visible:outline-offset-2 " +
   "focus-visible:outline-grove";
 
@@ -321,11 +321,11 @@ export function WalkthroughRequest() {
             <div>
               <h2
                 id={titleId}
-                className="font-display text-[1.25rem] font-semibold tracking-tight text-ink"
+                className="font-display text-title font-semibold tracking-tight text-ink"
               >
                 Request a walkthrough
               </h2>
-              <p id={descId} className="mt-1 text-[0.88rem] leading-relaxed text-ink-soft">
+              <p id={descId} className="mt-1 text-body-sm leading-relaxed text-ink-soft">
                 Tell us what you want to see and we will open exactly that. Every
                 field is optional.
               </p>
@@ -435,7 +435,7 @@ export function WalkthroughRequest() {
                     <label
                       key={topic}
                       className={cn(
-                        "flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 text-[0.88rem] transition-colors",
+                        "flex min-h-11 cursor-pointer items-center gap-2.5 rounded-xl border px-3 py-2 text-body-sm transition-colors",
                         on
                           ? "border-grove/40 bg-grove-soft/60 text-ink"
                           : "border-line bg-canvas text-ink-soft hover:border-border-strong",
@@ -475,7 +475,7 @@ export function WalkthroughRequest() {
             <div>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <span className="label-mono">Your request, as it will send</span>
-                <span className="font-mono text-[0.7rem] text-ink-faint">
+                <span className="font-mono text-meta text-ink-faint">
                   to {site.email}
                 </span>
               </div>
@@ -484,7 +484,7 @@ export function WalkthroughRequest() {
                 value={body}
                 rows={6}
                 aria-label="The composed request"
-                className="mt-2 block w-full resize-y rounded-xl border border-line bg-sand/60 p-3.5 font-mono text-[0.78rem] leading-relaxed text-ink-soft"
+                className="mt-2 block w-full resize-y rounded-xl border border-line bg-sand/60 p-3.5 font-mono text-caption leading-relaxed text-ink-soft"
               />
             </div>
 
@@ -527,7 +527,7 @@ export function WalkthroughRequest() {
             */}
             <p
               aria-live="polite"
-              className="text-[0.78rem] leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[17rem]"
+              className="text-caption leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[17rem]"
             >
               {handed ? (
                 <>

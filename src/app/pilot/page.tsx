@@ -353,15 +353,15 @@ function ProvidesCard({
 }) {
   return (
     <div className="h-full rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-sm)] sm:p-8">
-      <h3 className="font-display text-[1.35rem] font-semibold tracking-tight text-text">
+      <h3 className="font-display text-title font-semibold tracking-tight text-text">
         {heading}
       </h3>
-      <p className="mt-2 text-[0.92rem] leading-relaxed text-text-muted">{sub}</p>
+      <p className="mt-2 text-body leading-relaxed text-text-muted">{sub}</p>
       <dl className="mt-7 space-y-6 border-t border-line pt-7">
         {items.map((item) => (
           <div key={item.t}>
-            <dt className="text-[1rem] font-medium text-text">{item.t}</dt>
-            <dd className="mt-1.5 text-[0.95rem] leading-relaxed text-text-secondary">
+            <dt className="text-body font-medium text-text">{item.t}</dt>
+            <dd className="mt-1.5 text-body leading-relaxed text-text-secondary">
               {item.d}
             </dd>
           </div>
@@ -447,7 +447,7 @@ export default function PilotPage() {
                     ].join(" ")}
                   >
                     <dt className="label-mono">{row.k}</dt>
-                    <dd className="mt-1.5 text-[0.95rem] leading-relaxed text-text-secondary">
+                    <dd className="mt-1.5 text-body leading-relaxed text-text-secondary">
                       {row.v}
                     </dd>
                   </div>
@@ -504,14 +504,14 @@ export default function PilotPage() {
                           className="grid gap-2 lg:grid-cols-[0.8fr_1.6fr] lg:gap-8"
                         >
                           <div>
-                            <h3 className="font-display text-[1.05rem] font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
                               {p.who}
                             </h3>
-                            <p className="mt-1 font-mono text-[0.74rem] leading-relaxed text-text-muted">
+                            <p className="mt-1 font-mono text-meta leading-relaxed text-text-muted">
                               {p.seat}
                             </p>
                           </div>
-                          <p className="text-[0.94rem] leading-relaxed text-text-secondary">
+                          <p className="text-body leading-relaxed text-text-secondary">
                             {p.ask}
                           </p>
                         </li>
@@ -556,15 +556,15 @@ export default function PilotPage() {
                           key={x.item}
                           className="grid gap-2 lg:grid-cols-[1fr_1.5fr] lg:gap-8"
                         >
-                          <h3 className="font-display text-[1.02rem] font-semibold leading-snug tracking-tight text-text">
+                          <h3 className="font-display text-lead font-semibold leading-snug tracking-tight text-text">
                             {x.item}
                           </h3>
                           <div>
-                            <p className="text-[0.94rem] leading-relaxed text-text-secondary">
+                            <p className="text-body leading-relaxed text-text-secondary">
                               <span className="font-medium text-text">Shape: </span>
                               {x.shape}
                             </p>
-                            <p className="mt-1.5 text-[0.94rem] leading-relaxed text-text-secondary">
+                            <p className="mt-1.5 text-body leading-relaxed text-text-secondary">
                               <span className="font-medium text-text">
                                 Who does the work:{" "}
                               </span>
@@ -584,7 +584,7 @@ export default function PilotPage() {
                   tally: [{ label: "not dates", tone: "warn" }],
                   children: (
                     <>
-                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
                         There <em>is</em> a new system to learn. It is where the
                         work happens, or the record does not fill, and no page on
                         this site is going to tell you otherwise. What there is not
@@ -598,12 +598,12 @@ export default function PilotPage() {
                             key={s.n}
                             className="flex gap-4 rounded-xl border border-line bg-surface p-4"
                           >
-                            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-accent-subtle font-mono text-[0.8rem] text-accent-text">
+                            <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-line bg-accent-subtle font-mono text-caption text-accent-text">
                               {s.n}
                             </span>
                             <div>
-                              <h3 className="text-[1rem] font-medium text-text">{s.t}</h3>
-                              <p className="mt-1 text-[0.93rem] leading-relaxed text-text-secondary">
+                              <h3 className="text-body font-medium text-text">{s.t}</h3>
+                              <p className="mt-1 text-body leading-relaxed text-text-secondary">
                                 {s.d}
                               </p>
                             </div>
@@ -621,14 +621,14 @@ export default function PilotPage() {
                   tally: [{ label: "no SLA", tone: "warn" }],
                   children: (
                     <>
-                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
                         You would work directly with {site.founders[0].name} and{" "}
                         {site.founders[1].name}{" "}
                         for the whole pilot. One address reaches both of us, and we answer the same day, most days
                         &mdash; which is a description of how we work, not a service
                         level anyone has agreed to.
                       </p>
-                      <p className="mt-3 max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                      <p className="mt-3 max-w-3xl text-body leading-relaxed text-text-secondary">
                         What that buys you: the people who wrote the code are the
                         people who answer, and what your office needs shapes what
                         gets built next. What it costs you: there is no ticket
@@ -644,7 +644,7 @@ export default function PilotPage() {
                               aria-hidden
                               className="mt-[0.45rem] h-2 w-2 shrink-0 rounded-[3px] bg-accent"
                             />
-                            <span className="text-[0.94rem] leading-relaxed text-text-secondary">
+                            <span className="text-body leading-relaxed text-text-secondary">
                               {s}
                             </span>
                           </li>
@@ -667,7 +667,7 @@ export default function PilotPage() {
                   ],
                   children: (
                     <>
-                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
                         The parts an office and its security reviewer should hear
                         from us before they hear from anyone else.{" "}
                         <a
@@ -682,14 +682,14 @@ export default function PilotPage() {
                       <ul className="mt-5 grid gap-x-10 gap-y-6 lg:grid-cols-2">
                         {HANDLING.map((h) => (
                           <li key={h.t}>
-                            <h3 className="font-display text-[1.02rem] font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
                               {h.t}
                             </h3>
-                            <p className="mt-2 text-[0.93rem] leading-relaxed text-text-secondary">
+                            <p className="mt-2 text-body leading-relaxed text-text-secondary">
                               {h.d}
                             </p>
                             {h.limit && (
-                              <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-[0.88rem] leading-relaxed text-text-muted">
+                              <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted">
                                 <span className="font-medium text-text-secondary">
                                   Limit:{" "}
                                 </span>
@@ -713,7 +713,7 @@ export default function PilotPage() {
                   ],
                   children: (
                     <>
-                      <p className="max-w-3xl text-[0.94rem] leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
                         Every line below is a target, not a result. No pilot has
                         run, nothing here has been measured, and any outcome number
                         on this page would be invented. Each one is countable from
@@ -727,19 +727,19 @@ export default function PilotPage() {
                             key={m.t}
                             className="rounded-xl border border-line bg-surface p-4"
                           >
-                            <span className="inline-flex items-center rounded-lg border border-accent/25 bg-accent-subtle px-2 py-0.5 font-mono text-[0.62rem] font-medium uppercase tracking-[0.08em] text-accent-text">
+                            <span className="inline-flex items-center rounded-lg border border-accent/25 bg-accent-subtle px-2 py-0.5 font-mono text-mark font-medium uppercase tracking-[0.08em] text-accent-text">
                               Target
                             </span>
-                            <h3 className="mt-2.5 text-[1rem] font-medium leading-snug text-text">
+                            <h3 className="mt-2.5 text-body font-medium leading-snug text-text">
                               {m.t}
                             </h3>
-                            <p className="mt-1.5 text-[0.9rem] leading-relaxed text-text-secondary">
+                            <p className="mt-1.5 text-body-sm leading-relaxed text-text-secondary">
                               {m.d}
                             </p>
                           </li>
                         ))}
                       </ul>
-                      <p className="mt-5 max-w-2xl text-[0.94rem] leading-relaxed text-text-muted">
+                      <p className="mt-5 max-w-2xl text-body leading-relaxed text-text-muted">
                         A measure that cannot be counted out of the record does not
                         go on the list. If we miss one, you get the number rather
                         than the narrative.
@@ -769,12 +769,12 @@ export default function PilotPage() {
               <div className="relative">
                 <div className="max-w-2xl">
                   <p className="label-mono text-grove-bright">03 · The decision</p>
-                  <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.2rem]">
+                  <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
                     The next step is a{" "}
                     <span className="text-grove-bright">conversation</span>, and then
                     a document.
                   </h2>
-                  <p className="mt-5 text-[1.05rem] leading-relaxed text-inverse/70">
+                  <p className="mt-5 text-lead leading-relaxed text-inverse/70">
                     There is nothing to sign on this page and no button that enrols
                     anyone. If the office decides not to run a pilot, the honest cost
                     of having read this far is an hour.
@@ -784,13 +784,13 @@ export default function PilotPage() {
                 <ol className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
                   {DECISION.map((d) => (
                     <li key={d.n}>
-                      <span className="font-mono text-[0.78rem] text-grove-bright">
+                      <span className="font-mono text-caption text-grove-bright">
                         {d.n}
                       </span>
-                      <h3 className="mt-1.5 text-[1.02rem] font-medium text-inverse">
+                      <h3 className="mt-1.5 text-lead font-medium text-inverse">
                         {d.t}
                       </h3>
-                      <p className="mt-1.5 text-[0.92rem] leading-relaxed text-inverse/70">
+                      <p className="mt-1.5 text-body leading-relaxed text-inverse/70">
                         {d.d}
                       </p>
                     </li>
@@ -801,7 +801,7 @@ export default function PilotPage() {
                   <ContactSales size="lg" arrow />
                   <a
                     href={`mailto:${site.email}?subject=Tenure%20pilot`}
-                    className="text-[0.97rem] text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
+                    className="text-body text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
                   >
                     or put a question in writing
                   </a>

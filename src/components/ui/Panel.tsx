@@ -70,8 +70,8 @@ export function PanelBar({
           </span>
         )}
         <div className="min-w-0">
-          <p className="font-display text-[0.98rem] font-semibold text-ink">{title}</p>
-          {meta && <p className="font-mono text-[0.64rem] text-ink-faint">{meta}</p>}
+          <p className="font-display text-body font-semibold text-ink">{title}</p>
+          {meta && <p className="font-mono text-mark text-ink-faint">{meta}</p>}
         </div>
       </div>
       {aside}
@@ -82,7 +82,7 @@ export function PanelBar({
 /** The small state pill a PanelBar carries on its right. */
 export function PanelTag({ children, dot = true }: { children: ReactNode; dot?: boolean }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/60 px-2.5 py-1 text-[0.7rem] text-ink-faint">
+    <span className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-paper/60 px-2.5 py-1 text-meta text-ink-faint">
       {dot && <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-grove" />}
       {children}
     </span>
@@ -105,7 +105,7 @@ export function PanelRail({
         className,
       )}
     >
-      <p className="label-mono px-2 pb-2 text-[0.55rem]">{label}</p>
+      <p className="label-mono px-2 pb-2 text-mark-xs">{label}</p>
       {children}
     </div>
   );
@@ -131,7 +131,7 @@ export function PanelNote({
   return (
     <div
       className={cn(
-        "border-t border-line bg-paper/50 px-4 py-3 text-[0.82rem] leading-relaxed text-ink-faint sm:px-6",
+        "border-t border-line bg-paper/50 px-4 py-3 text-caption leading-relaxed text-ink-faint sm:px-6",
         className,
       )}
     >

@@ -15,9 +15,9 @@ import { clsx, type ClassValue } from "clsx";
  * class.
  *
  * twMerge was deleting `leading-none` from Button's `base`. It does that because
- * Tailwind's `text-*` utilities CAN carry a line-height (`text-sm/6`), so
+ * Tailwind's `text-*` utilities CAN carry a line-height (`text-body-sm/6`), so
  * tailwind-merge treats font-size as conflicting with `leading`, and Button
- * concatenates `sizes` (`text-[0.93rem]`) after `base`. But those are arbitrary
+ * concatenates `sizes` (`text-body`) after `base`. But those are arbitrary
  * font-size values with no line-height component, so nothing actually conflicted:
  * twMerge was silently discarding a style the author wrote on purpose. Removing it
  * restores that intent. Buttons are fixed-height `inline-flex` with `items-center`

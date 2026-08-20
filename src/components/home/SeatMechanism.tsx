@@ -116,7 +116,7 @@ function Occupant({
     >
       <span
         className={cn(
-          "flex h-7 w-7 items-center justify-center rounded-full font-mono text-[0.6rem] font-semibold",
+          "flex h-7 w-7 items-center justify-center rounded-full font-mono text-mark font-semibold",
           TONE[status],
         )}
       >
@@ -124,7 +124,7 @@ function Occupant({
       </span>
       <span
         className={cn(
-          "flex-1 text-[0.82rem] font-medium",
+          "flex-1 text-caption font-medium",
           status === "alumni" ? "text-ink-faint" : "text-ink",
         )}
       >
@@ -132,7 +132,7 @@ function Occupant({
       </span>
       <span
         className={cn(
-          "rounded-full px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-wide",
+          "rounded-full px-2 py-0.5 font-mono text-mark-xs uppercase tracking-wide",
           TONE[status],
         )}
       >
@@ -202,7 +202,7 @@ export function SeatMechanism() {
                         />
                       </svg>
                     </span>
-                    <span className="text-[0.96rem] leading-relaxed text-ink-soft">{a}</span>
+                    <span className="text-body leading-relaxed text-ink-soft">{a}</span>
                   </Reveal>
                 ))}
               </ul>
@@ -251,7 +251,7 @@ export function SeatMechanism() {
                                 ? "Resume the term walkthrough"
                                 : "Pause the term walkthrough"
                             }
-                            className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-md font-mono text-[0.66rem] text-text-secondary hover:text-ink"
+                            className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-md font-mono text-mark text-text-secondary hover:text-ink"
                           >
                             <svg
                               viewBox="0 0 24 24"
@@ -303,10 +303,10 @@ export function SeatMechanism() {
                   <div className="p-4 sm:p-5">
                     {/* occupant timeline */}
                     <div className="flex items-baseline justify-between">
-                      <p className="label-mono text-[0.56rem]">
+                      <p className="label-mono text-mark-xs">
                         Occupant · term {step.term}
                       </p>
-                      <span className="font-mono text-[0.62rem] text-ink-faint">
+                      <span className="font-mono text-mark text-ink-faint">
                         the person rotates
                       </span>
                     </div>
@@ -325,7 +325,7 @@ export function SeatMechanism() {
                           <Occupant key={a} name={a} status="alumni" />
                         ))}
                         {step.alumni.length > 1 && (
-                          <p className="pl-1 font-mono text-[0.6rem] text-ink-faint">
+                          <p className="pl-1 font-mono text-mark text-ink-faint">
                             + {step.alumni.length - 1} more alumni on this seat
                           </p>
                         )}
@@ -340,13 +340,13 @@ export function SeatMechanism() {
                         <div key={l.label} className="flex items-baseline gap-2">
                           <dt
                             className={cn(
-                              "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-[0.54rem] font-medium uppercase tracking-wide",
+                              "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-mark-xs font-medium uppercase tracking-wide",
                               TONE[l.tone],
                             )}
                           >
                             {l.label}
                           </dt>
-                          <dd className="text-[0.74rem] leading-relaxed text-ink-soft">
+                          <dd className="text-meta leading-relaxed text-ink-soft">
                             {l.when}
                           </dd>
                         </div>
@@ -356,14 +356,14 @@ export function SeatMechanism() {
                     {/* the accruing record */}
                     <div className="mt-4 rounded-2xl border border-grove/20 bg-grove-mist/60 p-3.5">
                       <div className="flex items-baseline justify-between">
-                        <p className="label-mono text-[0.56rem] text-grove-deep">
+                        <p className="label-mono text-mark-xs text-grove-deep">
                           Institutional memory on this seat
                         </p>
-                        <p className="font-display text-xl font-semibold tnum text-grove-deep">
+                        <p className="font-display text-title font-semibold tnum text-grove-deep">
                           {step.records}
                         </p>
                       </div>
-                      <p className="text-[0.66rem] text-ink-soft">
+                      <p className="text-mark text-ink-soft">
                         records, carried across every handoff
                       </p>
                       <MemoryCurve points={CURVE} className="mt-2" />
@@ -380,10 +380,10 @@ export function SeatMechanism() {
                           exit={reduce ? undefined : { opacity: 0, x: 10 }}
                           transition={{ duration: reduce ? 0 : 0.3, ease: EASE }}
                         >
-                          <span className="rounded border border-grove/25 bg-grove-soft px-1 py-0.5 font-mono text-[0.5rem] uppercase text-grove-deep">
+                          <span className="rounded border border-grove/25 bg-grove-soft px-1 py-0.5 font-mono text-mark-xs uppercase text-grove-deep">
                             + {step.fresh.tag}
                           </span>
-                          <span className="text-[0.72rem] text-ink">{step.fresh.t}</span>
+                          <span className="text-meta text-ink">{step.fresh.t}</span>
                         </m.div>
                       </AnimatePresence>
                     </div>
@@ -393,7 +393,7 @@ export function SeatMechanism() {
                       <div className="flex items-center gap-2">
                         <Logo className="h-4 w-4 text-grove" />
                         {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
-                        <span className="text-[0.74rem] font-semibold text-ink">
+                        <span className="text-meta font-semibold text-ink">
                           Ask this seat
                         </span>
                       </div>
@@ -406,14 +406,14 @@ export function SeatMechanism() {
                         nothing, and with zero sources the route never calls the
                         model at all.
                       */}
-                      <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-[0.78rem] text-ink-soft ring-1 ring-line">
+                      <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-caption text-ink-soft ring-1 ring-line">
                         catering vendor
                       </p>
-                      <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-[0.78rem] leading-relaxed text-ink">
+                      <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-caption leading-relaxed text-ink">
                         Prestige Catering. Marcus renegotiated after the &rsquo;25 gala
                         ran over &mdash; the vendor card and the approval behind it are
                         attached.
-                        <span className="ml-1 whitespace-nowrap font-mono text-[0.6rem] text-grove-deep">
+                        <span className="ml-1 whitespace-nowrap font-mono text-mark text-grove-deep">
                           3 sources ↗
                         </span>
                       </p>

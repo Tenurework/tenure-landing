@@ -124,14 +124,14 @@ export function Dossier({
                       A heading inside a summary is well-supported: the summary
                       keeps its button role and the heading stays in the outline.
                     */}
-                    <h2 className="font-display text-[1.05rem] font-semibold tracking-tight text-ink">
+                    <h2 className="font-display text-lead font-semibold tracking-tight text-ink">
                       {item.title}
                     </h2>
                     {item.tally?.map((t) => (
                       <span
                         key={t.label}
                         className={cn(
-                          "rounded-md border px-1.5 py-0.5 font-mono text-[0.58rem] font-medium uppercase tracking-wide",
+                          "rounded-md border px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
                           TALLY_TONE[t.tone ?? "quiet"],
                         )}
                       >
@@ -139,7 +139,7 @@ export function Dossier({
                       </span>
                     ))}
                   </div>
-                  <p className="mt-1 text-[0.9rem] leading-relaxed text-ink-soft">
+                  <p className="mt-1 text-body-sm leading-relaxed text-ink-soft">
                     {item.blurb}
                   </p>
                 </div>

@@ -15,14 +15,14 @@ function FinanceCard() {
   return (
     <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
-        <p className="label-mono text-[0.6rem]">Finance · fall</p>
-        <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-[0.62rem] text-grove-deep">
+        <p className="label-mono text-mark">Finance · fall</p>
+        <span className="rounded-md bg-grove-soft px-2 py-0.5 font-mono text-mark text-grove-deep">
           live
         </span>
       </div>
-      <p className="mt-3 font-mono text-2xl font-semibold text-ink">
+      <p className="mt-3 font-mono text-h3 font-semibold text-ink">
         $12,400{" "}
-        <span className="text-sm font-normal text-text-secondary">/ $18,000</span>
+        <span className="text-body-sm font-normal text-text-secondary">/ $18,000</span>
       </p>
       <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-line">
         <m.div
@@ -41,7 +41,7 @@ function FinanceCard() {
         ].map((r) => (
           <div
             key={r.who}
-            className="flex items-center justify-between rounded-lg border border-line bg-surface-subtle px-3 py-2 text-[0.8rem]"
+            className="flex items-center justify-between rounded-lg border border-line bg-surface-subtle px-3 py-2 text-caption"
           >
             <span className="text-ink-soft">{r.who}</span>
             <span className="flex items-center gap-2">
@@ -59,7 +59,7 @@ function FinanceCard() {
                 elsewhere on the page. Motion should explain a state change, not
                 be a permanent tax — so this one is gone.
               */}
-              <span className="flex h-[1.15rem] w-[4.6rem] items-center justify-center rounded-full bg-grove-soft text-[0.6rem] font-medium text-grove-deep">
+              <span className="flex h-[1.15rem] w-[4.6rem] items-center justify-center rounded-full bg-grove-soft text-mark font-medium text-grove-deep">
                 Approved
               </span>
             </span>
@@ -76,8 +76,8 @@ function HandoffCard() {
   return (
     <div className="rounded-2xl border border-line bg-cloud p-5 shadow-[var(--shadow-lg)]">
       <div className="flex items-center justify-between">
-        <p className="label-mono text-[0.6rem]">Term handoff</p>
-        <span className="font-mono text-[0.62rem] text-text-secondary">2024–25 → 2025–26</span>
+        <p className="label-mono text-mark">Term handoff</p>
+        <span className="font-mono text-mark text-text-secondary">2024–25 → 2025–26</span>
       </div>
 
       <div className="relative mt-4 h-40">
@@ -91,10 +91,10 @@ function HandoffCard() {
             history, so the outgoing term is not blanked. */}
         <div className="absolute bottom-3 left-[3.5%] z-0 w-[40%] rounded-lg border border-dashed border-line bg-paper/40 p-2">
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.55rem] uppercase text-text-secondary">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-text-secondary">
               Kept
             </span>
-            <span className="truncate text-[0.7rem] text-text-secondary">
+            <span className="truncate text-meta text-text-secondary">
               Halden Catering &middot; on the seat
             </span>
           </div>
@@ -103,10 +103,10 @@ function HandoffCard() {
         {/* a record already inherited, so the incoming side is never empty */}
         <div className="absolute bottom-3 right-[3.5%] z-0 w-[40%] rounded-lg border border-line bg-paper/70 p-2">
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.55rem] uppercase text-text-secondary">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-text-secondary">
               Lead
             </span>
-            <span className="truncate text-[0.7rem] text-ink-soft">Wegmans · ’24</span>
+            <span className="truncate text-meta text-ink-soft">Wegmans · ’24</span>
           </div>
         </div>
 
@@ -132,12 +132,12 @@ function HandoffCard() {
                 enforced from the product enum (claims.ts creatableCardTypes) and
                 rendered on this same page; "Deal" is not one of them, so a card
                 tagged with it was a kind the product cannot make. */}
-            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.55rem] uppercase text-grove-deep">
+            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-mark-xs uppercase text-grove-deep">
               Vendor
             </span>
-            <span className="text-[0.74rem] text-ink">Halden Catering renewal</span>
+            <span className="text-meta text-ink">Halden Catering renewal</span>
           </div>
-          <p className="mt-1 font-mono text-[0.62rem] text-text-secondary">$4,000 · Maya ’24</p>
+          <p className="mt-1 font-mono text-mark text-text-secondary">$4,000 · Maya ’24</p>
         </m.div>
       </div>
     </div>
@@ -161,7 +161,7 @@ function Zone({
         className,
       )}
     >
-      <p className="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-text-secondary">
+      <p className="font-mono text-mark-xs uppercase tracking-[0.14em] text-text-secondary">
         {label}
       </p>
     </div>
@@ -207,7 +207,7 @@ export function ProductAtWork() {
             <Eyebrow>Tenure at work</Eyebrow>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="font-display mt-5 text-[2rem] font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-[2.5rem] lg:text-[2.8rem]">
+            <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.08] tracking-[-0.03em] text-ink sm:text-display-sm lg:text-display-sm">
               Not a pitch deck. The mechanics,{" "}
               <span className="text-grove">exactly as they work</span>.
             </h2>
@@ -221,7 +221,7 @@ export function ProductAtWork() {
             environment is a content deliverable, not a code change.
           */}
           <Reveal delay={0.1}>
-            <p className="mt-5 text-[0.95rem] leading-relaxed text-ink-soft">
+            <p className="mt-5 text-body leading-relaxed text-ink-soft">
               The two panels below are illustrations, not screenshots. They draw
               behaviour the product really has — the ledger, the approval step,
               the record crossing a term — rather than showing captured screens.
@@ -238,10 +238,10 @@ export function ProductAtWork() {
             >
               <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
                 <Eyebrow>{f.eyebrow}</Eyebrow>
-                <h3 className="font-display mt-4 text-[1.6rem] font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-[2rem]">
+                <h3 className="font-display mt-4 text-h3 font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-h2">
                   {f.title}
                 </h3>
-                <p className="mt-4 text-lg leading-relaxed text-ink-soft">{f.body}</p>
+                <p className="mt-4 text-title-sm leading-relaxed text-ink-soft">{f.body}</p>
               </Reveal>
               <Reveal delay={0.1} className={cn(i % 2 === 1 && "lg:order-1")}>
                 {f.visual}

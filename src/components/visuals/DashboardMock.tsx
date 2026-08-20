@@ -178,9 +178,9 @@ const DATASETS: Record<DatasetKey, Dataset> = {
 function Stat({ k, v, sub }: { k: string; v: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-paper/40 px-3 py-2.5">
-      <p className="label-mono text-[0.54rem]">{k}</p>
-      <p className="mt-1 font-mono text-base font-semibold tnum text-ink">{v}</p>
-      {sub && <p className="text-[0.64rem] text-grove">{sub}</p>}
+      <p className="label-mono text-mark-xs">{k}</p>
+      <p className="mt-1 font-mono text-body font-semibold tnum text-ink">{v}</p>
+      {sub && <p className="text-mark text-grove">{sub}</p>}
     </div>
   );
 }
@@ -194,7 +194,7 @@ function Badge({
   return (
     <span
       className={cn(
-        "rounded-full px-1.5 py-0.5 font-mono text-[0.56rem] font-medium",
+        "rounded-full px-1.5 py-0.5 font-mono text-mark-xs font-medium",
         tone === "grove" && "bg-grove-soft text-grove-deep",
         tone === "amber" && "bg-warning-subtle text-warning",
         tone === "coral" && "bg-danger-subtle text-danger",
@@ -258,19 +258,19 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
       <div className="rounded-xl border border-line bg-paper/40 p-3.5">
         <div className="flex items-end justify-between">
           <div>
-            <p className="label-mono text-[0.54rem]">Treasury balance</p>
-            <p className="mt-1 font-mono text-2xl font-semibold tnum text-ink">$12,400</p>
-            <p className="flex items-center gap-1 text-[0.7rem] font-medium text-grove">
+            <p className="label-mono text-mark-xs">Treasury balance</p>
+            <p className="mt-1 font-mono text-h3 font-semibold tnum text-ink">$12,400</p>
+            <p className="flex items-center gap-1 text-meta font-medium text-grove">
               <Mark d={MARK.rise} className="h-[0.72em] w-[0.72em] fill-current" />
               $1,300 · 11.7% this month
             </p>
           </div>
-          <span className="rounded-md border border-line bg-cloud px-2 py-0.5 font-mono text-[0.6rem] text-ink-soft">$18,000 budget</span>
+          <span className="rounded-md border border-line bg-cloud px-2 py-0.5 font-mono text-mark text-ink-soft">$18,000 budget</span>
         </div>
         <AreaChart reduce={reduce} />
       </div>
       <div className="mt-3">
-        <p className="label-mono text-[0.54rem]">Budget by category</p>
+        <p className="label-mono text-mark-xs">Budget by category</p>
         <div className="mt-1.5 flex h-2.5 w-full overflow-hidden rounded-full">
           {cats.map((c) => (
             <m.span key={c.label} style={{ backgroundColor: c.color }} initial={{ width: "0%" }} animate={{ width: `${c.pct}%` }} transition={{ duration: reduce ? 0 : 0.8, ease: EASE, delay: 0.2 }} />
@@ -278,7 +278,7 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
         </div>
         <div className="mt-2 flex flex-wrap gap-x-3.5 gap-y-1">
           {cats.map((c) => (
-            <span key={c.label} className="flex items-center gap-1.5 text-[0.66rem] text-ink-soft">
+            <span key={c.label} className="flex items-center gap-1.5 text-mark text-ink-soft">
               <span className="h-1.5 w-1.5 rounded-sm" style={{ backgroundColor: c.color }} />
               {c.label} <span className="text-ink-faint">{c.pct}%</span>
             </span>
@@ -287,10 +287,10 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
       </div>
       <div className="mt-3 overflow-hidden rounded-xl border border-line">
         {rows.map((r, i) => (
-          <div key={r.t} className={cn("flex items-center gap-2 px-3 py-2 text-[0.74rem]", i > 0 && "border-t border-line")}>
+          <div key={r.t} className={cn("flex items-center gap-2 px-3 py-2 text-meta", i > 0 && "border-t border-line")}>
             <span className="flex-1 truncate text-ink-soft">{r.t}</span>
             <span className={cn("font-mono tnum", r.up ? "text-grove" : "text-ink")}>{r.a}</span>
-            <span className="w-10 text-right font-mono text-[0.6rem] text-ink-faint">{r.d}</span>
+            <span className="w-10 text-right font-mono text-mark text-ink-faint">{r.d}</span>
           </div>
         ))}
       </div>
@@ -324,10 +324,10 @@ function CalendarView({ reduce }: { reduce: boolean | null }) {
             transition={{ duration: reduce ? 0 : 0.4, delay: 0.1 + i * 0.08, ease: EASE }}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[0.86rem] font-medium text-ink">{e.t}</span>
+              <span className="text-body-sm font-medium text-ink">{e.t}</span>
               <Badge tone={e.tone}>{e.s}</Badge>
             </div>
-            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[0.66rem] text-ink-soft">
+            <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-mark text-ink-soft">
               <span className="inline-flex items-center gap-1">
                 <Mark d={MARK.calendar} />
                 {e.d}
@@ -335,7 +335,7 @@ function CalendarView({ reduce }: { reduce: boolean | null }) {
               <span className="text-ink-faint">{e.v}</span>
             </div>
             {e.tone === "coral" && (
-              <p className="mt-1.5 flex items-center gap-1 text-[0.64rem] font-medium text-danger">
+              <p className="mt-1.5 flex items-center gap-1 text-mark font-medium text-danger">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-brand-coral" />
                 Hard conflict, Schlegel 207 double-booked 5:00–6:30p
               </p>
@@ -361,7 +361,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
     <>
       <div className="rounded-xl border border-line bg-paper/40 p-3.5">
         <div className="flex items-center justify-between">
-          <p className="label-mono text-[0.54rem]">Spring Gala · approval chain</p>
+          <p className="label-mono text-mark-xs">Spring Gala · approval chain</p>
           <Badge tone="amber">Pending OSE</Badge>
         </div>
         <div className="mt-3.5 flex items-center">
@@ -370,7 +370,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
               <div className="flex flex-col items-center gap-1">
                 <m.span
                   className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full border text-[0.58rem] font-semibold",
+                    "flex h-6 w-6 items-center justify-center rounded-full border text-mark-xs font-semibold",
                     i < active && "border-grove bg-grove text-on-accent",
                     i === active && "border-brand-gold bg-warning-subtle text-warning",
                     i > active && "border-line bg-cloud text-ink-faint",
@@ -381,7 +381,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
                 >
                   {i < active ? "✓" : i + 1}
                 </m.span>
-                <span className="text-[0.52rem] text-ink-faint">{s}</span>
+                <span className="text-mark-xs text-ink-faint">{s}</span>
               </div>
               {i < APPROVAL_STEPS.length - 1 && (
                 <div className="mx-1 h-[2px] flex-1 overflow-hidden rounded-full bg-line">
@@ -396,15 +396,15 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
             </div>
           ))}
         </div>
-        <p className="mt-3 rounded-lg border border-line bg-cloud px-2.5 py-1.5 font-mono text-[0.6rem] text-ink-soft">
+        <p className="mt-3 rounded-lg border border-line bg-cloud px-2.5 py-1.5 font-mono text-mark text-ink-soft">
           <Mark d={MARK.lock} />{" "}
           decided by VP Finance &amp; Operations · append-only step
         </p>
       </div>
       <div className="mt-3 space-y-1.5">
         {queue.map((q) => (
-          <div key={q.t} className="flex items-center gap-2 rounded-lg border border-line bg-paper/40 px-3 py-2 text-[0.74rem]">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.5rem] uppercase text-ink-faint">{q.tag}</span>
+          <div key={q.t} className="flex items-center gap-2 rounded-lg border border-line bg-paper/40 px-3 py-2 text-meta">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-ink-faint">{q.tag}</span>
             <span className="flex-1 truncate text-ink">{q.t}</span>
             <Badge tone={q.tone}>{q.at}</Badge>
           </div>
@@ -429,18 +429,18 @@ function MembersView() {
         <Stat k="Shadowing" v="3" sub="onboarding" />
       </div>
       <div className="mt-3 overflow-hidden rounded-xl border border-line">
-        <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-[0.58rem] uppercase tracking-wide text-ink-faint">
+        <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
           <span className="flex-1">Member</span>
           <span className="w-24">Seat</span>
           <span className="w-16">Status</span>
         </div>
         {roster.map((m, i) => (
-          <div key={m.n} className={cn("flex items-center gap-2 px-3 py-2 text-[0.76rem]", i > 0 && "border-t border-line")}>
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-[0.56rem] font-semibold text-grove-deep">
+          <div key={m.n} className={cn("flex items-center gap-2 px-3 py-2 text-meta", i > 0 && "border-t border-line")}>
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-mark-xs font-semibold text-grove-deep">
               {m.n.split(" ").map((p) => p[0]).join("")}
             </span>
             <span className="flex-1 truncate text-ink">{m.n}</span>
-            <span className="w-24 truncate font-mono text-[0.58rem] text-ink-soft">{m.seat}</span>
+            <span className="w-24 truncate font-mono text-mark-xs text-ink-soft">{m.seat}</span>
             <span className={cn("w-16", m.y === "Shadow" ? "text-brand-gold" : "text-grove")}>{m.y}</span>
           </div>
         ))}
@@ -464,10 +464,10 @@ function MemoryView({ data }: { data: Dataset }) {
         {recs.map((r) => (
           <div key={r.t} className="rounded-lg border border-line bg-paper/40 p-2.5">
             <div className="flex items-center gap-1.5">
-              <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.52rem] uppercase tracking-wide text-ink-faint">{r.tag}</span>
-              <span className="text-[0.78rem] text-ink">{r.t}</span>
+              <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">{r.tag}</span>
+              <span className="text-caption text-ink">{r.t}</span>
             </div>
-            <p className="mt-1 font-mono text-[0.62rem] text-ink-faint">↳ inherited from {r.from}</p>
+            <p className="mt-1 font-mono text-mark text-ink-faint">↳ inherited from {r.from}</p>
           </div>
         ))}
       </div>
@@ -555,16 +555,16 @@ export function DashboardMock({
         <div className="flex items-center justify-between gap-3 border-b border-line bg-paper/60 px-4 py-2.5">
           <div className="flex items-center gap-2.5">
             <Logo className="h-5 w-5 text-grove" />
-            <span className="font-display text-sm font-semibold text-ink">Tenure</span>
+            <span className="font-display text-body-sm font-semibold text-ink">Tenure</span>
             <span className="hidden text-ink-faint sm:inline">/</span>
-            <span className="hidden text-[0.8rem] text-ink-soft sm:inline">{data.org}</span>
+            <span className="hidden text-caption text-ink-soft sm:inline">{data.org}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="hidden items-center gap-2 rounded-lg border border-line bg-cloud px-2.5 py-1 text-[0.72rem] text-ink-faint lg:inline-flex">
+            <span className="hidden items-center gap-2 rounded-lg border border-line bg-cloud px-2.5 py-1 text-meta text-ink-faint lg:inline-flex">
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4-4" strokeLinecap="round" /></svg>
               Ask or jump to…
             </span>
-            <span className="rounded-lg bg-grove px-2.5 py-1 text-[0.72rem] font-medium text-on-accent">+ New</span>
+            <span className="rounded-lg bg-grove px-2.5 py-1 text-meta font-medium text-on-accent">+ New</span>
           </div>
         </div>
 
@@ -578,7 +578,7 @@ export function DashboardMock({
                 onClick={() => { setActive(n); setPaused(true); }}
                 aria-pressed={n === active}
                 className={cn(
-                  "flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-[0.8rem] transition-colors",
+                  "flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-caption transition-colors",
                   n === active ? "bg-cloud font-medium text-ink shadow-[var(--shadow-sm)]" : "text-ink-soft hover:bg-cloud/60",
                 )}
               >
@@ -587,14 +587,14 @@ export function DashboardMock({
               </button>
             ))}
             <div className="my-2 h-px bg-line" />
-            <p className="px-2 pb-1 font-mono text-[0.54rem] uppercase tracking-wider text-ink-faint">Term</p>
-            <span className="px-2 text-[0.74rem] text-ink-soft">{data.term}</span>
+            <p className="px-2 pb-1 font-mono text-mark-xs uppercase tracking-wider text-ink-faint">Term</p>
+            <span className="px-2 text-meta text-ink-soft">{data.term}</span>
           </aside>
 
           {/* main, animates on module switch */}
           <div className="min-h-[19.5rem] p-4 sm:p-5">
             <div className="mb-3 flex items-center justify-between">
-              <p className="font-display text-lg font-semibold text-ink">{active}</p>
+              <p className="font-display text-title-sm font-semibold text-ink">{active}</p>
               {/*
                 A real control, not a status label. WCAG 2.2.2 (Level A)
                 requires a way to pause anything that auto-updates for more
@@ -607,13 +607,13 @@ export function DashboardMock({
                   type="button"
                   onClick={() => setPaused((v) => !v)}
                   aria-pressed={paused}
-                  className="inline-flex h-6 min-w-6 items-center gap-1 rounded-md px-1.5 font-mono text-[0.62rem] text-text-secondary hover:text-ink"
+                  className="inline-flex h-6 min-w-6 items-center gap-1 rounded-md px-1.5 font-mono text-mark text-text-secondary hover:text-ink"
                 >
                   <Mark d={paused ? MARK.play : MARK.pause} className={paused ? "fill-current" : undefined} />
                   {paused ? "resume tour" : "pause tour"}
                 </button>
               ) : (
-                <span className="font-mono text-[0.62rem] text-text-secondary">
+                <span className="font-mono text-mark text-text-secondary">
                   click a module ↗
                 </span>
               )}
@@ -637,20 +637,20 @@ export function DashboardMock({
               <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-cloud shadow-[var(--shadow-sm)]">
                 <Logo className="h-3.5 w-3.5 text-grove" />
               </span>
-              <span className="text-[0.78rem] font-semibold text-ink">Tenure AI</span>
+              <span className="text-caption font-semibold text-ink">Tenure AI</span>
               <m.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
             {/* Module-independent: the caption used to interpolate the active module,
                 so it promised answers "about the finance" and "about the members" —
                 the two kinds that are not in the search corpus at all. */}
-            <p className="text-[0.74rem] leading-relaxed text-ink-soft">Search the decisions, events and records this seat has filed.</p>
+            <p className="text-meta leading-relaxed text-ink-soft">Search the decisions, events and records this seat has filed.</p>
             <div className="space-y-1.5">
               {data.asks[active].map((a) => (
-                <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-[0.7rem] text-ink-soft">{a}</span>
+                <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-meta text-ink-soft">{a}</span>
               ))}
             </div>
             <div className="mt-auto rounded-lg border border-grove/25 bg-cloud p-2.5">
-              <p className="text-[0.7rem] leading-relaxed text-ink-soft">Answers link the records, files, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
+              <p className="text-meta leading-relaxed text-ink-soft">Answers link the records, files, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
             </div>
           </aside>
         </div>

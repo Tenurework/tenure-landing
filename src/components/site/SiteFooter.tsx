@@ -19,10 +19,10 @@ export function SiteFooter() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <Wordmark tone="paper" />
-            <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-inverse/65">
+            <p className="mt-5 max-w-xs text-body leading-relaxed text-inverse/65">
               {site.tagline}
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-inverse/75">
+            <p className="mt-4 max-w-xs text-body-sm leading-relaxed text-inverse/75">
               Founded at {site.origin.school}, {site.origin.university}.
             </p>
           </div>
@@ -34,7 +34,7 @@ export function SiteFooter() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
+                    className="text-body text-inverse/65 transition-colors hover:text-inverse"
                   >
                     {item.label}
                   </Link>
@@ -53,7 +53,7 @@ export function SiteFooter() {
                   the wrong expectation for who picks up — but this call site passed
                   the literal string and overrode the decision on all eight routes.
                 */}
-                <ContactSalesLink className="group inline-flex items-center gap-1.5 text-[0.95rem] text-inverse transition-colors hover:text-grove-bright">
+                <ContactSalesLink className="group inline-flex items-center gap-1.5 text-body text-inverse transition-colors hover:text-grove-bright">
                   {site.ctaLabel}
                   <span
                     aria-hidden
@@ -77,7 +77,7 @@ export function SiteFooter() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
+                  className="text-body text-inverse/65 transition-colors hover:text-inverse"
                 >
                   Contact
                 </Link>
@@ -85,7 +85,7 @@ export function SiteFooter() {
               <li>
                 <a
                   href={`mailto:${site.email}`}
-                  className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
+                  className="text-body text-inverse/65 transition-colors hover:text-inverse"
                 >
                   {site.email}
                 </a>
@@ -99,11 +99,11 @@ export function SiteFooter() {
         <div className="flex flex-col gap-4 border-t border-line-dark pt-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
             <Logo className="h-4 w-4 text-grove" />
-            <span className="text-sm text-inverse/75">
+            <span className="text-body-sm text-inverse/75">
               © {year} {site.name}. All rights reserved.
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm">
+          <div className="flex items-center gap-4 text-body-sm">
             {site.legal.map((item) => (
               <Link
                 key={item.href}

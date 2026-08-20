@@ -109,7 +109,7 @@ export function ThemeToggle({ className }: { className?: string }) {
               key={opt.value}
               className={cn(
                 "relative inline-flex h-8 min-w-11 cursor-pointer items-center justify-center gap-1.5 rounded-[10px] px-2.5",
-                "text-[0.78rem] font-medium transition-colors duration-150",
+                "text-caption font-medium transition-colors duration-150",
                 "has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-focus-ring",
                 active
                   ? "bg-accent text-on-accent"

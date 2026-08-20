@@ -127,7 +127,7 @@ export function SiteHeader() {
                 href={item.href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "relative rounded-md px-3.5 py-2 text-[0.92rem] transition-colors duration-200",
+                  "relative rounded-md px-3.5 py-2 text-body transition-colors duration-200",
                   active ? "text-ink" : "text-ink-soft hover:text-ink",
                 )}
               >
@@ -218,7 +218,7 @@ export function SiteHeader() {
                     survives greyscale and forced-colors.
                   */
                   className={cn(
-                    "flex items-center gap-3 rounded-md py-3 pl-2 pr-2 text-lg transition-colors",
+                    "flex items-center gap-3 rounded-md py-3 pl-2 pr-2 text-title-sm transition-colors",
                     active
                       ? "bg-grove-soft/50 font-medium text-ink"
                       : "text-ink/90 hover:text-ink",

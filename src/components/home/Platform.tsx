@@ -77,7 +77,7 @@ function Chips({ items }: { items: readonly string[] }) {
       {items.map((t) => (
         <span
           key={t}
-          className="rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-[0.6rem] text-ink-soft"
+          className="rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-mark text-ink-soft"
         >
           {t}
         </span>
@@ -89,7 +89,7 @@ function Chips({ items }: { items: readonly string[] }) {
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <p className="label-mono text-[0.54rem]">{label}</p>
+      <p className="label-mono text-mark-xs">{label}</p>
       <div className="mt-2">{children}</div>
     </div>
   );
@@ -109,18 +109,18 @@ const MODULES: Module[] = [
               token longer than one character, with no stemming or stopword
               removal, so "How do we run elections?" is a five-term AND including
               "how", "do" and "we" and returns nothing (C-007). */}
-          <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-[0.78rem] text-ink-soft">
+          <p className="ml-auto w-fit max-w-[85%] rounded-2xl rounded-br-sm border border-line bg-paper/60 px-3 py-1.5 text-caption text-ink-soft">
             venue deposit
           </p>
           <div className="w-fit max-w-[92%] rounded-2xl rounded-bl-sm border border-grove/25 bg-grove-soft/60 px-3 py-2">
-            <p className="text-[0.78rem] leading-relaxed text-ink">
+            <p className="text-caption leading-relaxed text-ink">
               Held against the Spring Gala booking: $1,500, refundable to 14 days out.
             </p>
-            <span className="mt-1.5 inline-block font-mono text-[0.58rem] uppercase text-grove-deep">
+            <span className="mt-1.5 inline-block font-mono text-mark-xs uppercase text-grove-deep">
               2 records ↗
             </span>
           </div>
-          <p className="pt-1 text-[0.72rem] text-ink-faint">
+          <p className="pt-1 text-meta text-ink-faint">
             Short, specific queries work. If the model is unavailable the ranked
             sources still come back.
           </p>
@@ -211,11 +211,11 @@ const MODULES: Module[] = [
     detail: (
       <Field label="Caught on publish">
         <div className="space-y-2">
-          <p className="flex items-center gap-2 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-2 text-[0.76rem] font-medium text-danger">
+          <p className="flex items-center gap-2 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-2 text-meta font-medium text-danger">
             <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-coral" />
             Hard conflict &mdash; Schlegel 207 double-booked 5:00 to 6:30p
           </p>
-          <p className="flex items-center gap-2 rounded-lg border border-brand-gold/30 bg-warning-subtle/60 px-2.5 py-2 text-[0.76rem] font-medium text-warning">
+          <p className="flex items-center gap-2 rounded-lg border border-brand-gold/30 bg-warning-subtle/60 px-2.5 py-2 text-meta font-medium text-warning">
             <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
             Soft overlap &mdash; two sponsor events the same evening
           </p>
@@ -244,12 +244,12 @@ const MODULES: Module[] = [
           ].map((r) => (
             <li key={r.t} className="rounded-lg border border-line bg-paper/50 p-2.5">
               <div className="flex items-center gap-1.5">
-                <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-[0.52rem] uppercase tracking-wide text-ink-faint">
+                <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
                   {r.tag}
                 </span>
-                <span className="text-[0.78rem] text-ink">{r.t}</span>
+                <span className="text-caption text-ink">{r.t}</span>
               </div>
-              <p className="mt-1 font-mono text-[0.62rem] text-ink-faint">
+              <p className="mt-1 font-mono text-mark text-ink-faint">
                 ↳ inherited from {r.from}
               </p>
             </li>
@@ -282,11 +282,11 @@ const MODULES: Module[] = [
               key={r.s}
               className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-lg border border-line bg-paper/50 px-2.5 py-2"
             >
-              <span className="rounded-md bg-surface-subtle px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-text-secondary">
+              <span className="rounded-md bg-surface-subtle px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-text-secondary">
                 {r.s}
               </span>
-              <span className="text-[0.78rem] text-ink">{r.n}</span>
-              <span className="text-[0.72rem] text-ink-faint">{r.note}</span>
+              <span className="text-caption text-ink">{r.n}</span>
+              <span className="text-meta text-ink-faint">{r.note}</span>
             </div>
           ))}
         </div>
@@ -337,13 +337,13 @@ const MODULES: Module[] = [
     detail: (
       <Field label="Two rows, one action each">
         <div className="space-y-1.5">
-          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.62rem] text-inverse/75">
+          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-mark text-inverse/75">
             <span className="text-grove-bright">budget.approved</span> · SCC-VP-FINA-OPER · allow
           </p>
-          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-[0.62rem] text-inverse/75">
+          <p className="rounded-lg border border-line-dark bg-band px-2.5 py-1.5 font-mono text-mark text-inverse/75">
             <span className="text-brand-coral">roster.export</span> · SCC-VP-SPON · deny
           </p>
-          <p className="pt-1 text-[0.72rem] text-ink-faint">
+          <p className="pt-1 text-meta text-ink-faint">
             Coverage is partial and append-only is enforced by the application, not
             by cryptography. The full scope is on Security.
           </p>
@@ -516,15 +516,15 @@ export function Platform() {
                 one thing a tab control must never do. */}
             <div className="min-h-[12.5rem] p-5 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="font-display text-[1.15rem] font-semibold text-ink">
+                <h3 className="font-display text-title-sm font-semibold text-ink">
                   {mod.label}
                 </h3>
-                <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-ink-faint">
+                <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
                   {mod.cluster}
                 </span>
               </div>
               <div className="mt-2 grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-                <p className="text-[0.95rem] leading-relaxed text-ink-soft">
+                <p className="text-body leading-relaxed text-ink-soft">
                   {mod.body}
                 </p>
                 <div className="max-w-xl">{mod.detail}</div>
@@ -543,7 +543,7 @@ export function Platform() {
                 {creatableCardTypes.map((t) => (
                   <span
                     key={t}
-                    className="rounded-md border border-line bg-cloud px-1.5 py-0.5 font-mono text-[0.6rem] text-ink-soft"
+                    className="rounded-md border border-line bg-cloud px-1.5 py-0.5 font-mono text-mark text-ink-soft"
                   >
                     {t}
                   </span>

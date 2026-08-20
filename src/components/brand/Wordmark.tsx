@@ -20,7 +20,7 @@ export function Wordmark({
       <Logo className="h-[1.7rem] w-[1.7rem] text-grove transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:rotate-90" />
       <span
         className={cn(
-          "font-display text-[1.4rem] font-semibold leading-none tracking-[-0.03em]",
+          "font-display text-title font-semibold leading-none tracking-[-0.03em]",
           tone === "paper" ? "text-inverse" : "text-ink",
         )}
       >

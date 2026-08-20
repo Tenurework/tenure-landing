@@ -123,7 +123,7 @@ export function MemoryCurve({
             on top of the fill rather than in it. */}
         <circle cx={last[0]} cy={last[1]} r="4" fill="var(--chart-1)" stroke="var(--surface)" strokeWidth="2" />
       </svg>
-      <figcaption className="mt-1.5 flex items-baseline justify-between font-mono text-[0.6rem] text-ink-faint">
+      <figcaption className="mt-1.5 flex items-baseline justify-between font-mono text-mark text-ink-faint">
         <span>{points[0].label}</span>
         <span>{points[points.length - 1].label}</span>
       </figcaption>
@@ -190,7 +190,7 @@ export function Share({
           {slices.map((s, i) => (
             <li
               key={s.label}
-              className="flex items-center gap-1.5 text-[0.66rem] text-ink-soft"
+              className="flex items-center gap-1.5 text-mark text-ink-soft"
             >
               <span
                 aria-hidden
@@ -238,8 +238,8 @@ export function TierNest({ tiers, className }: { tiers: Tier[]; className?: stri
               className="flex items-center justify-between gap-3 rounded-lg border border-grove/25 bg-grove-soft/70 px-2.5 py-1.5"
               style={{ width: `${width}%` }}
             >
-              <span className="truncate text-[0.78rem] font-medium text-ink">{t.label}</span>
-              <span className="shrink-0 font-mono text-[0.68rem] tnum text-grove-deep">
+              <span className="truncate text-caption font-medium text-ink">{t.label}</span>
+              <span className="shrink-0 font-mono text-meta tnum text-grove-deep">
                 {t.count}
               </span>
             </div>
@@ -278,7 +278,7 @@ export function GateRail({
             <div className="flex flex-col items-center gap-1">
               <span
                 className={cn(
-                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-[0.56rem] font-semibold",
+                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-mark-xs font-semibold",
                   done && "border-grove bg-grove text-on-accent",
                   here && "border-brand-gold bg-warning-subtle text-warning",
                   !done && !here && "border-line bg-cloud text-ink-faint",
@@ -286,7 +286,7 @@ export function GateRail({
               >
                 {done ? "✓" : i + 1}
               </span>
-              <span className="whitespace-nowrap text-[0.55rem] text-ink-faint">{s}</span>
+              <span className="whitespace-nowrap text-mark-xs text-ink-faint">{s}</span>
             </div>
             {i < stages.length - 1 && (
               <span

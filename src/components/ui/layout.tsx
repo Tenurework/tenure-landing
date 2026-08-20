@@ -229,7 +229,7 @@ export function Eyebrow({
  * It was copy-pasted twenty-two times with three different heading scales, four
  * different top margins and two different `max-w` values, which is why no two
  * sections started on the same baseline. The scale here is one step smaller than
- * the old `text-[2.5rem] lg:text-[2.8rem]`: at that size a section heading was
+ * the old `text-display-sm lg:text-display-sm`: at that size a section heading was
  * competing with the h1 for the same rank.
  */
 export function SectionHead({
@@ -258,13 +258,13 @@ export function SectionHead({
         </Eyebrow>
       </Reveal>
       <Reveal delay={0.05}>
-        <h2 className="font-display mt-3 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem] lg:text-[2.4rem]">
+        <h2 className="font-display mt-3 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg lg:text-h2-lg">
           {title}
         </h2>
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>
-          <p className="mt-3.5 text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
+          <p className="mt-3.5 text-lead leading-relaxed text-ink-soft sm:text-lead">
             {lead}
           </p>
         </Reveal>

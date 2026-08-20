@@ -37,7 +37,7 @@ export default function PrivacyPage() {
           {/* Publishing the current position honestly is better than publishing
               nothing, but an institution must not mistake a founder draft for a
               reviewed instrument. */}
-          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-[0.92rem] leading-relaxed text-warning">
+          <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
             <strong className="font-semibold">This is a founder-written draft.</strong>{" "}
             It has not been reviewed by counsel, and Tenure is not yet an
             incorporated entity &mdash; &ldquo;Tenure&rdquo; below is a trading

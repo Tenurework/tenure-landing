@@ -77,21 +77,21 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
     */
     <div className="flex h-full flex-col">
       <div className="flex items-baseline gap-1">
-        <span className="font-display text-[2.7rem] font-semibold leading-none tracking-[-0.04em] tnum text-grove-bright sm:text-[3.2rem]">
+        <span className="font-display text-display-sm font-semibold leading-none tracking-[-0.04em] tnum text-grove-bright sm:text-display">
           <NumberFlow
             value={value}
             transformTiming={{ duration: 1200, easing: "cubic-bezier(.22,1,.36,1)" }}
           />
         </span>
         {metric.suffix && (
-          <span className="font-display text-2xl font-semibold text-grove-bright sm:text-3xl">
+          <span className="font-display text-h3 font-semibold text-grove-bright sm:text-h2">
             {metric.suffix}
           </span>
         )}
       </div>
 
-      <p className="mt-2.5 text-[1rem] font-medium text-inverse">{metric.label}</p>
-      <p className="mt-1 pb-3 text-[0.85rem] leading-relaxed text-inverse/75">{metric.sub}</p>
+      <p className="mt-2.5 text-body font-medium text-inverse">{metric.label}</p>
+      <p className="mt-1 pb-3 text-body-sm leading-relaxed text-inverse/75">{metric.sub}</p>
 
       {note && (
         // `mt-auto` is what actually pins it. The comment above described this
@@ -99,7 +99,7 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
         // `sub` — and `sub` runs one line on two tiles and three on another, so
         // the two chips in the row still sat 34px apart, which is the exact
         // misalignment the note above says it fixed.
-        <p className="mt-auto inline-flex w-fit rounded-md border border-line-dark bg-band-raised px-2 py-1 pt-1 font-mono text-[0.64rem] leading-tight text-inverse/85">
+        <p className="mt-auto inline-flex w-fit rounded-md border border-line-dark bg-band-raised px-2 py-1 pt-1 font-mono text-mark leading-tight text-inverse/85">
           {note}
         </p>
       )}
@@ -161,11 +161,11 @@ export function MetricsBand() {
       <Container className="relative">
         <div className="max-w-2xl">
           <Eyebrow className="text-inverse/75">Counted, not projected</Eyebrow>
-          <h2 className="font-display mt-5 text-[1.9rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.4rem]">
+          <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
             We can&rsquo;t show you outcomes yet. We can show you{" "}
             <span className="text-grove-bright">exactly how it&rsquo;s built</span>.
           </h2>
-          <p className="mt-4 max-w-xl text-[0.95rem] leading-relaxed text-inverse/75">
+          <p className="mt-4 max-w-xl text-body leading-relaxed text-inverse/75">
             The pilot hasn&rsquo;t run, so there is nothing measured to report. Every number below
             is counted from the repository that deploys &mdash; not an estimate, not a projection,
             and not a count of anyone using Tenure.

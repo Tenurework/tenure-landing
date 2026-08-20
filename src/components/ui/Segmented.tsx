@@ -93,7 +93,7 @@ export function Segmented({
             onClick={() => onSelect(item.key)}
             aria-pressed={on}
             className={cn(
-              "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-[0.86rem] transition-colors duration-200",
+              "inline-flex min-h-11 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-xl px-3.5 text-body-sm transition-colors duration-200",
               on
                 ? "bg-cloud font-medium text-ink shadow-[var(--shadow-sm)]"
                 : "text-ink-soft hover:bg-cloud/60 hover:text-ink",
@@ -104,7 +104,7 @@ export function Segmented({
             )}
             {item.label}
             {item.hint && (
-              <span className="font-mono text-[0.62rem] text-ink-faint">{item.hint}</span>
+              <span className="font-mono text-mark text-ink-faint">{item.hint}</span>
             )}
           </button>
         );
@@ -161,7 +161,7 @@ export function RailList({
               onClick={() => onSelect(item.key)}
               aria-pressed={on}
               className={cn(
-                "flex min-h-11 w-full items-center gap-2.5 whitespace-nowrap rounded-lg px-2.5 py-2.5 text-left text-[0.85rem] transition-colors duration-200",
+                "flex min-h-11 w-full items-center gap-2.5 whitespace-nowrap rounded-lg px-2.5 py-2.5 text-left text-body-sm transition-colors duration-200",
                 on
                   ? "bg-cloud font-medium text-ink shadow-[var(--shadow-sm)]"
                   : "text-ink-soft hover:bg-cloud/60 hover:text-ink",
@@ -177,7 +177,7 @@ export function RailList({
               )}
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
               {item.hint ? (
-                <span className="shrink-0 rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-[0.55rem] uppercase tracking-wide text-ink-faint">
+                <span className="shrink-0 rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
                   {item.hint}
                 </span>
               ) : (

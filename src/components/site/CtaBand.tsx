@@ -56,7 +56,7 @@ export function CtaBand({
 
       <Container className="relative text-center">
         <Reveal>
-          <h2 className="font-display mx-auto max-w-2xl text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-[2.2rem]">
+          <h2 className="font-display mx-auto max-w-2xl text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
             {title ?? (
               <>
                 Run the org. Hand it off.{" "}
@@ -66,7 +66,7 @@ export function CtaBand({
           </h2>
         </Reveal>
         <Reveal delay={0.08}>
-          <p className="mx-auto mt-5 max-w-xl text-[1.05rem] leading-relaxed text-inverse/70">
+          <p className="mx-auto mt-5 max-w-xl text-lead leading-relaxed text-inverse/70">
             {sub}
           </p>
         </Reveal>
@@ -75,7 +75,7 @@ export function CtaBand({
             <ContactSales size="lg" arrow />
             <a
               href={`mailto:${site.email}`}
-              className="text-[0.97rem] text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
+              className="text-body text-inverse/70 underline-offset-4 transition-colors hover:text-inverse hover:underline"
             >
               or email us
             </a>

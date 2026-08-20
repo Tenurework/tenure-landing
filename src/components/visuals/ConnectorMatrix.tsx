@@ -280,7 +280,7 @@ export function ConnectorMatrix() {
                         when a "Not supported"/"Roadmap" marker — or an explicit
                         "does not connect" sentence — sits within a couple of lines. */}
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display text-[1rem] font-semibold tracking-tight text-ink">
+                      <h3 className="font-display text-body font-semibold tracking-tight text-ink">
                         {r.what}
                       </h3>
                       <StatusBadge status={r.status} />
@@ -289,7 +289,7 @@ export function ConnectorMatrix() {
                       {r.via.map((v) => (
                         <span
                           key={`${r.what}-${v}`}
-                          className="rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-[0.62rem] text-ink-soft"
+                          className="rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-mark text-ink-soft"
                         >
                           {v}
                         </span>
@@ -298,9 +298,9 @@ export function ConnectorMatrix() {
                   </div>
 
                   <div>
-                    <p className="text-[0.94rem] leading-relaxed text-ink-soft">{r.body}</p>
+                    <p className="text-body leading-relaxed text-ink-soft">{r.body}</p>
                     {r.limit && (
-                      <p className="mt-2.5 border-l-2 border-border-strong pl-3.5 text-[0.87rem] leading-relaxed text-ink-faint">
+                      <p className="mt-2.5 border-l-2 border-border-strong pl-3.5 text-body-sm leading-relaxed text-ink-faint">
                         <span className="font-medium text-ink-soft">Limit: </span>
                         {r.limit}
                       </p>

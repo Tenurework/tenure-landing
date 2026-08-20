@@ -85,10 +85,10 @@ export function Faq() {
 
       <Container className="relative">
         <Reveal>
-          {/* Was text-[3rem] — the single word "FAQ" was set larger than every
+          {/* Was text-display — the single word "FAQ" was set larger than every
               section heading on the page, so the loudest type on the home page
               was its least informative word. */}
-          <h2 className="font-display text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem]">
+          <h2 className="font-display text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
             Questions we get asked first
           </h2>
         </Reveal>
@@ -98,7 +98,7 @@ export function Faq() {
             {ITEMS.map((item, i) => (
               <Reveal as="div" key={item.q} delay={Math.min(i * 0.05, 0.3)}>
                 <details className="group" name="faq" open={i === 2}>
-                  <summary className="inline-flex w-fit max-w-[90%] cursor-pointer list-none items-center gap-3 rounded-2xl border border-line bg-cloud px-5 py-3 text-[0.98rem] text-ink shadow-[var(--shadow-sm)] transition-colors hover:border-grove/40 [&::-webkit-details-marker]:hidden">
+                  <summary className="inline-flex w-fit max-w-[90%] cursor-pointer list-none items-center gap-3 rounded-2xl border border-line bg-cloud px-5 py-3 text-body text-ink shadow-[var(--shadow-sm)] transition-colors hover:border-grove/40 [&::-webkit-details-marker]:hidden">
                     <span>{item.q}</span>
                     <span
                       aria-hidden
@@ -110,7 +110,7 @@ export function Faq() {
                   </summary>
                   <div className="ml-auto mt-3 flex w-fit max-w-lg items-start gap-3 rounded-2xl rounded-tr-md bg-grove-soft px-5 py-3.5">
                     <Logo className="mt-0.5 h-4 w-4 shrink-0 text-grove" />
-                    <p className="text-[0.95rem] leading-relaxed text-ink-soft">{item.a}</p>
+                    <p className="text-body leading-relaxed text-ink-soft">{item.a}</p>
                   </div>
                 </details>
               </Reveal>

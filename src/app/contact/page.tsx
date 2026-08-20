@@ -92,7 +92,7 @@ export default function ContactPage() {
                   <WalkthroughRequest />
                 </div>
 
-                <p className="mt-4 text-[0.84rem] leading-relaxed text-ink-faint">
+                <p className="mt-4 text-caption leading-relaxed text-ink-faint">
                   Prefer to pick a slot yourself?{" "}
                   {/*
                     A plain anchor, always rendered, never a script-dependent
@@ -121,13 +121,13 @@ export default function ContactPage() {
               <Panel>
                 <PanelBar title="Or just email us" meta="straight to both founders" />
                 <div className="p-5 sm:p-7">
-                  <p className="text-[0.95rem] leading-relaxed text-ink-soft">
+                  <p className="text-body leading-relaxed text-ink-soft">
                     No form, no dialog, no script. We answer the same day, most
                     days.
                   </p>
                   <a
                     href={`mailto:${site.email}`}
-                    className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-canvas px-4 py-2.5 font-mono text-[0.9rem] text-accent-text transition-colors hover:border-accent/40 hover:bg-accent-muted"
+                    className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl border border-border-strong bg-canvas px-4 py-2.5 font-mono text-body-sm text-accent-text transition-colors hover:border-accent/40 hover:bg-accent-muted"
                   >
                     {site.email}
                   </a>
@@ -154,10 +154,10 @@ export default function ContactPage() {
                       key={item.title}
                       className="border-b border-line-soft px-5 py-4 last:border-b-0 sm:px-7"
                     >
-                      <h2 className="font-display text-[0.98rem] font-semibold tracking-tight text-ink">
+                      <h2 className="font-display text-body font-semibold tracking-tight text-ink">
                         {item.title}
                       </h2>
-                      <p className="mt-1.5 text-[0.9rem] leading-relaxed text-ink-soft">
+                      <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft">
                         {item.body}
                       </p>
                     </li>

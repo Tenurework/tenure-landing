@@ -129,7 +129,7 @@ const STANDING: { label: string; value: string; note: string; icon: ReactNode }[
  */
 function ColumnLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="label-mono mb-0.5 block text-[0.55rem] md:hidden">{children}</span>
+    <span className="label-mono mb-0.5 block text-mark-xs md:hidden">{children}</span>
   );
 }
 
@@ -166,11 +166,11 @@ export function Handoff() {
 
             {/* column heads, wide screens only */}
             <div className="hidden gap-4 border-b border-line px-6 py-2.5 md:grid md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr]">
-              <span className="label-mono text-[0.55rem]">Seat</span>
-              <span className="label-mono text-[0.55rem]">Holds it now</span>
-              <span className="label-mono text-[0.55rem]">Held it last term</span>
-              <span className="label-mono text-[0.55rem]">Cards</span>
-              <span className="label-mono text-[0.55rem]">Shadowing in</span>
+              <span className="label-mono text-mark-xs">Seat</span>
+              <span className="label-mono text-mark-xs">Holds it now</span>
+              <span className="label-mono text-mark-xs">Held it last term</span>
+              <span className="label-mono text-mark-xs">Cards</span>
+              <span className="label-mono text-mark-xs">Shadowing in</span>
             </div>
 
             <ul>
@@ -195,16 +195,16 @@ export function Handoff() {
                   className="grid grid-cols-2 gap-x-4 gap-y-2.5 border-b border-line-soft px-5 py-3.5 last:border-b-0 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr] md:items-center md:gap-4"
                 >
                   <div className="col-span-2 md:col-span-1">
-                    <p className="text-[0.9rem] font-medium text-ink">{s.seat}</p>
-                    <p className="font-mono text-[0.6rem] text-text-secondary">{s.code}</p>
+                    <p className="text-body-sm font-medium text-ink">{s.seat}</p>
+                    <p className="font-mono text-mark text-text-secondary">{s.code}</p>
                   </div>
 
                   <div>
                     <ColumnLabel>Holds it now</ColumnLabel>
                     {s.holder ? (
-                      <p className="text-[0.88rem] text-ink">{s.holder}</p>
+                      <p className="text-body-sm text-ink">{s.holder}</p>
                     ) : (
-                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-[0.56rem] font-medium uppercase tracking-wide text-danger">
+                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-danger">
                         Vacant
                       </span>
                     )}
@@ -212,25 +212,25 @@ export function Handoff() {
 
                   <div>
                     <ColumnLabel>Held it last term</ColumnLabel>
-                    <p className="text-[0.88rem] text-ink-soft">{s.last}</p>
+                    <p className="text-body-sm text-ink-soft">{s.last}</p>
                   </div>
 
                   <div>
                     <ColumnLabel>Cards</ColumnLabel>
-                    <p className="font-mono text-[0.88rem] tnum text-ink">{s.cards}</p>
+                    <p className="font-mono text-body-sm tnum text-ink">{s.cards}</p>
                   </div>
 
                   <div>
                     <ColumnLabel>Shadowing in</ColumnLabel>
                     {s.shadow ? (
                       <span className="inline-flex items-center gap-2">
-                        <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-[0.54rem] font-medium uppercase tracking-wide text-warning">
+                        <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-warning">
                           Shadow
                         </span>
-                        <span className="text-[0.84rem] text-ink-soft">{s.shadow}</span>
+                        <span className="text-caption text-ink-soft">{s.shadow}</span>
                       </span>
                     ) : (
-                      <span className="text-[0.84rem] text-ink-faint">not yet named</span>
+                      <span className="text-caption text-ink-faint">not yet named</span>
                     )}
                   </div>
                 </li>
@@ -252,12 +252,12 @@ export function Handoff() {
                     <span className="hidden h-8 w-8 items-center justify-center rounded-lg bg-grove-soft text-grove sm:inline-flex">
                       {st.icon}
                     </span>
-                    <span className="label-mono text-[0.55rem]">{st.label}</span>
+                    <span className="label-mono text-mark-xs">{st.label}</span>
                   </div>
-                  <p className="mt-2 font-display text-[1.05rem] font-semibold tnum text-ink sm:mt-2.5 sm:text-[1.1rem]">
+                  <p className="mt-2 font-display text-lead font-semibold tnum text-ink sm:mt-2.5 sm:text-title-sm">
                     {st.value}
                   </p>
-                  <p className="text-[0.78rem] leading-snug text-ink-soft sm:text-[0.8rem]">{st.note}</p>
+                  <p className="text-caption leading-snug text-ink-soft sm:text-caption">{st.note}</p>
                 </div>
               ))}
             </div>

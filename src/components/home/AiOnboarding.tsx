@@ -102,7 +102,7 @@ export function AiOnboarding() {
               {POINTS.map((point) => (
                 <li
                   key={point}
-                  className="flex items-start gap-3 text-[0.95rem] leading-relaxed text-inverse/80"
+                  className="flex items-start gap-3 text-body leading-relaxed text-inverse/80"
                 >
                   <Check />
                   <span>{point}</span>
@@ -125,11 +125,11 @@ export function AiOnboarding() {
                       />
                     </svg>
                   </span>
-                  <span className="font-display text-sm font-semibold text-inverse">
+                  <span className="font-display text-body-sm font-semibold text-inverse">
                     Ask Tenure
                   </span>
                 </div>
-                <span className="label-mono text-[0.6rem] text-inverse/75">
+                <span className="label-mono text-mark text-inverse/75">
                   Treasurer seat · day 1
                 </span>
               </div>
@@ -138,16 +138,16 @@ export function AiOnboarding() {
                 {EXCHANGES.map((ex) => (
                   <div key={ex.ask} className="space-y-2">
                     <div className="flex justify-end">
-                      <p className="max-w-[85%] rounded-2xl rounded-br-md border border-line-dark bg-paper/[0.06] px-3.5 py-2 text-[0.85rem] text-inverse/85">
+                      <p className="max-w-[85%] rounded-2xl rounded-br-md border border-line-dark bg-paper/[0.06] px-3.5 py-2 text-body-sm text-inverse/85">
                         {ex.ask}
                       </p>
                     </div>
                     <div className="flex justify-start">
                       <div className="max-w-[92%] rounded-2xl rounded-bl-md border border-grove/30 bg-grove/[0.12] px-3.5 py-2.5">
-                        <p className="text-[0.85rem] leading-relaxed text-inverse/90">
+                        <p className="text-body-sm leading-relaxed text-inverse/90">
                           {ex.answer}
                         </p>
-                        <span className="mt-1.5 inline-flex items-center gap-1 font-mono text-[0.62rem] uppercase tracking-wide text-grove-bright">
+                        <span className="mt-1.5 inline-flex items-center gap-1 font-mono text-mark uppercase tracking-wide text-grove-bright">
                           <svg width="11" height="11" viewBox="0 0 16 16" fill="none" aria-hidden>
                             <path
                               d="M5 11L11 5M6 5h5v5"
@@ -165,7 +165,7 @@ export function AiOnboarding() {
                 ))}
 
                 <div className="flex items-center gap-2 rounded-xl border border-line-dark bg-band px-3.5 py-2.5">
-                  <span className="flex-1 text-[0.82rem] text-inverse/75">
+                  <span className="flex-1 text-caption text-inverse/75">
                     Ask about this seat&rsquo;s history&hellip;
                   </span>
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove text-on-accent">
@@ -197,7 +197,7 @@ export function AiOnboarding() {
           `forbiddenPhrases` blocks the absolute form.
         */}
         <Reveal delay={0.1}>
-          <p className="mx-auto mt-10 max-w-3xl border-t border-line-dark pt-6 text-center text-[0.86rem] leading-relaxed text-inverse/65">
+          <p className="mx-auto mt-10 max-w-3xl border-t border-line-dark pt-6 text-center text-body-sm leading-relaxed text-inverse/65">
             Tenure AI is given only records you can already open, and answers link
             the records they came from. Text is sent to Amazon Bedrock, running an
             Anthropic model, in three cases &mdash; the records retrieved for a

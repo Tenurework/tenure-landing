@@ -231,12 +231,12 @@ export default function ProductPage() {
                     </span>
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <h3 className="font-display text-[1rem] font-semibold text-ink">
+                        <h3 className="font-display text-body font-semibold text-ink">
                           {r.t}
                         </h3>
-                        <span className="label-mono text-[0.55rem]">{r.n}</span>
+                        <span className="label-mono text-mark-xs">{r.n}</span>
                       </div>
-                      <p className="mt-1.5 text-[0.92rem] leading-relaxed text-ink-soft">
+                      <p className="mt-1.5 text-body leading-relaxed text-ink-soft">
                         {r.d}
                       </p>
                     </div>
@@ -277,7 +277,7 @@ export default function ProductPage() {
                       />
                     </svg>
                   </span>
-                  <p className="text-[0.95rem] leading-relaxed text-ink-soft">
+                  <p className="text-body leading-relaxed text-ink-soft">
                     <span className="font-medium text-ink">{p.t}.</span> {p.d}
                   </p>
                 </Reveal>
@@ -296,7 +296,7 @@ export default function ProductPage() {
                 {QA.map((x) => (
                   <div key={x.q} className="space-y-2">
                     <div className="rounded-xl border border-line bg-paper/60 px-3.5 py-2.5">
-                      <p className="label-mono text-[0.55rem]">You searched</p>
+                      <p className="label-mono text-mark-xs">You searched</p>
                       {/*
                         Keyword-shaped, not a sentence: retrieval is an AND over
                         every query token longer than one character, with no
@@ -304,12 +304,12 @@ export default function ProductPage() {
                         gala off finals week?" is a nine-term AND including "why",
                         "did" and "we", and returns nothing (C-007).
                       */}
-                      <p className="mt-1 font-mono text-[0.9rem] font-medium text-ink">
+                      <p className="mt-1 font-mono text-body-sm font-medium text-ink">
                         {x.q}
                       </p>
                     </div>
                     <div className="rounded-xl border border-grove/25 bg-grove-soft/50 px-3.5 py-3">
-                      <p className="text-[0.9rem] leading-relaxed text-ink-soft">
+                      <p className="text-body-sm leading-relaxed text-ink-soft">
                         {x.a}{" "}
                         <span className="whitespace-nowrap font-medium text-grove-deep">
                           {x.src} ↗

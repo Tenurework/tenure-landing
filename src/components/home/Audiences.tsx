@@ -87,14 +87,14 @@ export function Audiences() {
 
               <div className="p-5 sm:p-7">
                 <p className="label-mono">{a.cadence}</p>
-                <h3 className="font-display mt-3 text-[1.3rem] font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-[1.5rem]">
+                <h3 className="font-display mt-3 text-title font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-h3">
                   {a.title}
                 </h3>
                 <p className="mt-3.5 max-w-xl leading-relaxed text-ink-soft">{a.body}</p>
 
                 <div className="mt-5 inline-flex flex-wrap items-center gap-2 rounded-xl border border-line bg-paper/60 px-3 py-2">
-                  <span className="label-mono text-[0.55rem]">Example seat</span>
-                  <span className="font-mono text-[0.78rem] text-ink">{a.seat}</span>
+                  <span className="label-mono text-mark-xs">Example seat</span>
+                  <span className="font-mono text-caption text-ink">{a.seat}</span>
                 </div>
               </div>
             </div>

@@ -54,9 +54,9 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-[0.85rem]",
-  md: "h-11 px-5 text-[0.93rem]",
-  lg: "h-[3.25rem] px-7 text-[1rem]",
+  sm: "h-9 px-4 text-body-sm",
+  md: "h-11 px-5 text-body",
+  lg: "h-[3.25rem] px-7 text-body",
 };
 
 /** Shared class builder so ContactSales / other custom triggers match Button 1:1. */

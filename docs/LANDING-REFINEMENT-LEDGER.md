@@ -810,3 +810,59 @@ proving a smaller number than the site published.
 
 Lint, typecheck, **72/72** contrast pairs, build, **113** links, **1,046** Playwright tests
 across four projects, zero failures — including the `settle()` test that was flaky in Phase 10.
+
+---
+
+## Phase 12 — A type scale, 2026-08-19
+
+The brief asks for "figma and framer references for premium visual languages". The single most
+systemic thing standing in the way was that **the site had no type scale**.
+
+Measured before: **59 distinct arbitrary `text-[Nrem]` values across 304 uses**, plus 28 uses of
+Tailwind's own steps — and on the rendered page, **54 distinct computed font sizes over 1,754
+text nodes**. Eighteen of the 59 sat inside the 0.84–1.08rem band; seventeen of the 54 rendered
+between 13px and 16px, separated by as little as **0.08px**.
+
+That is not a range of sizes, it is the absence of a decision. Nobody can see 0.08px; what a
+reader sees is that no two components agree — which is most of what separates a designed page
+from an assembled one. It is also self-perpetuating: with nothing to reach for, every new
+component invented its own size.
+
+**Fifteen steps, named for the job rather than numbered**, so a call site says what it means and
+cannot silently drift a hundredth of a rem. The names deliberately do not collide with Tailwind's
+own scale — `text-sm` still means what it always meant — and the 28 places using Tailwind steps
+were folded in, so the site has one system rather than two.
+
+| | | | |
+|---|---|---|---|
+| `mark-xs` 0.55 | `mark` 0.62 | `meta` 0.72 | `caption` 0.80 |
+| `body-sm` 0.88 | `body` 0.95 | `lead` 1.05 | `title-sm` 1.15 |
+| `title` 1.30 | `h3` 1.55 | `h2` 1.90 | `h2-lg` 2.30 |
+| `display-sm` 2.65 | `display` 3.15 | `hero` 3.80 | |
+
+Steps sit closer together at the bottom, where a small absolute change is a large relative one.
+
+**The change is bounded, and the bound was measured rather than asserted.** Of 332 rewritten
+declarations: 87 did not move at all, 253 moved by 0.8px or less, and the largest shift anywhere
+is 2.4px on nine display headings that were already inconsistent between routes.
+
+**Result: 54 → 16 distinct rendered sizes**, and fourteen of those sixteen *are* the scale. The
+other two are the footer wordmark's deliberate `clamp(5.5rem, 23vw, 22rem)` display bleed, and
+one node with no computable size.
+
+### Three utilities that hid off the scale until the sweep exposed them
+
+The first pass took the page to 19 sizes, not 16. The three strays were only findable by
+measuring the rendered page, because none of them is an arbitrary value in a component:
+
+| Stray | Cause | Fix |
+|---|---|---|
+| 11px | `@utility label-mono` hard-coded `0.6875rem` — a value belonging to no step, on the most-used label on the site | `var(--text-meta)` |
+| 16px | Prose with no size class inherited the browser default, which is not a step. The largest single source of off-scale text | `body { font-size: var(--text-body) }`; rem is relative to the ROOT, so this changes inherited text only and no computed spacing |
+| 14.4px | `.skip-link` declared `font-size` **twice** — the scale token first, then `0.9rem` nine lines later in the same rule | Deleted the second |
+
+`.legal` also moved off `1rem` onto `lead`, one step above running body on purpose: those two
+pages are a wall of clauses somebody reads end to end under obligation.
+
+Gate: lint, typecheck, 72/72 contrast, build, 113 links, **1,046 Playwright tests, zero
+failures** — including the 24×24 target-size checks a shrinking scale could have broken.

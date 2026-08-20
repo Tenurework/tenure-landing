@@ -22,10 +22,10 @@ export default function NotFound() {
     <Container>
       <div className="flex min-h-[60vh] flex-col justify-center py-24">
         <p className="label-mono">Error 404</p>
-        <h1 className="mt-4 max-w-2xl font-display text-4xl leading-[1.08] tracking-tight text-text sm:text-5xl">
+        <h1 className="mt-4 max-w-2xl font-display text-h2-lg leading-[1.08] tracking-tight text-text sm:text-display">
           That page moved on.
         </h1>
-        <p className="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary">
+        <p className="mt-5 max-w-xl text-title-sm leading-relaxed text-text-secondary">
           The link is broken or the page no longer exists. The record, at least,
           is still where you left it.
         </p>
@@ -40,7 +40,7 @@ export default function NotFound() {
         </div>
 
         <div className="mt-12 border-t border-line pt-6">
-          <p className="text-sm text-text-muted">
+          <p className="text-body-sm text-text-muted">
             Looking for something specific?{" "}
             <Link
               href="/contact"

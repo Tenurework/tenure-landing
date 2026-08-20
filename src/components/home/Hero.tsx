@@ -69,7 +69,7 @@ export function Hero() {
           <div className="relative z-10 max-w-xl text-center lg:text-left">
             <p className="label-mono">The system of record for organizations that rotate</p>
 
-            <h1 className="font-display mt-5 text-[2.6rem] font-semibold leading-[1.02] tracking-[-0.035em] text-ink sm:text-[3.3rem] lg:text-[3.9rem]">
+            <h1 className="font-display mt-5 text-display-sm font-semibold leading-[1.02] tracking-[-0.035em] text-ink sm:text-display lg:text-hero">
               <span className="block">People move on.</span>
               <span className="block">
                 The know-how <span className="text-gradient">stays.</span>
@@ -79,7 +79,7 @@ export function Hero() {
             {/* Opens on the image, not the abstraction: the reader is the person
                 staring at the empty folder. The image is now sector-neutral —
                 a treasurer graduating is one instance of it, not the whole of it. */}
-            <p className="mx-auto mt-5 max-w-lg text-[1.05rem] leading-relaxed text-ink-soft sm:text-lg lg:mx-0">
+            <p className="mx-auto mt-5 max-w-lg text-lead leading-relaxed text-ink-soft sm:text-title-sm lg:mx-0">
               Someone leaves, and the budget, the vendors and the reasons leave
               with them. Tenure attaches the money, the events, the approvals and
               what the last holder learned to the{" "}
@@ -105,7 +105,7 @@ export function Hero() {
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
                 mechanism, which C-023 forbids. */}
-            <p className="mx-auto mt-4 max-w-md text-[0.82rem] leading-relaxed text-ink-faint lg:mx-0">
+            <p className="mx-auto mt-4 max-w-md text-caption leading-relaxed text-ink-faint lg:mx-0">
               Already using Tenure?{" "}
               <Link
                 href="/contact"
@@ -221,7 +221,7 @@ export function Hero() {
               {CHIPS.map((c) => (
                 <li
                   key={c}
-                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-line bg-paper/70 px-3 py-1.5 text-[0.78rem] font-medium text-ink-soft"
+                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-line bg-paper/70 px-3 py-1.5 text-caption font-medium text-ink-soft"
                 >
                   <span aria-hidden className="h-1.5 w-1.5 rounded-sm bg-grove" />
                   {c}
@@ -233,7 +233,7 @@ export function Hero() {
           {/* Two facts that used to be separate paragraphs of hero small print.
               The pilot hedge is load-bearing: C-021 requires "planned" or
               "proposed" in the same sentence as the season and the office. */}
-          <p className="mt-5 text-center text-[0.8rem] leading-relaxed text-ink-faint lg:text-left">
+          <p className="mt-5 text-center text-caption leading-relaxed text-ink-faint lg:text-left">
             Planned {site.pilot.season} pilot with {site.origin.office}{" "}
             &mdash; proposed, not contracted. The product surfaces on this page are illustrations,
             not screenshots: they draw behaviour the product really has, with
