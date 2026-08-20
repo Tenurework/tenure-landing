@@ -61,7 +61,7 @@ const STEPS: Step[] = [
     shadow: "Sana Ali",
     alumni: ["Maya Chen", "Marcus Lee"],
     records: 34,
-    fresh: { tag: "Deal", t: "Aramark renewal, locked 15% rate" },
+    fresh: { tag: "Deal", t: "Halden Catering renewal, locked 15% rate" },
   },
   {
     term: "2028–29",
@@ -161,7 +161,7 @@ export function SeatMechanism() {
 
   return (
     <LazyMotion features={domAnimation} strict>
-      <Section tone="canvas" backdrop="quiet" className="lg:pb-24">
+      <Section tone="canvas" backdrop="quiet" backdropSeed={3} className="lg:pb-24">
         <Container>
           <div
             ref={sectionRef}
@@ -253,7 +253,21 @@ export function SeatMechanism() {
                             }
                             className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-md font-mono text-[0.66rem] text-text-secondary hover:text-ink"
                           >
-                            {paused ? "▶" : "⏸"}
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth={1.8}
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              aria-hidden
+                              className="h-3 w-3"
+                            >
+                              <path
+                                d={paused ? "M8 5l11 7-11 7z" : "M9 5v14M15 5v14"}
+                                className={paused ? "fill-current" : undefined}
+                              />
+                            </svg>
                           </button>
                         )}
                         {STEPS.map((s, idx) => (
@@ -293,7 +307,7 @@ export function SeatMechanism() {
                         Occupant · term {step.term}
                       </p>
                       <span className="font-mono text-[0.62rem] text-ink-faint">
-                        the person rotates ↻
+                        the person rotates
                       </span>
                     </div>
                     <AnimatePresence mode="wait">
@@ -318,7 +332,7 @@ export function SeatMechanism() {
                       </m.div>
                     </AnimatePresence>
 
-                    {/* The lifecycle legend. Absorbed from Handoff's "Shadow
+                    {/* The lifecycle legend. Absorbed from Handoff’s "Shadow
                         access" block, which said the same three things in three
                         cards under a headline AiOnboarding also used verbatim. */}
                     <dl className="mt-3 space-y-1 border-t border-line pt-3">

@@ -585,3 +585,139 @@ reproduce in isolation on either occurrence, and CI sets `retries: 1`.
 | `C-032` | Operating legal entity | Almamy Diaby | Incorporation. Privacy and Terms carry a founder-draft banner meanwhile |
 | `X-01` | Student roster in public git history | Satvik Adyanthaya | History rewrite or private repo, in `satvikOS/Tenure` — read-only for this work |
 | `C-023` | The pilot sign-in mechanism cannot be described publicly | Satvik Adyanthaya | A decision. `/terms` no longer makes anyone liable for activity under their account, and `/trust` now says access is not gated on a per-user secret, because a liability clause written against a shared credential is not defensible. Saying more than that needs C-023 lifted; saying less would put the clause back |
+
+---
+
+## Phase 10 — The brief, re-audited against the product, 2026-08-19
+
+Phase 9 recorded every clause of the founder brief as PASS. Eight adversarial lenses were
+run against that claim rather than against the site, and the ledger was wrong in three
+places and incomplete in five. This phase is what survived verification.
+
+**The audit did not finish.** Eight finder agents returned; every refutation agent and the
+synthesiser died on an account rate limit. So none of the 71 findings below arrived
+adjudicated — each was re-verified by hand against the deploying repo, the rendered page or
+a screenshot before anything was changed, and several were dropped on inspection.
+
+### 10.1 The register was describing a product that had moved on
+
+Three claims were not wrong when written and were wrong when read. The evidence pin was 78
+commits behind, and C-029's own evidence line is what proved it: the repo-wide grep it cites
+for `slack.com` returned zero hits at `819aec0e` and five files at HEAD.
+
+| Was | Is, verified in `satvikOS/Tenure` | Where it had to change |
+|---|---|---|
+| "production calls Anthropic DIRECTLY. There is no Bedrock integration in either repository" — and `forbiddenPhrases` blocked the word | `lib/ai/provider.ts` prefers Bedrock whenever a region is set; `bedrock.tf` defaults `bedrock_enabled` to true; `ecs.tf` sets `AI_PROVIDER=bedrock`; `provider.test.ts` and `bedrock.test.ts` cover it | C-007, `/trust`, `/privacy`, home. The gate named three release conditions — repo invokes it, infrastructure lands, tests exist — and all three were met, so the gate released itself |
+| "Okta is dead code and Cognito is a decision with no implementation… the site must not say MFA" | `auth.ts` registers Cognito as a credentials provider; `cognito.tf` sets a 12-character policy across all four classes, TOTP via `software_token_mfa_configuration`, verified-email recovery | C-023, `/trust`. The page was telling institutions there was **no** per-user secret and **no** MFA — understating your own security is not caution |
+| "Connectors to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord — Not supported" | A Slack connector with OAuth install, channel routing, a posting quota, **6 unit test files** and **2 API routes**; plus an 18-product catalog computing availability from `requiredSecrets` | C-029 split into **C-029a / C-029b / C-029c**, `/product`, home FAQ |
+
+The Slack row is the one that needed the most care. The code and its routes are real, and
+**nothing in the application calls the announce seam** — `announceEvent` has zero callers
+under `apps/web/src/app`. So the honest status is *built, not reachable*, which is neither
+"available" nor "no", and the `built-pending-cutover` availability was widened to cover it.
+
+**The ratchets turned to face the new truth rather than being deleted.** `"Bedrock" appears
+nowhere on the site` became `wherever Bedrock is named, the direct-API fallback is disclosed
+too`, because both providers ship and a page naming one lets a reader conclude the wrong
+thing about where their record text goes. Two vendor-status phrases were added to
+`DISCLAIMED_VENDOR` so a name can sit beside its real status; every other vendor still
+requires a denial. One latent bug surfaced doing it: the calendar guard pushed every hit
+without checking `excusedBy`, so it fired on a sentence *denying* two-way sync — it now
+honours the excuse window like every other guard in the file.
+
+`build-evidence-manifest.mjs` defaulted to two absolute Windows paths, so on any other
+machine it reported both product repos as NOT CHECKED OUT and rewrote the manifest to nulls
+— silently turning the evidence gate off rather than failing. Sibling directories now.
+
+### 10.2 Length: 44.1 → 37.8 desktop screens, and where it came from
+
+| Route | Desktop | Mobile |
+|---|---|---|
+| `/` | 10.4 → **9.7** | 16.7 → **15.1** |
+| `/product` | 7.6 → 7.5 | 11.5 → 11.6 |
+| `/privacy` | 5.5 → **2.9** | 8.8 → **4.0** |
+| `/terms` | 5.7 → **3.1** | 9.2 → **4.2** |
+| **Total** | 44.1 → **37.8** | — |
+
+**The legal pages were the largest single saving and cost nothing.** `Dossier` was built in
+Phase 9 to fix `/trust` and `/pilot` and was never applied to the two pages with the worst
+words-per-screen on the site. Both are accordions now — and the restructure was gated on a
+word-bag diff of all eight routes before and after: **zero words lost anywhere**, with
+`/privacy` and `/terms` gaining only the 43 and 47 new words of the summary lines.
+
+That diff is also where the harness caught itself. The first run reported "0 differing
+words" on every route *including the two I had just added text to*. `pkill -f "next start"`
+kills the npm wrapper, not `next-server`, so port 3000 was still serving the previous build
+and the entire verification was measuring nothing. Every server restart in this phase kills
+by port.
+
+**`SECTION_TIGHT` and `SECTION_BAND` were exported and used by nothing.** All 39 sections
+took the default, so a file documenting a three-step rhythm applied one step — measured at
+1,546px of empty seam on the home page alone. The steps are applied, and the scale is one
+notch shorter: seams land near 120px instead of 160px.
+
+On mobile the gap was never content, it was stacking. Handoff's packet table had no column
+count below `md`, so four seats became nine stacked lines each and the four column labels
+printed **sixteen times** — 1,835px, the tallest section on the site. Paired into two
+columns: 1,220px.
+
+### 10.3 Repetition, which was structural rather than editorial
+
+`Backdrop` took only `variant`, and the site uses `quiet` twelve times and `drafting` eight.
+Two calls with the same variant were **pixel identical**, which is why the same purple
+triangle and green zigzag bled off an edge at least six times. `seed` now varies wash
+offsets, mask origin, grid pitch, contour asset and ornament corner from five tables of
+length 4, 5, 3, 9 and 7. The ornament table is seven **because six collided**: Problem
+(seed 1) and OfficeConsole (seed 7) are both `drafting`, and 1 % 6 === 7 % 6 put the
+identical figure in the identical corner twice down one page. A script proves zero
+collisions across all five multi-section routes.
+
+Two things had to be caught by reading the built CSS rather than the source. Tailwind v4
+finds class names by scanning text, so the first implementation — mask gradients assembled
+in template literals — would have emitted **no CSS at all** and rendered every textured
+layer unmasked. The tables hold complete class literals, and the production stylesheet was
+grepped to confirm all five origins and all three pitches ship.
+
+Other duplicates removed: the home hero and `/product` mounted `DashboardMock` with
+identical chrome and identical rows four screens apart; `Platform`'s Finance pane repeated
+the hero's ledger **and disagreed with it**, painting "Reserve" in `--chart-4`, the hue
+`--danger` is built on, where the hero used the neutral slate. `Share` now takes
+`neutral` for a remainder, and the pane shows a different facet of Finance entirely.
+
+### 10.4 The pictures were all one student organization
+
+Every product illustration on the site was Rochester Finance Club: membership dues, a gala,
+SCC- seat codes. The prose covers four sectors and the four non-university seats in
+`site.audiences` were never rendered anywhere — so read as a visitor reads, in pictures, the
+site was for student government whatever the paragraphs said. `DashboardMock` takes a
+`dataset`; `/product` runs a nonprofit (Riverside Literacy Alliance, FY26 Q2, a foundation
+grant, tutor stipends) including its own assistant prompts, because "fall mixer" asked of a
+literacy charity is the default leaking through the panel a visitor reads most closely.
+
+**Four real, identifiable companies appeared as fabricated approved contracts and confirmed
+bookings** — Aramark as a signed sponsorship, M&T Bank mid-negotiation, Memorial Art Gallery
+as a confirmed venue, Rochester Print on a standing rate. Fourteen occurrences, all replaced
+with invented names.
+
+### 10.5 Defects the gates caught, and one they caused
+
+| Defect | Found by | Why it mattered |
+|---|---|---|
+| Hero's scope chips scroll on a phone and contain nothing focusable | axe, `scrollable-region-focusable` (serious), twice | A region a mouse can scroll and a keyboard cannot reach. `Segmented` never hits this because its children are buttons; inert chips need the container to take the tab stop. It stays a `<ul>` — `role="group"` would orphan every `<li>`, which this repo already fixed once |
+| `MetricsBand`'s note chip was documented as pinned to the bottom and had no `mt-auto` | Screenshot review | The comment described the fix; the class was never added, so the chips still sat 34px apart in a four-across row |
+| Emoji `📅` and `🔒`, and `▶`/`⏸`/`↻` as text | Glyph census of the source | An emoji renders from the system colour font and ignored every `--chart-*` token; `⏸` is absent from IBM Plex Mono and fell back to a form that reads as a clipped `u` — which is the "clipped text" a screenshot review had already flagged |
+| 76 straight apostrophes in copy, against 380 typographic ones | Rendered-text census | `/pilot` ran 18 straight to 1 curly while `/privacy` was fully curly. Safe to normalise because `claims.spec.ts` folds quotes before matching |
+
+### 10.6 Where it stands
+
+Lint, typecheck, **72/72** contrast pairs, build, **113** links, and **1,029–1,040** Playwright
+tests across four projects. The single failure under full-suite load is the pre-existing
+`settle()` timeout the Phase 9 note records; it passes in isolation every time and CI sets
+`retries: 1`.
+
+Two things are honestly unfinished. `/product` did not get shorter — the connector matrix
+gained three groups because the real answer is three-part, and that is content the brief
+asked for. And **C-015's counts were left alone**: the register requires them to be counted
+by *running* the suite, `apps/web` has no `node_modules` here, and installing dependencies
+into the product repo to publish a number was not a trade worth making. 320 unit and 132
+e2e are therefore understated at HEAD, which is the safe direction.

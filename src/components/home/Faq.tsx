@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Ribbons } from "@/components/visuals/Ribbons";
-import { Container, Section } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Logo } from "@/components/brand/Logo";
 import { ContactSalesLink } from "@/components/ui/ContactSales";
@@ -12,13 +12,27 @@ const LINK = "whitespace-nowrap font-medium text-grove-deep underline underline-
 const ITEMS: { q: string; a: ReactNode }[] = [
   {
     q: "Does Tenure replace the tools we already use?",
+    /*
+      This answer used to be "No, and it connects to none of them", which was the
+      whole answer a visitor got on the home page — no tool named, and the real
+      detail two routes away behind a collapsed accordion. It is also no longer
+      true: a Slack connector is built in the deploying repo, and seventeen more
+      products sit in the integration catalog.
+
+      The vendor names are legal here because "built, not yet in the product" and
+      "awaiting credentials" are the two status phrases claims.spec.ts accepts as
+      excuses (C-029a / C-029b). Neither can be read as availability.
+    */
     a: (
       <>
-        No, and it connects to none of them. Tenure is where the record lives: your budget
-        spreadsheet imports with whatever the columns were called, and PDF, Word, Excel and
-        PowerPoint open in place.{" "}
+        Mostly no, and we will tell you exactly where. Tenure is where the record lives:
+        your budget spreadsheet imports with whatever the columns were called, and PDF,
+        Word, Excel and PowerPoint open in place. A Slack connector is written and tested
+        but built, not reachable &mdash; nothing calls it, so it is not yet in the product.
+        Seventeen more, Box and Teams among them, are declared in the catalog awaiting
+        credentials, which is not the same as working.{" "}
         <Link href="/product" className={LINK}>
-          What&rsquo;s built &rarr;
+          The whole matrix &rarr;
         </Link>
       </>
     ),
@@ -29,14 +43,14 @@ const ITEMS: { q: string; a: ReactNode }[] = [
     // "keeps" — read literally, the opposite of what /privacy and /terms exist to
     // establish, and self-contradictory next to "loses access". /trust already had
     // the right formulation; use it here.
-    a: "The organization does; access attaches to the seat, not the person. An incoming officer gets read-only access to the seat's record and knowledge cards before their term begins, and when a term ends the record stays on the seat while the outgoing officer's access does not.",
+    a: "The organization does; access attaches to the seat, not the person. An incoming officer gets read-only access to the seat’s record and knowledge cards before their term begins, and when a term ends the record stays on the seat while the outgoing officer’s access does not.",
   },
   {
     q: "Is sensitive data handled responsibly?",
     a: (
       <>
         {/*
-          claims.ts defines a claim's `qualification` as the limits that must travel
+          claims.ts defines a claim’s `qualification` as the limits that must travel
           with it WHEREVER it appears, and C-003/C-004 both list "/" — but the home
           page carried the headline and left both numbers on /trust, so this read as
           blanket enforcement. The numbers travel now.
@@ -60,7 +74,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
 
 export function Faq() {
   return (
-    <Section tone="subtle" backdrop="quiet">
+    <Section from="band" tone="subtle" backdrop="quiet" backdropSeed={8} space={SECTION_TIGHT}>
       {/* vibrant flowing ribbons cutting in from the top-right (no background) */}
       <div
         aria-hidden

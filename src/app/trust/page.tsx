@@ -1,4 +1,4 @@
-import { Container, Section } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
 import { Dossier, type DossierItem } from "@/components/ui/Dossier";
@@ -27,7 +27,7 @@ const GROUPS: Group[] = [
   {
     heading: "Tenant boundaries",
     blurb:
-      "Each institution's record is separated at the database-client layer, not by convention in each query.",
+      "Each institution’s record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
         title: "Tenant filter attached to the database client — directly on 15 of 39 models",
@@ -57,7 +57,7 @@ const GROUPS: Group[] = [
       {
         title: "Seat lifecycle: shadow, active, alumni",
         status: "ci",
-        body: "An incoming officer is added to a seat before their term begins with read-only access to the seat's record, including the knowledge cards scoped to that seat. On the start date it becomes write access. An outgoing officer moves to alumni: the record stays, the access does not.",
+        body: "An incoming officer is added to a seat before their term begins with read-only access to the seat’s record, including the knowledge cards scoped to that seat. On the start date it becomes write access. An outgoing officer moves to alumni: the record stays, the access does not.",
       },
       {
         title: "Two-party administrative succession",
@@ -120,7 +120,7 @@ const GROUPS: Group[] = [
       {
         title: "Decisions record the deciding seat",
         status: "live",
-        body: "Each approval step permanently records who decided, the seat they held at that moment, what the request moved from and to, and — where a backup approver acted — that it was done on another seat's behalf.",
+        body: "Each approval step permanently records who decided, the seat they held at that moment, what the request moved from and to, and — where a backup approver acted — that it was done on another seat’s behalf.",
       },
       {
         title: "Cryptographic tamper-evidence",
@@ -162,7 +162,7 @@ const GROUPS: Group[] = [
         status: "live",
         body: "The database takes automated daily backups in a fixed window, has deletion protection enabled, and takes a final snapshot on teardown. The document bucket has object versioning enabled, so an overwritten file can be recovered.",
         limit:
-          "Backup retention is ONE DAY. That is the setting in production infrastructure today, and it means an issue discovered on Wednesday cannot be recovered from Monday's state. For a system of record that is too short, we know it, and it is the single infrastructure number an institution should push us on.",
+          "Backup retention is ONE DAY. That is the setting in production infrastructure today, and it means an issue discovered on Wednesday cannot be recovered from Monday’s state. For a system of record that is too short, we know it, and it is the single infrastructure number an institution should push us on.",
       },
       {
         title: "Restore testing and disaster recovery",
@@ -186,30 +186,34 @@ const GROUPS: Group[] = [
       {
         title: "Permission filtering before retrieval",
         status: "live",
-        body: "The corpus is assembled under the asking person's own permissions before anything is ranked or sent, so the model is never given records that the person asking could not already open themselves.",
+        body: "The corpus is assembled under the asking person’s own permissions before anything is ranked or sent, so the model is never given records that the person asking could not already open themselves.",
       },
       {
-        title: "Model provider: Anthropic",
+        title: "Model provider: Amazon Bedrock, running an Anthropic model",
         status: "live",
-        // "Claude Haiku 4.5" is a default, not a guarantee: ai.ts resolves the model
-        // as process.env.ANTHROPIC_MODEL ?? "claude-haiku-4-5-20251001" with no
-        // validation. Nothing sets that variable today, so the default applies — but
-        // nothing in the deploying repo enforces it either. The reviewed-model
-        // allowlist exists only in Tenure-Parent, which does not deploy, so it must
-        // not be described here.
+        // UPDATED 2026-08-19 with the register (C-007). The provider gate this
+        // row used to sit behind required the deploying repo to invoke Bedrock,
+        // infrastructure to land and tests to exist before the word could be
+        // published. All three are present at cba5e20e.
         //
-        // Three call sites reach the API, not one. Summarisation sends document
+        // BOTH paths stay disclosed. Bedrock is preferred and the direct
+        // Anthropic API is the fallback, so "your record text stays inside AWS"
+        // would be false for an environment configured the other way — and an
+        // institution assessing this needs to know which flows exist, not which
+        // one is likeliest.
+        //
+        // Three call sites reach the model, not one. Summarisation sends document
         // contents; Draft Assist sends the user's instruction.
-        body: "Anthropic's API is called directly, using Claude Haiku 4.5 by default. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our infrastructure at those moments. Anthropic is the only model subprocessor.",
+        body: "Answer synthesis runs on Amazon Bedrock, using an Anthropic Claude Haiku 4.5 model by default. Bedrock authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
         limit:
-          "One platform-wide API key serves all tenants. There is no per-tenant key, no per-tenant usage quota, and no per-tenant opt-out.",
+          "The direct Anthropic API is retained as a fallback: an environment configured with a key but no Bedrock region calls api.anthropic.com instead, so record text can leave AWS. Neither model provider offers a per-tenant key, a per-tenant usage quota or a per-tenant opt-out. The model id is an environment variable and is not validated against an allowlist.",
       },
       {
         title: "Training on customer data",
         status: "unsupported",
         body: "No fine-tuning or training pipeline exists anywhere in the product. Your records are not used to train any model by us.",
         limit:
-          "Anthropic's own handling of API data is governed by their commercial terms, not by ours. Ask us for the current terms rather than taking a marketing sentence for it.",
+          "Anthropic’s own handling of API data is governed by their commercial terms, not by ours. Ask us for the current terms rather than taking a marketing sentence for it.",
       },
       {
         title: "Retrieval quality",
@@ -222,7 +226,7 @@ const GROUPS: Group[] = [
         // is an AND over its every word, including "what" and "our", and typically
         // returns nothing.
         limit:
-          "There is no semantic or vector search, and matching is literal and conjunctive: every word of a query longer than one character must appear in the same record, with no stemming, synonyms or stopword removal. Short, specific queries work; full-sentence questions often return nothing. Document file contents are not indexed for search, only titles and descriptions — though a document's contents are sent to the model when someone explicitly asks for a summary. Finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant today.",
+          "There is no semantic or vector search, and matching is literal and conjunctive: every word of a query longer than one character must appear in the same record, with no stemming, synonyms or stopword removal. Short, specific queries work; full-sentence questions often return nothing. Document file contents are not indexed for search, only titles and descriptions — though a document’s contents are sent to the model when someone explicitly asks for a summary. Finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant today.",
       },
       {
         title: "Behaviour when the model is unavailable",
@@ -242,19 +246,28 @@ const GROUPS: Group[] = [
     controls: [
       {
         title: "How people sign in",
-        status: "validating",
-        body: "Pilot accounts are created by us in advance against a named person. There is no public registration and no self-service signup. Sessions are issued as signed tokens by the application's auth layer.",
+        status: "live",
+        // REWRITTEN 2026-08-19. This row used to say access was "not gated on a
+        // secret held by one person and nobody else" and that there was "no MFA,
+        // no lockout threshold and no account-recovery flow". At cba5e20e all
+        // four are false: Cognito is the registered credentials provider, the
+        // pool carries a 12-character policy, TOTP is available and recovery
+        // runs to a verified email. Understating your own security to an
+        // institution is not caution, it is just a different inaccuracy.
+        body: "Accounts live in an Amazon Cognito user pool and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a Cognito account is not access to an organization, which is decided from the roster.",
         limit:
-          // "No password policy you can configure" presupposed a password. Naming the
-          // security property — that access is not gated on a per-user secret — is
-          // what an institution actually needs in order to assess the risk, and it
-          // stops short of publishing the mechanism C-023 holds back.
-          "This is a pilot-grade access model, and it is the weakest control on this page. Access is not gated on a secret held by one person and nobody else, so an action recorded under a name is not proof that person took it — which is why our Terms do not make you liable for activity under your account. There is no MFA, no lockout threshold you can set, and no account-recovery flow. Until institutional SSO lands, Tenure should not hold records your organization would classify as sensitive — student data, donor or beneficiary records, payroll, anything you would have to notify someone about, and we will not tell you otherwise to win a pilot. Ask us directly for the current mechanism and we will walk you through it under NDA.",
+          "Institutional SSO is the gating item for going beyond a pilot, and it is not deployed. An interim access path is still provisioned alongside per-user sign-in for the pilot term; ask us directly and we will walk you through the current arrangement under NDA. Until SSO lands, Tenure should not hold records your organization would classify as sensitive — student data, donor or beneficiary records, payroll, anything you would have to notify someone about, and we will not tell you otherwise to win a pilot.",
       },
       {
         title: "Multi-factor authentication",
-        status: "unsupported",
-        body: "MFA is not available in any form today.",
+        status: "validating",
+        body: "Time-based one-time-password multi-factor is available on the user pool and a person can enrol an authenticator app.",
+        limit:
+          // The register permits "available", never "enforced": cognito_mfa_mode
+          // defaults to OPTIONAL and that is a deliberate pilot decision, not an
+          // oversight. Calling this "MFA protected" would overstate it exactly as
+          // far as the old row understated it.
+          "It is OPTIONAL, not enforced. Nobody is required to enrol before reaching the product, so you should assume some people in a pilot cohort will not. Raising it to required for privileged staff is a policy change we can make with you; it needs a support path for a lost authenticator first. SMS and hardware keys are not offered.",
       },
       {
         title: "Single sign-on (SAML / OIDC)",
@@ -343,10 +356,10 @@ export default function TrustPage() {
       <PageHeader
         eyebrow="Trust"
         title="What is actually built, and what is not."
-        intro="Tenure is an early-stage product run by two founders. The fastest way to lose an institution's trust is to blur what is shipped with what is planned, so this page separates them explicitly."
+        intro="Tenure is an early-stage product run by two founders. The fastest way to lose an institution’s trust is to blur what is shipped with what is planned, so this page separates them explicitly."
       />
 
-      <Section tone="canvas" backdrop="quiet" divide={false}>
+      <Section backdropSeed={18} tone="canvas" backdrop="quiet" divide={false}>
         <Container>
           {/* Status vocabulary — defined once, up front. It is the key to the
               whole page, so it stays expanded and above the dossier rather than
@@ -432,7 +445,7 @@ export default function TrustPage() {
         </Container>
       </Section>
 
-      <Section tone="subtle" backdrop="drafting">
+      <Section backdropSeed={19} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
         <Container>
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
@@ -464,7 +477,7 @@ export default function TrustPage() {
               into the <a href="/terms" className="text-accent-text underline underline-offset-4 hover:text-accent">terms</a>.
             </p>
             <p className="mt-3 leading-relaxed text-text-secondary">
-              The full subprocessor list — AWS, Anthropic, Vercel and Calendly,
+              The full subprocessor list — AWS (including Bedrock), Anthropic, Vercel and Calendly,
               with what each one touches and where — is on the{" "}
               <a href="/privacy" className="text-accent-text underline underline-offset-4 hover:text-accent">
                 privacy page

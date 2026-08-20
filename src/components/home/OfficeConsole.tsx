@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type ReactNode } from "react";
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Panel, PanelBar, PanelRail, PanelNote } from "@/components/ui/Panel";
 import { RailList, type SegmentItem } from "@/components/ui/Segmented";
@@ -223,7 +223,7 @@ export function OfficeConsole() {
   const pane: PaneKey = NAV.find((n) => n.key === active)?.pane ?? "overrides";
 
   return (
-    <Section tone="surface" backdrop="drafting">
+    <Section from="band" tone="surface" backdrop="drafting" backdropSeed={7} space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           align="center"
@@ -237,7 +237,7 @@ export function OfficeConsole() {
           lead="Every organization you steward on one screen: who holds which seat, what is pending, what got denied — and a console whose navigation is derived from the capabilities your own seat actually holds."
         />
 
-        <Reveal delay={0.14} className="mt-10">
+        <Reveal delay={0.14} className="mt-7">
           <Panel>
             <PanelBar
               title="Administration console"
@@ -271,7 +271,7 @@ export function OfficeConsole() {
                     <ul className="mt-4 space-y-1.5">
                       <Row
                         title="3 requests awaiting a decision"
-                        meta="two sitting in this body's own gate"
+                        meta="two sitting in this body’s own gate"
                         tag="6 days"
                         tone="warn"
                       />

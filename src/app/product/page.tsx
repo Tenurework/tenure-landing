@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
@@ -167,7 +167,7 @@ export default function ProductPage() {
       </PageHeader>
 
       {/* 1 — the workspace */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={11} tone="canvas" backdrop="quiet">
         <Container>
           <SectionHead
             align="center"
@@ -180,14 +180,19 @@ export default function ProductPage() {
               </>
             }
           />
-          <Reveal delay={0.12} className="mt-9">
-            <DashboardMock initialModule="Memory" className="mx-auto max-w-5xl" />
+          <Reveal delay={0.12} className="mt-7">
+            {/* The NONPROFIT worked example, deliberately. The home hero already
+                mounts this component with the university set; running it again
+                here showed a visitor the same organization, the same ledger and
+                the same chrome twice, four screens apart, on a site whose whole
+                claim is that the model is not university-specific. */}
+            <DashboardMock initialModule="Memory" dataset="nonprofit" className="mx-auto max-w-5xl" />
           </Reveal>
         </Container>
       </Section>
 
       {/* 2 — what it captures. Four records, as one panel rather than four cards. */}
-      <Section tone="subtle" backdrop="drafting">
+      <Section backdropSeed={12} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
         <Container>
           <SectionHead
             index="02"
@@ -201,7 +206,7 @@ export default function ProductPage() {
             lead="Nobody writes the handoff document at the end of the cycle. Tenure keeps four kinds of record current as the work happens, so the next board inherits the real thing rather than a scramble of screenshots and a shared drive nobody can navigate."
           />
 
-          <Reveal delay={0.14} className="mt-9">
+          <Reveal delay={0.14} className="mt-7">
             <Panel>
               <PanelBar
                 title="What lives on the seat"
@@ -245,7 +250,7 @@ export default function ProductPage() {
       </Section>
 
       {/* 3 — onboarding */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={13} tone="canvas" backdrop="quiet">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <SectionHead
@@ -257,7 +262,7 @@ export default function ProductPage() {
                   <span className="text-grove">everything that came before</span>.
                 </>
               }
-              lead="When a leader leaves and the next one takes the seat, they do not start from zero. They search the seat's own record and get the sources back, with an answer whenever Tenure can ground one in them."
+              lead="When a leader leaves and the next one takes the seat, they do not start from zero. They search the seat’s own record and get the sources back, with an answer whenever Tenure can ground one in them."
             />
             <ul className="mt-7 space-y-4">
               {POINTS.map((p, i) => (
@@ -331,7 +336,7 @@ export default function ProductPage() {
       <ProductAtWork />
 
       {/* 5 — connectors. One matrix, replacing two near-identical format sections. */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={14} tone="canvas" backdrop="quiet">
         <Container>
           <SectionHead
             index="04"
@@ -344,7 +349,7 @@ export default function ProductPage() {
             }
             lead="Most of this page describes what Tenure does. This part describes what it will not do for you, in the same words we would use in a security review, because finding out in week three is worse for both of us."
           />
-          <Reveal delay={0.14} className="mt-9">
+          <Reveal delay={0.14} className="mt-7">
             <ConnectorMatrix />
           </Reveal>
         </Container>

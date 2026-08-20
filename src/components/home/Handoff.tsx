@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Panel, PanelBar, PanelTag } from "@/components/ui/Panel";
 
@@ -135,7 +135,7 @@ function ColumnLabel({ children }: { children: ReactNode }) {
 
 export function Handoff() {
   return (
-    <Section tone="subtle" backdrop="drafting">
+    <Section from="surface" tone="subtle" backdrop="drafting" backdropSeed={5} space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           align="center"
@@ -149,7 +149,7 @@ export function Handoff() {
           lead="Tenure assembles it from the database when you open it. No AI, and nothing for the outgoing holder to remember."
         />
 
-        <Reveal delay={0.14} className="mt-10">
+        <Reveal delay={0.14} className="mt-7">
           <Panel>
             <PanelBar
               icon={
@@ -177,9 +177,24 @@ export function Handoff() {
               {SEATS.map((s) => (
                 <li
                   key={s.code}
-                  className="grid gap-2 border-b border-line-soft px-5 py-3.5 last:border-b-0 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr] md:items-center md:gap-4"
+                  /*
+                    TWO COLUMNS ON A PHONE, NOT ONE.
+
+                    Below `md` this had no column count at all, so all five cells
+                    went full width and each seat became nine stacked lines with
+                    its column label above it — the four labels printed sixteen
+                    times down the list. Measured: 1,835px, 2.17 mobile screens,
+                    the tallest section on the site and the single largest reason
+                    home ran 16 mobile screens against 10 on desktop.
+
+                    Paired, the four value cells take two lines instead of four.
+                    The seat name spans both columns because it is the row's
+                    subject, and a name broken across half a phone width is the
+                    one thing here that must not wrap.
+                  */
+                  className="grid grid-cols-2 gap-x-4 gap-y-2.5 border-b border-line-soft px-5 py-3.5 last:border-b-0 sm:px-6 md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr] md:items-center md:gap-4"
                 >
-                  <div>
+                  <div className="col-span-2 md:col-span-1">
                     <p className="text-[0.9rem] font-medium text-ink">{s.seat}</p>
                     <p className="font-mono text-[0.6rem] text-text-secondary">{s.code}</p>
                   </div>
@@ -222,22 +237,27 @@ export function Handoff() {
               ))}
             </ul>
 
-            {/* The three standings, in the packet's own footer rather than in a
+            {/* The three standings, in the packet’s own footer rather than in a
                 second band below it. `gap-px` on a line-coloured background is what
                 draws the two dividers without three nested borders. */}
-            <div className="grid gap-px border-t border-line bg-line sm:grid-cols-3">
+            {/* Three across at every width. Stacked on a phone these cost ~350px to
+                say three short numbers, and each is one line of value plus one of
+                note — there is room for three columns at 390px. */}
+            <div className="grid grid-cols-3 gap-px border-t border-line bg-line">
               {STANDING.map((st) => (
-                <div key={st.label} className="bg-cloud px-5 py-4 sm:px-6">
+                <div key={st.label} className="bg-cloud px-3 py-4 sm:px-6">
                   <div className="flex items-center gap-2.5">
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-grove-soft text-grove">
+                    {/* The icon plate is desktop-only: at 390px three of them
+                        push the labels onto a second line for no information. */}
+                    <span className="hidden h-8 w-8 items-center justify-center rounded-lg bg-grove-soft text-grove sm:inline-flex">
                       {st.icon}
                     </span>
                     <span className="label-mono text-[0.55rem]">{st.label}</span>
                   </div>
-                  <p className="mt-2.5 font-display text-[1.1rem] font-semibold tnum text-ink">
+                  <p className="mt-2 font-display text-[1.05rem] font-semibold tnum text-ink sm:mt-2.5 sm:text-[1.1rem]">
                     {st.value}
                   </p>
-                  <p className="text-[0.8rem] text-ink-soft">{st.note}</p>
+                  <p className="text-[0.78rem] leading-snug text-ink-soft sm:text-[0.8rem]">{st.note}</p>
                 </div>
               ))}
             </div>

@@ -67,7 +67,7 @@ export const site = {
      * work originated with — never as a partner, sponsor, customer or
      * endorser. See `pilot.status`.
      */
-    office: "Simon's Office of Student Engagement",
+    office: "Simon’s Office of Student Engagement",
   },
 
   /**
@@ -87,7 +87,7 @@ export const site = {
     status: "planned" as const,
     season: "Fall 2026",
     scope: "Proposed: every organization the office stewards, and the office itself",
-    scopeShort: "Proposed across the office's organizations",
+    scopeShort: "Proposed across the office’s organizations",
   },
 
   /**
@@ -188,7 +188,7 @@ export const site = {
       // screen-share one. The structural point survives without it: what was
       // modelled is the office's org chart, not its people.
       label: "organizations modelled",
-      sub: "209 seats, modelled on the office's real organizational structure — seeded counts, not active users",
+      sub: "209 seats, modelled on the office’s real organizational structure — seeded counts, not active users",
       claimId: "C-014",
     },
     {
@@ -266,7 +266,7 @@ export const site = {
       // funder relations" asserted shipped, configured support for an entity
       // type nothing in the deploying repo evidences. The seat model genuinely
       // does generalise — that is the honest version of the same point.
-      body: "Volunteer boards reset every year and relearn the same lessons. A board chair or a programme lead is a position with the record attached, so funder context, grant deadlines and the reasoning behind last year's decisions can persist across every term instead of resetting with the slate.",
+      body: "Volunteer boards reset every year and relearn the same lessons. A board chair or a programme lead is a position with the record attached, so funder context, grant deadlines and the reasoning behind last year’s decisions can persist across every term instead of resetting with the slate.",
     },
     {
       sector: "SMEs",
@@ -275,7 +275,7 @@ export const site = {
       alt: "Two small-business owners packing and labelling orders in their studio",
       seat: "Head of Operations · OPS-HEAD-OPER",
       cadence: "Employees leave, roles remain",
-      body: "When someone resigns, their vendors, pricing, playbooks and hard-won context should not leave with them. The seat model does not care that there is no term: an operations lead is still a position, and whoever takes it next reads the seat's record before their first day in it.",
+      body: "When someone resigns, their vendors, pricing, playbooks and hard-won context should not leave with them. The seat model does not care that there is no term: an operations lead is still a position, and whoever takes it next reads the seat’s record before their first day in it.",
     },
     {
       sector: "Associations",
@@ -284,7 +284,7 @@ export const site = {
       alt: "Members of a governing body seated at a formal table with microphones",
       seat: "Chapter President · CHP-PRES",
       cadence: "New slate every year, in every chapter",
-      body: "A federated body runs the same seats dozens of times over, and every chapter relearns the same lessons in parallel. The seat is the unit that survives the slate, so a chapter's sponsors, budget history and run-of-show stay where the next holder will look for them.",
+      body: "A federated body runs the same seats dozens of times over, and every chapter relearns the same lessons in parallel. The seat is the unit that survives the slate, so a chapter’s sponsors, budget history and run-of-show stay where the next holder will look for them.",
     },
   ],
 } as const;

@@ -3,8 +3,8 @@
 import { useState, type ReactNode } from "react";
 import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { Panel, PanelBar, PanelRail, PanelNote, PanelTag } from "@/components/ui/Panel";
-import { RailList, type SegmentItem } from "@/components/ui/Segmented";
+import { Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
+import { Segmented, type SegmentItem } from "@/components/ui/Segmented";
 import { Logo } from "@/components/brand/Logo";
 import { Share, GateRail } from "@/components/visuals/Charts";
 import { creatableCardTypes } from "@/lib/claims";
@@ -165,23 +165,34 @@ const MODULES: Module[] = [
       </svg>
     ),
     body: "Budgets, dues, reimbursements and vendor terms in one ledger, approved in place.",
+    /*
+      THE SAME NUMBERS TWICE, IN TWO COLOUR SCHEMES.
+
+      This pane used to repeat the hero mock's ledger exactly — $12,400 of
+      $18,000 and the identical Events 38 / Operations 24 / Marketing 16 /
+      Reserve 22 bar — about four screens further down the same page. Worse, the
+      two disagreed: `DashboardMock` painted Reserve in `--chart-6`, the neutral
+      slate, while `Share` handed the fourth slice `--chart-4`, the hue `--danger`
+      is built on. One dataset, two pictures, one of them alarming.
+
+      So this pane shows a different FACET of Finance rather than the same chart
+      again: where the money actually goes once it is committed. The hero keeps
+      the category split, and nothing on the page is drawn twice.
+    */
     detail: (
       <div className="space-y-4">
-        <Field label="Committed this term">
-          <div className="flex items-baseline justify-between">
-            <span className="font-mono text-xl font-semibold tnum text-ink">$12,400</span>
-            <span className="font-mono text-[0.66rem] text-ink-faint">of $18,000</span>
-          </div>
-        </Field>
-        <Field label="Budget by category">
+        <Field label="Where a committed dollar sits">
           <Share
             slices={[
-              { label: "Events", pct: 38 },
-              { label: "Operations", pct: 24 },
-              { label: "Marketing", pct: 16 },
-              { label: "Reserve", pct: 22 },
+              { label: "Paid out", pct: 46 },
+              { label: "Approved, not yet invoiced", pct: 31 },
+              { label: "In the approval chain", pct: 12 },
+              { label: "Uncommitted", pct: 11, neutral: true },
             ]}
           />
+        </Field>
+        <Field label="Reimbursements this term">
+          <Chips items={["14 filed", "11 approved", "2 in gate 2", "1 returned"]} />
         </Field>
       </div>
     ),
@@ -227,7 +238,7 @@ const MODULES: Module[] = [
       <Field label="Filed against this seat">
         <ul className="space-y-1.5">
           {[
-            { tag: "Deal", t: "Aramark, sponsorship renewal", from: "Maya Chen · 2023–24" },
+            { tag: "Deal", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
             { tag: "Playbook", t: "Spring Gala, run of show", from: "Priya Nair · 2024–25" },
             { tag: "Lesson", t: "Why we moved the fall mixer", from: "Board · 2022–23" },
           ].map((r) => (
@@ -409,7 +420,7 @@ export function Platform() {
   const mod = MODULES.find((m) => m.key === active) ?? MODULES[0];
 
   return (
-    <Section id="platform" tone="surface" backdrop="aurora">
+    <Section id="platform" from="canvas" tone="surface" backdrop="aurora" backdropSeed={4}>
       <Container>
         <SectionHead
           align="center"
@@ -423,7 +434,7 @@ export function Platform() {
           lead="Eleven modules on one record. Work happens here, so the record writes itself — pick any one to see what it actually does."
         />
 
-        <Reveal delay={0.14} className="mt-10">
+        <Reveal delay={0.14} className="mt-7">
           <Panel>
             <PanelBar
               title="Tenure"
@@ -431,32 +442,58 @@ export function Platform() {
               aside={<PanelTag>{`${MODULES.length} modules`}</PanelTag>}
             />
 
-            <div className="grid md:grid-cols-[13.5rem_1fr]">
-              <PanelRail label="Modules">
-                <RailList
-                  label="Platform modules"
-                  items={RAIL}
-                  active={active}
-                  onSelect={setActive}
-                />
-              </PanelRail>
+            {/*
+              THE SELECTOR IS ABOVE THE PANE, NOT BESIDE IT.
 
-              {/* The single view. `min-h` is set from the tallest pane so switching
-                  modules does not jump the page under the reader's cursor — the
-                  one thing a tab control must never do. */}
-              <div className="min-h-[21rem] p-5 sm:p-6">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <h3 className="font-display text-[1.15rem] font-semibold text-ink">
-                    {mod.label}
-                  </h3>
-                  <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-ink-faint">
-                    {mod.cluster}
-                  </span>
-                </div>
-                <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-ink-soft">
+              It was a `PanelRail` in a `md:grid-cols-[13.5rem_1fr]`. Eleven rail
+              rows measure 549px; the tallest detail pane is about 290px, and a
+              grid row stretches its cells to the tallest sibling — so the right
+              half of the biggest card on the home page rendered 440px of blank
+              white on every module except one. Widening the pane could not fix
+              it, because the rail's height is set by the module COUNT, which is
+              the one number this section exists to show.
+
+              Above it, the rail's height is one wrapped chip row, the detail
+              takes the full 1,152px measure — enough to set the sentence beside
+              its artefact rather than under it — and the section loses ~200px.
+
+              It also stops this panel and `OfficeConsole` being the same
+              picture twice on one page. Both were a left rail against a right
+              detail pane closed by a footnote; the reader met the second one
+              and read it as the first one scrolling past again.
+
+              `Segmented` wraps here and scrolls below `sm`, which is the split
+              its own comment argues for: wrapping is what broke the connector
+              tabs at 390px, and a scrolling row is what fixed them.
+            */}
+            <div className="border-b border-line px-4 py-3 sm:px-6">
+              <Segmented
+                label="Platform modules"
+                items={RAIL}
+                active={active}
+                onSelect={setActive}
+                wrap
+                className="border-0 bg-transparent p-0"
+              />
+            </div>
+
+            {/* The single view. `min-h` is set from the tallest pane so switching
+                modules does not jump the page under the reader’s cursor — the
+                one thing a tab control must never do. */}
+            <div className="min-h-[12.5rem] p-5 sm:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <h3 className="font-display text-[1.15rem] font-semibold text-ink">
+                  {mod.label}
+                </h3>
+                <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-[0.54rem] uppercase tracking-wide text-ink-faint">
+                  {mod.cluster}
+                </span>
+              </div>
+              <div className="mt-2 grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
+                <p className="text-[0.95rem] leading-relaxed text-ink-soft">
                   {mod.body}
                 </p>
-                <div className="mt-5 max-w-xl">{mod.detail}</div>
+                <div className="max-w-xl">{mod.detail}</div>
               </div>
             </div>
 

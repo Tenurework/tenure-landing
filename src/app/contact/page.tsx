@@ -53,7 +53,7 @@ const EXPECT = [
     // privacy problem, not a copy problem — the walkthrough runs on a
     // demonstration organization and always did.
     title: "30 minutes, screen shared",
-    body: "We open a demonstration organization built on the same model — seats, approvals, the budget, the handoff packet — and you ask what you want to see. It carries representative data, never a real organization's records.",
+    body: "We open a demonstration organization built on the same model — seats, approvals, the budget, the handoff packet — and you ask what you want to see. It carries representative data, never a real organization’s records.",
   },
   {
     title: "We will tell you what is not built",
@@ -70,7 +70,7 @@ export default function ContactPage() {
         intro="Tell us what you want to see, or just email us. Whichever is less friction for you — both reach the same two people."
       />
 
-      <Section tone="canvas" backdrop="quiet" divide={false}>
+      <Section backdropSeed={24} tone="canvas" backdrop="quiet" divide={false}>
         <Container>
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
             {/* The composer. `id` is the target of the header CTA when the

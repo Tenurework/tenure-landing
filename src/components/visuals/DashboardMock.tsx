@@ -14,6 +14,42 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 type ModuleKey = "Finance" | "Calendar" | "Approvals" | "Members" | "Memory";
 const NAV: ModuleKey[] = ["Finance", "Calendar", "Approvals", "Members", "Memory"];
 
+/**
+ * Inline marks, drawn rather than typed.
+ *
+ * These four positions used to hold `📅`, `🔒`, `▲` and `▶`/`⏸` as literal
+ * characters. Three problems, all visible: an emoji renders from the system
+ * colour font, so it ignored every token in the palette and put full-saturation
+ * blue and yellow into a mock built entirely from `--chart-*`; the glyphs are
+ * text, so they inherited the mono metrics and sat off the optical baseline of
+ * the labels beside them; and `⏸` is absent from IBM Plex Mono, so it fell back
+ * to whatever the platform had — on macOS a form that reads as a clipped `u`.
+ * Every other mark on this site is a 1.5px stroked SVG on `currentColor`, so
+ * these are too.
+ */
+const Mark = ({ d, className }: { d: string; className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={1.6}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden
+    className={cn("inline-block h-[1em] w-[1em] shrink-0 align-[-0.12em]", className)}
+  >
+    <path d={d} />
+  </svg>
+);
+
+const MARK = {
+  calendar: "M4 6h16v14H4zM4 9h16M8 3v4M16 3v4",
+  lock: "M6 11h12v9H6zM9 11V8a3 3 0 0 1 6 0v3",
+  rise: "M12 5l6 8H6z",
+  play: "M8 5l11 7-11 7z",
+  pause: "M9 5v14M15 5v14",
+} as const;
+
 const ICONS: Record<ModuleKey, string> = {
   Finance: "M3 21h18M5 21V11m4 10V7m4 14V9m4 12V5",
   Calendar: "M4 6h16v14H4zM4 9h16M8 3v4M16 3v4",
@@ -33,15 +69,94 @@ const ICONS: Record<ModuleKey, string> = {
  * people records cannot be answered by the assistant. These prompts used to ask
  * exactly those questions, in full sentences the AND-matcher returns nothing for,
  * so the site's most prominent mock demonstrated the one thing its own security
- * page says the product cannot do. They are now keyword-shaped and aimed at the
+ * page says the product cannot do. They are keyword-shaped and aimed at the
  * indexed kinds.
+ *
+ * They now live per dataset (`Dataset.asks`), because a prompt is the most
+ * sector-specific string in the whole mock: "fall mixer" asked of a literacy
+ * charity is the university default leaking through the one panel a visitor
+ * reads most closely.
  */
-const ASKS: Record<ModuleKey, string[]> = {
-  Finance: ["gala budget approval", "dues decision"],
-  Calendar: ["gala venue", "spring formal"],
-  Approvals: ["OSE review", "vendor request"],
-  Members: ["handover notes", "roster change approval"],
-  Memory: ["fall mixer", "sponsor renewal"],
+
+/**
+ * THE WORKED EXAMPLE, AS DATA — because there was only ever one of it.
+ *
+ * Every product illustration on this site was the same student organization:
+ * "Rochester Finance Club" in the chrome, membership dues and a gala in the
+ * ledger, SCC- seat codes throughout. The prose says Tenure serves universities,
+ * nonprofits, SMEs and associations; the pictures said student government, on
+ * every route, and a picture is what a visitor actually reads. The four
+ * non-university seats in `site.audiences` were never rendered anywhere.
+ *
+ * It was also the same picture TWICE: the home hero and /product's "one screen"
+ * section mounted this component with identical chrome and identical rows, four
+ * screens of scrolling apart.
+ *
+ * So the identity-carrying strings are a parameter. The home hero keeps the
+ * university set, because that is the sector the proposed pilot is in and the
+ * page says so; /product runs the nonprofit set, so the second appearance is a
+ * different organization doing different work rather than a repeat.
+ *
+ * Only the strings that carry sector identity live here. The mechanism the mock
+ * demonstrates — a ledger, a term, an approval chain, a memory card with the
+ * holder who filed it — is the same in every sector, which is the argument.
+ */
+export type DatasetKey = "university" | "nonprofit";
+
+type Dataset = {
+  org: string;
+  term: string;
+  ledger: { t: string; a: string; d: string; up: boolean }[];
+  memory: { tag: string; t: string; from: string }[];
+  /** Keyword-shaped prompts for the assistant rail. See the ASKS note below. */
+  asks: Record<ModuleKey, string[]>;
+};
+
+const DATASETS: Record<DatasetKey, Dataset> = {
+  university: {
+    org: "Rochester Finance Club",
+    term: "2025–26 · Fall",
+    ledger: [
+      { t: "Membership dues, 28 paid", a: "+$840", d: "Sep 14", up: true },
+      { t: "Halden Catering, fall sponsorship", a: "+$4,000", d: "Oct 2", up: true },
+      { t: "Fenwick Print, banners", a: "−$240", d: "Oct 9", up: false },
+      { t: "Gala venue deposit", a: "−$1,500", d: "Oct 18", up: false },
+    ],
+    memory: [
+      { tag: "Deal", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
+      { tag: "Lesson", t: "Never book the gala on finals week", from: "Marcus Lee · 2024–25" },
+      { tag: "Vendor", t: "Fenwick Print, 15% club rate", from: "Jordan Lee · 2024–25" },
+    ],
+    asks: {
+      Finance: ["gala budget approval", "dues decision"],
+      Calendar: ["gala venue", "spring formal"],
+      Approvals: ["OSE review", "vendor request"],
+      Members: ["handover notes", "roster change approval"],
+      Memory: ["fall mixer", "sponsor renewal"],
+    },
+  },
+  nonprofit: {
+    org: "Riverside Literacy Alliance",
+    term: "FY26 · Q2",
+    ledger: [
+      { t: "Spring appeal, 214 donors", a: "+$11,600", d: "Sep 14", up: true },
+      { t: "Ash Foundation, programme grant", a: "+$25,000", d: "Oct 2", up: true },
+      { t: "Tutor stipends, October", a: "−$6,400", d: "Oct 9", up: false },
+      { t: "Branch library room hire", a: "−$820", d: "Oct 18", up: false },
+    ],
+    memory: [
+      { tag: "Deal", t: "Ash Foundation, renewal due each March", from: "Dana Osei · FY24" },
+      { tag: "Lesson", t: "Report on outcomes, not attendance", from: "Priya Nair · FY25" },
+      { tag: "Vendor", t: "Branch library, no charge before 4pm", from: "Sana Ali · FY25" },
+    ],
+    asks: {
+      Finance: ["grant budget approval", "stipend decision"],
+      Calendar: ["reading night venue", "volunteer training"],
+      Approvals: ["board review", "vendor request"],
+      Members: ["handover notes", "volunteer rota approval"],
+      Memory: ["grant renewal", "outcome reporting"],
+    },
+  },
 };
 
 /* -------------------------------------------------------------- primitives */
@@ -112,7 +227,7 @@ function AreaChart({ reduce }: { reduce: boolean | null }) {
 }
 
 /* ------------------------------------------------------------- module views */
-function FinanceView({ reduce }: { reduce: boolean | null }) {
+function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }) {
   // Categorical chart tokens, not literals — chart-6 is the neutral slate, which
   // is what "Reserve" (the unallocated remainder) needs; chart-4 is the red that
   // --danger is built on and would read as an alert here.
@@ -122,12 +237,7 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
     { label: "Marketing", pct: 16, color: "var(--chart-3)" },
     { label: "Reserve", pct: 22, color: "var(--chart-6)" },
   ];
-  const rows = [
-    { t: "Membership dues, 28 paid", a: "+$840", d: "Sep 14", up: true },
-    { t: "Aramark, fall sponsorship", a: "+$4,000", d: "Oct 2", up: true },
-    { t: "Rochester Print, banners", a: "−$240", d: "Oct 9", up: false },
-    { t: "Gala venue deposit", a: "−$1,500", d: "Oct 18", up: false },
-  ];
+  const rows = data.ledger;
   return (
     <>
       <div className="rounded-xl border border-line bg-paper/40 p-3.5">
@@ -135,7 +245,10 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
           <div>
             <p className="label-mono text-[0.54rem]">Treasury balance</p>
             <p className="mt-1 font-mono text-2xl font-semibold tnum text-ink">$12,400</p>
-            <p className="text-[0.7rem] font-medium text-grove">▲ $1,300 · 11.7% this month</p>
+            <p className="flex items-center gap-1 text-[0.7rem] font-medium text-grove">
+              <Mark d={MARK.rise} className="h-[0.72em] w-[0.72em] fill-current" />
+              $1,300 · 11.7% this month
+            </p>
           </div>
           <span className="rounded-md border border-line bg-cloud px-2 py-0.5 font-mono text-[0.6rem] text-ink-soft">$18,000 budget</span>
         </div>
@@ -172,7 +285,7 @@ function FinanceView({ reduce }: { reduce: boolean | null }) {
 
 function CalendarView({ reduce }: { reduce: boolean | null }) {
   const events = [
-    { t: "Spring Gala", d: "Apr 12 · 7:00p", v: "Memorial Art Gallery", s: "Confirmed", tone: "grove" as const },
+    { t: "Spring Gala", d: "Apr 12 · 7:00p", v: "The Old Exchange", s: "Confirmed", tone: "grove" as const },
     { t: "Alumni Stock Pitch", d: "Feb 20 · 5:30p", v: "Schlegel Hall 207", s: "Room conflict", tone: "coral" as const },
     { t: "Sponsor Mixer", d: "Mar 8 · 6:00p", v: "Simon Atrium", s: "Soft overlap", tone: "amber" as const },
   ];
@@ -200,7 +313,10 @@ function CalendarView({ reduce }: { reduce: boolean | null }) {
               <Badge tone={e.tone}>{e.s}</Badge>
             </div>
             <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 font-mono text-[0.66rem] text-ink-soft">
-              <span>📅 {e.d}</span>
+              <span className="inline-flex items-center gap-1">
+                <Mark d={MARK.calendar} />
+                {e.d}
+              </span>
               <span className="text-ink-faint">{e.v}</span>
             </div>
             {e.tone === "coral" && (
@@ -223,7 +339,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
   const active = 3; // "OSE" pending
   const queue = [
     { t: "Spring Gala, $4,200 budget", tag: "budget", at: "OSE review", tone: "amber" as const },
-    { t: "Aramark, vendor renewal", tag: "vendor", at: "Approved", tone: "grove" as const },
+    { t: "Halden Catering, vendor renewal", tag: "vendor", at: "Approved", tone: "grove" as const },
     { t: "All-campus email blast", tag: "comms", at: "Returned", tone: "coral" as const },
   ];
   return (
@@ -266,7 +382,8 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
           ))}
         </div>
         <p className="mt-3 rounded-lg border border-line bg-cloud px-2.5 py-1.5 font-mono text-[0.6rem] text-ink-soft">
-          🔒 decided by VP Finance &amp; Operations · append-only step
+          <Mark d={MARK.lock} />{" "}
+          decided by VP Finance &amp; Operations · append-only step
         </p>
       </div>
       <div className="mt-3 space-y-1.5">
@@ -317,12 +434,10 @@ function MembersView() {
   );
 }
 
-function MemoryView() {
+function MemoryView({ data }: { data: Dataset }) {
   const recs = [
-    { tag: "Deal", t: "Aramark, sponsorship renewal", from: "Maya Chen · 2023–24" },
-    { tag: "Playbook", t: "Spring Gala, run of show", from: "Priya Nair · 2024–25" },
-    { tag: "Vendor", t: "Rochester Print, 15% club rate", from: "Jordan Lee · 2024–25" },
-    { tag: "Lesson", t: "Why we moved the fall mixer", from: "Board · 2022–23" },
+    ...data.memory,
+    { tag: "Playbook", t: "Annual fundraiser, run of show", from: "Priya Nair · last term" },
   ];
   return (
     <>
@@ -345,12 +460,14 @@ function MemoryView() {
   );
 }
 
-const VIEWS: Record<ModuleKey, (p: { reduce: boolean | null }) => React.ReactNode> = {
+type ViewProps = { reduce: boolean | null; data: Dataset };
+
+const VIEWS: Record<ModuleKey, (p: ViewProps) => React.ReactNode> = {
   Finance: FinanceView,
   Calendar: CalendarView,
   Approvals: ApprovalsView,
   Members: () => <MembersView />,
-  Memory: () => <MemoryView />,
+  Memory: ({ data }) => <MemoryView data={data} />,
 };
 
 /* -------------------------------------------------------------------- frame */
@@ -359,17 +476,25 @@ export function DashboardMock({
   tilt = false,
   auto = false,
   initialModule = "Finance",
+  dataset = "university",
 }: {
   className?: string;
   tilt?: boolean;
   auto?: boolean;
   initialModule?: ModuleKey;
+  /**
+   * Which worked example to render. Two placements mount this component; they
+   * must not pass the same one, or the site shows the same organization twice
+   * and reads as university-only whatever the prose beside it says.
+   */
+  dataset?: DatasetKey;
 }) {
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModuleKey>(initialModule);
   const [paused, setPaused] = useState(false);
   const { ref: frameRef, onScreen } = useOnScreen<HTMLDivElement>();
   const View = VIEWS[active];
+  const data = DATASETS[dataset];
 
   // Auto-advance through modules (hero surface); paused on hover, off for reduced
   // motion, and — added after measurement — stopped while the mock is off screen.
@@ -417,7 +542,7 @@ export function DashboardMock({
             <Logo className="h-5 w-5 text-grove" />
             <span className="font-display text-sm font-semibold text-ink">Tenure</span>
             <span className="hidden text-ink-faint sm:inline">/</span>
-            <span className="hidden text-[0.8rem] text-ink-soft sm:inline">Rochester Finance Club</span>
+            <span className="hidden text-[0.8rem] text-ink-soft sm:inline">{data.org}</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden items-center gap-2 rounded-lg border border-line bg-cloud px-2.5 py-1 text-[0.72rem] text-ink-faint lg:inline-flex">
@@ -448,7 +573,7 @@ export function DashboardMock({
             ))}
             <div className="my-2 h-px bg-line" />
             <p className="px-2 pb-1 font-mono text-[0.54rem] uppercase tracking-wider text-ink-faint">Term</p>
-            <span className="px-2 text-[0.74rem] text-ink-soft">2025–26 · Fall</span>
+            <span className="px-2 text-[0.74rem] text-ink-soft">{data.term}</span>
           </aside>
 
           {/* main, animates on module switch */}
@@ -469,7 +594,8 @@ export function DashboardMock({
                   aria-pressed={paused}
                   className="inline-flex h-6 min-w-6 items-center gap-1 rounded-md px-1.5 font-mono text-[0.62rem] text-text-secondary hover:text-ink"
                 >
-                  {paused ? "▶ resume tour" : "⏸ pause tour"}
+                  <Mark d={paused ? MARK.play : MARK.pause} className={paused ? "fill-current" : undefined} />
+                  {paused ? "resume tour" : "pause tour"}
                 </button>
               ) : (
                 <span className="font-mono text-[0.62rem] text-text-secondary">
@@ -485,7 +611,7 @@ export function DashboardMock({
                 exit={reduce ? undefined : { opacity: 0, y: -8 }}
                 transition={{ duration: reduce ? 0 : 0.28, ease: EASE }}
               >
-                <View reduce={reduce} />
+                <View reduce={reduce} data={data} />
               </m.div>
             </AnimatePresence>
           </div>
@@ -504,7 +630,7 @@ export function DashboardMock({
                 the two kinds that are not in the search corpus at all. */}
             <p className="text-[0.74rem] leading-relaxed text-ink-soft">Search the decisions, events and records this seat has filed.</p>
             <div className="space-y-1.5">
-              {ASKS[active].map((a) => (
+              {data.asks[active].map((a) => (
                 <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-[0.7rem] text-ink-soft">{a}</span>
               ))}
             </div>

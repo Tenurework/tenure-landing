@@ -51,7 +51,7 @@ const TOPICS = [
   "The handoff packet, assembled from a record",
   "Approvals and the two-gate chain",
   "Finance: budgets, dues, reimbursements",
-  "Tenure AI answering from a seat's record",
+  "Tenure AI answering from a seat’s record",
   "The administration console and its capabilities",
   "Importing our existing spreadsheets",
   "Security, tenancy and what is not built",
@@ -86,7 +86,7 @@ const EMPTY: Form = {
  * five empty ones.
  */
 function compose(form: Form) {
-  const lines: string[] = ["I'd like a walkthrough of Tenure.", ""];
+  const lines: string[] = ["I’d like a walkthrough of Tenure.", ""];
 
   const facts: [string, string][] = [
     ["Name", form.name],
@@ -99,7 +99,7 @@ function compose(form: Form) {
   }
 
   if (form.topics.length) {
-    lines.push("", "What I'd like to see:");
+    lines.push("", "What I’d like to see:");
     for (const t of form.topics) lines.push(`  - ${t}`);
   }
   if (form.notes.trim()) {

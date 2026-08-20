@@ -135,7 +135,20 @@ export function MemoryCurve({
 /* Composition — a stacked share bar                                          */
 /* -------------------------------------------------------------------------- */
 
-export type ShareSlice = { label: string; pct: number };
+export type ShareSlice = {
+  label: string;
+  pct: number;
+  /**
+   * Paint this slice in the neutral slate rather than the next categorical hue.
+   *
+   * For a REMAINDER — "Reserve", "Unallocated", "Everything else". Without it the
+   * fourth slice takes `--chart-4`, which is the hue `--danger` is built on, so
+   * the unspent part of a healthy budget rendered in alarm red. It also disagreed
+   * with the same figures in `DashboardMock`, which correctly used `--chart-6`:
+   * one dataset, two colour schemes, on one page.
+   */
+  neutral?: boolean;
+};
 
 /**
  * One bar, one whole. Slices take `--chart-1 … --chart-6` in the order given;
@@ -154,7 +167,13 @@ export function Share({
   className?: string;
   legend?: boolean;
 }) {
-  const hues = slices.map((_, i) => `var(--chart-${Math.min(i + 1, 6)})`);
+  // A remainder is not a category, so it never takes a categorical hue. Neutral
+  // slices are also skipped when numbering the rest, or marking one neutral would
+  // shift every colour after it.
+  let cat = 0;
+  const hues = slices.map((s) =>
+    s.neutral ? "var(--chart-6)" : `var(--chart-${Math.min(++cat, 5)})`,
+  );
   return (
     <div className={className}>
       <div className="flex h-2.5 w-full gap-[2px] overflow-hidden rounded-full">

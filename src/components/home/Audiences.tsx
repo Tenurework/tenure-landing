@@ -41,11 +41,11 @@ export function Audiences() {
   const a = site.audiences.find((x) => x.sector === active) ?? site.audiences[0];
 
   return (
-    <Section tone="canvas" backdrop="quiet">
+    <Section from="subtle" tone="canvas" backdrop="quiet" backdropSeed={2}>
       <Container>
         <SectionHead
           align="center"
-          eyebrow="Who it's for"
+          eyebrow="Who it’s for"
           title={
             <>
               One model. Every kind of{" "}
@@ -55,7 +55,7 @@ export function Audiences() {
           lead="The people change, the seat stays. Wherever turnover outpaces knowledge transfer, the same durable-seat model keeps the operations and the memory with the role rather than with whoever holds it this cycle."
         />
 
-        <Reveal delay={0.14} className="mt-9">
+        <Reveal delay={0.14} className="mt-7">
           <div className="flex justify-center">
             <Segmented
               label="Choose a sector"

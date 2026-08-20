@@ -95,7 +95,7 @@ function HandoffCard() {
               Kept
             </span>
             <span className="truncate text-[0.7rem] text-text-secondary">
-              Aramark &middot; on the seat
+              Halden Catering &middot; on the seat
             </span>
           </div>
         </div>
@@ -112,12 +112,12 @@ function HandoffCard() {
 
         {/*
           Moves once and stays. This used to run `opacity: [0,1,1,1,0]` on an
-          infinite loop, so the card's text was fully transparent — and below
+          infinite loop, so the card’s text was fully transparent — and below
           WCAG AA — for part of every cycle, forever. Contrast applies to text
           as presented, so a permanent fade loop is a permanent contrast
           failure, not a rendering detail.
 
-          The handoff it illustrates is carried by the two zones and the card's
+          The handoff it illustrates is carried by the two zones and the card’s
           final position; the fade was decoration bought with legibility.
         */}
         <m.div
@@ -131,7 +131,7 @@ function HandoffCard() {
             <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.55rem] uppercase text-grove-deep">
               Deal
             </span>
-            <span className="text-[0.74rem] text-ink">Aramark renewal</span>
+            <span className="text-[0.74rem] text-ink">Halden Catering renewal</span>
           </div>
           <p className="mt-1 font-mono text-[0.62rem] text-text-secondary">$4,000 · Maya ’24</p>
         </m.div>
@@ -174,7 +174,7 @@ const FEATURES: Feature[] = [
         Every dollar, tracked and <span className="text-grove">approved in place</span>.
       </>
     ),
-    body: "Budgets, dues, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role, so next year's treasurer sees exactly what things cost and who signed off.",
+    body: "Budgets, dues, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role, so next year’s treasurer sees exactly what things cost and who signed off.",
     visual: <FinanceCard />,
   },
   {
@@ -184,7 +184,7 @@ const FEATURES: Feature[] = [
         Records cross the term with their <span className="text-grove">history intact</span>.
       </>
     ),
-    body: "When leadership rotates, the work doesn't reset. Deals, contacts, and playbooks move to the incoming board with the context that made them matter, who built them, what they cost, and why.",
+    body: "When leadership rotates, the work doesn’t reset. Deals, contacts, and playbooks move to the incoming board with the context that made them matter, who built them, what they cost, and why.",
     visual: <HandoffCard />,
   },
 ];
@@ -196,7 +196,7 @@ export function ProductAtWork() {
     // motion.* — see the note in HeroShapes.tsx for why this file no longer imports
     // the full-feature `motion` proxy.
     <LazyMotion features={domAnimation} strict>
-    <Section tone="canvas" backdrop="quiet">
+    <Section tone="canvas" backdrop="quiet" backdropSeed={10}>
       <Container>
         <div className="max-w-2xl">
           <Reveal>
@@ -226,7 +226,7 @@ export function ProductAtWork() {
           </Reveal>
         </div>
 
-        <div className="mt-10 space-y-12 sm:space-y-16">
+        <div className="mt-7 space-y-10 sm:space-y-12">
           {FEATURES.map((f, i) => (
             <div
               key={f.eyebrow}

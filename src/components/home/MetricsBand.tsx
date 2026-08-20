@@ -91,10 +91,15 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
       </div>
 
       <p className="mt-2.5 text-[1rem] font-medium text-inverse">{metric.label}</p>
-      <p className="mt-1 text-[0.85rem] leading-relaxed text-inverse/75">{metric.sub}</p>
+      <p className="mt-1 pb-3 text-[0.85rem] leading-relaxed text-inverse/75">{metric.sub}</p>
 
       {note && (
-        <p className="mt-3 inline-flex w-fit rounded-md border border-line-dark bg-band-raised px-2 py-1 font-mono text-[0.64rem] leading-tight text-inverse/85">
+        // `mt-auto` is what actually pins it. The comment above described this
+        // behaviour and the class was never there, so the note simply followed
+        // `sub` — and `sub` runs one line on two tiles and three on another, so
+        // the two chips in the row still sat 34px apart, which is the exact
+        // misalignment the note above says it fixed.
+        <p className="mt-auto inline-flex w-fit rounded-md border border-line-dark bg-band-raised px-2 py-1 pt-1 font-mono text-[0.64rem] leading-tight text-inverse/85">
           {note}
         </p>
       )}
@@ -167,7 +172,9 @@ export function MetricsBand() {
           </p>
         </div>
 
-        <div className="mt-10 grid items-stretch gap-y-8 gap-x-8 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Two across from the smallest width. Stacked, four tiles ran a full
+              mobile screen to show four short numbers. */}
+        <div className="mt-8 grid grid-cols-2 items-stretch gap-y-7 gap-x-5 sm:gap-x-8 lg:grid-cols-4">
           {/* Reveal rather than motion: these four tiles carry real copy, and
               a server-rendered opacity:0 hid all of it without JavaScript. */}
           {site.metrics.map((m, i) => (

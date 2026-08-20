@@ -25,7 +25,12 @@ export type Availability =
   | "live"
   /** Live, and a test asserts it on every build. */
   | "ci-verified"
-  /** Implemented in Tenure-Parent but NOT in the deploying repo. Must be labelled. */
+  /**
+   * Implemented but not reachable by a user. Two shapes qualify, and both must
+   * be labelled: code that lives only in Tenure-Parent, and code that IS in the
+   * deploying repo but that no product surface calls yet — the Slack connector
+   * is the second kind. Never describable as available.
+   */
   | "built-pending-cutover"
   /** A target for the pilot, not a measured outcome. */
   | "pilot-target"
@@ -67,12 +72,17 @@ export type Claim = {
   reviewBy: string;
 };
 
-const TENURE = "819aec0e";
+// Re-pinned 2026-08-19 from 819aec0e, 78 commits back. Three claims below were
+// stale rather than wrong-at-the-time: the AI provider moved to Bedrock, Cognito
+// stopped being a decision and became the sign-in path, and a Slack connector
+// landed under a row that says no connector exists. A register that is not
+// re-pinned degrades into a record of what used to be true.
+const TENURE = "f7088d9e";
 // Parent commit retained for provenance; no claim currently sources evidence from it,
 // because nothing on the site may cite Parent-only capability as live.
 // const PARENT = "1c03db8f";
-const VERIFIED = "2026-08-02";
-const REVIEW = "2026-11-02";
+const VERIFIED = "2026-08-19";
+const REVIEW = "2026-11-19";
 
 export const claims: Claim[] = [
   /* ------------------------------------------------------------ product --- */
@@ -83,7 +93,7 @@ export const claims: Claim[] = [
       // "an outgoing one keeps the record" — the sentence says the departing student
       // retains the organization's record, which is what /privacy and /terms exist to
       // rule out.
-      "Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and when a term ends the record stays on the seat while the outgoing officer's access does not.",
+      "Access attaches to the durable seat, not the person: an incoming officer gets read-only access before their term begins, and when a term ends the record stays on the seat while the outgoing officer’s access does not.",
     where: ["/", "/product", "/trust"],
     category: "product",
     evidenceRepo: "Tenure",
@@ -91,7 +101,7 @@ export const claims: Claim[] = [
     evidence: [
       "apps/web/src/lib/rbac.ts:82-96 (canViewOrg allows SHADOW or ACTIVE)",
       "apps/web/src/lib/rbac.ts:133-140 (canContribute requires ACTIVE)",
-      "apps/web/src/lib/memory.ts:19-22 (shadow holder sees the seat's cards)",
+      "apps/web/src/lib/memory.ts:19-22 (shadow holder sees the seat’s cards)",
       "apps/web/src/lib/rbac.test.ts:68-105, memory.test.ts:40-47",
     ],
     availability: "ci-verified",
@@ -121,7 +131,7 @@ export const claims: Claim[] = [
   {
     id: "C-005",
     claim:
-      "Every approval decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat's behalf.",
+      "Every approval decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat’s behalf.",
     where: ["/", "/product", "/trust"],
     category: "product",
     evidenceRepo: "Tenure",
@@ -150,7 +160,7 @@ export const claims: Claim[] = [
     ],
     availability: "live",
     qualification:
-      "Two GATES, seven TYPES — not six steps, and there is no Advisor gate. A president's own request skips gate one.",
+      "Two GATES, seven TYPES — not six steps, and there is no Advisor gate. A president’s own request skips gate one.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -228,7 +238,7 @@ export const claims: Claim[] = [
   },
   {
     id: "C-020",
-    claim: "Six of the office's handbooks are transcribed as structured policies with their source document named.",
+    claim: "Six of the office’s handbooks are transcribed as structured policies with their source document named.",
     where: ["/product"],
     category: "product",
     evidenceRepo: "Tenure",
@@ -421,7 +431,7 @@ export const claims: Claim[] = [
     ],
     availability: "live",
     qualification:
-      "Nothing prevents the override and no second party is required — there is no four-eyes control on it. It must never be described as constrained, only as audited. Wherever the home page's console mock shows it, /trust must carry the limit.",
+      "Nothing prevents the override and no second party is required — there is no four-eyes control on it. It must never be described as constrained, only as audited. Wherever the home page’s console mock shows it, /trust must carry the limit.",
     owner: "Satvik Adyanthaya",
     lastVerified: "2026-08-03",
     reviewBy: REVIEW,
@@ -486,13 +496,35 @@ export const claims: Claim[] = [
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "infrastructure/terraform/variables.tf:110-113 (okta_issuer default \"\")",
-      "infrastructure/terraform/ecs.tf:167-168 (AUTH_DEV_LOGIN=true, ALLOW_DEV_LOGIN_IN_PRODUCTION=true)",
-      "docs/decisions/PRODUCT-DECISIONS.md PD-004 (Cognito decided, nothing implemented)",
+      "infrastructure/terraform/variables.tf (okta_issuer default \"\" — the OAuth provider is still unconfigured)",
+      "apps/web/src/lib/auth.ts (three providers: cognito, okta, dev-login — okta registers only with an issuer)",
+      // Cognito stopped being a decision. It is the registered credentials
+      // provider, and it is what makes the old "no per-user secret" line false.
+      "apps/web/src/lib/auth/cognito.ts (ADMIN_USER_PASSWORD_AUTH against the pool, server-side)",
+      "infrastructure/terraform/cognito.tf (password_policy minimum_length 12, all four classes; software_token_mfa_configuration; verified_email recovery)",
+      "infrastructure/terraform/variables.tf (cognito_mfa_mode default OPTIONAL — available, not enforced)",
+      "apps/web/src/lib/auth/identity-link.ts (links on the immutable subject, never on email)",
+      "infrastructure/terraform/dev-login-gate.tf (the interim shared-passphrase path still provisioned alongside it)",
     ],
     availability: "roadmap",
     qualification:
-      "SSO is NOT deployed. Okta is dead code and Cognito is a decision with no implementation. The site must not say SSO, SAML, OIDC, MFA or 'SSO-ready'. Do not publish the specifics of the pilot sign-in mechanism.",
+      // WHAT CHANGED, AND WHAT DID NOT. Institutional SSO is still not deployed —
+      // Okta registers only when an issuer is configured and none is. But the two
+      // sentences this row used to force onto /trust are false at the pinned commit:
+      // Cognito IS implemented, and TOTP MFA IS available. The site said "there is
+      // no MFA" and "access is not gated on a secret held by one person", which
+      // understates the product to an institution assessing it.
+      //
+      // MFA may be described as AVAILABLE, never as ENFORCED: cognito_mfa_mode
+      // defaults to OPTIONAL, deliberately, and calling that "MFA protected" would
+      // be the same overstatement in the other direction.
+      //
+      // C-023 still holds on ONE point: the interim shared-passphrase provider is
+      // still provisioned beside Cognito, and its mechanism stays unpublished. The
+      // site may say authentication is per-user and that an interim path exists
+      // during the pilot; it may not say the shared path is gone, and it may not
+      // describe how it works.
+      "SSO/SAML/OIDC is NOT deployed and must stay 'roadmap'. Cognito IS deployed: per-user email and password against the pool, 12-character minimum with upper, lower, number and symbol, TOTP multi-factor AVAILABLE BUT NOT ENFORCED (cognito_mfa_mode defaults to OPTIONAL), recovery to a verified email only. Authentication is separate from membership — a Cognito account's existence is not access; the roster decides. Never say 'SSO', 'SSO-ready', 'MFA enforced', 'MFA required' or 'passwordless'. Do not publish the mechanism of the interim shared-passphrase provider, which is still provisioned; do not claim it has been removed.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -502,24 +534,29 @@ export const claims: Claim[] = [
   {
     id: "C-007",
     claim:
-      "Tenure AI answers only from records the person asking can already see, links its sources, and sends retrieved record text to Anthropic's API to compose the answer.",
+      "Tenure AI answers only from records the person asking can already see, links its sources, and sends retrieved record text to Amazon Bedrock — running an Anthropic model — to compose the answer.",
     where: ["/", "/product", "/trust", "/privacy"],
     category: "ai",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
       "apps/web/src/lib/search-data.ts (loadSearchCorpus applies RBAC before ranking)",
-      "apps/web/src/lib/ai.ts:35 (fetch https://api.anthropic.com/v1/messages)",
-      "apps/web/src/lib/ai.ts:21 (model resolved as process.env.ANTHROPIC_MODEL ?? claude-haiku-4-5-20251001, unvalidated)",
+      "apps/web/src/lib/ai/provider.ts (resolveAiProvider — Bedrock when a region is set, direct API as fallback)",
+      "apps/web/src/lib/ai/bedrock.ts (completeViaBedrock)",
+      "apps/web/src/lib/ai/provider.test.ts (precedence and model-id translation)",
+      "apps/web/src/lib/ai/bedrock.test.ts",
+      "infrastructure/terraform/bedrock.tf (bedrock_enabled defaults true; bedrock_model_id anthropic.claude-haiku-4-5)",
+      "infrastructure/terraform/ecs.tf (AI_PROVIDER = bedrock when bedrock_enabled; ANTHROPIC_MODEL from bedrock_model_id)",
+      "apps/web/src/lib/ai.ts (fetch https://api.anthropic.com/v1/messages — the fallback path)",
       // Three call sites reach the API, not one. The register previously cited only
       // the first, and /privacy disclosed only the first.
-      "apps/web/src/lib/ai.ts:82-97 (draftText — sends the user's Draft Assist instruction)",
+      "apps/web/src/lib/ai.ts:82-97 (draftText — sends the user’s Draft Assist instruction)",
       "apps/web/src/lib/ai.ts:99-112 (summarizeDocument — sends content.slice(0, 24_000) of the file body)",
       "apps/web/src/lib/search.ts:21-41 (tokenize + scoreDoc: terms.every, AND semantics)",
     ],
     availability: "live",
     qualification:
-      "PROVIDER GATE: production calls Anthropic DIRECTLY. There is no Bedrock integration in either repository. Public and legal copy must say Anthropic until the deploying repo invokes Bedrock, infrastructure and tests land, and the cutover is confirmed. The model id is an UNVALIDATED environment variable defaulting to claude-haiku-4-5-20251001 — say 'by default', and do not describe Parent's reviewed-model allowlist, which does not deploy. One platform-wide key serves all tenants; there is no per-tenant key, quota or opt-out. THREE outbound flows, all of which must be disclosed together: retrieved records at question time, full text-document contents on an explicit summary request, and the Draft Assist instruction. RETRIEVAL IS CONJUNCTIVE: every query token longer than one character must appear literally in a single record, with no stemming, synonyms or stopword removal — so full-sentence questions typically return nothing, and any rendered demo must use keyword-shaped queries against the five indexed kinds. Citation is prompt-instructed and unverified, and the route calls the model even with zero sources: never write 'every answer cites its sources'. Never say 'instant', 'never invents' or 'answers anything'.",
+      "PROVIDER GATE, RELEASED 2026-08-19. The gate this row used to carry required three things before copy could say Bedrock — the deploying repo invoking it, infrastructure, and tests. All three were present from cba5e20e and remain so at the pinned commit, so the copy moved with them. Bedrock is preferred and the direct Anthropic API remains the fallback, so BOTH must stay disclosed: an environment with a region runs on Bedrock, one with only a key keeps calling api.anthropic.com, and one with neither degrades to sources-only. Never write that record text stays inside AWS — the fallback path leaves it. The model is an Anthropic model either way; do not describe Parent’s reviewed-model allowlist, which does not deploy. One platform-wide key serves all tenants; there is no per-tenant key, quota or opt-out. THREE outbound flows, all of which must be disclosed together: retrieved records at question time, full text-document contents on an explicit summary request, and the Draft Assist instruction. RETRIEVAL IS CONJUNCTIVE: every query token longer than one character must appear literally in a single record, with no stemming, synonyms or stopword removal — so full-sentence questions typically return nothing, and any rendered demo must use keyword-shaped queries against the five indexed kinds. Citation is prompt-instructed and unverified, and the route calls the model even with zero sources: never write 'every answer cites its sources'. Never say 'instant', 'never invents' or 'answers anything'.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -557,7 +594,7 @@ export const claims: Claim[] = [
     evidence: ["No fine-tuning or training pipeline exists anywhere in either repository"],
     availability: "blocked-external",
     qualification:
-      "The 'not by us' half is verifiable in code. The 'not by Anthropic' half is a statement about a third party's contractual terms and has NOT been grounded in a reviewed agreement. Until it is, the site must attribute that half to Anthropic's terms rather than asserting it as Tenure's guarantee.",
+      "The 'not by us' half is verifiable in code. The 'not by Anthropic' half is a statement about a third party’s contractual terms and has NOT been grounded in a reviewed agreement. Until it is, the site must attribute that half to Anthropic’s terms rather than asserting it as Tenure’s guarantee.",
     owner: "Almamy Diaby",
     lastVerified: VERIFIED,
     reviewBy: "2026-09-02",
@@ -657,26 +694,87 @@ export const claims: Claim[] = [
     reviewBy: REVIEW,
   },
   {
-    id: "C-029",
-    claim: "Connectors to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord.",
-    where: ["/trust (stated as NOT supported)"],
+    // C-029 WAS ONE ROW SAYING NO CONNECTOR EXISTS. It was true when written and
+    // is false now, and its own evidence line is what proves it: the repo-wide
+    // grep it cites for `slack.com` returned zero hits at 819aec0e and returns
+    // five files from cba5e20e onward. Splitting it into three is the only way to keep
+    // the row honest, because the three groups now have three different answers.
+    id: "C-029a",
+    claim: "A Slack workspace connector: OAuth install, channel routing and posting.",
+    where: ["/product", "/trust"],
     category: "integration",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "Repo-wide grep for googleapis|slack.com|api.notion|api.dropbox|discord.com|zoom.us|api.box.com|graph.microsoft|oauth2 returns ZERO hits",
-      "No integration framework, no public API, no webhooks",
+      "apps/web/src/lib/integrations/slack/oauth.ts (exchanges the code at https://slack.com/api/oauth.v2.access)",
+      "apps/web/src/lib/integrations/slack/install.ts (signed install state; builds the slack.com/oauth/v2/authorize URL)",
+      "apps/web/src/lib/integrations/slack/routing.ts (audience routing and the per-event posting quota)",
+      "apps/web/src/lib/integrations/slack/post.ts",
+      "apps/web/src/lib/integrations/slack/poster.ts (chat.postMessage)",
+      "apps/web/src/lib/integrations/slack/verify.ts",
+      "apps/web/src/lib/integrations/slack/announce.ts (the seam between the policy layer and the application)",
+      "apps/web/src/app/api/integrations/slack/install/route.ts",
+      "apps/web/src/app/api/integrations/slack/callback/route.ts",
+      "6 unit test files: oauth.test.ts, install.test.ts, routing.test.ts, post.test.ts, poster.test.ts, verify.test.ts",
+    ],
+    availability: "built-pending-cutover",
+    qualification:
+      // The distinction that keeps this row from overselling: the code is real
+      // and tested, the API routes exist, and NOTHING IN THE APPLICATION CALLS
+      // announce.ts — a grep for announceEvent under apps/web/src/app returns
+      // nothing. So a pilot cannot switch this on from a console today.
+      "BUILT, NOT REACHABLE. The connector and its two API routes are in the deploying repo with six unit test files, but no product surface calls the announce seam, so there is no console switch and no user can turn it on. Say 'built' and 'not yet in the product'; never 'available', 'live', 'supported', 'integrates with Slack' or anything in the present tense that implies a customer can use it. No Slack mark or logo may appear — C-029c's logo rule applies to every row here.",
+    owner: "Satvik Adyanthaya",
+    lastVerified: VERIFIED,
+    reviewBy: REVIEW,
+  },
+  {
+    id: "C-029b",
+    claim:
+      "An integration catalog of 18 products, each declaring the credentials it needs, with availability computed from whether those credentials are present.",
+    where: ["/product", "/trust"],
+    category: "integration",
+    evidenceRepo: "Tenure",
+    evidenceCommit: TENURE,
+    evidence: [
+      "apps/web/src/lib/integrations/catalog.ts (PROVIDER_CATALOG — 18 products across 13 capabilities)",
+      "apps/web/src/lib/integrations/catalog.ts (providerStatus returns available | awaiting-credentials from requiredSecrets)",
+      "apps/web/src/lib/integrations/catalog.test.ts",
+      "apps/web/src/lib/integrations/secret-store.ts",
+      "apps/web/src/lib/integrations/secret-store.test.ts",
+    ],
+    availability: "roadmap",
+    qualification:
+      // A descriptor is not a connector. The catalog says which product COULD
+      // serve a capability and what key it would need; for all but Slack there
+      // is no code behind it at all.
+      "A CATALOG ENTRY IS NOT A CONNECTOR. For every product except Slack the catalog holds a descriptor and a list of required secret NAMES, and no connector code exists. Describing these as integrations, or as 'one key away', would be false — the key is necessary, not sufficient. The 18 may be NAMED, with their status stated in the same breath. Never render them as a logo wall.",
+    owner: "Satvik Adyanthaya",
+    lastVerified: VERIFIED,
+    reviewBy: REVIEW,
+  },
+  {
+    id: "C-029c",
+    claim: "Two-way sync, a public API, webhooks, or a connector to any product outside the catalog.",
+    where: ["/product (stated as NOT supported)", "/trust (stated as NOT supported)"],
+    category: "integration",
+    evidenceRepo: "Tenure",
+    evidenceCommit: TENURE,
+    evidence: [
+      "No public API and no webhook surface exists under apps/web/src/app/api outside the Slack install/callback pair",
+      "Repo-wide grep for googleapis|api.notion|api.dropbox|discord.com|zoom.us|api.box.com|graph.microsoft returns ZERO hits",
+      "apps/web/src/lib/integrations/slack/routing.ts (posting is outbound only; nothing reads a workspace back)",
     ],
     availability: "unsupported",
     qualification:
-      "No vendor logo may appear on the site unless connector code and an end-to-end test exist. Importing a file a vendor produced is not an integration.",
+      "No vendor logo or mark may appear anywhere on the site: a logo reads as a connector whatever the sentence under it says. Importing a file a vendor produced is not an integration. Discord is in neither the catalog nor the code. Nothing anywhere is two-way.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
   },
   {
     id: "C-028",
-    claim: "Self-service bulk export of an organization's record.",
+    claim: "Self-service bulk export of an organization’s record.",
     where: ["/trust (roadmap)", "/privacy (manual, on request)"],
     category: "product",
     evidenceRepo: "Tenure",
@@ -693,7 +791,7 @@ export const claims: Claim[] = [
   /* ------------------------------------------------------------- metric --- */
   {
     id: "C-014",
-    claim: "26 organizations and 209 seats modelled from the office's own leadership roster.",
+    claim: "26 organizations and 209 seats modelled from the office’s own leadership roster.",
     where: ["/", "site.ts metrics", "/pilot"],
     category: "metric",
     evidenceRepo: "Tenure",
@@ -738,7 +836,7 @@ export const claims: Claim[] = [
   /* ------------------------------------------------------ customer/legal --- */
   {
     id: "C-021",
-    claim: "A Fall 2026 pilot with Simon's Office of Student Engagement.",
+    claim: "A Fall 2026 pilot with Simon’s Office of Student Engagement.",
     where: ["/", "/pilot", "/story"],
     category: "customer",
     evidenceRepo: "external",
@@ -884,7 +982,6 @@ export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: strin
   { phrase: /\bleast[- ]access\b/i, because: "Any institution member can read every organization", claimId: "C-025" },
   { phrase: /\btwo[- ]way (sync|calendar)\b/i, because: "The ICS feed is one-way", claimId: "C-009" },
   { phrase: /\bsummarized by AI\b/i, because: "Summarization excludes PDF and Office files", claimId: "C-010" },
-  { phrase: /\bBedrock\b/i, because: "Production calls Anthropic directly; no Bedrock exists", claimId: "C-007" },
   { phrase: /\bsingle sign-on\b(?!.{0,60}\b(roadmap|not deployed|planned)\b)/i, because: "SSO is not deployed", claimId: "C-023" },
 ];
 

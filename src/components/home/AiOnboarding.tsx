@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 
 /**
@@ -47,7 +47,7 @@ const EXCHANGES: Exchange[] = [
   {
     ask: "sponsorship renewal",
     answer:
-      "From last term’s sponsorship cards: Aramark renewal sent, M&T Bank awaiting reply after Maya ’24’s intro, Rochester Print at a standing 15% rate.",
+      "From last term’s sponsorship cards: Halden Catering renewal sent, Harbour Mutual awaiting reply after Maya ’24’s intro, Fenwick Print at a standing 15% rate.",
     sources: "3 sources",
   },
   {
@@ -77,7 +77,7 @@ function Check() {
 
 export function AiOnboarding() {
   return (
-    <Section tone="band" backdrop="band">
+    <Section from="subtle" tone="band" backdrop="band" backdropSeed={6} space={SECTION_TIGHT}>
       <Container className="relative">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           {/* LEFT, copy */}
@@ -95,7 +95,7 @@ export function AiOnboarding() {
               // `text-ink` / `text-ink-soft` resolve to the inverse ramp here. That
               // is deliberate — a section dropped onto a band is correct by default,
               // and cannot regress when someone adds a `text-ink-faint` inside one.
-              lead="An incoming holder gets read-only access to the seat's record before their term begins, then searches it — and gets an answer built from what past holders filed as they worked, with the records it came from linked."
+              lead="An incoming holder gets read-only access to the seat’s record before their term begins, then searches it — and gets an answer built from what past holders filed as they worked, with the records it came from linked."
             />
 
             <ul className="mt-7 space-y-3">
@@ -199,11 +199,11 @@ export function AiOnboarding() {
         <Reveal delay={0.1}>
           <p className="mx-auto mt-10 max-w-3xl border-t border-line-dark pt-6 text-center text-[0.86rem] leading-relaxed text-inverse/65">
             Tenure AI is given only records you can already open, and answers link
-            the records they came from. Text is sent to Anthropic&rsquo;s API in three
-            cases &mdash; the records retrieved for a question, the contents of a text
-            document when someone asks for a summary, and the instruction typed into
-            Draft Assist &mdash; so part of your record does leave our infrastructure
-            at those moments. We do not train models on it, and no pipeline exists
+            the records they came from. Text is sent to Amazon Bedrock, running an
+            Anthropic model, in three cases &mdash; the records retrieved for a
+            question, the contents of a text document when someone asks for a summary,
+            and the instruction typed into Draft Assist &mdash; so part of your record
+            does leave our own infrastructure at those moments. We do not train models on it, and no pipeline exists
             that could.{" "}
             <Link
               href="/trust"

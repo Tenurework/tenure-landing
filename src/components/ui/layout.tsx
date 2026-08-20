@@ -30,12 +30,23 @@ export function Container({
  * and so a change here is one edit instead of twenty. Tailwind's scanner reads
  * class names out of any source file, including this one, so the literals below
  * are all it needs to emit them.
+ *
+ * ONLY STEP ONE EVER SHIPPED. `SECTION_TIGHT` and `SECTION_BAND` were exported
+ * and then referenced by nothing: all 39 `<Section>` call sites took the default,
+ * so a file documenting a three-step rhythm applied one step. The measured cost
+ * was 1,546px of empty seam on the home page — eleven boundaries of 134-173px,
+ * each one 80px of `sm:py-20` meeting another 80px of it.
+ *
+ * The scale is also one notch shorter than it was. At this heading size a 160px
+ * seam does not read as breathing room, it reads as an unrelated slab starting;
+ * 72px against 48px puts the boundary at ~120px, which is where the sites this
+ * one is measured against sit. Nothing is cut to buy it — this is padding only.
  */
-export const SECTION = "py-16 sm:py-20";
+export const SECTION = "py-14 sm:py-[4.5rem]";
 /** For a section that follows a related one and should read as continuous. */
-export const SECTION_TIGHT = "py-12 sm:py-14";
+export const SECTION_TIGHT = "py-10 sm:py-12";
 /** For the two closing bands, which carry one idea and no supporting detail. */
-export const SECTION_BAND = "py-14 sm:py-18";
+export const SECTION_BAND = "py-12 sm:py-14";
 
 /**
  * A section, its backdrop and its rhythm as one element.
@@ -45,9 +56,13 @@ export const SECTION_BAND = "py-14 sm:py-18";
  * own that layer escapes behind the *page* rather than behind the section, where
  * it paints over whatever precedes it.
  */
+export type Tone = "canvas" | "surface" | "subtle" | "band" | "none";
+
 export function Section({
   id,
   backdrop,
+  backdropSeed = 0,
+  from,
   tone = "canvas",
   space = SECTION,
   divide = true,
@@ -56,8 +71,25 @@ export function Section({
 }: {
   id?: string;
   backdrop?: BackdropVariant;
+  /**
+   * Which composition of the backdrop variant to paint. Two sections sharing a
+   * variant MUST pass different seeds — `quiet` is used twelve times site-wide
+   * and `drafting` eight, and without this they rendered identically.
+   */
+  backdropSeed?: number;
+  /**
+   * The tone of the section immediately ABOVE this one, so the boundary can ramp
+   * between two fills instead of stepping between them.
+   *
+   * A section cannot see its predecessor, and it is `overflow-hidden`, so it can
+   * neither read nor paint outside its own box. Naming the previous tone at the
+   * call site is the only way to make the join a gradient. Left unset the ramp is
+   * skipped entirely — better a clean step than a ramp toward the wrong colour,
+   * which is what a guessed default produces.
+   */
+  from?: Tone;
   /** The base fill the backdrop layers on top of. */
-  tone?: "canvas" | "surface" | "subtle" | "band" | "none";
+  tone?: Tone;
   space?: string;
   /** The hairline that separates one section from the next. */
   divide?: boolean;
@@ -72,6 +104,30 @@ export function Section({
     none: "",
   }[tone];
 
+  /*
+    The ramp, as a complete class literal per (from -> tone) pair.
+
+    Tailwind v4 finds class names by scanning source text, so a gradient built by
+    interpolating a token name emits no CSS and the ramp silently does nothing.
+    Every pair that actually occurs on this site is spelled out; anything else
+    falls through to no ramp, which is the honest default.
+  */
+  const RAMP: Record<string, string> = {
+    "canvas>subtle": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
+    "canvas>surface": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
+    "surface>canvas": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
+    "surface>subtle": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
+    "subtle>canvas": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
+    "subtle>surface": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
+    "band>canvas": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
+    "band>subtle": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
+    "band>surface": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
+    "canvas>band": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
+    "subtle>band": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
+    "surface>band": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
+  };
+  const ramp = from && from !== tone ? RAMP[`${from}>${tone}`] : undefined;
+
   return (
     <section
       id={id}
@@ -79,12 +135,56 @@ export function Section({
         "relative isolate overflow-hidden",
         fill,
         space,
-        divide && (tone === "band" ? "border-t border-line-dark" : "border-t border-line"),
         id && "scroll-mt-20",
         className,
       )}
     >
-      {backdrop && <Backdrop variant={backdrop} />}
+      {/*
+        THE SEAM, WHICH USED TO BE A CLIFF.
+
+        This was `border-t border-line` — a flat, edge-to-edge, full-opacity 1px
+        rule, under an instantaneous change of background fill. Measured down the
+        right gutter of the home page, two boundaries moved ~200 luminance levels
+        inside two device rows (Handoff into AiOnboarding, OfficeConsole into
+        MetricsBand), and one changed fill with no rule at all. Ten of them fire
+        on the home page.
+
+        A hard horizontal step across the full viewport width is the single most
+        template-looking thing a long page can do: it stops reading as one
+        document and starts reading as a stack of unrelated slabs, which also
+        works against "one thing in view" — each slab announces a new context.
+
+        Two layers replace it, and both are `aria-hidden` siblings for the same
+        reason the backdrop is (see Backdrop.tsx): the contrast gate resolves a
+        text node's background by climbing its ancestors.
+
+        1. A hairline that FADES OUT before it reaches either edge, so the line
+           reads as a join rather than as a border drawn around a box.
+        2. A short gradient ramp in the incoming fill, so the two tones meet over
+           ~64px instead of in one row. It is `currentColor`-free and uses the
+           section's own fill token, so it inverts with the theme like everything
+           else.
+      */}
+      {divide && (
+        <>
+          <div
+            aria-hidden
+            className={cn(
+              "pointer-events-none absolute inset-x-0 top-0 h-px",
+              tone === "band"
+                ? "bg-[linear-gradient(90deg,transparent,var(--border-inverse)_16%,var(--border-inverse)_84%,transparent)]"
+                : "bg-[linear-gradient(90deg,transparent,var(--border)_16%,var(--border)_84%,transparent)]",
+            )}
+          />
+          {ramp && (
+            <div
+              aria-hidden
+              className={cn("pointer-events-none absolute inset-x-0 top-0 -z-10 h-20", ramp)}
+            />
+          )}
+        </>
+      )}
+      {backdrop && <Backdrop variant={backdrop} seed={backdropSeed} />}
       {children}
     </section>
   );
@@ -143,13 +243,13 @@ export function SectionHead({
         </Eyebrow>
       </Reveal>
       <Reveal delay={0.05}>
-        <h2 className="font-display mt-4 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem] lg:text-[2.4rem]">
+        <h2 className="font-display mt-3 text-[1.85rem] font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-[2.2rem] lg:text-[2.4rem]">
           {title}
         </h2>
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>
-          <p className="mt-4 text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
+          <p className="mt-3.5 text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
             {lead}
           </p>
         </Reveal>

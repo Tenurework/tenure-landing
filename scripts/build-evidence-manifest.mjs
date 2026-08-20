@@ -33,10 +33,20 @@ import { claims } from "../src/lib/claims.ts";
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, "..");
 
-/** Where each evidence repository is checked out on this machine. */
+/**
+ * Where each evidence repository is checked out on this machine.
+ *
+ * The defaults were absolute Windows paths belonging to the one workstation this
+ * script was first written on, so on every other machine it reported both product
+ * repos as NOT CHECKED OUT and rewrote the manifest to nulls — silently turning
+ * the evidence gate off rather than failing. Sibling directories are the
+ * convention (`~/Tenure`, `~/Tenure-Parent` next to `~/tenure-landing`), and
+ * `TENURE_PATH` / `TENURE_PARENT_PATH` still override for anyone laid out
+ * differently.
+ */
 const REPOS = {
-  Tenure: process.env.TENURE_PATH ?? "C:\\Users\\adiab\\Tenure",
-  "Tenure-Parent": process.env.TENURE_PARENT_PATH ?? "C:\\Users\\adiab\\Tenure-Parent-spec",
+  Tenure: process.env.TENURE_PATH ?? join(root, "..", "Tenure"),
+  "Tenure-Parent": process.env.TENURE_PARENT_PATH ?? join(root, "..", "Tenure-Parent"),
   "tenure-landing": root,
 };
 

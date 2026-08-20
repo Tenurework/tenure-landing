@@ -39,6 +39,7 @@ export function Segmented({
   items,
   active,
   onSelect,
+  wrap = false,
   className,
 }: {
   /** Accessible name for the group. */
@@ -46,6 +47,16 @@ export function Segmented({
   items: SegmentItem[];
   active: string;
   onSelect: (key: string) => void;
+  /**
+   * Wrap onto a second line from `sm` up, instead of scrolling at every width.
+   *
+   * For a set too wide to sit on one desktop line — the eleven platform modules
+   * run past 1,152px — where hiding the overflow behind a scroll would also hide
+   * the count the set exists to show. Below `sm` it still scrolls: that is the
+   * width where wrapping broke the connector tabs, and the reason is the one in
+   * the comment below, not the number of items.
+   */
+  wrap?: boolean;
   className?: string;
 }) {
   return (
@@ -69,6 +80,7 @@ export function Segmented({
       aria-label={label}
       className={cn(
         "flex max-w-full items-center gap-1 overflow-x-auto rounded-2xl border border-line bg-paper/70 p-1",
+        wrap && "sm:flex-wrap sm:justify-start sm:overflow-x-visible",
         className,
       )}
     >

@@ -85,12 +85,12 @@ const KNOWN_REGISTER_GAPS = {
    */
   missingQualification: [] as string[],
   /**
-   * C-028 / C-029 / C-030 are sourced to the deploying repo but cite no file:
+   * C-028 / C-029c / C-030 are sourced to the deploying repo but cite no file:
    * their evidence is an absence proof ("grep returns zero hits"), and a file
    * that does not exist has no path. The live test therefore requires a path
    * only from claims that assert a capability EXISTS.
    */
-  noEvidencePath: ["C-028", "C-029", "C-030"],
+  noEvidencePath: ["C-028", "C-029c", "C-030"],
 };
 
 /* -------------------------------------------------------------------------- */
@@ -218,6 +218,27 @@ const DISCLAIMED_VENDOR = [
   {
     label: 'a "replaces it" comparison rather than an integration claim',
     re: /\breplaces?\b/i,
+  },
+  /*
+    ADDED 2026-08-19 WITH C-029a/b. Until then every vendor name on this site had
+    to sit beside a denial, because the honest answer for all nine was the same
+    denial. It is not any more: a Slack connector is built and unit-tested in the
+    deploying repo but no product surface calls it, and seventeen further products
+    are declared in the catalog awaiting credentials.
+
+    "Do not name them" would now force the site to hide something true, and
+    "name them freely" would let it imply they work. So a third excuse: a vendor
+    may be named when its real, NOT-AVAILABLE status is stated within the same
+    window. The phrases below are the register's own words for those two states,
+    and none of them can be read as availability.
+  */
+  {
+    label: 'the "built, not reachable from the product" status (C-029a)',
+    re: /\bnot yet in the (?:product|console)\b|\bbuilt,? not (?:reachable|connected|wired)\b|\bno console switch\b/i,
+  },
+  {
+    label: 'the "declared in the catalog, awaiting credentials" status (C-029b)',
+    re: /\bawaiting credentials\b|\bdeclared in the catalog\b|\bcatalog entry\b/i,
   },
 ];
 
@@ -959,7 +980,7 @@ test.describe("claims register integrity", () => {
 
   /**
    * KNOWN DEFECT — see `failures` in the report.
-   * C-028, C-029 and C-030 name satvikOS/Tenure as their evidence repository but
+   * C-028, C-029c and C-030 name satvikOS/Tenure as their evidence repository but
    * cite no path at all ("Repo-wide grep … returns ZERO hits", "20 API routes,
    * none an export"). All three are absence proofs, so there is no file to
    * point at — but the register still attributes them to a repository, which
@@ -1148,13 +1169,17 @@ test.describe("rendered spacing", () => {
 /* ========================================================================== */
 
 /**
- * C-007's provider gate: production calls https://api.anthropic.com directly.
- * There is no Bedrock integration in either repository, so public and legal copy
- * must say Anthropic until the deploying repo invokes Bedrock, its
- * infrastructure and tests land, and the cutover is confirmed.
+ * C-007's provider gate. Synthesis runs on Amazon Bedrock using an Anthropic
+ * model, with the direct Anthropic API retained as the fallback, so those two
+ * are the permitted names and every other model vendor is a violation.
+ *
+ * `Bedrock` was the first entry in this list until 2026-08-19, when the release
+ * conditions the gate itself named were met in the deploying repo. It is not
+ * simply deleted: the pair is now enforced together by the two tests below, so
+ * a page cannot name one provider and leave a reader to assume the other path
+ * does not exist.
  */
 const OTHER_PROVIDERS = [
-  /\bBedrock\b/i,
   /\bOpenAI\b/i,
   /\bChatGPT\b/i,
   /\bGPT-?[0-9]/i,
@@ -1169,19 +1194,40 @@ const OTHER_PROVIDERS = [
 ];
 
 test.describe("AI provider gate", () => {
-  test('"Bedrock" appears nowhere on the site', async ({ page }) => {
+  /*
+    THIS TEST USED TO ASSERT THE OPPOSITE, AND IT WAS RIGHT TO.
+
+    Until 2026-08-19 the register's C-007 gate read: "production calls Anthropic
+    DIRECTLY. There is no Bedrock integration in either repository. Public and
+    legal copy must say Anthropic until the deploying repo invokes Bedrock,
+    infrastructure and tests land, and the cutover is confirmed." So the gate
+    was a ban on the word, and this test enforced the ban.
+
+    All three release conditions the gate named are met in the deploying repo —
+    lib/ai/provider.ts resolves it, infrastructure/terraform/bedrock.tf
+    provisions it with bedrock_enabled defaulting to true, ecs.tf sets
+    AI_PROVIDER=bedrock, and provider.test.ts + bedrock.test.ts cover it. The
+    ban is therefore released, and the ratchet turns to face the other way
+    rather than being deleted: the risk now is a page that mentions ONE provider
+    and lets a reader conclude their record text never leaves AWS (or never
+    reaches it). Both paths ship, so both must be disclosed together.
+  */
+  test("wherever Bedrock is named, the direct-API fallback is disclosed too", async ({
+    page,
+  }) => {
     const pages = await siteText(page);
     const violations: string[] = [];
 
     for (const text of pages) {
       // Markup as well as visible text: an alt attribute or a title would be
       // just as wrong, and just as invisible to a reader of the page.
-      if (/\bBedrock\b/i.test(text.html)) {
-        const hit = findHits(text, /\bBedrock\b/i)[0];
+      if (!/\bBedrock\b/i.test(text.html)) continue;
+      if (!/\bAnthropic\b/i.test(text.html)) {
         violations.push(
-          `${text.route} names Bedrock${hit ? `: "${hit.sentence}"` : " in its markup"}.\n` +
-            `    C-007: production calls Anthropic's API directly. There is no Bedrock ` +
-            `integration in satvikOS/Tenure or satvikOS/Tenure-Parent.`,
+          `${text.route} names Bedrock without naming Anthropic.\n` +
+            `    C-007: Bedrock runs an ANTHROPIC model, and the direct Anthropic API ` +
+            `is the retained fallback. Naming only the platform hides which vendor ` +
+            `actually processes the text.`,
         );
       }
     }
@@ -1189,7 +1235,7 @@ test.describe("AI provider gate", () => {
     expect(violations, report(violations)).toHaveLength(0);
   });
 
-  test("Anthropic is the only AI provider the site names", async ({ page }) => {
+  test("no model provider outside the register's two is named", async ({ page }) => {
     const pages = await siteText(page);
     const violations: string[] = [];
     let anthropicMentions = 0;
@@ -1200,8 +1246,8 @@ test.describe("AI provider gate", () => {
         for (const hit of findHits(text, re)) {
           violations.push(
             `${hit.route} names "${hit.matched}" — "${hit.sentence}"\n` +
-              `    C-007: Anthropic is the only model subprocessor. Naming another ` +
-              `provider makes the privacy notice wrong.`,
+              `    C-007: the model subprocessors are Amazon Bedrock and Anthropic, ` +
+              `and no other. Naming a third makes the privacy notice wrong.`,
           );
         }
       }
@@ -1226,10 +1272,25 @@ test.describe("AI provider gate", () => {
       if (!/\bAnthropic\b/.test(text.flat)) {
         problems.push(`${route} does not name Anthropic as the model provider (C-007).`);
       }
+      // Bedrock is the path production actually takes, so a page that discloses
+      // only the fallback understates where the text goes by a whole platform.
+      if (!/\bBedrock\b/.test(text.flat)) {
+        problems.push(
+          `${route} does not name Amazon Bedrock (C-007). Synthesis runs there by ` +
+            `default; disclosing only the Anthropic fallback describes the path ` +
+            `production does not take.`,
+        );
+      }
       const disclosesTransfer =
         /record(?:s|ed)?[^.]{0,60}\b(?:is|are)\s+(?:sent|included|passed|transmitted)\b/i.test(
           text.flat,
-        ) || /\bleaves?\s+our\s+infrastructure\b/i.test(text.flat);
+        ) ||
+        // "our own infrastructure" is the wording the pages use since the
+        // Bedrock cutover, because "our infrastructure" was ambiguous once part
+        // of the path became AWS-hosted. "leaves AWS" is the fallback's boundary.
+        /\bleaves?\s+our\s+(?:own\s+)?infrastructure\b/i.test(text.flat) ||
+        /\b(?:leaves?|leave)\s+AWS\b/i.test(text.flat) ||
+        /\btext\s+is\s+sent\s+to\b/i.test(text.flat);
       if (!disclosesTransfer) {
         problems.push(
           `${route} does not say that record text is sent outside Tenure to a third-party ` +
@@ -1311,8 +1372,24 @@ test.describe("integrations", () => {
     const violations: string[] = [];
 
     for (const text of pages) {
-      for (const hit of findHits(text, /\b(?:two-way|2-way|bi-?directional)\b/i)) {
+      for (const hit of findHits(text, /\b(?:two-way|2-way|bi-?directional)\b/i, [
+        ...NEGATIVE_MARKERS,
+        ...DISCLAIMED_VENDOR,
+      ])) {
         if (!/calendar|sync|Outlook|Google|Apple/i.test(hit.sentence)) continue;
+        /*
+          Respect the excuse window, the way every other guard in this file does.
+
+          This test pushed every hit unconditionally, so it fired on a sentence
+          SAYING TWO-WAY SYNC DOES NOT EXIST — which is the thing C-009 wants the
+          site to say. The connector matrix's "Two-way sync, and anything outside
+          the catalog" row carries a NOT SUPPORTED badge on the next line; that is
+          a denial, not a claim.
+
+          The guard keeps all of its force: an unqualified "two-way calendar sync"
+          has no badge, no `Limit:` and no denial near it, so it still fails.
+        */
+        if (hit.excusedBy) continue;
         violations.push(
           `${hit.route}: "${hit.sentence}"\n    C-009: the ICS feed is ONE-WAY. Tenure fills ` +
             `the calendar and never reads it back, and no account is connected.`,

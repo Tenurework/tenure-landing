@@ -1,4 +1,4 @@
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
@@ -41,7 +41,7 @@ const STATUS: { k: string; v: string }[] = [
   },
   {
     k: "Proposed scope",
-    v: "Every organization the office stewards, and the office's own oversight seats above them, on one record.",
+    v: "Every organization the office stewards, and the office’s own oversight seats above them, on one record.",
   },
   {
     k: "Start",
@@ -84,7 +84,7 @@ const PARTICIPANTS: { who: string; seat: string; ask: string }[] = [
   {
     who: "Incoming officers",
     seat: "The same seat, held in shadow before the term begins",
-    ask: "Reads the seat's record before taking it over. Read-only until the start date, then write access follows automatically — nobody hands over a password.",
+    ask: "Reads the seat’s record before taking it over. Read-only until the start date, then write access follows automatically — nobody hands over a password.",
   },
   {
     who: "Advisors attached to organizations",
@@ -93,7 +93,7 @@ const PARTICIPANTS: { who: string; seat: string; ask: string }[] = [
     // tier grants. The Advisor tier's single capability is audit.view — "read the
     // institution-wide audit trail" — so provisioning nineteen advisors provisions
     // nineteen readers of every privileged action by every seat in the office.
-    ask: "Read the limit before provisioning them. The Advisor tier's one capability is reading the institution-wide audit log, and an institution account can currently read every organization's budget, roster and documents — not only the ones it advises.",
+    ask: "Read the limit before provisioning them. The Advisor tier’s one capability is reading the institution-wide audit log, and an institution account can currently read every organization’s budget, roster and documents — not only the ones it advises.",
   },
   {
     who: "Us",
@@ -114,7 +114,7 @@ const TENURE_PROVIDES: { t: string; d: string }[] = [
   },
   {
     t: "Approvals that leave a record",
-    d: "Every approval runs the same two gates, across all seven request types. Each decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat's behalf.",
+    d: "Every approval runs the same two gates, across all seven request types. Each decision permanently records who decided, the seat they held at that moment, what the request moved from and to, and whether someone acted on another seat’s behalf.",
   },
   {
     t: "The handoff packet",
@@ -175,9 +175,9 @@ const INPUTS: { item: string; shape: string; who: string }[] = [
     who: "Office staff supply it. Accounts are created by us in advance, against a named person — there is no self-service signup.",
   },
   {
-    item: "Each organization's existing drive or folder",
+    item: "Each organization’s existing drive or folder",
     shape:
-      "A folder export, a shared-drive link handed over with the organization's agreement, or files dragged in by the officers who own them.",
+      "A folder export, a shared-drive link handed over with the organization’s agreement, or files dragged in by the officers who own them.",
     who: "Whoever holds it today exports it. We do the first import alongside them rather than sending instructions.",
   },
   {
@@ -186,7 +186,7 @@ const INPUTS: { item: string; shape: string; who: string }[] = [
     who: "Officers upload. The importer matches the columns and shows a preview before anything is saved.",
   },
   {
-    item: "The office's handbooks and policy documents",
+    item: "The office’s handbooks and policy documents",
     shape: "PDF or Word.",
     who: "Office staff supply. They are stored and findable by title and description — file contents are not indexed, and the assistant cannot answer policy questions out of them.",
   },
@@ -207,7 +207,7 @@ const STEPS: { n: string; t: string; d: string }[] = [
   {
     n: "02",
     t: "Stand up the record together",
-    d: "We build the institution, the organizations and the seat map from your roster, import the drives and budget spreadsheets with the people who own them, and load the office's deadlines. This is the heaviest stretch for your staff, and the part we do most of.",
+    d: "We build the institution, the organizations and the seat map from your roster, import the drives and budget spreadsheets with the people who own them, and load the office’s deadlines. This is the heaviest stretch for your staff, and the part we do most of.",
   },
   {
     n: "03",
@@ -245,13 +245,13 @@ const HANDLING: { t: string; d: string; limit?: string }[] = [
     t: "Who can read what",
     d: "Access attaches to the seat, not the person: shadow before the term, active during it, alumni after. Institution staff work through a console of sixteen capabilities across three strictly nested tiers, and the tier decides which actions are even offered.",
     limit:
-      "Any account with an institution membership can currently read every organization in the portfolio. An advisor relation exists but does not narrow reads, so provisioning nineteen advisors means nineteen people who can open every organization's budget, roster and documents. If you need advisors scoped to their own organizations, that work is not done.",
+      "Any account with an institution membership can currently read every organization in the portfolio. An advisor relation exists but does not narrow reads, so provisioning nineteen advisors means nineteen people who can open every organization’s budget, roster and documents. If you need advisors scoped to their own organizations, that work is not done.",
   },
   {
     t: "How approvals are decided",
-    d: "Two gates across seven request types. Every step permanently records the deciding seat, what the request moved from and to, and whether a backup approver acted on another seat's behalf. Requests show how long they have sat in a gate, flagged at three days and again at six.",
+    d: "Two gates across seven request types. Every step permanently records the deciding seat, what the request moved from and to, and whether a backup approver acted on another seat’s behalf. Requests show how long they have sat in a gate, flagged at three days and again at six.",
     limit:
-      "A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both gates; every use is audited, but nothing prevents it and no second party is required. A president's own request skips the first gate, and nothing prevents a person who holds both an institution membership and an active seat from submitting a request and then approving it. If your finance policy requires those controls enforced by the system, Tenure does not have them today.",
+      "A Director-tier capability can force-approve or force-reject any request in the institution, bypassing both gates; every use is audited, but nothing prevents it and no second party is required. A president’s own request skips the first gate, and nothing prevents a person who holds both an institution membership and an active seat from submitting a request and then approving it. If your finance policy requires those controls enforced by the system, Tenure does not have them today.",
   },
   {
     t: "What gets written down",
@@ -267,7 +267,7 @@ const HANDLING: { t: string; d: string; limit?: string }[] = [
   },
   {
     t: "What leaves our infrastructure",
-    d: "Tenure AI assembles its corpus under the asking person's own permissions before anything is ranked, then sends the retrieved record text to Anthropic's API to compose the answer. Anthropic is the only model subprocessor, and no records are used to train any model by us.",
+    d: "Tenure AI assembles its corpus under the asking person’s own permissions before anything is ranked, then sends the retrieved record text to Anthropic’s API to compose the answer. Anthropic is the only model subprocessor, and no records are used to train any model by us.",
     limit:
       "One platform-wide key serves every tenant: no per-tenant key, no per-tenant quota and no per-tenant opt-out. Retrieval is keyword matching over five record kinds — knowledge cards, document titles and descriptions, approvals, events and organization records. Document file contents, finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant.",
   },
@@ -315,7 +315,7 @@ const MEASURES: { t: string; d: string }[] = [
   },
   {
     t: "The office would run it again",
-    d: "Counted as: the office's own written answer at the end of the term, whatever that answer is.",
+    d: "Counted as: the office’s own written answer at the end of the term, whatever that answer is.",
   },
 ];
 
@@ -408,14 +408,14 @@ export default function PilotPage() {
       {/*
         01 — STATUS. This one is never collapsed.
 
-        The page's whole job is to stop somebody believing their office has
+        The page’s whole job is to stop somebody believing their office has
         already committed to something. Putting that behind a disclosure the
         reader has to choose to open would be exactly the wrong compaction: it is
         the one section a visitor must see whether they came looking for it or
         not. Everything after it is operational detail that a reader seeks out,
         and that detail is what moved into the dossier.
       */}
-      <Section tone="canvas" backdrop="quiet" divide={false}>
+      <Section backdropSeed={15} tone="canvas" backdrop="quiet" divide={false}>
         <Container>
           <SectionHead
             index="01"
@@ -428,7 +428,7 @@ export default function PilotPage() {
             lead="This is a proposal we have talked through with the office. There is no agreement, no purchase order, no start date and no enrolled organization behind it. If you came here to find out whether your office has already committed to something — it has not, and this page is the whole basis on which it might."
           />
 
-          <Reveal delay={0.12} className="mt-8">
+          <Reveal delay={0.12} className="mt-7">
             <Panel>
               <PanelBar
                 title="Where this stands today"
@@ -470,7 +470,7 @@ export default function PilotPage() {
         is collapsed instead, with a summary line that says what is inside, and
         native <details> so Ctrl+F and a no-JavaScript reader both still work.
       */}
-      <Section tone="subtle" backdrop="drafting">
+      <Section backdropSeed={16} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
         <Container>
           <SectionHead
             index="02"
@@ -484,7 +484,7 @@ export default function PilotPage() {
             lead="Open whichever answers the question you arrived with. A pilot fails on the work nobody agreed to do, so all of it is written down rather than left to a conversation."
           />
 
-          <Reveal delay={0.12} className="mt-8">
+          <Reveal delay={0.12} className="mt-7">
             <Dossier
               name="pilot"
               title="Pilot proposal"
@@ -762,7 +762,7 @@ export default function PilotPage() {
       </Section>
 
       {/* 03 — the decision */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={17} tone="canvas" backdrop="quiet">
         <Container>
           <Reveal>
             <div className="relative isolate overflow-hidden rounded-[26px] bg-band p-7 text-inverse sm:p-10">

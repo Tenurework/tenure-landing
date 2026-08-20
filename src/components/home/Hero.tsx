@@ -100,7 +100,7 @@ export function Hero() {
                 control on every page booked a call. This is that path.
 
                 It points at /contact rather than the application, because the
-                app's public host is recorded nowhere in this repository and
+                app’s public host is recorded nowhere in this repository and
                 inventing one would be worse than the omission. The wording stays
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
@@ -121,9 +121,9 @@ export function Hero() {
           {/* RIGHT, the product surface, bleeding off the right edge.
 
               HeroFloatingCards was removed here. Two "notification" cards floated
-              over the dashboard's left edge at xl and above, and at 1440px they
+              over the dashboard’s left edge at xl and above, and at 1440px they
               sat directly on top of the ledger — "Membership dues, 28 paid" read
-              as "mbership dues", "Aramark, fall sponsorship" as "ark, fall
+              as "mbership dues", "Halden Catering, fall sponsorship" as "ark, fall
               sponsorship". Four rows of the most concrete thing on the page were
               cut in half by decoration.
 
@@ -146,7 +146,7 @@ export function Hero() {
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-8">
               {/*
                 Captioned "Origin & support", never "pilot". The University of
-                Rochester's mark beside the words "Fall 2026 pilot" reads as the
+                Rochester’s mark beside the words "Fall 2026 pilot" reads as the
                 university being in the pilot, or endorsing the product; C-022
                 permits these marks for origin and support only.
               */}
@@ -187,11 +187,41 @@ export function Hero() {
 
             <span aria-hidden className="hidden h-8 w-px bg-line lg:block" />
 
-            <ul className="flex flex-wrap items-center justify-center gap-2">
+            {/*
+              A SCROLLING ROW ON A PHONE, A WRAPPING ONE ABOVE IT.
+
+              These four chips are 28-38 characters each, so at 390px `flex-wrap`
+              gave each one its own line: four lines, ~150px, to carry four scope
+              facts nobody reads before the fold. The hero measured 1,750px on a
+              phone — two full screens before the first section.
+
+              Scrolling keeps all four reachable and costs one line. It matches
+              `Segmented`, which made the same move for the same reason at the
+              same width, and the `overflow-x` ancestor is what exempts the row
+              from the 320px reflow check in a11y.spec.ts.
+            */}
+            <ul
+              /*
+                FOCUSABLE, BECAUSE IT SCROLLS AND NOTHING INSIDE IT DOES.
+
+                axe flagged this as `scrollable-region-focusable` (serious), twice
+                — a region a mouse can scroll and a keyboard cannot reach is
+                unusable without a pointer. `Segmented` and `RailList` never hit
+                this because their children are real buttons; these chips are
+                inert text, so the container has to take the tab stop itself.
+
+                It stays a <ul>. `role="group"` would have removed the list role
+                and orphaned every <li>, which is the same defect this repo
+                already fixed once in RailList — see the note there.
+              */
+              tabIndex={0}
+              aria-label="What is in scope"
+              className="-mx-5 flex max-w-full items-center gap-2 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:justify-center sm:overflow-x-visible sm:px-0"
+            >
               {CHIPS.map((c) => (
                 <li
                   key={c}
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-paper/70 px-3 py-1.5 text-[0.78rem] font-medium text-ink-soft"
+                  className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-line bg-paper/70 px-3 py-1.5 text-[0.78rem] font-medium text-ink-soft"
                 >
                   <span aria-hidden className="h-1.5 w-1.5 rounded-sm bg-grove" />
                   {c}

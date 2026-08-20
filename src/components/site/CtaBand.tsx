@@ -8,7 +8,7 @@ import { site } from "@/lib/site";
 /** Site-wide closing call to action, a navy band. Reused at the foot of pages. */
 export function CtaBand({
   title,
-  sub = "See Tenure on your organization's real handoff. A short walkthrough: we'll show you exactly what carries forward.",
+  sub = "See Tenure on your organization’s real handoff. A short walkthrough: we’ll show you exactly what carries forward.",
 }: {
   title?: ReactNode;
   sub?: string;

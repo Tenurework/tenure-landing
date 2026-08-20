@@ -30,7 +30,7 @@ export const routes = [
     path: "/",
     title: "Tenure",
     description:
-      "People move on, the know-how stays. Tenure attaches an organization's money, decisions, files and context to the durable seat, not the person in it.",
+      "People move on, the know-how stays. Tenure attaches an organization’s money, decisions, files and context to the durable seat, not the person in it.",
     priority: 1.0,
     changeFrequency: "monthly",
     indexable: true,
@@ -49,7 +49,7 @@ export const routes = [
     path: "/pilot",
     title: "Pilot",
     description:
-      "A planned Fall 2026 pilot with Simon's Office of Student Engagement: scope, who does what, onboarding inputs, support model and how success is measured.",
+      "A planned Fall 2026 pilot with Simon’s Office of Student Engagement: scope, who does what, onboarding inputs, support model and how success is measured.",
     priority: 0.9,
     changeFrequency: "monthly",
     indexable: true,

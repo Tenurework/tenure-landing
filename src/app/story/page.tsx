@@ -1,4 +1,4 @@
-import { Container, Section, Eyebrow } from "@/components/ui/layout";
+import { Container, Eyebrow, SECTION_BAND, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
 import { CtaBand } from "@/components/site/CtaBand";
@@ -51,7 +51,7 @@ export default function StoryPage() {
       />
 
       {/* 1, Why Tenure exists */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={20} tone="canvas" backdrop="quiet">
         <Container>
           <div className="max-w-2xl">
             <Reveal>
@@ -104,7 +104,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 2, Founders */}
-      <Section tone="subtle" backdrop="drafting">
+      <Section backdropSeed={21} tone="subtle" backdrop="drafting" space={SECTION_TIGHT}>
         <Container>
           <div className="max-w-2xl">
             <Reveal>
@@ -118,7 +118,7 @@ export default function StoryPage() {
             </Reveal>
           </div>
 
-          <div className="mt-9 grid gap-5 sm:grid-cols-2">
+          <div className="mt-7 grid gap-5 sm:grid-cols-2">
             {site.founders.map((f, i) => (
               <Reveal key={f.name} delay={i * 0.08}>
                 <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
@@ -149,7 +149,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 3, Mission */}
-      <Section tone="band" backdrop="band">
+      <Section backdropSeed={22} tone="band" backdrop="band" space={SECTION_BAND}>
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 [background:radial-gradient(55%_60%_at_50%_40%,color-mix(in_oklab,var(--accent)_20%,transparent),transparent_70%)]"
@@ -180,7 +180,7 @@ export default function StoryPage() {
       </Section>
 
       {/* 4, Where it stands */}
-      <Section tone="canvas" backdrop="quiet">
+      <Section backdropSeed={23} tone="canvas" backdrop="quiet">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
             <Reveal>

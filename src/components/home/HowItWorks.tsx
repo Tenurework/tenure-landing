@@ -67,7 +67,7 @@ const STEPS: Step[] = [
 
 export function HowItWorks() {
   return (
-    <Section id="how" tone="subtle" backdrop="drafting">
+    <Section id="how" tone="subtle" backdrop="drafting" backdropSeed={9}>
       <Container>
         <SectionHead
           align="center"
@@ -81,7 +81,7 @@ export function HowItWorks() {
           lead="Tenure is not a binder someone hands over on their way out. The work itself becomes the record, so every transition starts from everything that came before rather than from a blank page."
         />
 
-        <Reveal delay={0.12} className="mt-9">
+        <Reveal delay={0.12} className="mt-7">
           <Panel className="mx-auto max-w-3xl">
             <PanelBar
               title="One cycle, three moves"

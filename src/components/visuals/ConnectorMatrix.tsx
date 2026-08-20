@@ -37,16 +37,36 @@ import { StatusBadge, type StatusKey } from "@/components/ui/StatusBadge";
  * It is also a server component now. The tab filter needed client state; native
  * `<details>` needs none, so this section ships no JavaScript at all.
  *
- * THE RULE THIS IS BUILT AROUND. C-029: no vendor logo may appear unless
- * connector code and an end-to-end test exist, and importing a file a vendor
- * produced is not an integration. A repo-wide grep for googleapis, slack.com,
- * api.notion, api.dropbox, discord.com, zoom.us, api.box.com, graph.microsoft
- * and oauth2 returns ZERO hits. So there are no vendor MARKS here — only vendor
- * NAMES, each inside a row whose badge and body say what the relationship is.
- * `claims.spec.ts` enforces that, and it excuses a name by LINE PROXIMITY, which
- * is why the unsupported vendors are named in the sentence that denies them
- * rather than as a row of chips: eight chips are eight lines, the badge falls out
- * of range by the third name, and a chip row reads as a logo wall regardless.
+ * WHAT CHANGED ON 2026-08-19, AND WHY THE VENDORS ARE VISIBLE NOW.
+ *
+ * This file used to answer the connector question with one denial: "Tenure does
+ * not connect to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or
+ * Discord." That was true when it was written, and the register's evidence for
+ * it was a repo-wide grep returning zero hits.
+ *
+ * Re-run against the pinned commit, that same grep returns five files for `slack.com`.
+ * The deploying repo now ships a Slack workspace connector — OAuth install,
+ * channel routing, a posting quota, six unit test files and two API routes — and
+ * an 18-product integration catalog whose availability is computed from whether
+ * each product's credentials are present. A page still saying "no connectors"
+ * understates the product to exactly the buyer who asked.
+ *
+ * So C-029 was split into three rows and this component follows them:
+ *
+ *   C-029a  Slack — BUILT, NOT REACHABLE. The code and its routes exist; nothing
+ *           in the application calls the announce seam, so no user can switch it
+ *           on. It is not "available", and it is not "no".
+ *   C-029b  the other seventeen — a catalog descriptor and a list of required
+ *           secret NAMES. A catalog entry is not a connector.
+ *   C-029c  everything else — two-way sync, a public API, webhooks, Discord.
+ *
+ * STILL TRUE, AND STILL ENFORCED: no vendor MARK or LOGO appears here, only
+ * vendor NAMES, because a logo reads as a connector whatever the sentence under
+ * it says. `claims.spec.ts` excuses a vendor name by LINE PROXIMITY to its
+ * status, so every name sits in a row whose badge and `limit` state what the
+ * relationship actually is — which is also why the names are grouped four to a
+ * row rather than listed as eighteen chips: a chip row reads as a logo wall, and
+ * the badge falls out of the ratchet's window by the third name.
  *
  * `.xlsx` appears in exactly one row. Opening a spreadsheet in place and
  * importing a budget out of one are two capabilities of the same format, so they
@@ -79,7 +99,7 @@ const GROUPS: Group[] = [
         what: "Documents",
         via: [".pdf", ".docx", ".pptx"],
         status: "live",
-        body: "Open them inside Tenure instead of downloading them to somebody's laptop. Speaker notes come through with the deck.",
+        body: "Open them inside Tenure instead of downloading them to somebody’s laptop. Speaker notes come through with the deck.",
       },
       {
         what: "Spreadsheets",
@@ -121,18 +141,70 @@ const GROUPS: Group[] = [
     ],
   },
   {
+    key: "slack",
+    title: "Built, not yet in the product",
+    blurb: "One connector exists in code and is tested. No console switch turns it on yet.",
+    rows: [
+      {
+        what: "Slack workspace",
+        via: ["OAuth install", "channel routing", "outbound posts"],
+        status: "validating",
+        body: "A workspace connector is written and unit-tested in the repository that deploys: a signed install handshake, an OAuth exchange, routing that decides which channel an announcement belongs in, a per-event posting cap, and an audit row for every post that goes out. We would rather tell you it exists than let you find it in a changelog.",
+        limit:
+          // C-029a's exact words. "Built, not reachable" and "not yet in the
+          // product" are also what excuse the vendor name to the claims ratchet.
+          "It is built, not reachable: nothing in the application calls it, so there is no console switch and nobody can turn it on today. Treat it as not yet in the product when you plan. It is also outbound only — Tenure posts to a channel and never reads one back.",
+      },
+    ],
+  },
+  {
+    key: "catalog",
+    title: "Declared in the catalog, awaiting credentials",
+    blurb: "Seventeen further products the platform knows about — and what that does and does not mean.",
+    rows: [
+      {
+        what: "Files and content",
+        via: ["Box", "Dropbox", "Google Workspace", "Notion"],
+        status: "roadmap",
+        body: "Each is a catalog entry naming the capability it would serve and the credentials it would need. Availability is computed from whether those credentials are present rather than stored in a flag somebody has to remember to flip.",
+        limit:
+          "A catalog entry is not a connector. For every product on this page except Slack there is no connector code at all, so the credentials are necessary and nowhere near sufficient. None of these can move a file today.",
+      },
+      {
+        what: "Chat, mail and meetings",
+        via: ["Teams", "Outlook Mail", "Outlook Calendar", "Zoom"],
+        status: "roadmap",
+        body: "Declared against the chat, email, calendar and video capabilities. The Microsoft products share one credential set, so they arrive together or not at all.",
+        limit:
+          "Catalog entry only — awaiting credentials, with no connector code behind any of them. Tenure's calendar output today is the signed subscription link above, which is a different mechanism and already works.",
+      },
+      {
+        what: "Work, code and signature",
+        via: ["Asana", "Jira", "GitHub", "DocuSign"],
+        status: "roadmap",
+        body: "Declared against the task, repository and signature-request capabilities.",
+        limit: "Catalog entry only — awaiting credentials, no connector code.",
+      },
+      {
+        what: "Payments, identity, surveys, learning and ticketing",
+        via: ["Stripe", "Okta", "Qualtrics", "Canvas", "Eventbrite"],
+        status: "roadmap",
+        body: "The remaining five capabilities the catalog covers: collecting payment, reading a directory, running a survey, an LMS, and selling a ticket.",
+        limit:
+          "Catalog entry only — awaiting credentials, no connector code. Okta in particular is declared here and is not deployed; institutional single sign-on remains the row below.",
+      },
+    ],
+  },
+  {
     key: "no",
     title: "What does not exist",
     blurb: "Named here, so nothing on this list is a surprise later.",
     rows: [
       {
-        what: "Third-party connectors",
-        // The vendor names live in the SENTENCE, not in a chip row — see the note
-        // at the top of this file. As chips the badge falls out of the ratchet's
-        // window by the third name, and eight vendor chips read as a logo wall.
-        via: ["none"],
+        what: "Two-way sync, and anything outside the catalog",
+        via: ["Discord", "two-way"],
         status: "unsupported",
-        body: "Tenure does not connect to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord. Files, decisions and documents live in Tenure itself.",
+        body: "Nothing on this page reads a third-party system back into Tenure — every path described above is one-way, outbound. Discord is in neither the catalog nor the code, and a product that is in neither does not connect.",
       },
       {
         what: "Public API and webhooks",
@@ -171,11 +243,16 @@ const GROUPS: Group[] = [
 function tallyFor(group: Group) {
   const n = (...keys: StatusKey[]) => group.rows.filter((r) => keys.includes(r.status)).length;
   const shipped = n("live", "ci");
+  // "Built, not in the product" is its own answer and must not be tallied as
+  // either shipped or roadmap — collapsing it into one of those is precisely the
+  // overstatement (or understatement) C-029a exists to prevent.
+  const built = n("validating");
   const roadmap = n("roadmap");
   const missing = n("unsupported");
 
   const out: { label: string; tone?: "quiet" | "good" | "warn" | "bad" }[] = [];
   if (shipped) out.push({ label: `${shipped} live`, tone: "good" });
+  if (built) out.push({ label: `${built} built, not in the product`, tone: "quiet" });
   if (roadmap) out.push({ label: `${roadmap} roadmap`, tone: "warn" });
   if (missing) out.push({ label: `${missing} not supported`, tone: "bad" });
   return out;
@@ -246,8 +323,9 @@ export function ConnectorMatrix() {
           </Link>{" "}
           covers the same ground as a reviewed control list &mdash; every status word
           defined, and the limit and evidence behind each row. No vendor logo appears
-          anywhere on this site: a logo reads as a connector whatever the sentence
-          under it says, and there is no connector code to back one.
+          anywhere on this site, including next to the one connector that is built: a
+          logo reads as a working integration whatever the sentence under it says, and
+          only a name can carry a status word beside it.
         </PanelNote>
       }
     />

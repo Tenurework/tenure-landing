@@ -1,4 +1,4 @@
-import { Container, Section, SectionHead } from "@/components/ui/layout";
+import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { Panel, PanelBar, PanelTag } from "@/components/ui/Panel";
 
@@ -73,7 +73,7 @@ function Check() {
 
 export function Problem() {
   return (
-    <Section tone="subtle" backdrop="drafting">
+    <Section from="canvas" tone="subtle" backdrop="drafting" backdropSeed={1} space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           eyebrow="The cost of turnover"
@@ -86,7 +86,7 @@ export function Problem() {
           lead="Once when a year of relationships, vendor terms, budgets and playbooks walk out the door, and again while the next person relearns what the organization already knew."
         />
 
-        <Reveal delay={0.14} className="mt-10">
+        <Reveal delay={0.14} className="mt-7">
           <Panel>
             <PanelBar
               title="The handoff, both ways"
