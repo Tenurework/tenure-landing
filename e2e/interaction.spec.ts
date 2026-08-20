@@ -450,6 +450,81 @@ test.describe("the walkthrough composer", () => {
     expect(body, "the chosen topic travels with the request").toMatch(/handoff packet/i);
   });
 
+  test("the primary action reports that it handed over, and names the fallback", async ({
+    page,
+  }) => {
+    /*
+      The control was a bare <a href={mailto}> with no handler and no state.
+      On a machine with no registered mail handler — a shared lab browser, a
+      Chromebook signed into webmail, most corporate images — clicking it does
+      NOTHING: no navigation, no error, no change on screen. The visitor cannot
+      tell "sent" from "broken".
+
+      The page cannot observe whether a draft opened, so it must not claim it
+      did. What it can truthfully say is that it handed the request over, and
+      it has to name the fallback in the same breath.
+    */
+    await page.goto("/contact");
+    await hydrated(page);
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+
+    const status = page.getByRole("dialog").getByText(/This page sends nothing on its own/);
+    await expect(status, "before the handoff, the standing disclaimer shows").toBeVisible();
+
+    // Swallow the mailto navigation so the test browser does not try to resolve it.
+    await page.route("mailto:**", (route) => route.abort());
+    await page.getByRole("link", { name: "Open in your email app" }).click();
+
+    const handed = page.getByRole("dialog").getByText(/Handed to your mail app/);
+    await expect(handed).toBeVisible();
+    await expect(
+      page.getByRole("dialog").getByText(/no draft opened/),
+      "the fallback is named next to the confirmation, because nothing happening is the likely outcome",
+    ).toBeVisible();
+    await expect(
+      handed,
+      "it must never claim the mail was SENT — this page cannot observe that",
+    ).not.toContainText(/\bsent\b/i);
+  });
+
+  test("Enter sends from any field, because the body is a real form", async ({ page }) => {
+    // The composer was divs, so Enter did nothing. A visitor who fills a form
+    // and presses Enter expects it to submit.
+    await page.goto("/contact");
+    await hydrated(page);
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+
+    const form = page.getByRole("dialog").locator("form");
+    await expect(form, "the composer body is a <form>").toHaveCount(1);
+
+    await page.route("mailto:**", (route) => route.abort());
+    await page.getByLabel("Your name").fill("Alex Mercer");
+    await page.getByLabel("Your name").press("Enter");
+
+    await expect(page.getByRole("dialog").getByText(/Handed to your mail app/)).toBeVisible();
+  });
+
+  test("the one control that is not a text input looks like it is not", async ({ page }) => {
+    // `appearance-none` stripped the native chevron and nothing replaced it, so
+    // the only select on the form was visually identical to the four inputs
+    // beside it.
+    await page.goto("/contact");
+    await hydrated(page);
+    await page.getByRole("button", { name: "Request a walkthrough" }).click();
+
+    const select = page.getByLabel("Kind of organization");
+    await expect(select).toBeVisible();
+    // `xpath=following-sibling::svg` does NOT match here: <svg> lives in the SVG
+    // namespace and a bare XPath name test matches the null namespace only. Walk
+    // to the wrapper and look inside it instead.
+    const marker = select.locator("xpath=..").locator("svg");
+    await expect(marker, "the select carries a chevron of its own").toHaveCount(1);
+    await expect(
+      marker,
+      "and it must not swallow the click that opens the menu",
+    ).toHaveCSS("pointer-events", "none");
+  });
+
   test("the email address and the scheduler link work with JavaScript disabled", async ({
     browser,
   }) => {

@@ -61,7 +61,7 @@ const STEPS: Step[] = [
     shadow: "Sana Ali",
     alumni: ["Maya Chen", "Marcus Lee"],
     records: 34,
-    fresh: { tag: "Deal", t: "Halden Catering renewal, locked 15% rate" },
+    fresh: { tag: "Vendor", t: "Halden Catering renewal, locked 15% rate" },
   },
   {
     term: "2028–29",

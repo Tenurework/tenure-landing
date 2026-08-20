@@ -33,26 +33,28 @@ const baseCsp = [
   "upgrade-insecure-requests",
 ];
 
-/**
- * /contact is the only route allowed to reach Calendly, and only after the
- * visitor asks. Widening the policy for one route rather than site-wide means a
- * third-party script cannot be introduced anywhere else without this file
- * changing — which is a reviewable diff rather than an invisible regression.
+/*
+ * THE /contact CSP WIDENING IS GONE, AND THAT IS THE POINT.
+ *
+ * This file used to carry a second policy for /contact alone, allowing
+ * `script-src https://assets.calendly.com`, `frame-src https://calendly.com`,
+ * a Calendly stylesheet, font and `connect-src` channel. It was written for an
+ * inline Calendly embed.
+ *
+ * The embed was deleted on 2026-08-18 and replaced with a first-party composer;
+ * the only Calendly surface left anywhere is a plain outbound `<a href>` on
+ * /contact. AN ANCHOR NEEDS NO CSP ALLOWANCE — Content-Security-Policy governs
+ * what a page may LOAD and EXECUTE, not where a link may navigate. So every
+ * directive above was permission for something that no longer exists, and what
+ * it permitted was precisely the thing the brief asked to be rid of: a
+ * third-party script and an iframe, on the one route that collects a visitor's
+ * name, organization and email.
+ *
+ * /contact now inherits `baseCsp` like every other route. If a Calendly embed is
+ * ever wanted again, it cannot be reintroduced quietly — it needs a visible diff
+ * to this file, which is what the original comment here wanted and what deleting
+ * the widening actually achieves.
  */
-const contactCsp = [
-  "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://assets.calendly.com",
-  "style-src 'self' 'unsafe-inline' https://assets.calendly.com",
-  "img-src 'self' data: blob: https://*.calendly.com",
-  "font-src 'self' data: https://assets.calendly.com",
-  "connect-src 'self' https://*.calendly.com",
-  "form-action 'self'",
-  "frame-ancestors 'none'",
-  "frame-src https://calendly.com https://*.calendly.com",
-  "object-src 'none'",
-  "base-uri 'self'",
-  "upgrade-insecure-requests",
-];
 
 const sharedSecurityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
@@ -89,21 +91,14 @@ const nextConfig: NextConfig = {
 
   async headers() {
     // Order matters: when two rules set the same header key, the LAST one wins.
-    // The strict site-wide policy is declared first so the wider /contact
-    // policy can override it, not the other way round.
+    // One policy, every route. There is no longer a per-route override, which
+    // means there is no longer a route where a third-party script is allowed.
     return [
       {
         source: "/:path*",
         headers: [
           ...sharedSecurityHeaders,
           { key: "Content-Security-Policy", value: baseCsp.join("; ") },
-        ],
-      },
-      {
-        source: "/contact",
-        headers: [
-          ...sharedSecurityHeaders,
-          { key: "Content-Security-Policy", value: contactCsp.join("; ") },
         ],
       },
     ];

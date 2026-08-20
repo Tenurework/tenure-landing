@@ -50,7 +50,7 @@ import { cn } from "@/lib/cn";
 const TOPICS = [
   "The handoff packet, assembled from a record",
   "Approvals and the two-gate chain",
-  "Finance: budgets, dues, reimbursements",
+  "Finance: budgets, allocations, reimbursements",
   "Tenure AI answering from a seat’s record",
   "The administration console and its capabilities",
   "Importing our existing spreadsheets",
@@ -167,6 +167,20 @@ export function WalkthroughRequest() {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<Form>(EMPTY);
   const [copied, setCopied] = useState(false);
+  /**
+   * Whether the request has been handed to a mail client.
+   *
+   * The primary action was a bare `<a href={mailto}>` with no handler and no
+   * state: on a machine with no registered mail handler — a shared lab browser,
+   * a Chromebook signed into webmail, most corporate images — clicking it
+   * produces NOTHING. No navigation, no error, no change on screen. The visitor
+   * has no way to tell "sent" from "broken", and the honest answer is that the
+   * page cannot know either, because a `mailto:` navigation reports nothing back.
+   *
+   * So the state is not "sent" — it is "handed over", which is the only thing
+   * this page can truthfully claim — and it renders the fallback beside it.
+   */
+  const [handed, setHanded] = useState(false);
   const titleId = useId();
   const descId = useId();
 
@@ -195,10 +209,39 @@ export function WalkthroughRequest() {
     const onClose = () => {
       setOpen(false);
       triggerRef.current?.focus();
+      // A reopened dialog must not still be showing the previous handoff
+      // confirmation over a form the visitor is filling in again.
+      setHanded(false);
     };
     el.addEventListener("close", onClose);
     return () => el.removeEventListener("close", onClose);
   }, []);
+
+  /**
+   * Hand the composed request to the visitor's mail client.
+   *
+   * Two entry points converge here, and both are load-bearing:
+   *
+   *   - the ANCHOR, which keeps a real `href`. That is what makes the URL
+   *     inspectable, right-clickable and copyable, and what makes the control
+   *     work with JavaScript disabled. Replacing it with a submit button would
+   *     have taken all three away.
+   *   - the FORM's submit, so Enter in any field sends. The body used to be
+   *     divs, so Enter did nothing at all.
+   *
+   * Neither can report success: a `mailto:` navigation tells the page nothing.
+   * So this sets "handed over", never "sent", and the status line names the
+   * fallback beside it.
+   */
+  function hand() {
+    setHanded(true);
+  }
+
+  function send(e: React.FormEvent) {
+    e.preventDefault();
+    window.location.href = mailto;
+    hand();
+  }
 
   function toggleTopic(topic: string) {
     setForm((f) => ({
@@ -304,7 +347,7 @@ export function WalkthroughRequest() {
             </button>
           </div>
 
-          <div className="space-y-5 overflow-y-auto px-5 py-5 sm:px-7 sm:py-6">
+          <form id={`${titleId}-form`} onSubmit={send} className="space-y-5 overflow-y-auto px-5 py-5 sm:px-7 sm:py-6">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field id={`${titleId}-name`} label="Your name">
                 <input
@@ -331,19 +374,42 @@ export function WalkthroughRequest() {
                 />
               </Field>
               <Field id={`${titleId}-sector`} label="Kind of organization">
-                <select
-                  id={`${titleId}-sector`}
-                  className={cn(inputClass, "appearance-none")}
-                  value={form.sector}
-                  onChange={(e) => setForm({ ...form, sector: e.target.value })}
-                >
-                  <option value="">Choose one…</option>
-                  {SECTORS.map((s) => (
-                    <option key={s} value={s}>
-                      {s}
-                    </option>
-                  ))}
-                </select>
+                {/*
+                  `appearance-none` strips the native chevron, and nothing was
+                  drawn to replace it — so the one control on this form that
+                  behaves differently from the four text inputs beside it looked
+                  exactly like them. The wrapper restores the affordance without
+                  giving the appearance back: a chevron positioned over the
+                  control, `pointer-events-none` so it never eats the click, and
+                  right padding so a long sector name cannot run underneath it.
+                */}
+                <div className="relative">
+                  <select
+                    id={`${titleId}-sector`}
+                    className={cn(inputClass, "appearance-none pr-10")}
+                    value={form.sector}
+                    onChange={(e) => setForm({ ...form, sector: e.target.value })}
+                  >
+                    <option value="">Choose one…</option>
+                    {SECTORS.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                  <svg
+                    aria-hidden
+                    viewBox="0 0 16 16"
+                    className="pointer-events-none absolute right-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-ink-faint"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M4 6l4 4 4-4" />
+                  </svg>
+                </div>
               </Field>
               <Field id={`${titleId}-role`} label="Your role">
                 <input
@@ -421,10 +487,29 @@ export function WalkthroughRequest() {
                 className="mt-2 block w-full resize-y rounded-xl border border-line bg-sand/60 p-3.5 font-mono text-[0.78rem] leading-relaxed text-ink-soft"
               />
             </div>
-          </div>
+
+            {/*
+              The form's submit control, present only so Enter sends. It is not a
+              second visible action — finding: one action already carried four
+              different names on this page — so it is removed from the accessible
+              tree and takes no space. The visible primary control is the anchor
+              in the footer below, which shares this handler.
+            */}
+            <button type="submit" tabIndex={-1} aria-hidden className="sr-only">
+              Open in your email app
+            </button>
+          </form>
 
           <div className="flex flex-col gap-3 border-t border-line bg-paper/60 px-5 py-4 sm:flex-row sm:items-center sm:px-7">
-            <a href={mailto} className={buttonClasses("primary", "md")}>
+            {/*
+              A SUBMIT BUTTON ON A REAL FORM, not an anchor.
+
+              As `<a href={mailto}>` this had no handler and no state, so on any
+              machine without a registered mail handler it did nothing at all and
+              said nothing about it. As a submit control it also gives the form
+              Enter-to-send, which is what the divs above could never do.
+            */}
+            <a href={mailto} onClick={hand} className={buttonClasses("primary", "md")}>
               <span className="relative z-10">Open in your email app</span>
             </a>
             <button type="button" onClick={copy} className={buttonClasses("secondary", "md")}>
@@ -433,9 +518,29 @@ export function WalkthroughRequest() {
                 {copied ? "Copied to clipboard" : "Copy the request"}
               </span>
             </button>
-            <p className="text-[0.78rem] leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[16rem]">
-              This page sends nothing on its own. The request is written here in
-              your browser and goes out from your own mail app.
+            {/*
+              The status line replaces the standing disclaimer once the handoff
+              has happened. It never claims the mail was SENT — this page cannot
+              observe that — only that it was handed over, and it names the
+              fallback in the same breath, because "nothing happened" is the
+              likeliest outcome on a machine with no mail client.
+            */}
+            <p
+              aria-live="polite"
+              className="text-[0.78rem] leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[17rem]"
+            >
+              {handed ? (
+                <>
+                  <span className="font-medium text-grove">Handed to your mail app.</span>{" "}
+                  If no draft opened, this browser has no mail client set — use
+                  Copy the request and paste it to {site.email}.
+                </>
+              ) : (
+                <>
+                  This page sends nothing on its own. The request is written here in
+                  your browser and goes out from your own mail app.
+                </>
+              )}
             </p>
           </div>
         </div>

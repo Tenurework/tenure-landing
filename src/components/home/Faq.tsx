@@ -55,7 +55,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
           page carried the headline and left both numbers on /trust, so this read as
           blanket enforcement. The numbers travel now.
         */}
-        Isolation is enforced at the query layer by the database client itself, on the 15 of 39
+        Isolation is enforced at the query layer by the database client itself, on the 18 of 41
         models that carry a tenant column, and privileged actions append to a create-only audit
         trail that records refusals as well as approvals.
         Documents are encrypted at rest and served through signed links that expire in ten

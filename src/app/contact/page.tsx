@@ -72,7 +72,7 @@ export default function ContactPage() {
 
       <Section backdropSeed={24} tone="canvas" backdrop="quiet" divide={false}>
         <Container>
-          <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+          <div className="grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
             {/* The composer. `id` is the target of the header CTA when the
                 visitor is already on /contact — see SiteHeader. `scroll-mt`
                 clears the fixed header so the panel is not tucked under it. */}

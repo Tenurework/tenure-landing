@@ -10,7 +10,7 @@ import { Share, GateRail } from "@/components/visuals/Charts";
 import { creatableCardTypes } from "@/lib/claims";
 
 /**
- * WHAT TENURE RUNS — eleven modules, one at a time.
+ * WHAT TENURE RUNS — twelve modules, one at a time.
  *
  * THIS SECTION IS THE REASON THE COMPACTION PASS EXISTS.
  *
@@ -164,7 +164,7 @@ const MODULES: Module[] = [
         <rect x="15.6" y="14" width="3.4" height="4" rx="1" />
       </svg>
     ),
-    body: "Budgets, dues, reimbursements and vendor terms in one ledger, approved in place.",
+    body: "Budgets, allocations, spend, reimbursements and vendor terms in one ledger, approved in place.",
     /*
       THE SAME NUMBERS TWICE, IN TWO COLOUR SCHEMES.
 
@@ -238,7 +238,7 @@ const MODULES: Module[] = [
       <Field label="Filed against this seat">
         <ul className="space-y-1.5">
           {[
-            { tag: "Deal", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
+            { tag: "Vendor", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
             { tag: "Playbook", t: "Spring Gala, run of show", from: "Priya Nair · 2024–25" },
             { tag: "Lesson", t: "Why we moved the fall mixer", from: "Board · 2022–23" },
           ].map((r) => (
@@ -379,10 +379,44 @@ const MODULES: Module[] = [
         <path d="M2.5 19a4.5 4.5 0 0 1 9 0M12.5 19a4.5 4.5 0 0 1 9 0" />
       </svg>
     ),
-    body: "Two organizations co-hosting run the same approval path, and both records keep it.",
+    /*
+      REWRITTEN AGAINST THE SCHEMA. This said "Two organizations co-hosting run
+      the same approval path" — the two-gate chain the site advertises elsewhere.
+      The product does not do that: `CollabStatus` in the deploying schema is
+      PENDING_OSE | APPROVED | DECLINED, a SINGLE office decision, and the
+      schema's own comment says "clubs post collaboration calls; other clubs
+      raise interest; the OSE Director sits in the middle and approves each
+      collaboration". Claiming the fuller mechanism overstated a governance
+      control, which is the one direction this site must never round in.
+    */
+    body: "One organization posts work it wants help with, another raises its hand, and the office above them approves the pairing in one recorded decision.",
     detail: (
-      <Field label="Co-hosted event">
-        <Chips items={["shared feed", "co-host", "gated & audited"]} />
+      <Field label="Collaboration request">
+        <Chips items={["posted to the feed", "interest raised", "one office decision"]} />
+      </Field>
+    ),
+  },
+  {
+    /*
+      ADDED. The rail makes an explicit completeness argument — "eleven modules",
+      "the rail lists all eleven" — and omitted a module the product ships and
+      routes by seat. A completeness claim with a hole in it is worse than no
+      claim: the reader who finds the hole discounts the whole list.
+    */
+    key: "resources",
+    label: "Board resources",
+    cluster: "Run",
+    icon: (
+      <svg {...svg}>
+        <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5z" />
+        <path d="M12 4h6.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H12" />
+        <path d="M7.5 8.5h2M14.5 8.5h2" />
+      </svg>
+    ),
+    body: "The forms, guides, policies and checklists a board actually needs, routed to the seats that need them.",
+    detail: (
+      <Field label="Held as records, not code">
+        <Chips items={["form", "guide", "policy", "tool", "checklist"]} />
       </Field>
     ),
   },
@@ -431,7 +465,7 @@ export function Platform() {
               <span className="text-gradient">runs on</span>.
             </>
           }
-          lead="Eleven modules on one record. Work happens here, so the record writes itself — pick any one to see what it actually does."
+          lead="Twelve modules on one record. Work happens here, so the record writes itself — pick any one to see what it actually does."
         />
 
         <Reveal delay={0.14} className="mt-7">

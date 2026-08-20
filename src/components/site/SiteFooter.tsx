@@ -57,6 +57,25 @@ export function SiteFooter() {
                   </span>
                 </ContactSalesLink>
               </li>
+              {/*
+                A LINK ACTUALLY CALLED "CONTACT".
+
+                Neither the ribbon nor this footer contained one: /contact was
+                reachable only behind a green button labelled "Book a
+                walkthrough", so a visitor looking for a way to reach a human —
+                or scanning a footer for the word every other site puts there —
+                found nothing. It goes here rather than in the four-item ribbon,
+                which has no room and whose labels name the question a visitor
+                arrived with, not the pages that exist.
+              */}
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-[0.95rem] text-inverse/65 transition-colors hover:text-inverse"
+                >
+                  Contact
+                </Link>
+              </li>
               <li>
                 <a
                   href={`mailto:${site.email}`}

@@ -206,10 +206,10 @@ export const site = {
       claimId: "C-011",
     },
     {
-      value: 132,
+      value: 161,
       suffix: "",
       label: "end-to-end tests",
-      sub: "run against a real database on every build, alongside 320 unit tests",
+      sub: "run against a real database on every build, alongside more than 950 unit tests",
       claimId: "C-015",
     },
   ],

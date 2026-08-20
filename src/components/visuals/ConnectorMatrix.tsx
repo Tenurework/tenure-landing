@@ -46,7 +46,7 @@ import { StatusBadge, type StatusKey } from "@/components/ui/StatusBadge";
  *
  * Re-run against the pinned commit, that same grep returns five files for `slack.com`.
  * The deploying repo now ships a Slack workspace connector — OAuth install,
- * channel routing, a posting quota, six unit test files and two API routes — and
+ * channel routing, a posting quota, a unit test file per module and two API routes — and
  * an 18-product integration catalog whose availability is computed from whether
  * each product's credentials are present. A page still saying "no connectors"
  * understates the product to exactly the buyer who asked.

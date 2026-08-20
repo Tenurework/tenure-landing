@@ -116,19 +116,34 @@ const DATASETS: Record<DatasetKey, Dataset> = {
   university: {
     org: "Rochester Finance Club",
     term: "2025–26 · Fall",
+    /*
+      EVERY ROW IS A TRANSACTION TYPE THE PRODUCT ACTUALLY HAS.
+
+      `TransactionType` in the deploying schema is ALLOCATION | SPEND |
+      REIMBURSEMENT | ADJUSTMENT, and `LedgerKind` is SPEND | REIMBURSEMENT |
+      ADJUSTMENT. There is no income type, and a repo-wide grep for "dues" or
+      "paid" returns nothing — there is no per-member payment tracking anywhere
+      in the schema.
+
+      So the two rows that used to open this ledger were both unbuildable: a
+      "+$840 Membership dues, 28 paid" income line, with a per-member paid count,
+      in the most-viewed illustration on the site. They are now an allocation and
+      a reimbursement, which is what money coming INTO a budget really looks like
+      here.
+    */
     ledger: [
-      { t: "Membership dues, 28 paid", a: "+$840", d: "Sep 14", up: true },
-      { t: "Halden Catering, fall sponsorship", a: "+$4,000", d: "Oct 2", up: true },
-      { t: "Fenwick Print, banners", a: "−$240", d: "Oct 9", up: false },
+      { t: "Term allocation from the office", a: "+$8,400", d: "Sep 14", up: true },
+      { t: "Fenwick Print, banners", a: "−$240", d: "Oct 2", up: false },
+      { t: "Reimbursed: Halden Catering overpay", a: "+$180", d: "Oct 9", up: true },
       { t: "Gala venue deposit", a: "−$1,500", d: "Oct 18", up: false },
     ],
     memory: [
-      { tag: "Deal", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
+      { tag: "Vendor", t: "Halden Catering, sponsorship renewal", from: "Maya Chen · 2023–24" },
       { tag: "Lesson", t: "Never book the gala on finals week", from: "Marcus Lee · 2024–25" },
       { tag: "Vendor", t: "Fenwick Print, 15% club rate", from: "Jordan Lee · 2024–25" },
     ],
     asks: {
-      Finance: ["gala budget approval", "dues decision"],
+      Finance: ["gala budget approval", "allocation decision"],
       Calendar: ["gala venue", "spring formal"],
       Approvals: ["OSE review", "vendor request"],
       Members: ["handover notes", "roster change approval"],
@@ -139,13 +154,13 @@ const DATASETS: Record<DatasetKey, Dataset> = {
     org: "Riverside Literacy Alliance",
     term: "FY26 · Q2",
     ledger: [
-      { t: "Spring appeal, 214 donors", a: "+$11,600", d: "Sep 14", up: true },
-      { t: "Ash Foundation, programme grant", a: "+$25,000", d: "Oct 2", up: true },
-      { t: "Tutor stipends, October", a: "−$6,400", d: "Oct 9", up: false },
+      { t: "Programme allocation, Ash Foundation", a: "+$25,000", d: "Sep 14", up: true },
+      { t: "Tutor stipends, October", a: "−$6,400", d: "Oct 2", up: false },
+      { t: "Reimbursed: duplicate room hire", a: "+$820", d: "Oct 9", up: true },
       { t: "Branch library room hire", a: "−$820", d: "Oct 18", up: false },
     ],
     memory: [
-      { tag: "Deal", t: "Ash Foundation, renewal due each March", from: "Dana Osei · FY24" },
+      { tag: "Budget", t: "Ash Foundation, renewal due each March", from: "Dana Osei · FY24" },
       { tag: "Lesson", t: "Report on outcomes, not attendance", from: "Priya Nair · FY25" },
       { tag: "Vendor", t: "Branch library, no charge before 4pm", from: "Sana Ali · FY25" },
     ],

@@ -77,7 +77,7 @@ export type Claim = {
 // stopped being a decision and became the sign-in path, and a Slack connector
 // landed under a row that says no connector exists. A register that is not
 // re-pinned degrades into a record of what used to be true.
-const TENURE = "f7088d9e";
+const TENURE = "276978b9";
 // Parent commit retained for provenance; no claim currently sources evidence from it,
 // because nothing on the site may cite Parent-only capability as live.
 // const PARENT = "1c03db8f";
@@ -269,7 +269,7 @@ export const claims: Claim[] = [
     ],
     availability: "ci-verified",
     qualification:
-      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 15 of 39 models carry institutionId; the other 24 are registered as not independently enforceable at the query layer.",
+      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 18 of 41 models carry institutionId; the other 23 are registered as not independently enforceable at the query layer. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -553,10 +553,11 @@ export const claims: Claim[] = [
       "apps/web/src/lib/ai.ts:82-97 (draftText — sends the user’s Draft Assist instruction)",
       "apps/web/src/lib/ai.ts:99-112 (summarizeDocument — sends content.slice(0, 24_000) of the file body)",
       "apps/web/src/lib/search.ts:21-41 (tokenize + scoreDoc: terms.every, AND semantics)",
+      "apps/web/src/lib/ai/quota.ts (DEFAULT_DAILY_REQUEST_LIMIT 40, DEFAULT_DAILY_TOKEN_LIMIT 120_000, per person per day)",
     ],
     availability: "live",
     qualification:
-      "PROVIDER GATE, RELEASED 2026-08-19. The gate this row used to carry required three things before copy could say Bedrock — the deploying repo invoking it, infrastructure, and tests. All three were present from cba5e20e and remain so at the pinned commit, so the copy moved with them. Bedrock is preferred and the direct Anthropic API remains the fallback, so BOTH must stay disclosed: an environment with a region runs on Bedrock, one with only a key keeps calling api.anthropic.com, and one with neither degrades to sources-only. Never write that record text stays inside AWS — the fallback path leaves it. The model is an Anthropic model either way; do not describe Parent’s reviewed-model allowlist, which does not deploy. One platform-wide key serves all tenants; there is no per-tenant key, quota or opt-out. THREE outbound flows, all of which must be disclosed together: retrieved records at question time, full text-document contents on an explicit summary request, and the Draft Assist instruction. RETRIEVAL IS CONJUNCTIVE: every query token longer than one character must appear literally in a single record, with no stemming, synonyms or stopword removal — so full-sentence questions typically return nothing, and any rendered demo must use keyword-shaped queries against the five indexed kinds. Citation is prompt-instructed and unverified, and the route calls the model even with zero sources: never write 'every answer cites its sources'. Never say 'instant', 'never invents' or 'answers anything'.",
+      "PROVIDER GATE, RELEASED 2026-08-19. The gate this row used to carry required three things before copy could say Bedrock — the deploying repo invoking it, infrastructure, and tests. All three were present from cba5e20e and remain so at the pinned commit, so the copy moved with them. Bedrock is preferred and the direct Anthropic API remains the fallback, so BOTH must stay disclosed: an environment with a region runs on Bedrock, one with only a key keeps calling api.anthropic.com, and one with neither degrades to sources-only. Never write that record text stays inside AWS — the fallback path leaves it. The model is an Anthropic model either way; do not describe Parent’s reviewed-model allowlist, which does not deploy. One platform-wide key serves all tenants; there is no per-tenant key, per-tenant quota or opt-out. There IS a PER-PERSON daily ceiling — 40 requests and 120,000 tokens, both overridable by environment — and it must be disclosed wherever the absence of a per-tenant quota is: saying only that no quota exists reads as unlimited. THREE outbound flows, all of which must be disclosed together: retrieved records at question time, full text-document contents on an explicit summary request, and the Draft Assist instruction. RETRIEVAL IS CONJUNCTIVE: every query token longer than one character must appear literally in a single record, with no stemming, synonyms or stopword removal — so full-sentence questions typically return nothing, and any rendered demo must use keyword-shaped queries against the five indexed kinds. Citation is prompt-instructed and unverified, and the route calls the model even with zero sources: never write 'every answer cites its sources'. Never say 'instant', 'never invents' or 'answers anything'.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -715,7 +716,7 @@ export const claims: Claim[] = [
       "apps/web/src/lib/integrations/slack/announce.ts (the seam between the policy layer and the application)",
       "apps/web/src/app/api/integrations/slack/install/route.ts",
       "apps/web/src/app/api/integrations/slack/callback/route.ts",
-      "6 unit test files: oauth.test.ts, install.test.ts, routing.test.ts, post.test.ts, poster.test.ts, verify.test.ts",
+      "7 unit test files: oauth.test.ts, install.test.ts, routing.test.ts, post.test.ts, poster.test.ts, verify.test.ts, announce.test.ts",
     ],
     availability: "built-pending-cutover",
     qualification:
@@ -723,7 +724,7 @@ export const claims: Claim[] = [
       // and tested, the API routes exist, and NOTHING IN THE APPLICATION CALLS
       // announce.ts — a grep for announceEvent under apps/web/src/app returns
       // nothing. So a pilot cannot switch this on from a console today.
-      "BUILT, NOT REACHABLE. The connector and its two API routes are in the deploying repo with six unit test files, but no product surface calls the announce seam, so there is no console switch and no user can turn it on. Say 'built' and 'not yet in the product'; never 'available', 'live', 'supported', 'integrates with Slack' or anything in the present tense that implies a customer can use it. No Slack mark or logo may appear — C-029c's logo rule applies to every row here.",
+      "BUILT, NOT REACHABLE. The connector and its two API routes are in the deploying repo, unit-tested throughout, but no product surface calls the announce seam, so there is no console switch and no user can turn it on. Say 'built' and 'not yet in the product'; never 'available', 'live', 'supported', 'integrates with Slack' or anything in the present tense that implies a customer can use it. No Slack mark or logo may appear — C-029c's logo rule applies to every row here.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -773,13 +774,42 @@ export const claims: Claim[] = [
     reviewBy: REVIEW,
   },
   {
+    id: "C-038",
+    claim: "Membership dues, per-member payment tracking, or any incoming-money transaction type.",
+    where: ["/ (not claimed)", "/product (not claimed)"],
+    category: "product",
+    evidenceRepo: "Tenure",
+    evidenceCommit: TENURE,
+    evidence: [
+      "apps/web/prisma/schema.prisma — enum TransactionType is ALLOCATION | SPEND | REIMBURSEMENT | ADJUSTMENT; there is no income or dues member",
+      "apps/web/prisma/schema.prisma — enum LedgerKind is SPEND | REIMBURSEMENT | ADJUSTMENT",
+      "Repo-wide grep for dues|Dues across apps/web/src returns ZERO hits",
+      "Repo-wide grep for paid|payment across apps/web/prisma/schema.prisma returns ZERO hits — no per-member payment state exists",
+    ],
+    availability: "unsupported",
+    qualification:
+      // WHY THIS ROW EXISTS AT ALL. "Dues" was named in three module descriptions
+      // and rendered in the hero's ledger as "Membership dues, 28 paid, +$840" —
+      // an income line with a per-member paid count, in the most-viewed
+      // illustration on the site, for a data model that can represent neither.
+      // It read as a feature because it sat in a list beside two things that ARE
+      // features (budgets, reimbursements).
+      //
+      // Money entering a budget is an ALLOCATION. That is the honest word and the
+      // one the mocks use now.
+      "Never name dues, membership fees, donations, an appeal, a sponsorship receipt or any other INCOMING payment as something Tenure records. Money entering a budget is an ALLOCATION; money recovered is a REIMBURSEMENT. Never render a ledger row with a per-member paid count. A transaction may be described only as one of the four types the schema declares.",
+    owner: "Satvik Adyanthaya",
+    lastVerified: VERIFIED,
+    reviewBy: REVIEW,
+  },
+  {
     id: "C-028",
     claim: "Self-service bulk export of an organization’s record.",
     where: ["/trust (roadmap)", "/privacy (manual, on request)"],
     category: "product",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
-    evidence: ["20 API routes, none an export; no exportAll or bulk CSV path"],
+    evidence: ["23 API routes, none an export; no exportAll or bulk CSV path — recount on every re-pin"],
     availability: "roadmap",
     qualification:
       "Never say 'export everything, anytime'. The privacy page may offer a manual, human-fulfilled export on request, which is accurate.",
@@ -809,25 +839,45 @@ export const claims: Claim[] = [
   },
   {
     id: "C-015",
-    claim: "132 end-to-end tests and 320 unit tests run on every build.",
+    claim: "161 end-to-end tests and more than 950 unit tests run on every build.",
     where: ["/", "site.ts metrics", "/pilot"],
     category: "metric",
     evidenceRepo: "Tenure",
     evidenceCommit: TENURE,
     evidence: [
-      "28 e2e spec files containing 132 test() cases",
-      // 292 was wrong and was published under a heading reading "Every number below
-      // is counted from the repository that deploys — not an estimate". Counted by
-      // running the suite rather than by grepping for it:
-      //   cd apps/web && npx jest --ci --silent
-      //   -> Test Suites: 23 passed, 23 total / Tests: 320 passed, 320 total
-      // The *.itest.ts files are excluded from that run by testPathIgnorePatterns
-      // because they need a live PostgreSQL, so "runs against a real database"
-      // belongs to the e2e half of the sentence only.
+      "33 e2e spec files containing 161 test() cases",
+      // The *.itest.ts files are excluded from the unit run by
+      // testPathIgnorePatterns because they need a live PostgreSQL, so "runs
+      // against a real database" belongs to the e2e half of the sentence only.
       "apps/web/jest.config.js (testPathIgnorePatterns excludes *.itest.ts — those need a live PostgreSQL)",
-      "23 jest suites containing 320 test cases (cd apps/web && npx jest --ci, run 2026-08-03)",
+      "77 unit test files containing 961 declared it()/test() cases — a FLOOR, see the qualification",
     ],
     availability: "live",
+    qualification:
+      // HOW THESE WERE COUNTED, AND WHY THE TWO HALVES DIFFER.
+      //
+      // The previous figures — 132 e2e and 320 unit — were published against a
+      // product commit 80-odd commits back and had drifted badly: the suites had
+      // roughly tripled while the site went on advertising the old numbers, so the
+      // site was understating its own engineering by a factor of three.
+      //
+      // The e2e half is EXACT and counted the same way it always was: grepping
+      // `^\s*test\(` across apps/web/e2e/**/*.spec.ts. That method reproduces the
+      // previously published 132 exactly at the commit it was published against,
+      // which is what makes it trustworthy at this one.
+      //
+      // The unit half could NOT be produced the same way it was before. The
+      // register's rule is to count by RUNNING the suite, and apps/web has no
+      // installed dependencies in this checkout; installing them into the product
+      // repo to publish a marketing number is not a trade worth making. So it is a
+      // static count of declared cases, and static counting is CALIBRATED AGAINST
+      // THE OLD RUN: at the previous pin it gives 279 where jest reported 320, an
+      // undercount of about 13% caused by `.each` blocks expanding at runtime.
+      //
+      // 961 declared cases is therefore a floor, and "more than 950" is the honest
+      // way to publish a floor. Never state a precise unit figure until someone
+      // runs `cd apps/web && npx jest --ci` and pastes the total.
+      "The e2e figure is exact. The unit figure is a FLOOR from a static count of declared cases, not a suite run: 961 declared, and the same method undercounts by ~13% against the last real run, so publish it as 'more than 950' and never as a precise number. Neither figure counts *.itest.ts, which needs a live PostgreSQL. Recount both on every re-pin — these drifted 3x in eighty commits.",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
@@ -950,6 +1000,10 @@ export const creatableCardTypes = [
 
 /** Phrases that may never appear in public copy, with the claim that forbids them. */
 export const forbiddenPhrases: { phrase: RegExp; because: string; claimId: string }[] = [
+  // C-038: no incoming-money transaction type exists. "Dues" sat in three module
+  // descriptions and in the hero ledger as a per-member paid count, for a schema
+  // whose TransactionType is ALLOCATION | SPEND | REIMBURSEMENT | ADJUSTMENT.
+  { phrase: /\bdues\b/i, because: "No income/dues transaction type or per-member payment state exists", claimId: "C-038" },
   { phrase: /\bFERPA[- ](compliant|aligned|certified)\b/i, because: "No FERPA controls exist", claimId: "C-027" },
   { phrase: /\bSOC ?2\b(?!.{0,40}\broadmap\b)/i, because: "SOC 2 is roadmap only", claimId: "C-026" },
   { phrase: /\brow[- ]level security\b/i, because: "Tenancy is query-layer, not Postgres RLS", claimId: "C-003" },

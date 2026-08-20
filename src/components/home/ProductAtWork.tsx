@@ -128,8 +128,12 @@ function HandoffCard() {
           transition={reduce ? { duration: 0 } : { duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
           <div className="flex items-center gap-1.5">
+            {/* "Vendor", not "Deal". The seven creatable knowledge-card kinds are
+                enforced from the product enum (claims.ts creatableCardTypes) and
+                rendered on this same page; "Deal" is not one of them, so a card
+                tagged with it was a kind the product cannot make. */}
             <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-[0.55rem] uppercase text-grove-deep">
-              Deal
+              Vendor
             </span>
             <span className="text-[0.74rem] text-ink">Halden Catering renewal</span>
           </div>
@@ -174,7 +178,7 @@ const FEATURES: Feature[] = [
         Every dollar, tracked and <span className="text-grove">approved in place</span>.
       </>
     ),
-    body: "Budgets, dues, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role, so next year’s treasurer sees exactly what things cost and who signed off.",
+    body: "Budgets, allocations, and reimbursements live in one ledger. Officers request, leadership approves, and the whole history stays with the role, so next year’s treasurer sees exactly what things cost and who signed off.",
     visual: <FinanceCard />,
   },
   {

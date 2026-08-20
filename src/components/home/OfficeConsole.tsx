@@ -298,9 +298,22 @@ export function OfficeConsole() {
                       is actually filled &mdash; which is the number that predicts
                       whether a handoff will go well.
                     </p>
+                    {/*
+                      THE RATIO IS THE REAL ONE, AND IT USED TO BE INVERTED.
+
+                      These three rows read 8/7, 12/12 and 6/6 — twenty-five of
+                      twenty-six seats held, a portfolio with essentially nothing
+                      wrong with it. The seeded roster this whole section is drawn
+                      from is 209 seats with 106 filled and 103 VACANT (C-014's own
+                      evidence line), so the mock showed the opposite of the
+                      problem the product exists to solve, in the one pane whose
+                      stated subject is "how much of its seat map is actually
+                      filled". A reader who believed it would wonder what Tenure
+                      was for.
+                    */}
                     <ul className="mt-4 space-y-1.5">
-                      <Row title="Student Culture Council" meta="8 seats · 7 held" tag="1 vacant" tone="warn" />
-                      <Row title="Rochester Finance Club" meta="12 seats · 12 held" tag="complete" tone="good" />
+                      <Row title="Student Culture Council" meta="8 seats · 4 held" tag="4 vacant" tone="warn" />
+                      <Row title="Rochester Finance Club" meta="12 seats · 7 held" tag="5 vacant" tone="warn" />
                       <Row title="Consulting Association" meta="6 seats · 6 held" tag="complete" tone="good" />
                     </ul>
                   </Pane>

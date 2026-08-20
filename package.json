@@ -23,7 +23,8 @@
     "test:visual": "playwright test visual.spec.ts",
     "test:visual:update": "playwright test visual.spec.ts --update-snapshots",
     "test:ui": "playwright test --ui",
-    "verify": "npm run lint && npm run typecheck && npm run check:contrast && npm run build && npm run check:links && npm run test"
+    "verify": "npm run lint && npm run claims:verify && npm run typecheck && npm run check:contrast && npm run build && npm run check:links && npm run test",
+    "claims:verify": "node scripts/verify-product-claims.mjs"
   },
   "dependencies": {
     "@number-flow/react": "^0.6.0",

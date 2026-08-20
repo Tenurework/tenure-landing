@@ -30,9 +30,9 @@ const GROUPS: Group[] = [
       "Each institution’s record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
-        title: "Tenant filter attached to the database client — directly on 15 of 39 models",
+        title: "Tenant filter attached to the database client — directly on 18 of 41 models",
         status: "ci",
-        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 15 of 39 is the honest headline.",
+        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 18 of 41 is the honest headline.",
         // The old sentence said all 24 remaining models "are reached through their
         // parent relation", which the registry it cites contradicts twice: five are
         // platform-global by design and have no tenant parent, and DirectoryPerson is
@@ -40,7 +40,7 @@ const GROUPS: Group[] = [
         // student and advisor contact details as parent-protected made the disclosure
         // less honest than the code it describes.
         limit:
-          "Of the other 24: five are platform-global by design — the identity and session rows — and are not tenant-owned. Nineteen are tenant-owned with no column the query layer can filter on. Eighteen of those are reachable only through a scoped parent, so they are protected by whatever check the calling code performs rather than by the extension. The nineteenth, DirectoryPerson, holds student and advisor contact details and has no parent at all; it needs a schema change before a second institution exists. This is also query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
+          "Of the other 23: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen are tenant-owned but carry no column the query layer can filter on, and are reachable only through a scoped parent, so they are protected by whatever check the calling code performs rather than by the extension. DirectoryPerson, which holds contact details and used to be the one parentless exception on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",
@@ -206,7 +206,7 @@ const GROUPS: Group[] = [
         // contents; Draft Assist sends the user's instruction.
         body: "Answer synthesis runs on Amazon Bedrock, using an Anthropic Claude Haiku 4.5 model by default. Bedrock authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
         limit:
-          "The direct Anthropic API is retained as a fallback: an environment configured with a key but no Bedrock region calls api.anthropic.com instead, so record text can leave AWS. Neither model provider offers a per-tenant key, a per-tenant usage quota or a per-tenant opt-out. The model id is an environment variable and is not validated against an allowlist.",
+          "The direct Anthropic API is retained as a fallback: an environment configured with a key but no Bedrock region calls api.anthropic.com instead, so record text can leave AWS. Neither model provider offers a per-tenant key or a per-tenant opt-out, and there is no per-tenant usage quota — Tenure applies its own ceiling instead, per person rather than per institution: 40 AI requests and 120,000 tokens each per day. The model id is an environment variable and is not validated against an allowlist.",
       },
       {
         title: "Training on customer data",
