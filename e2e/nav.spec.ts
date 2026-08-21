@@ -392,9 +392,14 @@ test.describe("external links", () => {
     }
 
     // The site really does link off-site; an empty crawl must not pass.
-    // Every social account we actually have, and nothing we do not. This used to
-    // name an X profile that is not ours to publish.
-    expect([...seen].sort()).toEqual(Object.values(site.socials).sort());
+    // Every off-site destination the site actually has, and nothing it does not:
+    // our own accounts, plus any supporter whose mark links to a write-up about
+    // them. Anything else appearing here is a link nobody decided to add.
+    const allowed = [
+      ...Object.values(site.socials),
+      ...site.supporters.flatMap((s) => ("href" in s && s.href ? [s.href] : [])),
+    ];
+    expect([...seen].sort()).toEqual(allowed.sort());
     expect(offenders, "external links without a safe new-tab contract").toEqual([]);
   });
 

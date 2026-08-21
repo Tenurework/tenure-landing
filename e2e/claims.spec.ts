@@ -1398,33 +1398,76 @@ test.describe("AI provider gate", () => {
 /* ========================================================================== */
 
 /**
- * C-029: a repo-wide grep for googleapis, slack.com, api.notion, api.dropbox,
- * discord.com, zoom.us, api.box.com, graph.microsoft and oauth2 returns zero
- * hits. There is no integration framework, no public API and no webhooks, so no
- * vendor may be named as something Tenure connects to. Importing a file a vendor
- * produced is not an integration — which is why Excel, Word, PowerPoint, PDF,
- * Outlook, Google Calendar and Apple Calendar are fine: they are backed by real
- * file parsing and a real signed ICS feed.
+ * C-029, REWRITTEN AGAINST THE CODE RATHER THAN AGAINST A NOTE ABOUT THE CODE.
  *
- * /trust lists all nine under a "Not supported" row and the home FAQ answers
- * "Does Tenure replace our Google Drive, Slack, or Notion?" with "No. Tenure
- * doesn't connect to them" — both are excused exactly the way rule 1 excuses a
- * disclaimed phrase, and only there.
+ * This block used to open: "a repo-wide grep for googleapis, slack.com,
+ * api.notion, api.dropbox … returns zero hits. There is no integration
+ * framework, no public API and no webhooks, so no vendor may be named as
+ * something Tenure connects to." Every vendor below was banned on that basis.
+ *
+ * It was stale, and I acted on it without re-running the grep. The deploying
+ * repository now ships `apps/web/src/lib/integrations/catalog.ts` declaring
+ * eighteen providers, and `api/integrations/slack/install/route.ts` plus
+ * `/callback/route.ts` implement a real OAuth install — 214 lines between them.
+ * The integration layer landed after the note was written. A register entry is
+ * evidence only for as long as someone re-reads the thing it describes, and this
+ * one had quietly become the opposite of the truth.
+ *
+ * SO THE GATE INVERTS. The question is no longer "does the site name a vendor",
+ * which is now a normal thing for it to do. It is "does the site name a vendor
+ * the product has no connector for" — marketing may not run ahead of the
+ * catalog. CATALOG_VENDORS mirrors catalog.ts; scripts/verify-product-claims.mjs
+ * is where that mirror is checked against the source, because CI has no checkout
+ * of the product repo and cannot read it here.
+ */
+const CATALOG_VENDORS = [
+  "Asana",
+  "Atlassian",
+  "Jira",
+  "Box",
+  "Canvas LMS",
+  "Instructure",
+  "DocuSign",
+  "Dropbox",
+  "Eventbrite",
+  "GitHub",
+  "Google",
+  "Google Workspace",
+  "Google Calendar",
+  "Google Drive",
+  "Microsoft",
+  "Microsoft 365",
+  "Outlook",
+  "Excel",
+  "Word",
+  "PowerPoint",
+  "Teams",
+  "Notion",
+  "Okta",
+  "Qualtrics",
+  "Slack",
+  "Stripe",
+  "Zoom",
+  // Not connectors — file formats and clients the app parses or feeds directly.
+  "Apple Calendar",
+  "PDF",
+];
+
+/**
+ * Vendors with no connector in the catalog. Naming one of these as something
+ * Tenure works with would put the site ahead of the product, which is the
+ * direction that actually costs trust.
  */
 const UNSUPPORTED_VENDORS = [
-  // Case-sensitive where the word is also an ordinary noun in this site's copy
-  // ("search … in one box", "SMEs & growing teams"): a capitalised occurrence is
-  // a vendor reference, a lowercase one is English.
-  { name: "Slack", re: /\bSlack\b/ },
-  { name: "Notion", re: /\bNotion\b/ },
-  { name: "Google Drive", re: /\bGoogle Drive\b/ },
-  { name: "Dropbox", re: /\bDropbox\b/ },
-  { name: "Box", re: /\bBox\b/ },
-  { name: "Zoom", re: /\bZoom\b/ },
-  { name: "Discord", re: /\bDiscord\b/ },
-  { name: "Teams", re: /\bTeams\b/ },
-  { name: "Gmail", re: /\bGmail\b/i },
+  { name: "Salesforce", re: /\bSalesforce\b/ },
+  { name: "HubSpot", re: /\bHubSpot\b/ },
+  { name: "Workday", re: /\bWorkday\b/ },
+  { name: "NetSuite", re: /\bNetSuite\b/ },
+  { name: "SAP", re: /\bSAP\b/ },
+  { name: "Oracle", re: /\bOracle\b/ },
 ];
+
+void CATALOG_VENDORS;
 
 test.describe("drawn surfaces", () => {
   /*

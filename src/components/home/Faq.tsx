@@ -26,11 +26,12 @@ const ITEMS: { q: string; a: ReactNode }[] = [
     */
     a: (
       <>
-        No &mdash; Tenure is where the record lives, alongside them. Your budget
-        spreadsheet imports with whatever the columns were called, PDF, Word, Excel
-        and PowerPoint open in place rather than downloading to someone&rsquo;s laptop,
-        and deadlines publish to Outlook, Google or Apple Calendar through one signed
-        link per person, with no account connected and no password shared.{" "}
+        No. Tenure is where the record lives, alongside them. Your budget spreadsheet
+        imports with whatever the columns were called; PDF, Word, Excel and PowerPoint
+        open in place rather than downloading to someone&rsquo;s laptop; deadlines
+        publish to Outlook, Google or Apple Calendar through one signed link per
+        person. Beyond that the integration catalog covers eighteen providers, Slack,
+        Microsoft 365, Google Workspace, Box and Zoom among them.{" "}
         <Link href="/product" className={LINK}>
           Everything it connects to &rarr;
         </Link>

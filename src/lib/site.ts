@@ -291,7 +291,8 @@ export const site = {
       // Intrinsic size is preserved in the source file; only the request changes.
       width: 128,
       height: 36,
-      displayHeight: "2.25rem",
+      displayHeight: "3rem",
+      href: "https://nextcorps.org/startup-wednesday-rochester-brings-founders-together-for-a-month-of-building-learning-and-launching/",
     },
     {
       name: "Simon Business School",
@@ -302,7 +303,7 @@ export const site = {
       // Rendered box; intrinsic asset is 1054x339. See the note above.
       width: 107,
       height: 34,
-      displayHeight: "2.15rem",
+      displayHeight: "2.9rem",
     },
   ],
 

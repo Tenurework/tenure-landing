@@ -24,32 +24,60 @@ import { site } from "@/lib/site";
  */
 export function SupportedBy() {
   return (
-    <Section from="band" tone="canvas" space={SECTION_TIGHT}>
+    <Section from="canvas" tone="surface" space={SECTION_TIGHT}>
       <Container>
         <Reveal>
-          <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-center sm:gap-12 sm:text-left">
-            <p className="label-mono shrink-0">Supported by</p>
+          <p className="label-mono text-center">Supported by</p>
 
-            <div className="flex shrink-0 items-center gap-10 sm:gap-12">
-              {site.supporters.map((s) => (
+          {/*
+            THE MARKS SIT ON THEIR OWN LINE AND ARE HALF AGAIN AS LARGE. They used
+            to run inline beside the caption at 2.15rem, which put three different
+            things — a label, two institutional lockups and a sentence — on one
+            row, and made the marks read as footnotes to the word "Supported".
+            Given the width and the height they read as what they are.
+          */}
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-16 gap-y-8">
+            {site.supporters.map((s) => {
+              const mark = (
                 <Image
-                  key={s.name}
                   src={s.src}
                   alt={s.name}
                   width={s.width}
                   height={s.height}
-                  className="logo-mark w-auto object-contain opacity-90"
+                  className="logo-mark w-auto object-contain"
                   style={{ height: s.displayHeight }}
                 />
-              ))}
-            </div>
+              );
+              return "href" in s && s.href ? (
+                <a
+                  key={s.name}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-opacity hover:opacity-70"
+                >
+                  {mark}
+                </a>
+              ) : (
+                <span key={s.name}>{mark}</span>
+              );
+            })}
           </div>
         </Reveal>
 
         <Reveal delay={0.06}>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-caption leading-relaxed text-ink-faint measure">
-            Tenure was founded at Simon Business School, University of Rochester,
-            and is supported by Startup Wednesday.
+          {/*
+            BOTH ARE SUPPORTERS, and one is also where the product runs. The old
+            sentence made Startup Wednesday the supporter and Simon merely the
+            place Tenure was founded, which understated both. C-022 still governs
+            the marks: support and origin, never customership, sponsorship or
+            endorsement — so this says where Tenure goes live and stops there.
+          */}
+          <p className="mx-auto mt-8 max-w-2xl text-center text-body leading-relaxed text-ink-soft">
+            Tenure is supported by{" "}
+            <span className="text-ink">Startup Wednesday</span> and{" "}
+            <span className="text-ink">Simon Business School</span>, University of
+            Rochester, where it was founded and where it goes live this term.
           </p>
         </Reveal>
       </Container>

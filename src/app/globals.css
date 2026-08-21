@@ -820,6 +820,46 @@
   }
 }
 
+/*
+  THE CONTINUOUS RAIL. The track holds the list twice and travels exactly -50%,
+  so the second copy is under the cursor at the moment the first would have run
+  out and the loop closes on itself invisibly. Any other distance shows a seam.
+
+  It pauses on hover, because a moving row of names is unreadable at the moment
+  someone decides they want to read it. `prefers-reduced-motion` stops it dead —
+  a marquee is decorative motion by definition, and the content is all present
+  either way.
+*/
+@keyframes marquee-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  animation: marquee-drift 48s linear infinite;
+  will-change: transform;
+
+  &:hover {
+    animation-play-state: paused;
+  }
+}
+
+/* Fades the rail into the page at both ends, so items enter and leave rather
+   than being cut off by a hard edge. */
+@utility marquee-mask {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6rem,
+    black calc(100% - 6rem),
+    transparent
+  );
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {

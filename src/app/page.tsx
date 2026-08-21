@@ -7,6 +7,7 @@ import { AiOnboarding } from "@/components/home/AiOnboarding";
 import { OfficeConsole } from "@/components/home/OfficeConsole";
 import { Industries } from "@/components/home/Industries";
 import { MetricsBand } from "@/components/home/MetricsBand";
+import { ConnectorMarquee } from "@/components/visuals/ConnectorMarquee";
 import { SupportedBy } from "@/components/home/SupportedBy";
 import { Faq } from "@/components/home/Faq";
 import { CtaBand } from "@/components/site/CtaBand";
@@ -67,6 +68,8 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <SupportedBy />
+      <ConnectorMarquee />
       <Problem />
       <Industries />
       <SeatMechanism />
@@ -75,7 +78,6 @@ export default function HomePage() {
       <AiOnboarding />
       <OfficeConsole />
       <MetricsBand />
-      <SupportedBy />
       <Faq />
       <CtaBand />
     </>
