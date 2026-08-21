@@ -139,6 +139,9 @@ export function SiteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
+        // `relative` is implied by `fixed`, but the sheet below positions against
+        // THIS element with `top-full`, so the header must stay the containing
+        // block for it — which it is, being fixed.
         surface,
       )}
     >
@@ -190,8 +193,12 @@ export function SiteHeader() {
                 */}
                 <div
                   className={cn(
-                    "relative flex items-center rounded-md transition-colors duration-200",
-                    active || isOpen ? "text-ink" : "text-ink-soft hover:text-ink",
+                    // The pill marks the OPEN item, the way the reference marks
+                    // its own. It is a state, not a decoration: with a full-bleed
+                    // sheet below and the page dimmed behind it, the one thing a
+                    // reader cannot otherwise tell is which word they opened.
+                    "relative flex items-center rounded-full transition-colors duration-200",
+                    isOpen ? "bg-sand text-ink" : active ? "text-ink" : "text-ink-soft hover:text-ink",
                   )}
                 >
                   <Link
@@ -230,7 +237,7 @@ export function SiteHeader() {
                     aria-hidden
                     className={cn(
                       "absolute inset-x-3.5 bottom-1 h-0.5 origin-left rounded-full bg-grove transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
-                      active ? "scale-x-100" : "scale-x-0",
+                      active && !isOpen ? "scale-x-100" : "scale-x-0",
                     )}
                   />
                 </div>
@@ -238,23 +245,6 @@ export function SiteHeader() {
             );
           })}
 
-          {/*
-            ONE PANEL POSITION FOR ALL FOUR ITEMS, centred on the nav rather than
-            on the trigger. Anchored per item, the "Platform" panel hung out over
-            the wordmark and the "About" panel would have run past the CTA — a
-            46rem sheet cannot centre itself on a 5rem word near the edge of the
-            bar without leaving the bar. Cohere centres under the nav for the same
-            reason. Panels are stacked in one place and only the open one is
-            visible, so switching between items cross-fades instead of jumping.
-          */}
-          {site.nav.map((item) => (
-            <MegaPanel
-              key={`panel-${item.href}`}
-              item={item}
-              open={menu === item.label}
-              onEscape={() => setMenu(null)}
-            />
-          ))}
         </nav>
 
         <div className="hidden min-w-0 items-center gap-3 lg:flex">
@@ -361,88 +351,145 @@ export function SiteHeader() {
           </nav>
         </div>
       )}
+
+      {/*
+        THE SCRIM AND THE SHEETS, rendered once for the whole header rather than
+        once per nav item.
+
+        The scrim is what turns a dropdown into a mode: `rgba(33,33,33,0.2)` with
+        a 30px backdrop blur over everything below the header, exactly as measured
+        on the reference. It is also the click target that closes the menu, which
+        is the behaviour people reach for before they look for Escape.
+
+        `aria-hidden` because it is a surface, not a control with a name — the
+        keyboard route out is Escape, which the sheet handles.
+      */}
+      <div
+        aria-hidden
+        onClick={() => setMenu(null)}
+        className={cn(
+          "fixed inset-x-0 top-[60px] bottom-0 -z-10 hidden bg-[rgb(33_33_33/0.2)] backdrop-blur-[30px] lg:block",
+          "transition-opacity duration-200",
+          menu ? "visible opacity-100" : "invisible opacity-0",
+        )}
+      />
+
+      {site.nav.map((item) => (
+        <MegaSheet
+          key={`sheet-${item.href}`}
+          item={item}
+          open={menu === item.label}
+          onClose={() => setMenu(null)}
+        />
+      ))}
     </header>
   );
 }
 
 
 /**
- * THE PANEL THAT OPENS UNDER A RIBBON ITEM.
+ * THE SHEET THAT DROPS OUT OF THE HEADER.
  *
- * It is `invisible` rather than unmounted when closed, and that is the detail
- * that makes it keyboard-reachable: `visibility: hidden` takes its links out of
- * the tab order, and the trigger's own focus is what turns visibility back on —
- * so tabbing to "Platform" reveals the panel, and the next Tab lands inside it.
- * An `opacity: 0` panel would leave four invisible links in the tab order of
- * every page, which is the usual way this component is got wrong.
+ * Measured on cohere.com: the panel is FULL BLEED — x=0, the whole viewport
+ * wide, starting at exactly the 60px header's bottom edge — pure white, with no
+ * radius, no border and NO SHADOW. Its columns start on the same 40px page rail
+ * as everything else, and the rest of the page sits behind a
+ * `rgba(33,33,33,0.2)` scrim with a 30px backdrop blur.
  *
- * Escape closes it from anywhere inside, because a menu you can open with the
- * keyboard and not close with it is a trap.
+ * That is a materially different object from the floating 44rem card this
+ * replaced. A floating card is a widget attached to a button; a full-width sheet
+ * with the page dimmed behind it is a MODE — it says the site is waiting for you
+ * to choose, which is exactly the difference in authority between the two.
+ *
+ * No shadow is the part that looks wrong until you see it: a sheet this size
+ * casting a drop shadow reads as a floating rectangle, and what sells it as a
+ * surface unfolding from the header is the scrim behind it doing that job.
+ *
+ * `visibility` still gates it rather than opacity alone, so its links leave the
+ * tab order when it is closed. The trigger is a real `aria-expanded` button, so
+ * opening never happens as a side effect of focus moving — which is what broke
+ * reverse tab order the first time this was built.
  */
-function MegaPanel({
+function MegaSheet({
   item,
   open,
-  onEscape,
+  onClose,
 }: {
   item: (typeof site.nav)[number];
   open: boolean;
-  onEscape: () => void;
+  onClose: () => void;
 }) {
-  const panel = item.panel;
-  if (!panel) return null;
+  const groups = item.groups;
+  if (!groups) return null;
 
   return (
     <div
-      onKeyDown={(e) => {
-        if (e.key === "Escape") onEscape();
-      }}
       id={`nav-panel-${item.label}`}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
       className={cn(
-        "absolute left-1/2 top-full z-50 w-[44rem] max-w-[calc(100vw-5rem)] -translate-x-1/2 pt-3",
+        "absolute inset-x-0 top-full hidden border-b border-line bg-surface lg:block",
         "transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]",
-        open
-          ? "visible translate-y-0 opacity-100"
-          : "invisible -translate-y-1 opacity-0",
+        open ? "visible translate-y-0 opacity-100" : "invisible -translate-y-1 opacity-0",
       )}
     >
-      <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_24px_60px_-28px_oklch(20%_0.02_260/0.30)]">
-        <div className="grid gap-0 sm:grid-cols-[1.15fr_1fr]">
-          <div className="p-5">
-            <p className="text-mark uppercase text-ink-faint">{panel.heading}</p>
-            <ul className="mt-3 space-y-0.5">
-              {panel.menu.map((link) => (
-                <li key={link.label + link.href}>
-                  <Link
-                    href={link.href}
-                    className="block rounded-xl px-3 py-2.5 transition-colors hover:bg-canvas"
+      <div className="mx-auto w-full max-w-[90rem] px-4 pb-12 pt-10 sm:px-6 lg:px-10">
+        {/*
+          COLUMNS ARE FIXED-WIDTH AND PACKED LEFT, not three equal thirds of the
+          container. Measured on the reference, its three column heads sit at
+          x=40, 336 and 608 — roughly 272px apiece, occupying a little over half
+          the sheet and leaving the right side empty. Spread across 1360px the
+          same content reads as a sitemap; packed, it reads as a menu, and the
+          empty right half is what tells you the sheet is a surface rather than a
+          page.
+        */}
+        <div className="grid grid-cols-[repeat(3,minmax(0,17rem))] gap-x-12 gap-y-8">
+          {groups.map((group) => {
+            // `site` is `as const`, so a group without a trailing link has no
+            // `more` property at all rather than an undefined one. `in` is the
+            // narrowing that actually holds for a readonly union.
+            const more = "more" in group ? group.more : null;
+            return (
+            <div key={group.label}>
+              <p className="text-mark text-ink-faint">{group.label}</p>
+              <ul className="mt-5 space-y-6">
+                {group.items.map((link) => (
+                  <li key={link.label + link.href}>
+                    <Link href={link.href} className="group/mi block">
+                      <span className="block text-title-sm text-ink transition-colors group-hover/mi:text-accent-text">
+                        {link.label}
+                      </span>
+                      <span className="mt-1 block max-w-[26rem] text-body-sm leading-relaxed text-ink-soft">
+                        {link.blurb}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              {more && (
+                <Link
+                  href={more.href}
+                  className="group/more mt-7 inline-flex items-center gap-2 text-body text-ink transition-colors hover:text-accent-text"
+                >
+                  {more.label}
+                  <svg
+                    viewBox="0 0 16 16"
+                    aria-hidden
+                    className="h-3.5 w-3.5 transition-transform duration-200 group-hover/more:translate-x-0.5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <span className="block text-body text-ink">{link.label}</span>
-                    <span className="mt-0.5 block text-body-sm leading-relaxed text-ink-soft">
-                      {link.blurb}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* The feature tile is where the matte ground earns its keep: a flat
-              grey block here would read as an empty column. */}
-          <Link
-            href={panel.feature.href}
-            className="matte matte-sage group/feat flex flex-col justify-end p-5 transition-[filter] duration-200 hover:brightness-[0.985]"
-          >
-            <span className="text-title-sm text-ink">{panel.feature.label}</span>
-            <span className="mt-2 text-body-sm leading-relaxed text-ink-soft">
-              {panel.feature.blurb}
-            </span>
-            <span className="mt-4 inline-flex items-center gap-1.5 text-body-sm text-accent-text">
-              Open
-              <svg viewBox="0 0 16 16" aria-hidden className="h-3.5 w-3.5 transition-transform duration-200 group-hover/feat:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 8h10M9 4l4 4-4 4" />
-              </svg>
-            </span>
-          </Link>
+                    <path d="M3 8h10M9 4l4 4-4 4" />
+                  </svg>
+                </Link>
+              )}
+            </div>
+            );
+          })}
         </div>
       </div>
     </div>

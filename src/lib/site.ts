@@ -131,6 +131,14 @@ export const site = {
   /*
     THE TOP RIBBON, AND WHAT OPENS UNDER IT.
 
+    NO PANEL'S TRAILING LINK POINTS AT /contact. Two of them did, and on /contact
+    itself that is a control that navigates to the page you are already reading —
+    the same dead-control defect the header CTA already guards against, which is
+    why the interaction suite caught it. The trailing link is an OVERVIEW, in the
+    reference's sense of "Models Overview ->": somewhere further into the subject,
+    not the conversion path. The conversion path is the pill on the right of the
+    bar, and it is there on every route.
+
     Every destination in `menu` is a route or an anchor that already exists. A
     dropdown is the easiest place on a site to invent structure — four tidy
     columns of links to pages nobody built — and a menu whose items 404 is worse
@@ -145,68 +153,106 @@ export const site = {
     {
       label: "Platform",
       href: "/product",
-      panel: {
-        heading: "One governed record, and the handoff it produces",
-        menu: [
-          { label: "The workspace", href: "/product", blurb: "Finance, events, members, documents and memory on one screen." },
-          { label: "How a handoff works", href: "/#handoff", blurb: "What the next holder inherits, and who has to write it." },
-          { label: "What connects", href: "/#platform", blurb: "The systems an office already runs on, and where Tenure sits." },
-        ],
-        feature: {
-          label: "See it on your own handoff",
-          blurb: "A walkthrough on your organization's real roster, not a demo tenant.",
-          href: "/contact",
+      groups: [
+        {
+          label: "Platform",
+          items: [
+            { label: "The workspace", href: "/product", blurb: "Finance, events, members, documents and memory on one screen." },
+            { label: "What connects", href: "/#platform", blurb: "The systems an office already runs on, and where Tenure sits." },
+          ],
         },
-      },
+        {
+          label: "Mechanism",
+          items: [
+            { label: "How a handoff works", href: "/#handoff", blurb: "What the next holder inherits, and who has to write it." },
+            { label: "The seat, not the person", href: "/#seat", blurb: "Why the record outlives whoever is holding it this year." },
+          ],
+        },
+        {
+          label: "Evidence",
+          items: [
+            { label: "What is live", href: "/trust", blurb: "Thirty-two controls, each with its own limit stated." },
+            { label: "The first deployment", href: "/pilot", blurb: "Where it goes live, and on what terms." },
+          ],
+          more: { label: "The full control register", href: "/trust" },
+        },
+      ],
     },
     {
       label: "Pilot",
       href: "/pilot",
-      panel: {
-        heading: "The first deployment, in the open",
-        menu: [
-          { label: "Where it goes live", href: "/pilot", blurb: "The office, the scope, and the term it runs for." },
-          { label: "Talk to us about yours", href: "/contact", blurb: "What a deployment needs from your side before it starts." },
-        ],
-        feature: {
-          label: "Counted from the code",
-          blurb: "Every number the site states is measured, and says where it came from.",
-          href: "/trust",
+      groups: [
+        {
+          label: "Deployment",
+          items: [
+            { label: "Where it goes live", href: "/pilot", blurb: "The office, the scope, and the term it runs for." },
+          ],
         },
-      },
+        {
+          label: "Before you start",
+          items: [
+            { label: "Talk to us about yours", href: "/contact", blurb: "What a deployment needs from your side before it begins." },
+          ],
+        },
+        {
+          label: "Evidence",
+          items: [
+            { label: "Counted from the code", href: "/trust", blurb: "Every number the site states is measured, and says where from." },
+          ],
+          more: { label: "See the platform", href: "/product" },
+        },
+      ],
     },
     {
       label: "Security",
       href: "/trust",
-      panel: {
-        heading: "What is live, what is not, and the limit on each",
-        menu: [
-          { label: "Controls by area", href: "/trust", blurb: "Thirty-two controls across seven areas, each with its own limit." },
-          { label: "Privacy", href: "/privacy", blurb: "What is collected, what is not, and who can reach it." },
-          { label: "Terms", href: "/terms", blurb: "The agreement that governs an account." },
-        ],
-        feature: {
-          label: "Written from the deployed code",
-          blurb: "Not from an architecture document. Where the two disagree, the deployment wins.",
-          href: "/trust",
+      groups: [
+        {
+          label: "Controls",
+          items: [
+            { label: "Controls by area", href: "/trust", blurb: "Thirty-two controls across seven areas, each with its limit." },
+          ],
         },
-      },
+        {
+          label: "Policies",
+          items: [
+            { label: "Privacy", href: "/privacy", blurb: "What is collected, what is not, and who can reach it." },
+            { label: "Terms", href: "/terms", blurb: "The agreement that governs an account." },
+          ],
+        },
+        {
+          label: "Questions",
+          items: [
+            { label: "Ask the security team", href: "/contact", blurb: "Reviews, questionnaires and anything the page does not answer." },
+          ],
+          more: { label: "Read the full register", href: "/trust" },
+        },
+      ],
     },
     {
       label: "About",
       href: "/story",
-      panel: {
-        heading: "Why a seat, and who is building it",
-        menu: [
-          { label: "The story", href: "/story", blurb: "The handoff that went wrong, and what it turned into." },
-          { label: "Contact", href: "/contact", blurb: "Sales, security, privacy and support, each to the right inbox." },
-        ],
-        feature: {
-          label: "Founded at Simon Business School",
-          blurb: "University of Rochester. Origin and support — never customership.",
-          href: "/story",
+      groups: [
+        {
+          label: "Company",
+          items: [
+            { label: "The story", href: "/story", blurb: "The handoff that went wrong, and what it turned into." },
+          ],
         },
-      },
+        {
+          label: "Talk to us",
+          items: [
+            { label: "Contact", href: "/contact", blurb: "Sales, security, privacy and support, each to the right inbox." },
+          ],
+        },
+        {
+          label: "Origin",
+          items: [
+            { label: "Founded at Simon Business School", href: "/story", blurb: "University of Rochester. Origin and support, never customership." },
+          ],
+          more: { label: "Read the story", href: "/story" },
+        },
+      ],
     },
   ],
 

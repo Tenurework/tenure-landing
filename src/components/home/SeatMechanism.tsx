@@ -151,7 +151,7 @@ export function SeatMechanism() {
   */
 
   return (
-      <Section from="canvas" tone="canvas" backdrop="light" className="overflow-visible lg:pb-24">
+      <Section id="seat" from="canvas" tone="canvas" backdrop="light" className="overflow-visible lg:pb-24">
         <Container>
           <div
             ref={sectionRef}
