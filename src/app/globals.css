@@ -621,24 +621,32 @@
    contrast without the checker needing to resolve a gradient it cannot parse.
    --------------------------------------------------------------------------- */
 @utility matte {
-  position: relative;
-  isolation: isolate;
+  /*
+    THE GRAIN IS A BACKGROUND LAYER, NOT A PSEUDO-ELEMENT — and the first attempt
+    here is worth recording because it looked correct and painted nothing.
+
+    It was an `::after` at `z-index: -1` inside a parent with `isolation: isolate`.
+    Isolation creates a stacking context, so a negative z-index child is painted
+    behind the parent's OWN background rather than behind its content: the noise
+    went under the gradient and disappeared. Raising it above the background would
+    have put it over the text instead, tinting every word.
+
+    Stacking the noise as the first background layer with `background-blend-mode`
+    avoids the problem entirely — it sits between the gradients and the content,
+    which is the only place it belongs, and needs no extra element.
+
+    `soft-light` rather than `multiply`: multiply darkens the whole field toward
+    the noise's own value and the panel goes muddy. Soft-light modulates around
+    the mid-point, which is what makes it read as paper rather than as dirt.
+  */
   background-color: var(--matte-base, oklch(97% 0.006 95));
   background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E"),
     radial-gradient(115% 95% at 12% 0%, var(--matte-a) 0%, transparent 58%),
     radial-gradient(105% 115% at 100% 100%, var(--matte-b) 0%, transparent 55%);
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.5;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-size: 120px 120px;
-    mix-blend-mode: multiply;
-  }
+  background-size: 140px 140px, auto, auto;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: soft-light, normal, normal;
 }
 
 /* Sage — the house hue. Green toward eucalyptus, never toward mint. */
@@ -674,11 +682,8 @@
   --matte-base: oklch(19% 0.014 265);
   --matte-a: oklch(27% 0.055 168);
   --matte-b: oklch(23% 0.050 275);
-
-  &::after {
-    mix-blend-mode: overlay;
-    opacity: 0.35;
-  }
+  /* On a dark ground soft-light lifts rather than sinks, so the noise reads as
+     film grain instead of as dust. Same layer order, no override needed. */
 }
 
 /*

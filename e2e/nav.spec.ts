@@ -200,16 +200,18 @@ test.describe("header navigation", () => {
       const nav = headerNav(page);
       await expect(nav).toBeVisible();
 
-      await expect(nav.locator(`a[href="${item.href}"]`)).toHaveAttribute("aria-current", "page");
+      await expect(nav.locator(`a[data-nav-top][href="${item.href}"]`)).toHaveAttribute("aria-current", "page");
 
       for (const other of site.nav.filter((n) => n.href !== item.href)) {
         await expect(
-          nav.locator(`a[href="${other.href}"]`),
+          nav.locator(`a[data-nav-top][href="${other.href}"]`),
           `${other.href} must not be current on ${item.href}`,
         ).not.toHaveAttribute("aria-current", "page");
       }
       // Exactly one current link in the header, ever.
-      await expect(nav.locator("a[aria-current='page']")).toHaveCount(1);
+      // Scoped to the ribbon: the panel beneath it links to the same routes on
+      // purpose, and those are not the current-page marker.
+      await expect(nav.locator("a[data-nav-top][aria-current='page']")).toHaveCount(1);
     });
   }
 
@@ -232,8 +234,10 @@ test.describe("header navigation", () => {
 
       await expect(page).toHaveURL(new RegExp(`${item.href}$`));
       await expect(page.locator("h1")).toHaveText(H1[item.href]);
-      await expect(nav.locator(`a[href="${item.href}"]`)).toHaveAttribute("aria-current", "page");
-      await expect(nav.locator("a[aria-current='page']")).toHaveCount(1);
+      await expect(nav.locator(`a[data-nav-top][href="${item.href}"]`)).toHaveAttribute("aria-current", "page");
+      // Scoped to the ribbon: the panel beneath it links to the same routes on
+      // purpose, and those are not the current-page marker.
+      await expect(nav.locator("a[data-nav-top][aria-current='page']")).toHaveCount(1);
 
       const survived = await page.evaluate(
         () => (window as unknown as { __clientNav?: string }).__clientNav,

@@ -134,8 +134,15 @@ function ColumnLabel({ children }: { children: ReactNode }) {
 }
 
 export function Handoff() {
+  /*
+    THE `id` EXISTS SO THE RIBBON MENU CAN LINK HERE. Its "how a handoff works"
+    entry first pointed at `#how`, which belonged to a HowItWorks section that had
+    been cut from /product and was rendered by no page at all — a dead fragment
+    the link test caught before it shipped. This is the section that actually
+    answers the question.
+  */
   return (
-    <Section from="surface" tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
+    <Section id="handoff" from="surface" tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
       <Container>
         <SectionHead
           align="center"

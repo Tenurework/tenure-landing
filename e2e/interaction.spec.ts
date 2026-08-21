@@ -794,6 +794,15 @@ test.describe("reduced motion", () => {
                 // laid over their labels: `display:none` would take them out
                 // of the tab order, which is the accessibility bug this avoids.
                 .filter((el) => el.tagName !== "INPUT")
+                // A CLOSED DISCLOSURE IS NOT A FAILED REVEAL. What this test
+                // hunts is content a scroll animation left permanently at
+                // opacity 0 — present, announced, and never shown. The header's
+                // nav panels are opacity 0 AND `visibility: hidden`, which takes
+                // them out of the tab order and the accessibility tree entirely
+                // and is what makes them safe to ship closed; they open on an
+                // explicit act. Checking visibility keeps the original bug in
+                // scope while letting genuinely-closed UI alone.
+                .filter((el) => getComputedStyle(el).visibility !== "hidden")
                 .map(
                   (el) =>
                     `${el.tagName}.${(el.getAttribute("class") ?? "").slice(0, 40)} ${(

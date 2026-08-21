@@ -128,11 +128,86 @@ export const site = {
    * renames them. The one literal that is NOT derived is the footer navigation
    * check, which names a label directly.
    */
+  /*
+    THE TOP RIBBON, AND WHAT OPENS UNDER IT.
+
+    Every destination in `menu` is a route or an anchor that already exists. A
+    dropdown is the easiest place on a site to invent structure — four tidy
+    columns of links to pages nobody built — and a menu whose items 404 is worse
+    than no menu. Where a panel has only two real places to send you, it sends
+    you to two.
+
+    `blurb` is the reason to click, not a restatement of the label. "Security ->
+    Security" teaches nothing; "what is live, what is not, and the limits of
+    each" is the actual promise of that page.
+  */
   nav: [
-    { label: "Platform", href: "/product" },
-    { label: "Pilot", href: "/pilot" },
-    { label: "Security", href: "/trust" },
-    { label: "About", href: "/story" },
+    {
+      label: "Platform",
+      href: "/product",
+      panel: {
+        heading: "One governed record, and the handoff it produces",
+        menu: [
+          { label: "The workspace", href: "/product", blurb: "Finance, events, members, documents and memory on one screen." },
+          { label: "How a handoff works", href: "/#handoff", blurb: "What the next holder inherits, and who has to write it." },
+          { label: "What connects", href: "/#platform", blurb: "The systems an office already runs on, and where Tenure sits." },
+        ],
+        feature: {
+          label: "See it on your own handoff",
+          blurb: "A walkthrough on your organization's real roster, not a demo tenant.",
+          href: "/contact",
+        },
+      },
+    },
+    {
+      label: "Pilot",
+      href: "/pilot",
+      panel: {
+        heading: "The first deployment, in the open",
+        menu: [
+          { label: "Where it goes live", href: "/pilot", blurb: "The office, the scope, and the term it runs for." },
+          { label: "Talk to us about yours", href: "/contact", blurb: "What a deployment needs from your side before it starts." },
+        ],
+        feature: {
+          label: "Counted from the code",
+          blurb: "Every number the site states is measured, and says where it came from.",
+          href: "/trust",
+        },
+      },
+    },
+    {
+      label: "Security",
+      href: "/trust",
+      panel: {
+        heading: "What is live, what is not, and the limit on each",
+        menu: [
+          { label: "Controls by area", href: "/trust", blurb: "Thirty-two controls across seven areas, each with its own limit." },
+          { label: "Privacy", href: "/privacy", blurb: "What is collected, what is not, and who can reach it." },
+          { label: "Terms", href: "/terms", blurb: "The agreement that governs an account." },
+        ],
+        feature: {
+          label: "Written from the deployed code",
+          blurb: "Not from an architecture document. Where the two disagree, the deployment wins.",
+          href: "/trust",
+        },
+      },
+    },
+    {
+      label: "About",
+      href: "/story",
+      panel: {
+        heading: "Why a seat, and who is building it",
+        menu: [
+          { label: "The story", href: "/story", blurb: "The handoff that went wrong, and what it turned into." },
+          { label: "Contact", href: "/contact", blurb: "Sales, security, privacy and support, each to the right inbox." },
+        ],
+        feature: {
+          label: "Founded at Simon Business School",
+          blurb: "University of Rochester. Origin and support — never customership.",
+          href: "/story",
+        },
+      },
+    },
   ],
 
   legal: [
