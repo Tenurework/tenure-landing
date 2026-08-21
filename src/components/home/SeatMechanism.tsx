@@ -26,7 +26,7 @@ import { useOnScreen } from "@/lib/use-on-screen";
  *
  * The `records` count also became a picture. It was a bare NumberFlow digit going
  * 12 -> 34 -> 58, which reads as a counter animating rather than as a quantity
- * accumulating across handoffs. `MemoryCurve` draws the handoff boundaries as
+ * accumulating across handoffs. The stacked cards draw the handoff boundaries as
  * ticks *through* the series, so the point of the section — the line does not
  * reset when the person changes — is the shape of the mark rather than a claim in
  * the caption.
