@@ -62,16 +62,31 @@ export default function ContactPage() {
 
       <Section tone="canvas" backdrop="light" divide={false}>
         <Container>
-          <div className="grid items-start gap-6 lg:grid-cols-[1.1fr_0.9fr] lg:gap-8">
+          {/*
+            A REGULAR GRID, because the old one was not.
+
+            The layout was `lg:grid-cols-[1.1fr_0.9fr]` with `items-start`: the
+            left column held one 255px card and the right stacked two of roughly
+            400px each. That left about 700px of empty white below the primary
+            call to action — the most important card on the page, ending in a void
+            — and two columns whose cards lined up at the top and nowhere else.
+            Uneven column weights plus `items-start` guarantees ragged bottoms.
+
+            Two equal columns that STRETCH to a shared height, then one full-width
+            band beneath them. "What to expect" was always three parallel items,
+            so it belongs across the page rather than stacked in a side column,
+            and moving it there is what lets the two cards above it be equal.
+          */}
+          <div className="grid items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
             {/* The composer. `id` is the target of the header CTA when the
                 visitor is already on /contact — see SiteHeader. `scroll-mt`
                 clears the fixed header so the panel is not tucked under it. */}
-            <Panel className="scroll-mt-24" id="request">
+            <Panel className="flex h-full flex-col scroll-mt-24" id="request">
               <PanelBar
                 title="Request a demo"
                 meta="composed here, sent from your own mail app"
               />
-              <div className="p-5 sm:p-7">
+              <div className="flex flex-1 flex-col p-5 sm:p-7">
                 <p className="max-w-lg leading-relaxed text-ink-soft measure">
                   Tell us what kind of organization you run and which parts of
                   Tenure you want to see. We open exactly those, on a live
@@ -81,70 +96,68 @@ export default function ContactPage() {
                 <div className="mt-6">
                   <WalkthroughRequest />
                 </div>
-
               </div>
             </Panel>
 
             {/* The fallback that cannot be blocked */}
-            <div className="space-y-6">
-              <Panel>
-                <PanelBar title="Write to us directly" meta="every address reaches an owner" />
-                <div className="p-5 sm:p-7">
-                  <p className="text-body leading-relaxed text-ink-soft measure">
-                    No form and no routing queue. Pick the desk that matches what
-                    you need.
-                  </p>
-                  <ul className="mt-4 space-y-2.5">
-                    {DESKS.map((d) => (
-                      <li
-                        key={d.address}
-                        className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1"
-                      >
-                        <span className="text-body-sm text-ink-soft">{d.label}</span>
-                        <a
-                          href={`mailto:${d.address}`}
-                          className="font-mono text-body-sm text-accent-text underline-offset-4 transition-colors hover:text-accent hover:underline"
-                        >
-                          {d.address}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <PanelNote>
-                  Evaluating Tenure for an institution? The{" "}
-                  <a
-                    href="/trust"
-                    className="font-medium text-accent-text underline underline-offset-4 hover:text-accent"
-                  >
-                    security page
-                  </a>{" "}
-                  covers tenant isolation, the access model, audit behaviour and
-                  the AI subprocessor, written for review. Send it to your
-                  reviewer before you send us.
-                </PanelNote>
-              </Panel>
-
-              <Panel>
-                <PanelBar title="What to expect" meta="three things, no surprises" />
-                <ul>
-                  {EXPECT.map((item) => (
+            <Panel className="flex h-full flex-col">
+              <PanelBar title="Write to us directly" meta="every address reaches an owner" />
+              <div className="flex-1 p-5 sm:p-7">
+                <p className="text-body leading-relaxed text-ink-soft measure">
+                  No form and no routing queue. Pick the desk that matches what
+                  you need.
+                </p>
+                <ul className="mt-4 space-y-2.5">
+                  {DESKS.map((d) => (
                     <li
-                      key={item.title}
-                      className="border-b border-line-soft px-5 py-4 last:border-b-0 sm:px-7"
+                      key={d.address}
+                      className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1"
                     >
-                      <h2 className="font-display text-body tracking-tight text-ink">
-                        {item.title}
-                      </h2>
-                      <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft measure">
-                        {item.body}
-                      </p>
+                      <span className="text-body-sm text-ink-soft">{d.label}</span>
+                      <a
+                        href={`mailto:${d.address}`}
+                        className="font-mono text-body-sm text-accent-text underline-offset-4 transition-colors hover:text-accent hover:underline"
+                      >
+                        {d.address}
+                      </a>
                     </li>
                   ))}
                 </ul>
-              </Panel>
-            </div>
+              </div>
+              <PanelNote>
+                Evaluating Tenure for an institution? The{" "}
+                <a
+                  href="/trust"
+                  className="font-medium text-accent-text underline underline-offset-4 hover:text-accent"
+                >
+                  security page
+                </a>{" "}
+                covers tenant isolation, the access model, audit behaviour and
+                the AI subprocessor, written for review. Send it to your
+                reviewer before you send us.
+              </PanelNote>
+            </Panel>
           </div>
+
+          <Panel className="mt-6 lg:mt-8">
+            <PanelBar title="What to expect" meta="three things, no surprises" />
+            {/*
+              Three across, divided by a vertical rule rather than a horizontal
+              one. `gap-px` on a lined background is how you get single-pixel
+              dividers between grid cells without each cell drawing its own border
+              and doubling them at the joins.
+            */}
+            <ul className="grid gap-px bg-line-soft sm:grid-cols-3">
+              {EXPECT.map((item) => (
+                <li key={item.title} className="bg-surface px-5 py-5 sm:px-7 sm:py-6">
+                  <h2 className="font-display text-body text-ink">{item.title}</h2>
+                  <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft">
+                    {item.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </Panel>
         </Container>
       </Section>
     </>
