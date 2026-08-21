@@ -5,6 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
+import { PlatformArt } from "@/components/visuals/hero-art/PlatformArt";
 import { CtaBand } from "@/components/site/CtaBand";
 import { MockCaption, Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
@@ -137,6 +138,7 @@ export default function ProductPage() {
   return (
     <>
       <PageHeader
+        art={<PlatformArt />}
         eyebrow="The platform"
         title={
           <>
@@ -153,8 +155,8 @@ export default function ProductPage() {
             Finance, events, members, documents and institutional memory in one
             governed record, and a handoff packet the next holder inherits already
             written. Below: the data model, what a week looks like on each side of
-            it, and exactly what Tenure connects to. What is live, in validation,
-            on the roadmap or not supported is set out on{" "}
+            it, and exactly what Tenure connects to. Every control, and what
+            verifies it on each build, is set out on{" "}
             <Link href="/trust">Security</Link>.
           </>
         }

@@ -37,7 +37,9 @@ export async function settle(page: Page) {
       step();
     });
   });
-  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => {
+    window.scrollTo(0, 0);
+  });
   await page.waitForTimeout(250);
 }
 
@@ -72,19 +74,55 @@ export async function waitForHydration(page: Page) {
     .addStyleTag({ content: "html{scroll-behavior:auto!important}" })
     .catch(() => {});
 
+  /*
+    SCROLL ONCE, THEN WAIT. Both halves of that matter, and I got each wrong in turn.
+
+    The original swept a full viewport per poll until something revealed, which can
+    outrun the IntersectionObserver it is waiting on: reproduced on /trust, whose
+    single reveal ended up 1,392px above the viewport having never intersected, so
+    the observer had nothing to fire on.
+
+    My first fix called `scrollIntoView` INSIDE the polled function. `waitForFunction`
+    polls on animation frames, so that scrolled the page every frame and starved the
+    observer of a stable frame to measure against — it hung deterministically, which
+    is worse than the flake it replaced.
+
+    Scrolling once, outside the poll, is what both attempts were reaching for: the
+    element is in view, the page is still, and the observer fires on the next frame.
+  */
+  await page.evaluate(() => {
+    /*
+      SCROLL BY COORDINATE, NOT `scrollIntoView`.
+
+      `scrollIntoView` also moves the browser's sequential focus navigation
+      starting point to the element it scrolled to. Nothing is focused, so it is
+      invisible — until a test presses Tab, which then resumes from the middle of
+      the document. nav.spec.ts's keyboard sweep began on the industries rail,
+      never reached the header, and reported "tabbing never reached the menu
+      toggle": a true statement about a starting point this helper had moved.
+      Focusing <body> afterwards does not put it back.
+
+      Computing the offset and calling `window.scrollTo` has no focus semantics at
+      all, which is the property this helper needs.
+    */
+    const el = document.querySelector<HTMLElement>("[data-reveal]");
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    const target = window.scrollY + box.top - window.innerHeight / 2 + box.height / 2;
+    window.scrollTo(0, Math.max(0, target));
+  });
+
   await page.waitForFunction(
-    () => {
-      const all = document.querySelectorAll("[data-reveal]");
-      if (all.length === 0) return true;
-      if (document.querySelector("[data-reveal].is-revealed")) return true;
-      window.scrollBy(0, window.innerHeight);
-      return false;
-    },
+    () =>
+      document.querySelectorAll("[data-reveal]").length === 0 ||
+      !!document.querySelector("[data-reveal].is-revealed"),
     undefined,
-    { timeout: 30_000 },
+    { timeout: 15_000 },
   );
   await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(250);
 }
+
 
 /**
  * Collects genuine first-party page errors. Third-party noise and the

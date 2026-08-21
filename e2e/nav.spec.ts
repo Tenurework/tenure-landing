@@ -531,8 +531,22 @@ test.describe("mobile menu", () => {
     await waitForHydration(page);
     await expect(panel(page)).toHaveCount(0);
 
+    /*
+      THE SWEEP RUNS UNTIL IT FINDS THE TOGGLE, not for a fixed eight tabs.
+
+      Eight was enough when the ribbon was four plain links. Each item now carries
+      a disclosure button beside its link, so the header has eight stops before the
+      toggle is even reached and the sweep ended early — reporting "tabbing never
+      reached the menu toggle", which is a fact about the loop bound rather than
+      about the page.
+
+      The assertion that matters is unchanged and is still made at every single
+      stop: nothing inside the closed mobile panel may be focusable. The bound is
+      now a generous ceiling that exists only to stop an infinite loop if the
+      toggle is ever removed.
+    */
     let reachedToggle = false;
-    for (let i = 1; i <= 8; i++) {
+    for (let i = 1; i <= 24 && !reachedToggle; i++) {
       await page.keyboard.press("Tab");
       const info = await focusInfo(page);
       expect(

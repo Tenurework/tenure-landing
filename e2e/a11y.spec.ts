@@ -74,23 +74,57 @@ async function open(page: Page, path: string) {
    */
   await page.addStyleTag({ content: "html{scroll-behavior:auto!important}" });
 
-  // Proof the observer is live. It used to simply wait for the first reveal,
-  // which assumed one sat in the opening viewport — true until the hero's
-  // above-the-fold reveals were removed so its copy and CTAs paint with the
-  // document. It now nudges the page down until something reveals, which proves
-  // the same thing without assuming where the first reveal happens to live.
+  /*
+    SCROLL ONCE, THEN WAIT — proof the reveal observer is live.
+
+    This used to sweep a full viewport per poll until something revealed, and that
+    can outrun the IntersectionObserver it is waiting on. Reproduced on /trust: its
+    single reveal ended up 1,392px ABOVE the viewport having never intersected, so
+    the observer had nothing to fire on, this waited out its full 30 seconds, and
+    the test's own 30-second budget expired with it. Three /trust cases failed that
+    way, deterministically, and passed the moment the suite was run as a subset —
+    which is what made it look like flake.
+
+    It only surfaced when /trust lost the sections carrying its other reveals. With
+    several on a page one of them always happened to land in view; a helper that
+    depends on that fails on whichever page is edited next.
+
+    Scrolling the element into view once, outside the polled function, is the fix.
+    Doing it INSIDE the poll — which I tried first — scrolls the page every
+    animation frame and starves the observer of a stable frame to measure against,
+    which hangs deterministically rather than intermittently.
+  */
+  await page.evaluate(() => {
+    /*
+      SCROLL BY COORDINATE, NOT `scrollIntoView`.
+
+      `scrollIntoView` also moves the browser's sequential focus navigation
+      starting point to the element it scrolled to. Nothing is focused, so it is
+      invisible — until a test presses Tab, which then resumes from the middle of
+      the document. nav.spec.ts's keyboard sweep began on the industries rail,
+      never reached the header, and reported "tabbing never reached the menu
+      toggle": a true statement about a starting point this helper had moved.
+      Focusing <body> afterwards does not put it back.
+
+      Computing the offset and calling `window.scrollTo` has no focus semantics at
+      all, which is the property this helper needs.
+    */
+    const el = document.querySelector<HTMLElement>("[data-reveal]");
+    if (!el) return;
+    const box = el.getBoundingClientRect();
+    const target = window.scrollY + box.top - window.innerHeight / 2 + box.height / 2;
+    window.scrollTo(0, Math.max(0, target));
+  });
   await page.waitForFunction(
-    () => {
-      const all = document.querySelectorAll("[data-reveal]");
-      if (all.length === 0) return true;
-      if (document.querySelector("[data-reveal].is-revealed")) return true;
-      window.scrollBy(0, window.innerHeight);
-      return false;
-    },
+    () =>
+      document.querySelectorAll("[data-reveal]").length === 0 ||
+      !!document.querySelector("[data-reveal].is-revealed"),
     undefined,
-    { timeout: 30_000 },
+    { timeout: 15_000 },
   );
-  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.evaluate(() => {
+    window.scrollTo(0, 0);
+  });
 
   await settle(page);
 

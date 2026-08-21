@@ -7,19 +7,30 @@ export function PageHeader({
   eyebrow,
   title,
   intro,
+  art,
   children,
 }: {
   eyebrow: string;
   title: ReactNode;
   intro?: ReactNode;
+  /**
+   * The page's own artwork, sitting behind the headline.
+   *
+   * WHAT THIS REPLACED: one radial wash of 8% accent, identical on all five
+   * routes. It was the same picture everywhere, which is the same as no picture —
+   * a page that looks like every other page has not said anything about itself.
+   *
+   * Each artwork paints at the flanks and leaves the middle empty by composition,
+   * so the headline never crosses pigment. `art` falls back to nothing rather
+   * than to the old wash: a route without artwork should look deliberate rather
+   * than half-decorated.
+   */
+  art?: ReactNode;
   children?: ReactNode;
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-line">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 [background:radial-gradient(70%_60%_at_50%_-10%,color-mix(in_oklab,var(--accent)_8%,transparent),transparent_60%)]"
-      />
+    <section className="relative isolate overflow-hidden border-b border-line">
+      {art}
       <Container className="relative pb-14 pt-32 text-center sm:pb-16 sm:pt-40">
         {/*
           NOTHING IN THE FIRST VIEWPORT ANIMATES IN, the same rule Hero.tsx:12-35
