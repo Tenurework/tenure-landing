@@ -30,8 +30,8 @@ const ITEMS: { q: string; a: ReactNode }[] = [
         imports with whatever the columns were called; PDF, Word, Excel and PowerPoint
         open in place rather than downloading to someone&rsquo;s laptop; deadlines
         publish to Outlook, Google or Apple Calendar through one signed link per
-        person. Beyond that the integration catalog covers eighteen providers, Slack,
-        Microsoft 365, Google Workspace, Box and Zoom among them.{" "}
+        person. Beyond that, the integration catalog covers Slack, Microsoft 365, Google
+        Workspace, Box, Dropbox and Zoom among others.{" "}
         <Link href="/product" className={LINK}>
           Everything it connects to &rarr;
         </Link>

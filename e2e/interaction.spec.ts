@@ -905,7 +905,13 @@ test.describe("without JavaScript", () => {
       await expect(heroCopy).toBeVisible();
       expect((await heroCopy.innerText()).trim().length).toBeGreaterThan(80);
 
-      await expect(page.getByText(site.metrics[0].label)).toBeVisible();
+      // The metrics band this used to sample is gone. What the assertion was for
+      // is that content BELOW the fold still paints without a script runtime, so
+      // it asks the same of the industries rail, which is now the first thing
+      // after the hero that a reveal wraps.
+      await expect(
+        page.getByRole("region", { name: /Systems Tenure connects to/i }),
+      ).toBeVisible();
 
       const questions = page.locator("details[name='faq'] summary");
       expect(await questions.count()).toBeGreaterThan(2);

@@ -306,52 +306,6 @@ export const site = {
     },
   ],
 
-  /**
-   * Every number here is counted from the deploying repository, not estimated,
-   * and each names a MECHANISM rather than an outcome. That rule exists because
-   * the pilot has not run: there is no telemetry measuring onboarding time, so
-   * a "3-day onboarding" counter was theatre. A behaviour you can verify beats
-   * a number nobody measured.
-   *
-   * `claimId` links each to its row in docs/PUBLIC-CLAIMS-REGISTER.md, and
-   * claims.spec.ts fails if a metric appears without one.
-   */
-  metrics: [
-    {
-      value: 26,
-      suffix: "",
-      // The sub-line used to boast that the 209 seats were "built from the
-      // office's own leadership roster rather than invented for a demo". Two
-      // reviewers read that, correctly, as an advertisement that the demo
-      // environment holds real student records — and the site then offered to
-      // screen-share one. The structural point survives without it: what was
-      // modelled is the office's org chart, not its people.
-      label: "organizations modelled",
-      sub: "209 seats, modelled on the office’s real organizational structure",
-      claimId: "C-014",
-    },
-    {
-      value: 2,
-      suffix: "-gate",
-      label: "approval chain, 7 request types",
-      sub: "every decision appends a permanent step naming the seat that made it",
-      claimId: "C-006",
-    },
-    {
-      value: 0,
-      suffix: "",
-      label: "records deleted at offboarding",
-      sub: "a seat carrying history refuses deletion, access is revoked, the record is not",
-      claimId: "C-011",
-    },
-    {
-      value: 163,
-      suffix: "",
-      label: "end-to-end tests",
-      sub: "run against a real database on every build, alongside more than 1,100 unit tests",
-      claimId: "C-015",
-    },
-  ],
 
   /**
    * Who the seat model serves. Same mechanism, a durable position that keeps

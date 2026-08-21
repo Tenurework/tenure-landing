@@ -184,8 +184,8 @@ export default function PrivacyPage() {
                     </p>
                     <ul>
                     <li>
-                    <strong>Amazon Web Services</strong>{" "}
-, hosting, database and
+                    <strong>Amazon Web Services</strong>,
+hosting, database and
                     document storage for the application. Data is held in AWS&rsquo;s
                     United States regions. Encryption at rest uses AWS-managed keys;
                     there is no customer-managed key option today.
@@ -201,8 +201,8 @@ export default function PrivacyPage() {
                     a file to be included, and /trust’s "document file contents are not
                     indexed" made that reading more likely, not less.
                     */}
-                    <strong>Amazon Bedrock, and Anthropic</strong>{" "}
-, the model providers. Synthesis
+                    <strong>Amazon Bedrock, and Anthropic</strong>,
+the model providers. Synthesis
                     runs on Bedrock, inside AWS, using an Anthropic model; the Anthropic
                     API is retained as a direct fallback, and record text leaves AWS when
                     that path is the one configured. Either receives permission-filtered
@@ -214,8 +214,8 @@ export default function PrivacyPage() {
                     terms rather than ours, ask us for the terms in force.
                     </li>
                     <li>
-                    <strong>Vercel</strong>{" "}
-, hosting for this marketing website
+                    <strong>Vercel</strong>,
+hosting for this marketing website
                     only. It does not touch your organization&rsquo;s record.
                     </li>
                     </ul>
@@ -326,8 +326,8 @@ export default function PrivacyPage() {
                     fixture cleanup. Stating it as an available control implied a
                     self-service or automated path that does not exist.
                     */}
-                    <strong>Your personal account details</strong>{" "}
-, name, email,
+                    <strong>Your personal account details</strong>,
+name, email,
                     profile, can be removed or anonymized on request. There is no
                     self-service control for this and no automated routine behind it: we
                     do it by hand, and assignments and audit rows that reference you are

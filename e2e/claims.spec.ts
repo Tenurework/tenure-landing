@@ -1047,39 +1047,22 @@ test.describe("claims register integrity", () => {
 /* 4. METRICS                                                                  */
 /* ========================================================================== */
 
-test.describe("metrics band", () => {
-  test("every animated metric is backed by a live claim", () => {
-    const problems: string[] = [];
+/*
+  THE METRICS BAND IS GONE, and its guard goes with it.
 
-    for (const metric of site.metrics) {
-      const label = `${metric.value}${metric.suffix} ${metric.label}`;
-      const claimId = (metric as { claimId?: string }).claimId;
+  The section showed four animated figures under the heading "Counted, not
+  projected": 26 organizations modelled, a 2-gate approval chain, 0 records
+  deleted at offboarding, 163 end-to-end tests. Every one was true and every one
+  was inward-facing — seed data, a test count, and a feature phrased as a
+  statistic. None of them answers a question a buyer is asking, and the heading
+  argued with an imagined skeptic who had not spoken yet.
 
-      if (!claimId?.trim()) {
-        problems.push(
-          `metric "${label}" has no claimId. A number with no row in the register is a ` +
-            `number nobody counted.`,
-        );
-        continue;
-      }
-      const claim = claimById.get(claimId);
-      if (!claim) {
-        problems.push(`metric "${label}" cites ${claimId}, which is not in the register.`);
-        continue;
-      }
-      if (claim.availability !== "live" && claim.availability !== "ci-verified") {
-        problems.push(
-          `metric "${label}" cites ${claimId}, which is "${claim.availability}", not live.\n` +
-            `    ${claim.claim}\n    Only a measured, deployed mechanism belongs in the ` +
-            `metrics band — a target is not a metric.`,
-        );
-      }
-    }
-
-    expect(site.metrics.length, "the metrics band is empty").toBeGreaterThan(0);
-    expect(problems, report(problems)).toHaveLength(0);
-  });
-});
+  The guard that lived here required each figure to cite a live register row, so
+  that a number nobody counted could not reach the page. It was doing real work
+  and is deleted only because the thing it guarded is deleted. If a metrics band
+  ever returns, this test should return with it rather than being rewritten from
+  scratch: git log this file.
+*/
 
 /* ========================================================================== */
 /* 5. SPACING REGRESSIONS                                                      */

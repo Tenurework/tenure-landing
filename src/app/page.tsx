@@ -6,7 +6,6 @@ import { Handoff } from "@/components/home/Handoff";
 import { AiOnboarding } from "@/components/home/AiOnboarding";
 import { OfficeConsole } from "@/components/home/OfficeConsole";
 import { Industries } from "@/components/home/Industries";
-import { MetricsBand } from "@/components/home/MetricsBand";
 import { ConnectorMarquee } from "@/components/visuals/ConnectorMarquee";
 import { SupportedBy } from "@/components/home/SupportedBy";
 import { Faq } from "@/components/home/Faq";
@@ -45,7 +44,6 @@ export const metadata = pageMetadata("/");
  *                      and the AI subprocessor disclosure
  *   7. OfficeConsole — what the body above gets
  *   8. Audiences     — who the model serves, across four sectors
- *   9. MetricsBand   — evidence, counted from the deploying repository
  *  10. Faq / CtaBand — objections, then the ask
  *
  * REMOVED, AND WHY — each was a duplicate, not a cut:
@@ -77,7 +75,6 @@ export default function HomePage() {
       <Handoff />
       <AiOnboarding />
       <OfficeConsole />
-      <MetricsBand />
       <Faq />
       <CtaBand />
     </>

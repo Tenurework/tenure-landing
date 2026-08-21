@@ -664,6 +664,23 @@
   background-blend-mode: soft-light, normal, normal;
 }
 
+/*
+  A HEAVIER GRAIN, for the large surfaces.
+
+  The same noise reads differently at different sizes: over a 26rem card it is
+  clearly a texture, and over the hero's full-width ground the tile repeats so
+  many times that it averages out into flatness. This raises the opacity and
+  drops the tile to 110px so the structure survives at that scale. Same layer
+  order, same blend — only the density changes.
+*/
+@utility matte-coarse {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"),
+    radial-gradient(120% 100% at 8% 0%, var(--matte-a) 0%, transparent 90%),
+    radial-gradient(115% 120% at 100% 100%, var(--matte-b) 0%, transparent 88%);
+  background-size: 110px 110px, auto, auto;
+}
+
 /* Sage — the house hue. Green toward eucalyptus, never toward mint. */
 @utility matte-sage {
   --matte-base: oklch(93.5% 0.030 160);
