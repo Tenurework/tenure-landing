@@ -50,7 +50,16 @@
      what made the site read as a warm editorial brochure rather than a product
      — warmth is a strong stylistic claim and it was applied to every pixel by
      default. Colour now enters the page through photography only. */
-  --canvas: oklch(100% 0 0);
+  /*
+    OFF-WHITE, NOT PAPER-WHITE. cohere.com's body really is #FFFFFF, but its page
+    never reads as a sheet of it: grain, pastel gradient panels and #FAFAFA bands
+    are doing the softening. Tenure had the pure white without any of that, so the
+    canvas was the brightest thing on screen and every section edge cut against it.
+
+    This is a 1.6% step down with a trace of warmth — invisible as a colour,
+    decisive as a ground. Cards stay at true white so they still lift off it.
+  */
+  --canvas: oklch(98.4% 0.0025 95);
   --surface: oklch(100% 0 0);
   --surface-subtle: oklch(98.3% 0 0);       /* #FAFAFA, the only grey band     */
   --surface-elevated: oklch(100% 0 0);
@@ -68,6 +77,10 @@
   --text-secondary: oklch(50% 0.015 290);
   --text-muted: oklch(55% 0.012 290);
   --text-inverse: oklch(98% 0 0);
+
+  /* Selection tint: strong enough to read as a mark, light enough to keep the
+     ink on top of it legible (near-black on this lands well past 4.5:1). */
+  --selection: oklch(88% 0.075 158);
 
   /* Lines. #F2F2F2 hairlines: present when you look for them, invisible when you
      do not. `border-strong` still carries the 3:1 non-text requirement. */
@@ -447,9 +460,18 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
+  /*
+    SELECTION IS A LIGHT GREEN WASH, not a dark green slab.
+
+    It was `--accent` (a deep forest green) behind white text, so dragging across
+    a paragraph replaced it with a heavy dark bar — the selection outweighed the
+    text it was meant to mark, and on a light page it reads as damage. A tint
+    behind the original ink is what a highlighter does: the words stay the thing
+    you are looking at.
+  */
   ::selection {
-    background: var(--accent);
-    color: var(--on-accent);
+    background: var(--selection);
+    color: var(--text);
   }
 
   /* Visible in both themes, and never relies on colour alone. */
@@ -575,6 +597,106 @@
 /* Film grain: one 120px tile of fractal noise, inlined at ~300 bytes. Tiling a
    single small raster is what keeps this off the paint path — a full-viewport
    feTurbulence filter is one of the most expensive things a browser can do. */
+/* ---------------------------------------------------------------------------
+   MATTE GRADIENT SURFACES.
+
+   The brief's word for what was missing is "matte", and it is the right one.
+   cohere.com never fills a panel with a flat colour: its feature tiles are large
+   pastel fields — lilac, periwinkle, bone, ash — each a two-point gradient with
+   film grain over it. Grain is the whole trick. A pure CSS gradient on an 8-bit
+   display bands into visible stripes and reads as a cheap fill; noise breaks the
+   banding up and the surface stops looking like maths and starts looking like a
+   printed ground.
+
+   Three layers, always in this order:
+     1. a large radial from the top-left, carrying the hue
+     2. a second radial from the bottom-right in a neighbouring hue, so the field
+        turns across its diagonal instead of fading in one direction
+     3. grain, at an opacity low enough to be felt rather than seen
+
+   The stops are deliberately close in lightness. A gradient that travels a long
+   way in lightness is a spotlight; one that travels mostly in hue is a material.
+
+   Every variant is high-lightness by construction, so dark ink on it clears
+   contrast without the checker needing to resolve a gradient it cannot parse.
+   --------------------------------------------------------------------------- */
+@utility matte {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--matte-base, oklch(97% 0.006 95));
+  background-image:
+    radial-gradient(115% 95% at 12% 0%, var(--matte-a) 0%, transparent 58%),
+    radial-gradient(105% 115% at 100% 100%, var(--matte-b) 0%, transparent 55%);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 120px 120px;
+    mix-blend-mode: multiply;
+  }
+}
+
+/* Sage — the house hue. Green toward eucalyptus, never toward mint. */
+@utility matte-sage {
+  --matte-base: oklch(96.5% 0.012 158);
+  --matte-a: oklch(92% 0.045 162);
+  --matte-b: oklch(94% 0.030 128);
+}
+
+/* Iris — the cool counterweight, for surfaces that must not read as "money". */
+@utility matte-iris {
+  --matte-base: oklch(96% 0.012 285);
+  --matte-a: oklch(91% 0.050 282);
+  --matte-b: oklch(93.5% 0.035 255);
+}
+
+/* Clay — warm, for anything about people and handover rather than systems. */
+@utility matte-clay {
+  --matte-base: oklch(96.5% 0.014 70);
+  --matte-a: oklch(92.5% 0.045 55);
+  --matte-b: oklch(94.5% 0.028 95);
+}
+
+/* Ash — the quiet one. Reads as paper stock, not as a colour choice. */
+@utility matte-ash {
+  --matte-base: oklch(96.8% 0.004 250);
+  --matte-a: oklch(93.5% 0.014 250);
+  --matte-b: oklch(95.5% 0.010 220);
+}
+
+/* Deep — the same construction inverted, for dark sections. */
+@utility matte-deep {
+  --matte-base: oklch(19% 0.014 265);
+  --matte-a: oklch(27% 0.055 168);
+  --matte-b: oklch(23% 0.050 275);
+
+  &::after {
+    mix-blend-mode: overlay;
+    opacity: 0.35;
+  }
+}
+
+/*
+  THE BRAND RULE. Cohere marks the active row of its feature list with a single
+  hairline running coral -> indigo -> blue: the only place on the site where more
+  than one hue appears at once, which is exactly what makes it read as a signature
+  rather than as decoration. Tenure's runs amber -> its own green -> indigo, so it
+  passes through the brand rather than around it.
+*/
+@utility rule-brand {
+  background-image: linear-gradient(
+    90deg,
+    oklch(72% 0.135 55),
+    oklch(58% 0.105 158),
+    oklch(55% 0.125 268)
+  );
+}
+
 @utility grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 120px 120px;

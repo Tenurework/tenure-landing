@@ -140,9 +140,14 @@ export const site = {
     { label: "Terms", href: "/terms" },
   ],
 
+  /*
+    LINKEDIN ONLY. The X handle was listed in the footer and published to search
+    engines through `sameAs`, which asserts to Google that the profile is ours.
+    There is one account today, so there is one link here — a dead social icon
+    costs more trust than an absent one.
+  */
   socials: {
     linkedin: "https://www.linkedin.com/company/tenurework",
-    x: "https://x.com/tenurework",
   },
 
   /**

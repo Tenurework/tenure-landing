@@ -23,7 +23,7 @@ export function StructuredData() {
     },
     description: site.description,
     founder: site.founders.map((f) => ({ "@type": "Person", name: f.name })),
-    sameAs: [site.socials.linkedin, site.socials.x],
+    sameAs: [site.socials.linkedin],
   };
 
   const website = {

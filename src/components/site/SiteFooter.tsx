@@ -114,24 +114,33 @@ export function SiteFooter() {
               </Link>
             ))}
             <span aria-hidden className="h-3 w-px bg-line-dark" />
+            {/*
+              MARKS, NOT WORDS — and only the two that exist. "LinkedIn / X" set
+              in body copy read as two more footer links competing with Privacy
+              and Terms; a glyph is recognised without being read. Each keeps a
+              visually-hidden label, because an icon-only link with no accessible
+              name is announced as its URL.
+            */}
             <a
               href={site.socials.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-inverse/75 transition-colors hover:text-inverse"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-inverse/70 transition-colors hover:bg-inverse/10 hover:text-inverse"
             >
-              LinkedIn
+              <svg viewBox="0 0 24 24" aria-hidden className="h-[18px] w-[18px]" fill="currentColor">
+                <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0Z" />
+              </svg>
+              <span className="sr-only">Tenure on LinkedIn</span>
             </a>
-            <span aria-hidden className="text-inverse/60">
-              /
-            </span>
             <a
-              href={site.socials.x}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-inverse/75 transition-colors hover:text-inverse"
+              href={`mailto:${site.email.general}`}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full text-inverse/70 transition-colors hover:bg-inverse/10 hover:text-inverse"
             >
-              X
+              <svg viewBox="0 0 24 24" aria-hidden className="h-[19px] w-[19px]" fill="none" stroke="currentColor" strokeWidth="1.6">
+                <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
+                <path d="m3.5 7 7.6 5.3a1.6 1.6 0 0 0 1.8 0L20.5 7" strokeLinecap="round" />
+              </svg>
+              <span className="sr-only">Email Tenure</span>
             </a>
           </div>
         </div>

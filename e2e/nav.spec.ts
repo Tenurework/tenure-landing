@@ -324,7 +324,6 @@ test("footer links cover nav, legal, contact and social, and every internal one 
   expect(hrefs, "footer is missing the contact CTA").toContain("/contact");
   expect(hrefs, "footer is missing the email link").toContain(`mailto:${site.email.general}`);
   expect(hrefs).toContain(site.socials.linkedin);
-  expect(hrefs).toContain(site.socials.x);
 
   const broken: string[] = [];
   for (const a of anchors) {
@@ -389,9 +388,9 @@ test.describe("external links", () => {
     }
 
     // The site really does link off-site; an empty crawl must not pass.
-    expect([...seen].sort()).toEqual(
-      [site.socials.linkedin, site.socials.x].sort(),
-    );
+    // Every social account we actually have, and nothing we do not. This used to
+    // name an X profile that is not ours to publish.
+    expect([...seen].sort()).toEqual(Object.values(site.socials).sort());
     expect(offenders, "external links without a safe new-tab contract").toEqual([]);
   });
 
