@@ -206,37 +206,151 @@ function Badge({
 }
 
 /* ------------------------------------------------------------------ chart */
-const PTS = [38, 52, 46, 60, 54, 70, 64, 82, 78, 96];
+/*
+  A REAL BALANCE, NOT A WAVE.
+
+  This was `[38, 52, 46, 60, 54, 70, 64, 82, 78, 96]` — a perfectly alternating
+  zig-zag climbing at a constant rate, drawn through a bezier smoother so it came
+  out as a sine wave. Nothing about it was a treasury: balances do not oscillate
+  every week and they do not rise on a ruler. It read as a decorative squiggle
+  because that is what it was, and a decorative squiggle inside a product mock
+  quietly says the product is decorative too.
+
+  These are weekly closing balances for one term, and they are the SAME EVENTS as
+  the ledger rows printed underneath the chart:
+
+    w5   +8,400   term allocation from the office   -> the step
+    w8     -240   Fenwick Print, banners            -> the first notch
+    w10    +180   reimbursed catering overpay
+    w12  -1,500   gala venue deposit                -> the cliff
+    w13  +1,700   sponsorship cleared
+
+  So the shape is legible: a flat carry-over, one large arrival, a slow bleed of
+  small spending, and a deposit that visibly costs more than a month of it. The
+  small unexplained wiggles between them are the point as well — real series are
+  never smooth, and a chart with no noise is a chart nobody measured.
+
+  Straight segments, not curves. Interpolating between weekly closes invents
+  values that were never true, and the curve is exactly what made the old one
+  look like weather. Real finance charts are angular because the data is.
+*/
+const BALANCES = [
+  5200, 5180, 5060, 5010, 13410, 13360, 13120, 12880, 12820, 13000, 12960, 11460,
+  12180, 12400,
+];
+const BUDGET = 18000;
+
 function AreaChart({ reduce }: { reduce: boolean | null }) {
   const w = 320;
   const h = 76;
-  const max = 110;
-  const step = w / (PTS.length - 1);
-  const pt = (v: number, i: number): [number, number] => [i * step, h - (v / max) * h];
-  let line = "";
-  PTS.forEach((v, i) => {
+  const top = 6;
+  const max = BUDGET * 1.04;
+  const step = w / (BALANCES.length - 1);
+  const pt = (v: number, i: number): [number, number] => [
+    i * step,
+    top + (h - top) * (1 - v / max),
+  ];
+
+  const line = BALANCES.map((v, i) => {
     const [x, y] = pt(v, i);
-    if (i === 0) line += `M${x.toFixed(1)} ${y.toFixed(1)}`;
-    else {
-      const [px, py] = pt(PTS[i - 1], i - 1);
-      const cx = (px + x) / 2;
-      line += `C${cx.toFixed(1)} ${py.toFixed(1)} ${cx.toFixed(1)} ${y.toFixed(1)} ${x.toFixed(1)} ${y.toFixed(1)}`;
-    }
-  });
-  const last = pt(PTS[PTS.length - 1], PTS.length - 1);
+    return `${i === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+  }).join("");
+
+  const last = pt(BALANCES[BALANCES.length - 1], BALANCES.length - 1);
+  const budgetY = pt(BUDGET, 0)[1];
+
   return (
-    <svg viewBox={`0 0 ${w} ${h + 6}`} className="mt-2 w-full" preserveAspectRatio="none">
+    <svg
+      viewBox={`0 0 ${w} ${h + 6}`}
+      className="mt-2 w-full"
+      role="img"
+      aria-label={`Treasury balance by week, ending at $${BALANCES[BALANCES.length - 1].toLocaleString()} against an $${BUDGET.toLocaleString()} budget`}
+    >
       <defs>
         <linearGradient id="dm-area" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="var(--chart-1)" stopOpacity="0.2" />
+          <stop offset="0%" stopColor="var(--chart-1)" stopOpacity="0.22" />
           <stop offset="100%" stopColor="var(--chart-1)" stopOpacity="0" />
         </linearGradient>
       </defs>
-      <m.path d={`${line}L${w} ${h}L0 ${h}Z`} fill="url(#dm-area)" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduce ? 0 : 0.7, delay: 0.3 }} />
+
+      {/* Chart furniture. Gridlines are what let a reader estimate a value
+          instead of admiring a shape, and their absence is most of why the old
+          one read as an illustration rather than as an instrument. */}
+      {[0.25, 0.5, 0.75].map((f) => (
+        <line
+          key={f}
+          x1="0"
+          x2={w}
+          y1={top + (h - top) * f}
+          y2={top + (h - top) * f}
+          stroke="var(--border)"
+          strokeWidth="1"
+        />
+      ))}
+
+      {/* The budget ceiling the number above the chart is measured against. */}
+      <line
+        x1="0"
+        x2={w}
+        y1={budgetY}
+        y2={budgetY}
+        stroke="var(--border-strong)"
+        strokeWidth="1"
+        strokeDasharray="3 3"
+        opacity="0.5"
+      />
+
+      <m.path
+        d={`${line}L${w} ${h}L0 ${h}Z`}
+        fill="url(#dm-area)"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.35 }}
+      />
       {/* pathLength is an SVG attribute animation, part of the core animation
           feature set — not a layout or drag feature — so it survives domAnimation. */}
-      <m.path d={line} fill="none" stroke="var(--chart-1)" strokeWidth="2" strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: reduce ? 0 : 1.1, ease: EASE }} />
-      <m.circle cx={last[0]} cy={last[1]} r="3.5" fill="var(--chart-1)" stroke="var(--surface)" strokeWidth="2" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: reduce ? 0 : 0.3, delay: 1.1 }} />
+      <m.path
+        d={line}
+        fill="none"
+        stroke="var(--chart-1)"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: reduce ? 0 : 1.1, ease: EASE }}
+      />
+
+      {/* The two events worth marking, at the points where they happened. */}
+      {[4, 11].map((i) => {
+        const [x, y] = pt(BALANCES[i], i);
+        return (
+          <m.circle
+            key={i}
+            cx={x}
+            cy={y}
+            r="2.25"
+            fill="var(--surface)"
+            stroke="var(--chart-1)"
+            strokeWidth="1.5"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduce ? 0 : 0.3, delay: reduce ? 0 : 0.9 }}
+          />
+        );
+      })}
+
+      <m.circle
+        cx={last[0]}
+        cy={last[1]}
+        r="3.5"
+        fill="var(--chart-1)"
+        stroke="var(--surface)"
+        strokeWidth="2"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: reduce ? 0 : 0.3, delay: reduce ? 0 : 1.1 }}
+      />
     </svg>
   );
 }
