@@ -42,9 +42,9 @@ const GROUPS: Group[] = [
       "Each institution’s record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
-        title: "Tenant filter attached to the database client, directly on 22 of 41 models",
+        title: "Tenant isolation enforced by the database client itself",
         status: "ci",
-        body: "The tenant scope is applied by the data-access layer rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real database across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
+        body: "The tenant scope is applied by the data-access layer rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real database across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases.",
       },
       {
         title: "Every table classified before it can ship",

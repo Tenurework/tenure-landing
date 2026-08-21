@@ -249,7 +249,7 @@ const SUPPORT: string[] = [
   // excludes *.itest.ts from the default run precisely because those are the ones
   // needing a live PostgreSQL, so attaching "against a real database" to the unit
   // tests — as this line used to — described the opposite of what runs.
-  "163 end-to-end tests run against a real database on every build, alongside more than 1,100 unit tests.",
+  "An automated suite runs against a real database on every release, so a regression is caught before it ships rather than during your term.",
   "Anything above that matters to you goes into the written scope, which is what the term actually runs on.",
 ];
 

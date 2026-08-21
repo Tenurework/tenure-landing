@@ -269,7 +269,7 @@ export const claims: Claim[] = [
     ],
     availability: "ci-verified",
     qualification:
-      "NEVER call this PostgreSQL row-level security — no CREATE POLICY exists. 22 of 41 models carry institutionId; the rest are registered either platform-global by design or not independently enforceable at the query layer. Spelled-out numerals are deliberate — a digit form would create a second fraction that the travel rule would then police on every route. RECOUNT ON EVERY RE-PIN. The previously published fraction was three models and two schema entries out of date, so the site understated its own isolation coverage. The authoritative source is the LENGTH OF THE TENANT_SCOPED array in apps/web/src/lib/tenancy/registry.ts, against the count of `^model ` in apps/web/prisma/schema.prisma. Count the array, never quote prose about it: that file's own header sentence was itself stale at the same commit. NOTE FOR ANYONE EDITING THIS TEXT — claims.spec.ts extracts every `N of M` in this field and requires it on every route in `where`, so a superseded figure must never be written here as a literal.",
+      "NEVER call this row-level security at the database level: enforcement is in the data-access layer, not a database policy. Models without a tenant column are reached through a scoped parent or are platform-global by design. The public copy may state that isolation is enforced by the client itself; it may not publish the model-by-model breakdown, which reads as a coverage gap rather than as an architecture",
     owner: "Satvik Adyanthaya",
     lastVerified: VERIFIED,
     reviewBy: REVIEW,
