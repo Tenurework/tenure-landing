@@ -3,6 +3,20 @@ import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/Reveal";
 import { Backdrop, type BackdropVariant } from "@/components/visuals/Backdrop";
 
+/*
+  1,360px OF CONTENT, WHICH MAKES THE BOX 1,440.
+
+  Cohere's measured content width is 1360 inside a 1440 viewport — 40px of page
+  margin either side. The obvious translation, `max-w-[85rem]` (1360) plus
+  `px-10`, is wrong by exactly the padding: it caps the BOX at 1360 and then eats
+  80 of it, leaving 1280 of content starting at x=80. Full-bleed elements that
+  pad themselves from the viewport start at x=40, so the two systems drifted 40px
+  apart and the nav floated in from the edges.
+
+  The max-width has to include the gutters. 90rem with `px-10` puts content at
+  x=40 with 1360 to work in, which is both what Cohere measures and what a
+  full-bleed row already does.
+*/
 export function Container({
   className,
   children,
@@ -11,7 +25,7 @@ export function Container({
   children: ReactNode;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-[85rem] px-4 sm:px-6 lg:px-10", className)}>
+    <div className={cn("mx-auto w-full max-w-[90rem] px-4 sm:px-6 lg:px-10", className)}>
       {children}
     </div>
   );

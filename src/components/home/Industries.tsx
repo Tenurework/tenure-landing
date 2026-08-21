@@ -88,14 +88,12 @@ export function Industries() {
           role="region"
           aria-label="Industries Tenure is built for — scroll horizontally for more"
           tabIndex={0}
-          className={
-            // `scroll-p*` has to mirror the padding. Snap alignment measures from
-            // the scrollport's content edge, so `snap-start` pulled the first card
-            // flush to x=0 and left scrollLeft sitting at 40 — the page margin was
-            // applied and then immediately scrolled away.
-            "no-scrollbar snap-x snap-mandatory overflow-x-auto px-4 pb-2 " +
-            "scroll-pl-4 sm:px-6 sm:scroll-pl-6 lg:px-10 lg:scroll-pl-10"
-          }
+          // `rail-pad` carries both the inset and the matching `scroll-padding`.
+          // Snap alignment measures from the scrollport's content edge, so
+          // without the scroll-padding `snap-start` pulls the first card flush to
+          // x=0 and leaves scrollLeft at 40 — the margin applied, then scrolled
+          // away.
+          className="no-scrollbar rail-pad snap-x snap-mandatory overflow-x-auto pb-2"
         >
           <ul className="flex gap-4">
             {site.industries.map((ind) => (

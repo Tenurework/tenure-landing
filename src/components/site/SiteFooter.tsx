@@ -15,7 +15,7 @@ export function SiteFooter() {
         own `border-t` — so on a wide viewport the Explore column's last item
         ("About") sat exactly on that line, with the rule crossing the text.
       */}
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-12 pt-16 sm:px-8 sm:pb-14 sm:pt-20">
+      <div className="relative z-10 mx-auto w-full max-w-[90rem] px-4 pb-12 pt-16 sm:px-6 sm:pb-14 sm:pt-20 lg:px-10">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
             <Wordmark tone="paper" />
@@ -95,7 +95,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div className="relative z-10 mx-auto w-full max-w-6xl px-5 pb-8 sm:px-8">
+      <div className="relative z-10 mx-auto w-full max-w-[90rem] px-4 pb-8 sm:px-6 lg:px-10">
         <div className="flex flex-col gap-4 border-t border-line-dark pt-7 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2.5">
             <Logo className="h-4 w-4 text-grove" />

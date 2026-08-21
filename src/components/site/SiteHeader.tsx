@@ -114,7 +114,16 @@ export function SiteHeader() {
         surface,
       )}
     >
-      <div className="mx-auto flex h-[68px] w-full max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
+      {/*
+          THE SHELL SITS ON THE SAME RAILS AS THE CONTENT. When the page container
+          widened to 1360px with 40px margins, this kept `max-w-6xl px-5 sm:px-8`
+          — so the logo sat at x=176 while the sections beneath it started at
+          x=40. The nav floated in from the edges like a different document.
+
+          60px of height rather than 68 is cohere.com's measurement: a fixed bar
+          is permanent furniture, and every pixel of it is taken from the page.
+        */}
+        <div className="mx-auto flex h-[60px] w-full max-w-[90rem] items-center justify-between gap-6 px-4 sm:px-6 lg:px-10">
         <Wordmark />
 
         <nav aria-label="Main" className="hidden items-center gap-0.5 lg:flex">

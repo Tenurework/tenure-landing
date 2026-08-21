@@ -630,6 +630,33 @@
   itself: wheel, trackpad, touch, and the arrow keys on the focused region all
   still work.
 */
+/*
+  THE RAIL. A full-bleed row has to start where the centred container starts, or
+  the two disagree the moment the viewport is wider than the container.
+
+  Padding measured from the viewport gives x=40 always; a centred `max-w-[90rem]`
+  gives x=40 at 1440 and x=280 at 1920. Both are defensible alone and together
+  they drift 240px apart on a large monitor, which is what makes a page look
+  assembled from parts.
+
+  So the left inset is whichever is larger: the page margin, or the margin plus
+  half the overflow past the container. The right side keeps the plain margin —
+  the row is supposed to run off that edge.
+*/
+@utility rail-pad {
+  --rail: 1rem;
+  padding-left: max(var(--rail), calc((100% - 90rem) / 2 + var(--rail)));
+  padding-right: var(--rail);
+  scroll-padding-left: max(var(--rail), calc((100% - 90rem) / 2 + var(--rail)));
+
+  @media (width >= 40rem) {
+    --rail: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    --rail: 2.5rem;
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {

@@ -6,7 +6,7 @@ export type Variant = "primary" | "secondary" | "ghost" | "light" | "outline";
 export type Size = "sm" | "md" | "lg";
 
 const base =
-  "sheen group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium leading-none " +
+  "sheen group/btn relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-normal leading-none " +
   "transition-[background,border-color,color,box-shadow,transform] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] " +
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-grove " +
   "disabled:pointer-events-none disabled:opacity-50";
@@ -69,7 +69,7 @@ const variants: Record<Variant, string> = {
 };
 
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-body-sm",
+  sm: "h-9 px-4 text-body",
   md: "h-11 px-5 text-body",
   lg: "h-[3.25rem] px-7 text-body",
 };
