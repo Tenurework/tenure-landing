@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Container, SECTION_TIGHT, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
+import { TypingLine } from "@/components/visuals/TypingLine";
 
 /**
  * Tenure AI, on the navy band.
@@ -165,9 +166,10 @@ export function AiOnboarding() {
                 ))}
 
                 <div className="flex items-center gap-2 rounded-xl border border-line-dark bg-band px-3.5 py-2.5">
-                  <span className="flex-1 text-caption text-inverse/75">
-                    Ask about this seat&rsquo;s history&hellip;
-                  </span>
+                  <TypingLine
+                    phrases={["catering vendor", "sponsorship renewal", "election nominations"]}
+                    className="flex-1 text-caption text-inverse/75"
+                  />
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove text-on-accent">
                     <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
                       <path

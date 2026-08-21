@@ -794,6 +794,19 @@
   }
 }
 
+/* The composer caret. `steps(1)` so it snaps rather than fades — a fading caret
+   reads as a glow, and no text cursor has ever done that. */
+@keyframes caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
