@@ -5,7 +5,7 @@ import { Platform } from "@/components/home/Platform";
 import { Handoff } from "@/components/home/Handoff";
 import { AiOnboarding } from "@/components/home/AiOnboarding";
 import { OfficeConsole } from "@/components/home/OfficeConsole";
-import { Audiences } from "@/components/home/Audiences";
+import { Industries } from "@/components/home/Industries";
 import { MetricsBand } from "@/components/home/MetricsBand";
 import { SupportedBy } from "@/components/home/SupportedBy";
 import { Faq } from "@/components/home/Faq";
@@ -68,7 +68,7 @@ export default function HomePage() {
     <>
       <Hero />
       <Problem />
-      <Audiences />
+      <Industries />
       <SeatMechanism />
       <Platform />
       <Handoff />

@@ -20,3 +20,26 @@ Deleted 2026-08-19: grass-soft.jpg and green-leaves.jpg (1.27 MB). They were
 recorded here as unused decorative textures and referenced by nothing in src/.
 Everything under public/ is deployed whether or not it is referenced, so an
 unused image is bytes on the origin rather than a harmless leftover.
+
+Industry grid, added 2026-08-20. Pexels License, https://www.pexels.com/license/
+Free for commercial use, no attribution required; credited here as good practice.
+All eight carry one grade (@utility industry-photo in globals.css) plus the tile
+scrim, so eight different shoots read as one commissioned set rather than a
+stock library. Replace one and it inherits the grade automatically — but check
+the scrim still clears 4.5:1 on it, which is what the measurement in
+Industries.tsx is about.
+
+industry-education.jpg       empty university lecture theatre       pexels 356065
+industry-public-sector.jpg   civic colonnade                        pexels 14212986
+industry-healthcare.jpg      hospital corridor lit by windows       pexels 37036967
+industry-finance.jpg         financial-district towers from below   pexels 10700876
+industry-energy.jpg          wind turbines along a ridge            pexels 18829027
+industry-manufacturing.jpg   production line down a plant floor     pexels 34718930
+industry-technology.jpg      data-centre server aisle               pexels 4508751
+industry-nonprofits.jpg      volunteers loading a distribution run  pexels 34585111
+
+Rejected on review, recorded so they are not tried again: a cluttered wire-tangle
+substation, an out-of-focus pink server blur, a bland budget-clinic corridor, and
+a masked motion-blurred volunteer shot. Each read as dated stock. The set rule is
+simple architecture or infrastructure, one clear subject, no posed people facing
+camera.

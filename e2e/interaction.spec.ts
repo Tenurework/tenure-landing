@@ -330,7 +330,7 @@ test.describe("the walkthrough composer", () => {
 
     await page.getByLabel("Your name").fill("Alex Mercer");
     await page.getByLabel("Organization name").fill("Northside Community Trust");
-    await page.getByLabel("Kind of organization").selectOption("NGOs & nonprofits");
+    await page.getByLabel("Kind of organization").selectOption("Nonprofits and NGOs");
     await page.getByRole("checkbox", { name: /handoff packet/i }).check();
 
     // The visitor is shown the request before sending it, and that preview must
@@ -338,7 +338,7 @@ test.describe("the walkthrough composer", () => {
     const preview = page.getByLabel("The composed request");
     await expect(preview).toHaveValue(/Alex Mercer/);
     await expect(preview).toHaveValue(/Northside Community Trust/);
-    await expect(preview).toHaveValue(/NGOs & nonprofits/);
+    await expect(preview).toHaveValue(/Nonprofits and NGOs/);
 
     const send = page.getByRole("link", { name: "Open in your email app" });
     const href = await send.getAttribute("href");
@@ -352,7 +352,7 @@ test.describe("the walkthrough composer", () => {
     expect(params.get("subject")).toContain("Northside Community Trust");
     const body = params.get("body") ?? "";
     expect(body).toContain("Alex Mercer");
-    expect(body).toContain("NGOs & nonprofits");
+    expect(body).toContain("Nonprofits and NGOs");
     expect(body, "the chosen topic travels with the request").toMatch(/handoff packet/i);
   });
 

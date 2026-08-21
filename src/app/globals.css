@@ -486,6 +486,24 @@
    `color-mix` against --surface rather than a literal white so the highlight
    inverts with the theme instead of glowing on the dark canvas.
    --------------------------------------------------------------------------- */
+/*
+  ONE GRADE FOR EVERY PHOTOGRAPH ON THE SITE.
+
+  Eight industry photographs come from eight different shoots, cameras and times
+  of day: a blue-hour data centre, a golden hillside, a cold clinical corridor, a
+  brick interior. Dropped in untreated they read as a stock library, which is the
+  precise thing the founder called generic.
+
+  Desaturating toward — not to — grey, lifting contrast slightly and warming the
+  result toward the canvas gives eight frames one temperature. Combined with the
+  navy scrim each tile carries, the set reads as commissioned rather than
+  sourced. This is what an enterprise brand does with photography it did not
+  shoot itself.
+*/
+@utility industry-photo {
+  filter: saturate(0.62) contrast(1.06) brightness(0.96) sepia(0.06);
+}
+
 @utility panel {
   background: var(--surface);
   border: 1px solid var(--border);

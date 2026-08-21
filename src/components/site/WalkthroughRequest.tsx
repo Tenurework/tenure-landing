@@ -57,7 +57,7 @@ const TOPICS = [
   "Security, tenancy and what is not built",
 ] as const;
 
-const SECTORS = [...site.audiences.map((a) => a.sector), "Something else"] as const;
+const SECTORS = [...site.industries.map((i) => i.label), "Something else"] as const;
 
 type Form = {
   name: string;

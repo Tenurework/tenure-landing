@@ -247,57 +247,82 @@ export const site = {
    * university-flavoured product surfaces elsewhere on the site stay, and are
    * labelled as one worked example instead of standing in for the whole market.
    */
-  audiences: [
+  /**
+   * THE INDUSTRIES GRID.
+   *
+   * This replaced `audiences` — Universities, NGOs, SMEs, Associations — which
+   * described the four kinds of organization the founders had talked to rather
+   * than the market the mechanism serves. "SMEs" and "Associations" are not
+   * industries, and a reader in healthcare or energy scanning that list
+   * concluded, correctly, that the product was not aimed at them.
+   *
+   * WHAT EACH LINE HAS TO DO. Name the role that turns over in that sector, and
+   * name what is lost with it. A sector whose rotation problem cannot be stated
+   * that specifically does not belong on this list — generic "improve
+   * efficiency" copy is what makes an industries grid read as filler.
+   *
+   * WHAT NONE OF THEM MAY DO. Imply Tenure is deployed in that sector. There is
+   * one deployment and it is a university office. These tiles are positioning —
+   * the sectors the seat model applies to — exactly as an enterprise vendor's
+   * industry grid is positioning rather than a customer list. C-021's blocklist
+   * is live and per-sentence.
+   */
+  industries: [
     {
-      sector: "Universities",
-      title: "University organizations & the offices above them",
-      photo: "/photos/students-laptop.jpg",
-      alt: "Student organization members gathered around a laptop in a lecture hall",
-      seat: "VP Finance & Operations · SCC-VP-FINA-OPER",
-      cadence: "Leadership turns over every spring",
-      // Two rows merged into one on 2026-08-18. "University organizations" and
-      // "University administrations" were separate entries, which meant two of the
-      // four audiences on the site were universities — the skew this list exists to
-      // correct, restated inside the list itself. Both halves are kept: the org
-      // sentence first, the office sentence second, because they are two seats on
-      // one record rather than two markets.
-      //
-      // "No lost passwords" stays out: Tenure stores no credentials and has no
-      // vault. "Compliance" stays out too — the six transcribed policies have no
-      // enforcement path (C-020), while deadlines that persist by role are real and
-      // shipped (C-018).
-      body: "Run the organization and hand it off clean: finances, events, members, and a record the next board inherits on day one. The office above them gets the same record from the other side — approvals, spending and deadlines that persist by role, without approving every bake sale.",
+      key: "education",
+      label: "Education",
+      line: "Chairs, deans and student leadership turn over on a fixed calendar, and the reasoning behind last year’s budget leaves with them.",
+      photo: "/photos/industry-education.jpg",
+      alt: "An empty university lecture theatre",
     },
     {
-      sector: "NGOs & nonprofits",
-      title: "Nonprofits, NGOs and volunteer boards",
-      photo: "/photos/team-charts.jpg",
-      alt: "A board reviewing plans and charts together, seen from above",
-      seat: "Board Chair · BRD-CHAI",
-      cadence: "Annual board & volunteer rotation",
-      // "The same engine already configures ... programs, committees, sites and
-      // funder relations" asserted shipped, configured support for an entity
-      // type nothing in the deploying repo evidences. The seat model genuinely
-      // does generalise — that is the honest version of the same point.
-      body: "Volunteer boards reset every year and relearn the same lessons. A board chair or a programme lead is a position with the record attached, so funder context, grant deadlines and the reasoning behind last year’s decisions can persist across every term instead of resetting with the slate.",
+      key: "public-sector",
+      label: "Public sector",
+      line: "Administrations change on a schedule. The commitments, casework and contracts they made belong to the office, not to whoever held it.",
+      photo: "/photos/industry-public-sector.jpg",
+      alt: "The colonnade of a civic building",
     },
     {
-      sector: "SMEs",
-      title: "Small and mid-sized businesses",
-      photo: "/photos/small-business.jpg",
-      alt: "Two small-business owners packing and labelling orders in their studio",
-      seat: "Head of Operations · OPS-HEAD-OPER",
-      cadence: "Employees leave, roles remain",
-      body: "When someone resigns, their vendors, pricing, playbooks and hard-won context should not leave with them. The seat model does not care that there is no term: an operations lead is still a position, and whoever takes it next reads the seat’s record before their first day in it.",
+      key: "healthcare",
+      label: "Healthcare",
+      line: "Rotations, locums and committee chairs change constantly; the decisions behind a service line should not restart with each one.",
+      photo: "/photos/industry-healthcare.jpg",
+      alt: "A hospital corridor lit by a row of windows",
     },
     {
-      sector: "Associations",
-      title: "Associations, chapters and committees",
-      photo: "/photos/admin-boardroom.jpg",
-      alt: "Members of a governing body seated at a formal table with microphones",
-      seat: "Chapter President · CHP-PRES",
-      cadence: "New slate every year, in every chapter",
-      body: "A federated body runs the same seats dozens of times over, and every chapter relearns the same lessons in parallel. The seat is the unit that survives the slate, so a chapter’s sponsors, budget history and run-of-show stay where the next holder will look for them.",
+      key: "finance",
+      label: "Financial services",
+      line: "Coverage moves between relationship managers, and the terms, exceptions and history of an account have to move with the seat.",
+      photo: "/photos/industry-finance.jpg",
+      alt: "Office towers in a financial district, seen from below",
+    },
+    {
+      key: "energy",
+      label: "Energy and utilities",
+      line: "Assets outlive the crews and contractors who maintain them, so the inspection, permit and vendor record has to survive every handover.",
+      photo: "/photos/industry-energy.jpg",
+      alt: "Wind turbines along a ridge at first light",
+    },
+    {
+      key: "manufacturing",
+      label: "Manufacturing",
+      line: "Shift leads and plant engineers rotate; the changeover procedure and the reason a line was retooled cannot live in one person’s notebook.",
+      photo: "/photos/industry-manufacturing.jpg",
+      alt: "A production line running the length of a plant floor",
+    },
+    {
+      key: "technology",
+      label: "Technology",
+      line: "On-call, ownership and the reason a system was built the way it was change hands faster than the system does.",
+      photo: "/photos/industry-technology.jpg",
+      alt: "An aisle of server racks in a data centre",
+    },
+    {
+      key: "nonprofit",
+      label: "Nonprofits and NGOs",
+      line: "Volunteer boards reset every year, and funder relationships, grant deadlines and the reasoning behind last year’s decisions reset with them.",
+      photo: "/photos/industry-nonprofits.jpg",
+      alt: "Volunteers loading a distribution run",
     },
   ],
 } as const;
