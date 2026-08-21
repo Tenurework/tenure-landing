@@ -111,7 +111,7 @@ const GROUPS: Group[] = [
         what: "Text and data files",
         via: [".txt", ".md", ".json", ".xml"],
         status: "live",
-        body: "Edit in place like the spreadsheets. These four are also the only files the assistant will summarize — not PDF, not Office.",
+        body: "Edit in place like the spreadsheets. These four are also the only files the assistant will summarize, not PDF, not Office.",
       },
     ],
   },
@@ -124,13 +124,13 @@ const GROUPS: Group[] = [
         what: "Your calendar",
         via: ["Outlook", "Google Calendar", "Apple Calendar"],
         status: "ci",
-        body: "One signed link per person, pasted into whichever calendar they already open — no account connected, no password shared. One-way: Tenure fills your calendar and never reads it back.",
+        body: "One signed link per person, pasted into whichever calendar they already open, no account connected, no password shared. One-way: Tenure fills your calendar and never reads it back.",
       },
       {
         what: "Deadline reminders",
         via: ["in-app"],
         status: "live",
-        body: "Publish a deadline once and every organization sees it, with each person reminded once. In-app only — nobody is emailed.",
+        body: "Publish a deadline once and every organization sees it, with each person reminded once. In-app only, nobody is emailed.",
       },
     ],
   },
@@ -175,8 +175,8 @@ export function ConnectorMatrix() {
                   <div>
                     {/* The badge renders immediately after the name, which is also
                         what keeps a vendor name legal: the ratchet excuses one only
-                        when a "Not supported"/"Roadmap" marker — or an explicit
-                        "does not connect" sentence — sits within a couple of lines. */}
+                        when a "Not supported"/"Roadmap" marker, or an explicit
+                        "does not connect" sentence, sits within a couple of lines. */}
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-display text-body tracking-tight text-ink">
                         {r.what}
@@ -219,7 +219,7 @@ export function ConnectorMatrix() {
           >
             Security
           </Link>{" "}
-          covers the same ground as a reviewed control list &mdash; every status word
+          covers the same ground as a reviewed control list, every status word
           defined, and the limit and evidence behind each row. No vendor logo appears
           anywhere on this site, including next to the one connector that is built: a
           logo reads as a working integration whatever the sentence under it says, and

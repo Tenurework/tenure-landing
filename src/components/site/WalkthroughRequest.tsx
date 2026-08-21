@@ -106,13 +106,13 @@ function compose(form: Form) {
     lines.push("", "Anything else:", form.notes.trim());
   }
 
-  lines.push("", "— composed on tenurework.com/contact");
+  lines.push("", ", composed on tenurework.com/contact");
   return lines.join("\n");
 }
 
 function subjectFor(form: Form) {
   const who = form.org.trim() || form.name.trim();
-  return who ? `Demo request — ${who}` : "Demo request";
+  return who ? `Demo request, ${who}` : "Demo request";
 }
 
 /**
@@ -304,7 +304,7 @@ export function WalkthroughRequest() {
         }}
       >
         {/*
-          A three-row grid — header, scrolling body, footer — rather than one
+          A three-row grid, header, scrolling body, footer, rather than one
           scrolling box. In the one-box version the send controls were the last
           thing in the flow, so on a 1000px viewport they sat below the fold and
           the visitor had to scroll past their own composed request to find the
@@ -314,7 +314,7 @@ export function WalkthroughRequest() {
           `max-h-[85svh]`, not `85vh`: on mobile Safari the large viewport unit
           measures the window with the URL bar retracted, so a dialog sized in vh
           is taller than the space it is actually given and the footer is pushed
-          off-screen — exactly the bug being fixed here.
+          off-screen, exactly the bug being fixed here.
         */}
         <div className="panel grid max-h-[85svh] grid-rows-[auto_minmax(0,1fr)_auto]">
           <div className="flex items-start justify-between gap-4 border-b border-line px-5 py-4 sm:px-7">
@@ -361,7 +361,7 @@ export function WalkthroughRequest() {
               </Field>
               {/* "Organization name", not "Organization": the latter is a
                   substring of "Kind of organization" below it, so the two fields
-                  had overlapping accessible names — ambiguous to a screen reader
+                  had overlapping accessible names, ambiguous to a screen reader
                   reading them in sequence, and to anything else matching by name. */}
               <Field id={`${titleId}-org`} label="Organization name">
                 <input
@@ -376,7 +376,7 @@ export function WalkthroughRequest() {
               <Field id={`${titleId}-sector`} label="Kind of organization">
                 {/*
                   `appearance-none` strips the native chevron, and nothing was
-                  drawn to replace it — so the one control on this form that
+                  drawn to replace it, so the one control on this form that
                   behaves differently from the four text inputs beside it looked
                   exactly like them. The wrapper restores the affordance without
                   giving the appearance back: a chevron positioned over the
@@ -470,7 +470,7 @@ export function WalkthroughRequest() {
             </Field>
 
             {/* The composed request, shown rather than hidden. It is what will be
-                sent, so the visitor sees it before sending — and it doubles as the
+                sent, so the visitor sees it before sending, and it doubles as the
                 manual path when the clipboard API is refused. */}
             <div>
               <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -490,8 +490,8 @@ export function WalkthroughRequest() {
 
             {/*
               The form's submit control, present only so Enter sends. It is not a
-              second visible action — finding: one action already carried four
-              different names on this page — so it is removed from the accessible
+              second visible action, finding: one action already carried four
+              different names on this page, so it is removed from the accessible
               tree and takes no space. The visible primary control is the anchor
               in the footer below, which shares this handler.
             */}
@@ -520,8 +520,8 @@ export function WalkthroughRequest() {
             </button>
             {/*
               The status line replaces the standing disclaimer once the handoff
-              has happened. It never claims the mail was SENT — this page cannot
-              observe that — only that it was handed over, and it names the
+              has happened. It never claims the mail was SENT, this page cannot
+              observe that, only that it was handed over, and it names the
               fallback in the same breath, because "nothing happened" is the
               likeliest outcome on a machine with no mail client.
             */}
@@ -532,7 +532,7 @@ export function WalkthroughRequest() {
               {handed ? (
                 <>
                   <span className="font-medium text-grove">Handed to your mail app.</span>{" "}
-                  If no draft opened, this browser has no mail client set — use
+                  If no draft opened, this browser has no mail client set, use
                   Copy the request and paste it to {site.email.sales}.
                 </>
               ) : (

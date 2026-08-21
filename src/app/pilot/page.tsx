@@ -37,12 +37,12 @@ const STATUS: { k: string; v: string }[] = [
     going ahead, and the only thing that does not exist is a commercial
     relationship.
 
-    This grid used to open "Planned. A proposal under discussion — not a project
+    This grid used to open "Planned. A proposal under discussion, not a project
     underway, and not a procurement that has completed", and every row after it
     restated some version of no. Eight consecutive denials, on the page a
-    procurement reviewer opens first. It conflated two different facts — whether
+    procurement reviewer opens first. It conflated two different facts, whether
     the office will USE Tenure, which is settled, and whether anyone is PAYING for
-    it, which is not — and let the second one swallow the first.
+    it, which is not, and let the second one swallow the first.
 
     Every row below is still literally true. C-021 permits the deployment in the
     definite and forbids implying a commercial relationship or an endorsement, so
@@ -55,7 +55,7 @@ const STATUS: { k: string; v: string }[] = [
   },
   {
     k: "Commercial terms",
-    v: "None. The first term is unpaid — no fee, no purchase order, no invoice, and nothing to procure.",
+    v: "None. The first term is unpaid, no fee, no purchase order, no invoice, and nothing to procure.",
   },
   {
     k: "Scope",
@@ -67,7 +67,7 @@ const STATUS: { k: string; v: string }[] = [
   },
   {
     k: "How organizations join",
-    v: "Through the office. Nothing is applied for separately — the office decides the roster and the seat map comes from it.",
+    v: "Through the office. Nothing is applied for separately, the office decides the roster and the seat map comes from it.",
   },
   {
     k: "Cost",
@@ -75,7 +75,7 @@ const STATUS: { k: string; v: string }[] = [
     // row used to say only that a pilot-term figure "is something we would put in
     // writing", which pointed the opposite way and left a reader holding two
     // documents that disagreed about whether the pilot term carries a charge.
-    v: "Free for the pilot term — see Terms, Fees. Beyond it, pricing is per portfolio rather than per organization, and any figure would be a separate written agreement signed in advance, not an update to a page. A walkthrough costs nothing.",
+    v: "Free for the pilot term, see Terms, Fees. Beyond it, pricing is per portfolio rather than per organization, and any figure would be a separate written agreement signed in advance, not an update to a page. A walkthrough costs nothing.",
   },
   {
     k: "Who would sign",
@@ -98,16 +98,16 @@ const PARTICIPANTS: { who: string; seat: string; ask: string }[] = [
   {
     who: "Incoming officers",
     seat: "The same seat, held in shadow before the term begins",
-    ask: "Reads the seat’s record before taking it over. Read-only until the start date, then write access follows automatically — nobody hands over a password.",
+    ask: "Reads the seat’s record before taking it over. Read-only until the start date, then write access follows automatically, nobody hands over a password.",
   },
   {
     who: "Advisors attached to organizations",
-    seat: "Advisor tier — one capability of the sixteen in the console",
+    seat: "Advisor tier, one capability of the sixteen in the console",
     // "Watches what the office asks them to watch" described the opposite of what the
     // tier grants. The Advisor tier's single capability is audit.view — "read the
     // institution-wide audit trail" — so provisioning nineteen advisors provisions
     // nineteen readers of every privileged action by every seat in the office.
-    ask: "Read the limit before provisioning them. The Advisor tier’s one capability is reading the institution-wide audit log, and an institution account can currently read every organization’s budget, roster and documents — not only the ones it advises.",
+    ask: "Read the limit before provisioning them. The Advisor tier’s one capability is reading the institution-wide audit log, and an institution account can currently read every organization’s budget, roster and documents, not only the ones it advises.",
   },
   {
     who: "Us",
@@ -132,7 +132,7 @@ const TENURE_PROVIDES: { t: string; d: string }[] = [
   },
   {
     t: "The handoff packet",
-    d: "Assembled from the record — seats, current and previous holders, open approvals, deadlines and budget position — rather than written by the outgoing officer. It contains no AI.",
+    d: "Assembled from the record, seats, current and previous holders, open approvals, deadlines and budget position, rather than written by the outgoing officer. It contains no AI.",
   },
   {
     t: "Deadlines and reminders",
@@ -147,7 +147,7 @@ const TENURE_PROVIDES: { t: string; d: string }[] = [
 const OFFICE_PROVIDES: { t: string; d: string }[] = [
   {
     t: "A decision, and the authority behind it",
-    d: "Somebody who can say yes for the office, and route it through whatever security review and procurement your institution requires. /trust is written for exactly that review — send it before you send us.",
+    d: "Somebody who can say yes for the office, and route it through whatever security review and procurement your institution requires. /trust is written for exactly that review, send it before you send us.",
   },
   {
     t: "One named owner for the term",
@@ -159,7 +159,7 @@ const OFFICE_PROVIDES: { t: string; d: string }[] = [
   },
   {
     t: "The material that already exists",
-    d: "The drives, folders, budget spreadsheets and handbooks the office and its organizations already keep. In whatever shape they are in — cleaning them up first is our job, not yours.",
+    d: "The drives, folders, budget spreadsheets and handbooks the office and its organizations already keep. In whatever shape they are in, cleaning them up first is our job, not yours.",
   },
   {
     t: "A decision about approvals",
@@ -186,7 +186,7 @@ const INPUTS: { item: string; shape: string; who: string }[] = [
   {
     item: "Current officers and how to reach them",
     shape: "Names, the seat each one holds, institutional email.",
-    who: "Office staff supply it. Accounts are created by us in advance, against a named person — there is no self-service signup.",
+    who: "Office staff supply it. Accounts are created by us in advance, against a named person, there is no self-service signup.",
   },
   {
     item: "Each organization’s existing drive or folder",
@@ -202,7 +202,7 @@ const INPUTS: { item: string; shape: string; who: string }[] = [
   {
     item: "The office’s handbooks and policy documents",
     shape: "PDF or Word.",
-    who: "Office staff supply. They are stored and findable by title and description — file contents are not indexed, and the assistant cannot answer policy questions out of them.",
+    who: "Office staff supply. They are stored and findable by title and description, file contents are not indexed, and the assistant cannot answer policy questions out of them.",
   },
   {
     item: "The deadline calendar the office already publishes",
@@ -226,7 +226,7 @@ const STEPS: { n: string; t: string; d: string }[] = [
   {
     n: "03",
     t: "Run the term in it",
-    d: "Spending, events, members, documents and the approvals the office chose to route here happen in Tenure. What is not done in Tenure is not in the record — that is the mechanism, and it is also the risk.",
+    d: "Spending, events, members, documents and the approvals the office chose to route here happen in Tenure. What is not done in Tenure is not in the record, that is the mechanism, and it is also the risk.",
   },
   {
     n: "04",
@@ -265,7 +265,7 @@ const HANDLING: { t: string; d: string }[] = [
   },
   {
     t: "What gets written down",
-    d: "Privileged actions append an audit row, and refusals are recorded alongside successes — which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
+    d: "Privileged actions append an audit row, and refusals are recorded alongside successes, which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
   },
   {
     t: "Where the record lives",
@@ -309,7 +309,7 @@ const MEASURES: { t: string; d: string }[] = [
   },
   {
     t: "The handoff happens without anyone writing a handoff document",
-    d: "Counted as: packets opened by incoming officers — and, separately, whether an outgoing officer still felt they had to write a document anyway. The second half is a conversation, not a number, and we would report it as one.",
+    d: "Counted as: packets opened by incoming officers, and, separately, whether an outgoing officer still felt they had to write a document anyway. The second half is a conversation, not a number, and we would report it as one.",
   },
   {
     t: "The office would run it again",
@@ -385,7 +385,7 @@ export default function PilotPage() {
           <>
             Tenure&rsquo;s first deployment runs in {site.pilot.season} with{" "}
             {site.origin.office}, across the organizations it stewards and the
-            office&rsquo;s own administrators &mdash; the record below and the
+            office&rsquo;s own administrators, the record below and the
             oversight above on one system. What follows is the operating detail:
             who does what, what you hand over to onboard, how support works, and
             what the term is measured against.
@@ -403,7 +403,7 @@ export default function PilotPage() {
       </PageHeader>
 
       {/*
-        01 — STATUS. This one is never collapsed.
+        01, STATUS. This one is never collapsed.
 
         The page’s whole job is to stop somebody believing their office has
         already committed to something. Putting that behind a disclosure the
@@ -457,13 +457,13 @@ export default function PilotPage() {
       </Section>
 
       {/*
-        02–08 — THE PROPOSAL ITSELF.
+        02–08, THE PROPOSAL ITSELF.
 
         Seven sections, each of which was a full-viewport band with its own
         eyebrow, heading, lead paragraph and grid: 14.4 desktop viewports and 25.8
         on a phone, which is more than three times any other route. Not one word
-        of it is padding — it is a written proposal, and the limits in section 07
-        are the part a security reviewer needs most — so nothing here is cut. It
+        of it is padding, it is a written proposal, and the limits in section 07
+        are the part a security reviewer needs most, so nothing here is cut. It
         is collapsed instead, with a summary line that says what is inside, and
         native <details> so Ctrl+F and a no-JavaScript reader both still work.
       */}
@@ -492,7 +492,7 @@ export default function PilotPage() {
                   key: "who",
                   title: "Who takes part",
                   blurb:
-                    "The five parties and the real obligation attached to each — including what we would owe you.",
+                    "The five parties and the real obligation attached to each, including what we would owe you.",
                   tally: [{ label: `${PARTICIPANTS.length} parties` }],
                   children: (
                     <ul className="space-y-5">
@@ -578,7 +578,7 @@ export default function PilotPage() {
                   key: "sequence",
                   title: "The sequence",
                   blurb:
-                    "Five moves in order — an order of operations, not a schedule. No calendar exists yet.",
+                    "Five moves in order, an order of operations, not a schedule. No calendar exists yet.",
                   tally: [{ label: "not dates", tone: "warn" }],
                   children: (
                     <>
@@ -623,7 +623,7 @@ export default function PilotPage() {
                         You would work directly with {site.founders[0].name} and{" "}
                         {site.founders[1].name}{" "}
                         for the whole pilot. One address reaches both of us, and we answer the same day, most days
-                        &mdash; which is a description of how we work, not a service
+, which is a description of how we work, not a service
                         level anyone has agreed to.
                       </p>
                       <p className="mt-3 max-w-3xl text-body leading-relaxed text-text-secondary measure">
@@ -698,7 +698,7 @@ export default function PilotPage() {
                         run, nothing here has been measured, and any outcome number
                         on this page would be invented. Each one is countable from
                         the record itself, which means each one can fail visibly
-                        &mdash; that is the point. They would be agreed and written
+, that is the point. They would be agreed and written
                         down before the term starts.
                       </p>
                       <ul className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -740,7 +740,7 @@ export default function PilotPage() {
         </Container>
       </Section>
 
-      {/* 03 — the decision */}
+      {/* 03, the decision */}
       <Section tone="canvas" backdrop="light">
         <Container>
           <Reveal>

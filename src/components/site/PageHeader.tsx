@@ -22,7 +22,7 @@ export function PageHeader({
       />
       <Container className="relative pb-14 pt-32 text-center sm:pb-16 sm:pt-40">
         {/*
-          NOTHING IN THE FIRST VIEWPORT ANIMATES IN — the same rule Hero.tsx:12-35
+          NOTHING IN THE FIRST VIEWPORT ANIMATES IN, the same rule Hero.tsx:12-35
           already states for the home page, finally applied here too.
 
           These three elements used to be wrapped in <Reveal>. globals.css:468 hides
@@ -48,7 +48,7 @@ export function PageHeader({
 
           Measured on cohere.com/research, /security and /blog: every sub-page h1
           is 72px at weight 400, centred, in a ~1,128px measure. 96px is reserved
-          for the home page — a site that shouts identically on every route has
+          for the home page, a site that shouts identically on every route has
           no hierarchy between them.
 
           The old setting combined the largest step with `max-w-3xl`, which is

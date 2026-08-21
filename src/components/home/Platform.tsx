@@ -168,9 +168,9 @@ const MODULES: Module[] = [
     /*
       THE SAME NUMBERS TWICE, IN TWO COLOUR SCHEMES.
 
-      This pane used to repeat the hero mock's ledger exactly — $12,400 of
+      This pane used to repeat the hero mock's ledger exactly, $12,400 of
       $18,000 and the identical Events 38 / Operations 24 / Marketing 16 /
-      Reserve 22 bar — about four screens further down the same page. Worse, the
+      Reserve 22 bar, about four screens further down the same page. Worse, the
       two disagreed: `DashboardMock` painted Reserve in `--chart-6`, the neutral
       slate, while `Share` handed the fourth slice `--chart-4`, the hue `--danger`
       is built on. One dataset, two pictures, one of them alarming.
@@ -213,11 +213,11 @@ const MODULES: Module[] = [
         <div className="space-y-2">
           <p className="flex items-center gap-2 rounded-lg border border-brand-coral/30 bg-brand-coral/[0.06] px-2.5 py-2 text-meta font-medium text-danger">
             <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-coral" />
-            Hard conflict &mdash; Schlegel 207 double-booked 5:00 to 6:30p
+            Hard conflict, Schlegel 207 double-booked 5:00 to 6:30p
           </p>
           <p className="flex items-center gap-2 rounded-lg border border-brand-gold/30 bg-warning-subtle/60 px-2.5 py-2 text-meta font-medium text-warning">
             <span aria-hidden className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-gold" />
-            Soft overlap &mdash; two sponsor events the same evening
+            Soft overlap, two sponsor events the same evening
           </p>
         </div>
       </Field>
@@ -313,7 +313,7 @@ const MODULES: Module[] = [
           {/*
             "versioned" is deliberately absent, and `forbiddenPhrases` blocks it.
             Document.version is a bare Int used for the optimistic lock and the
-            audit row — there is no DocumentVersion model, no prior-version
+            audit row, there is no DocumentVersion model, no prior-version
             retrieval and no restore UI, and saves overwrite the same object key.
             Sitting between two genuine editing features, the word read as
             version history.
@@ -381,7 +381,7 @@ const MODULES: Module[] = [
     ),
     /*
       REWRITTEN AGAINST THE SCHEMA. This said "Two organizations co-hosting run
-      the same approval path" — the two-gate chain the site advertises elsewhere.
+      the same approval path", the two-gate chain the site advertises elsewhere.
       The product does not do that: `CollabStatus` in the deploying schema is
       PENDING_OSE | APPROVED | DECLINED, a SINGLE office decision, and the
       schema's own comment says "clubs post collaboration calls; other clubs
@@ -398,8 +398,8 @@ const MODULES: Module[] = [
   },
   {
     /*
-      ADDED. The rail makes an explicit completeness argument — "eleven modules",
-      "the rail lists all eleven" — and omitted a module the product ships and
+      ADDED. The rail makes an explicit completeness argument, "eleven modules",
+      "the rail lists all eleven", and omitted a module the product ships and
       routes by seat. A completeness claim with a hole in it is worse than no
       claim: the reader who finds the hole discounts the whole list.
     */
@@ -465,7 +465,7 @@ export function Platform() {
               <span className="text-gradient">runs on</span>.
             </>
           }
-          lead="Twelve modules on one record. Work happens here, so the record writes itself — pick any one to see what it actually does."
+          lead="Twelve modules on one record. Work happens here, so the record writes itself, pick any one to see what it actually does."
         />
 
         <Reveal delay={0.14} className="mt-7">
@@ -481,15 +481,15 @@ export function Platform() {
 
               It was a `PanelRail` in a `md:grid-cols-[13.5rem_1fr]`. Eleven rail
               rows measure 549px; the tallest detail pane is about 290px, and a
-              grid row stretches its cells to the tallest sibling — so the right
+              grid row stretches its cells to the tallest sibling, so the right
               half of the biggest card on the home page rendered 440px of blank
               white on every module except one. Widening the pane could not fix
               it, because the rail's height is set by the module COUNT, which is
               the one number this section exists to show.
 
               Above it, the rail's height is one wrapped chip row, the detail
-              takes the full 1,152px measure — enough to set the sentence beside
-              its artefact rather than under it — and the section loses ~200px.
+              takes the full 1,152px measure, enough to set the sentence beside
+              its artefact rather than under it, and the section loses ~200px.
 
               It also stops this panel and `OfficeConsole` being the same
               picture twice on one page. Both were a left rail against a right
@@ -512,7 +512,7 @@ export function Platform() {
             </div>
 
             {/* The single view. `min-h` is set from the tallest pane so switching
-                modules does not jump the page under the reader’s cursor — the
+                modules does not jump the page under the reader’s cursor, the
                 one thing a tab control must never do. */}
             <div className="min-h-[12.5rem] p-5 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
@@ -534,7 +534,7 @@ export function Platform() {
             <PanelNote className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <span className="label-mono">Knowledge card kinds</span>
               {/* testId: claims.spec.ts asserts this row equals creatableCardTypes,
-                  and asserts it is VISIBLE on a fresh load — which is why it lives
+                  and asserts it is VISIBLE on a fresh load, which is why it lives
                   in the permanent footer rather than inside the Memory pane. A
                   <div>, because the spec reads the row with allInnerTexts() and
                   splits on newlines: flex children of a block container give one

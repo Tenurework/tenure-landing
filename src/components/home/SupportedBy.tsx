@@ -32,7 +32,7 @@ export function SupportedBy() {
           {/*
             THE MARKS SIT ON THEIR OWN LINE AND ARE HALF AGAIN AS LARGE. They used
             to run inline beside the caption at 2.15rem, which put three different
-            things — a label, two institutional lockups and a sentence — on one
+            things, a label, two institutional lockups and a sentence, on one
             row, and made the marks read as footnotes to the word "Supported".
             Given the width and the height they read as what they are.
           */}
@@ -71,7 +71,7 @@ export function SupportedBy() {
             sentence made Startup Wednesday the supporter and Simon merely the
             place Tenure was founded, which understated both. C-022 still governs
             the marks: support and origin, never customership, sponsorship or
-            endorsement — so this says where Tenure goes live and stops there.
+            endorsement, so this says where Tenure goes live and stops there.
           */}
           <p className="mx-auto mt-8 max-w-2xl text-center text-body leading-relaxed text-ink-soft">
             Tenure is supported by{" "}

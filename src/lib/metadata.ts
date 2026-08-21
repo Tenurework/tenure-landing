@@ -31,7 +31,7 @@ export function pageMetadata(path: string): Metadata {
   const isHome = route.path === "/";
   // The title template appends " · Tenure"; og:title carries the resolved form.
   const fullTitle = isHome
-    ? `${site.name}, ${site.tagline}`
+    ? `${site.name}: ${site.tagline}`
     : `${route.title} · ${site.name}`;
 
   return {
@@ -61,7 +61,7 @@ export function pageMetadata(path: string): Metadata {
           url: "/og.png",
           width: 2400,
           height: 1260,
-          alt: `${site.name}, ${site.tagline}`,
+          alt: `${site.name}: ${site.tagline}`,
         },
       ],
     },

@@ -135,7 +135,7 @@ export default function StoryPage() {
                   {/* Both cards used to render the same sentence, which made the
                       two founders interchangeable on the one page asking an
                       institution to trust them. `focus` states what each one
-                      answers for and nothing else — no biography, credentials,
+                      answers for and nothing else, no biography, credentials,
                       employer, education or photograph is published, because
                       none of that has been verified. */}
                   <p className="mt-4 text-body leading-relaxed text-ink-soft measure">
@@ -195,7 +195,7 @@ export default function StoryPage() {
             <Reveal delay={0.12}>
               <p className="mt-6 text-lead leading-relaxed text-ink-soft measure">
                 Tenure&rsquo;s first deployment is {site.pilot.season}, with
-                Simon&rsquo;s Office of Student Engagement &mdash; the
+                Simon&rsquo;s Office of Student Engagement, the
                 organizations it stewards and the office&rsquo;s own oversight
                 seats, on one record. The first term is unpaid, and the operating
                 detail is set out in full on the{" "}

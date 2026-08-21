@@ -58,7 +58,7 @@ export function Hero() {
         159px gap.
 
         I tried three. Widening the hero's own container 64px fit the type and put
-        the hero's left edge 64px left of every section beneath it — two adjacent
+        the hero's left edge 64px left of every section beneath it, two adjacent
         left edges that nearly line up look like a mistake, because they are one.
         Pinning the copy track and letting the mock bleed past the page margin fit
         the type and cut the assistant panel mid-word at 1440, which reads as a
@@ -66,8 +66,8 @@ export function Hero() {
         to 72px bought 48px of the 159 and made the largest type on the site
         smaller on the widest screens.
 
-        Stacked, the headline gets the full 1,088px measure — enough for 96px, the
-        top of the scale, in two lines instead of three — and the mock is shown
+        Stacked, the headline gets the full 1,088px measure, enough for 96px, the
+        top of the scale, in two lines instead of three, and the mock is shown
         whole. Nothing is clipped, nothing is misaligned, and the section is the
         same shape at every width, which is why the breakpoint juggling above is
         gone rather than tuned.
@@ -81,13 +81,12 @@ export function Hero() {
             {/*
               Leading, tracking and weight now ride on the size token, so the
               hand-set `leading-[1.02]` that
-              used to sit here are gone — at 96px they were tuned for a 42px
+              used to sit here are gone, at 96px they were tuned for a 42px
               headline and fought the step they were applied to.
 
               "The know-how" is held together with `whitespace-nowrap`, NOT with
               a non-breaking hyphen. At the new scale the browser broke the line
-              at the ordinary hyphen and rendered "The know-" over "how stays." —
-              a hyphenated stump is the most amateur thing a large headline can
+              at the ordinary hyphen and rendered "The know-" over "how stays.",               a hyphenated stump is the most amateur thing a large headline can
               do, and it only appeared once the type was big enough to matter.
               U+2011 fixes it visually but changes the codepoint, so the headline
               would no longer match "know-how" for search, copy-paste or any test
@@ -98,7 +97,7 @@ export function Hero() {
               is exactly why. An unbreakable phrase cannot be sized past the
               column that holds it: "The know-how" measures 7.8px wide for every
               1px of font-size, so at the 96px `text-hero` step it wanted 749px
-              inside a 576px column. It did not wrap — it could not — so it spilled
+              inside a 576px column. It did not wrap, it could not, so it spilled
               173px to the right, across the product mock, at every desktop width
               measured (1024/1280/1440/1600). The headline was sitting ON TOP of
               the interface it was introducing, and the only reason it was caught
@@ -118,13 +117,11 @@ export function Hero() {
             </h1>
 
             {/* Opens on the image, not the abstraction: the reader is the person
-                staring at the empty folder. The image is now sector-neutral —
-                a treasurer graduating is one instance of it, not the whole of it. */}
+                staring at the empty folder. The image is now sector-neutral,                 a treasurer graduating is one instance of it, not the whole of it. */}
             {/*
               Cut from five lines to two. At 42px the old lead was a paragraph
               under a headline; at 96px it is a caption, and it has to behave like
-              one. Everything removed is said properly by the sections below —
-              a hero that explains the whole product has not decided what the
+              one. Everything removed is said properly by the sections below,               a hero that explains the whole product has not decided what the
               product is.
             */}
             <p className="mt-6 max-w-xl text-lead text-ink-soft">
@@ -141,7 +138,7 @@ export function Hero() {
             </div>
 
             {/* The site had one audience: someone evaluating Tenure. The person
-                whose organization already runs on it had nowhere to go — every
+                whose organization already runs on it had nowhere to go, every
                 control on every page booked a call. This is that path.
 
                 It points at /contact rather than the application, because the
@@ -158,7 +155,7 @@ export function Hero() {
               >
                 Ask us for your sign-in
               </Link>{" "}
-              &mdash; accounts are set up in advance for a named person, so there
+, accounts are set up in advance for a named person, so there
               is no public signup to find.
             </p>
           </div>
@@ -167,7 +164,7 @@ export function Hero() {
 
               HeroFloatingCards was removed here. Two "notification" cards floated
               over the dashboard’s left edge at xl and above, and at 1440px they
-              sat directly on top of the ledger — "Membership dues, 28 paid" read
+              sat directly on top of the ledger, "Membership dues, 28 paid" read
               as "mbership dues", "Halden Catering, fall sponsorship" as "ark, fall
               sponsorship". Four rows of the most concrete thing on the page were
               cut in half by decoration.
@@ -176,7 +173,7 @@ export function Hero() {
               for the class: they are absolutely positioned over a surface whose
               internal layout is fluid, so any width that clears the ledger at one
               viewport collides at another. And they were duplicating the mock
-              anyway — the conflict they announced is in its Calendar panel and the
+              anyway, the conflict they announced is in its Calendar panel and the
               cleared approval is in its Approvals panel. Removing them takes out a
               component, a class of overlap bug, and one more piece of repetition. */}
           {/*
@@ -185,8 +182,8 @@ export function Hero() {
             It floated on plain white, which is the one place a product surface
             cannot be: a light interface on a white page has no edge, so the thing
             the hero exists to show reads as part of the document rather than as a
-            screen. Every reference hero puts its product on something — a
-            photograph, a saturated field — and lets the surface overlap it.
+            screen. Every reference hero puts its product on something, a
+            photograph, a saturated field, and lets the surface overlap it.
 
             `matte-iris` rather than the house green: the mock is already full of
             green, and a green ground under a green interface flattens both. The
@@ -203,7 +200,7 @@ export function Hero() {
         {/*
           THE HERO ENDS ON THE PRODUCT.
 
-          What used to close it was a rail carrying three unrelated things — two
+          What used to close it was a rail carrying three unrelated things, two
           institutional marks under the caption "Origin & support", four scope
           chips, and a paragraph of small print reading "proposed, not
           contracted … illustrations, not screenshots".
@@ -213,16 +210,16 @@ export function Hero() {
           measured against puts them. The scope chips said in four fragments what
           the sections below say properly. And the small print was a paragraph
           apologising for the page directly underneath the strongest claim on the
-          site — the single most damaging sentence in the whole design. The pilot
+          site, the single most damaging sentence in the whole design. The pilot
           is a real Fall 2026 deployment and is stated as one on /pilot; the
           nature of the product surfaces is carried by a caption on each drawn
-          surface — `MockCaption`, in components/ui/Panel.tsx.
+          surface, `MockCaption`, in components/ui/Panel.tsx.
 
           An earlier version of this comment claimed that disclosure lived "once,
           on /trust". It did not. A rendered-text sweep of all eight routes found
           no such sentence anywhere, so for one commit the site shipped eight
-          drawn application interfaces — a treasury balance, named people, vendor
-          figures — with no label at all. Deleting the apology was right;
+          drawn application interfaces, a treasury balance, named people, vendor
+          figures, with no label at all. Deleting the apology was right;
           deleting it without replacing it was not.
         */}
       </Container>

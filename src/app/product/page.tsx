@@ -63,7 +63,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
   {
     n: "02",
     t: "Deals & numbers",
-    d: "Vendors, pricing and budgets — the real terms that were agreed, not a number someone half-remembers.",
+    d: "Vendors, pricing and budgets, the real terms that were agreed, not a number someone half-remembers.",
     icon: (
       <svg {...svgProps} aria-hidden>
         <path d="M3 21h18" />
@@ -87,7 +87,7 @@ const RECORDS: { n: string; t: string; d: string; icon: ReactNode }[] = [
   {
     n: "04",
     t: "Files & playbooks",
-    d: "Decks, timelines and run-of-show checklists — the documents that carried the work, not a dead folder.",
+    d: "Decks, timelines and run-of-show checklists, the documents that carried the work, not a dead folder.",
     icon: (
       <svg {...svgProps} aria-hidden>
         <path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
@@ -105,7 +105,7 @@ const POINTS: { t: string; d: string }[] = [
     // first question gets a sourced answer rather than a shrug", against a
     // retriever that requires every word of the question to appear literally in
     // one record. The limit travels with the claim now.
-    d: "Tenure AI answers from the knowledge, decisions and events recorded against the seat, from day one. Retrieval is literal keyword matching — every word of a question has to appear in a record — so short, specific queries work and full sentences often return nothing.",
+    d: "Tenure AI answers from the knowledge, decisions and events recorded against the seat, from day one. Retrieval is literal keyword matching, every word of a question has to appear in a record, so short, specific queries work and full sentences often return nothing.",
   },
   {
     // "Every answer cites its sources" is not an enforced property. Citation is an
@@ -165,7 +165,7 @@ export default function ProductPage() {
         </Button>
       </PageHeader>
 
-      {/* 1 — the workspace */}
+      {/* 1, the workspace */}
       <Section tone="canvas" backdrop="light">
         <Container>
           <SectionHead
@@ -191,7 +191,7 @@ export default function ProductPage() {
         </Container>
       </Section>
 
-      {/* 2 — what it captures. Four records, as one panel rather than four cards. */}
+      {/* 2, what it captures. Four records, as one panel rather than four cards. */}
       <Section tone="subtle" backdrop="grid" space={SECTION_TIGHT}>
         <Container>
           <SectionHead
@@ -249,7 +249,7 @@ export default function ProductPage() {
         </Container>
       </Section>
 
-      {/* 3 — onboarding */}
+      {/* 3, onboarding */}
       <Section from="canvas" tone="canvas" backdrop="light">
         <Container className="grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-14">
           <div className="max-w-xl">
@@ -321,7 +321,7 @@ export default function ProductPage() {
                 ))}
               </div>
               <PanelNote>
-                Retrieval covers five record kinds &mdash; knowledge cards, document
+                Retrieval covers five record kinds, knowledge cards, document
                 titles and descriptions, approvals, events and organization records.
                 Finance figures, people records and file contents are not in the
                 corpus.
@@ -332,7 +332,7 @@ export default function ProductPage() {
       </Section>
 
       {/*
-        4 — two surfaces at work.
+        4, two surfaces at work.
 
         `HowItWorks` used to sit here and was cut, not moved: its three steps
         restate section 02 directly above it ("the record fills itself as the
@@ -348,7 +348,7 @@ export default function ProductPage() {
       */}
       <ProductAtWork />
 
-      {/* 5 — connectors. One matrix, replacing two near-identical format sections. */}
+      {/* 5, connectors. One matrix, replacing two near-identical format sections. */}
       <Section from="canvas" tone="canvas" backdrop="light">
         <Container>
           <SectionHead
@@ -356,7 +356,7 @@ export default function ProductPage() {
             eyebrow="Fits your stack"
             title={
               <>
-                What it connects to &mdash; including{" "}
+                What it connects to, including{" "}
                 <span className="text-grove">what it does not</span>.
               </>
             }

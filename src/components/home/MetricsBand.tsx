@@ -46,7 +46,7 @@ type Metric = (typeof site.metrics)[number];
  *           property of the system look like a sample size.
  */
 const TILE_NOTES: Record<string, string> = {
-  "C-014": "Seeded model — not customers, not users",
+  "C-014": "Seeded model, not customers, not users",
   "C-011": "By design, not a tally",
 };
 
@@ -65,13 +65,13 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
     /*
       THE NOTE IS PINNED TO THE BOTTOM, and that is an alignment fix rather than a
       preference. It used to sit between the number and the label, and only two of
-      the four tiles carry one — so in a row of four, two labels started directly
+      the four tiles carry one, so in a row of four, two labels started directly
       under their number and two started ~34px lower. Four big numbers whose
       captions do not share a baseline read as a broken grid, which is the last
       impression a section headed "counted, not projected" should give.
 
       Putting it last also puts the qualifier after the thing it qualifies:
-      "26 / organizations modelled / … / Seeded model — not customers, not users"
+      "26 / organizations modelled / … / Seeded model, not customers, not users"
       reads in the order a sceptical reader asks the questions in.
     */
     <div className="flex h-full flex-col">
@@ -164,14 +164,14 @@ export function MetricsBand() {
             It read "We can't show you outcomes yet. We can show you exactly how
             it's built", over a paragraph beginning "The pilot hasn't run, so
             there is nothing measured to report". Three sentences of apology at
-            the top of the one section whose entire job is proof — and the
+            the top of the one section whose entire job is proof, and the
             substance underneath is genuinely strong: these are counted from the
             deploying repository, which is a harder standard than the outcome
             numbers most companies put here.
 
             Same facts, stated by a company that believes them. The qualifier
             that has to survive is that these are STRUCTURAL counts, not adoption
-            — it now travels on the tiles themselves, where the register requires
+, it now travels on the tiles themselves, where the register requires
             it, instead of as a preamble that discounts the section before the
             reader reaches it.
           */}

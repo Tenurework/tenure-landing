@@ -117,8 +117,8 @@ export function Dossier({
                       individual controls inside a section), because the thing
                       naming each section was not a heading at all. That also
                       breaks the way a screen-reader user actually navigates a
-                      reference document this long — by jumping heading to
-                      heading — which is the one audience most likely to be
+                      reference document this long, by jumping heading to
+                      heading, which is the one audience most likely to be
                       reading /trust end to end.
 
                       A heading inside a summary is well-supported: the summary

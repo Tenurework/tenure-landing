@@ -71,7 +71,7 @@ export function Segmented({
 
       `whitespace-nowrap` plus horizontal overflow keeps every tab one line at
       every width. The overflow container is also what exempts these from the
-      320px reflow check — a11y.spec.ts skips elements inside an `overflow-x`
+      320px reflow check, a11y.spec.ts skips elements inside an `overflow-x`
       ancestor, because a pane that scrolls sideways on purpose is not a
       page-level reflow bug.
     */
@@ -129,13 +129,13 @@ export function RailList({
   return (
     /*
       No role="group" here. Overriding a <ul> with role=group removes its list
-      role, which orphans every <li> inside it — axe reported one serious
+      role, which orphans every <li> inside it, axe reported one serious
       "listitem" violation per row, eleven of them on the home page alone. A
       named list is already the right semantics for a rail, and each button
       reports its own state through aria-pressed, so the role bought nothing.
 
       HORIZONTAL BELOW `md`, VERTICAL ABOVE IT. Stacked, eleven module names ran
-      about 480px — so on a phone the reader scrolled a full screen of labels
+      about 480px, so on a phone the reader scrolled a full screen of labels
       before reaching the one module's detail that the section exists to show,
       which inverts the whole point of the rewrite. As a scrolling chip row the
       same eleven names cost one line and the content starts immediately.

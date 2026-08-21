@@ -6,7 +6,7 @@ import { Backdrop, type BackdropVariant } from "@/components/visuals/Backdrop";
 /*
   1,360px OF CONTENT, WHICH MAKES THE BOX 1,440.
 
-  Cohere's measured content width is 1360 inside a 1440 viewport — 40px of page
+  Cohere's measured content width is 1360 inside a 1440 viewport, 40px of page
   margin either side. The obvious translation, `max-w-[85rem]` (1360) plus
   `px-10`, is wrong by exactly the padding: it caps the BOX at 1360 and then eats
   80 of it, leaving 1280 of content starting at x=80. Full-bleed elements that
@@ -122,7 +122,7 @@ export function Section({
   /*
     A RULE BETWEEN TWO IDENTICAL FILLS IS LINE NOISE.
 
-    A hairline drawn where the colour does not change divides nothing — it is a
+    A hairline drawn where the colour does not change divides nothing, it is a
     full-width line across the page for no reason, and three of them were
     measured on the running site (home SeatMechanism after Audiences, and two on
     /product). The divider exists to mark a change of surface, so when the caller
@@ -148,7 +148,7 @@ export function Section({
       {/*
         THE SEAM, WHICH USED TO BE A CLIFF.
 
-        This was `border-t border-line` — a flat, edge-to-edge, full-opacity 1px
+        This was `border-t border-line`, a flat, edge-to-edge, full-opacity 1px
         rule, under an instantaneous change of background fill. Measured down the
         right gutter of the home page, two boundaries moved ~200 luminance levels
         inside two device rows (Handoff into AiOnboarding, OfficeConsole into
@@ -158,7 +158,7 @@ export function Section({
         A hard horizontal step across the full viewport width is the single most
         template-looking thing a long page can do: it stops reading as one
         document and starts reading as a stack of unrelated slabs, which also
-        works against "one thing in view" — each slab announces a new context.
+        works against "one thing in view", each slab announces a new context.
 
         Two layers replace it, and both are `aria-hidden` siblings for the same
         reason the backdrop is (see Backdrop.tsx): the contrast gate resolves a
@@ -169,7 +169,7 @@ export function Section({
         THE RAMP IS GONE, and removing it is the point of this change. It faded
         the incoming fill over ~64px so two tones met gradually, and against a
         near-black band that produced a visible grey smudge at the top of the
-        section — it read as a rendering artifact, not as a join.
+        section, it read as a rendering artifact, not as a join.
 
         The reasoning it was built on ("a hard horizontal step is the most
         template-looking thing a long page can do") does not survive contact with
@@ -254,7 +254,7 @@ export function SectionHead({
         This was a Reveal around each of the eyebrow, the heading and the lead, at
         0s / 0.05s / 0.1s. Every section on the site uses this head, so the home
         page rendered 46 separately animating elements and scrolling it played a
-        cascade — the heading arriving after its own eyebrow, the lead after that.
+        cascade, the heading arriving after its own eyebrow, the lead after that.
         Measured on cohere.com, six elements animate on entry for the entire page.
 
         A stagger is a way of drawing attention to a sequence. Applied to every

@@ -19,7 +19,7 @@ export default function PrivacyPage() {
         {/*
           THE LEGAL TEXT IS A DOSSIER, NOT A WALL.
 
-          This page was one unbroken run of 12 <h2> sections — 5.5 desktop
+          This page was one unbroken run of 12 <h2> sections, 5.5 desktop
           viewports and nearly nine on a phone, for fewer words than /trust fits
           into 3.6. /trust and /pilot were compacted with `Dossier` and these two
           were not, which left the site’s two longest-per-word pages using the one
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
 
           Not one word is cut. Native <details> keeps every sentence in the DOM,
           so Ctrl+F still finds a clause inside a collapsed section and
-          claims.spec.ts can still audit the whole page — the two reasons
+          claims.spec.ts can still audit the whole page, the two reasons
           Dossier.tsx is not a JavaScript rail.
 
           The founder-draft warning stays ABOVE the accordion and outside it. It
@@ -42,7 +42,7 @@ export default function PrivacyPage() {
             Tenure is operated by its founders and is not yet incorporated, so this
             notice states how information is handled today rather than forming part
             of a signed agreement. An institution&rsquo;s deployment terms are
-            agreed separately &mdash; write to{" "}
+            agreed separately, write to{" "}
             <a href={`mailto:${site.email.privacy}`}>{site.email.privacy}</a> for
             the version your review needs.
           </div>
@@ -60,7 +60,7 @@ export default function PrivacyPage() {
                   <div className="legal">
                     <p>
                     Tenure is the system of record for organizations where
-                    leadership turns over faster than knowledge does &mdash; universities,
+                    leadership turns over faster than knowledge does, universities,
                     nonprofits and NGOs, small and mid-sized businesses, associations and
                     chapters. The platform holds an organization&rsquo;s
                     operations and institutional memory, finance, events, members,
@@ -99,7 +99,7 @@ export default function PrivacyPage() {
               {
                 key: "How we use it",
                 title: "How we use it",
-                blurb: "Running the service — and the three moments record text leaves our infrastructure.",
+                blurb: "Running the service, and the three moments record text leaves our infrastructure.",
                 children: (
                   <div className="legal">
                     <p>
@@ -185,7 +185,7 @@ export default function PrivacyPage() {
                     <ul>
                     <li>
                     <strong>Amazon Web Services</strong>{" "}
-                    &mdash; hosting, database and
+, hosting, database and
                     document storage for the application. Data is held in AWS&rsquo;s
                     United States regions. Encryption at rest uses AWS-managed keys;
                     there is no customer-managed key option today.
@@ -202,7 +202,7 @@ export default function PrivacyPage() {
                     indexed" made that reading more likely, not less.
                     */}
                     <strong>Amazon Bedrock, and Anthropic</strong>{" "}
-                    &mdash; the model providers. Synthesis
+, the model providers. Synthesis
                     runs on Bedrock, inside AWS, using an Anthropic model; the Anthropic
                     API is retained as a direct fallback, and record text leaves AWS when
                     that path is the one configured. Either receives permission-filtered
@@ -211,11 +211,11 @@ export default function PrivacyPage() {
                     summary of a text document, the contents of that document; and when
                     someone uses Draft Assist, the instruction they typed. Processing
                     location and retention are governed by each provider&rsquo;s commercial
-                    terms rather than ours &mdash; ask us for the terms in force.
+                    terms rather than ours, ask us for the terms in force.
                     </li>
                     <li>
                     <strong>Vercel</strong>{" "}
-                    &mdash; hosting for this marketing website
+, hosting for this marketing website
                     only. It does not touch your organization&rsquo;s record.
                     </li>
                     </ul>
@@ -236,7 +236,7 @@ export default function PrivacyPage() {
                     <p>
                     The marketing site you are reading sets no analytics or advertising
                     cookies, and we do not track you across it. Nothing third-party loads
-                    on any page until you ask for it &mdash; the scheduler on the contact
+                    on any page until you ask for it, the scheduler on the contact
                     page is the only such thing, and it loads only after you press a
                     button. If you never open it, no third party sees your visit.
                     </p>
@@ -267,7 +267,7 @@ export default function PrivacyPage() {
                   <div className="legal">
                     <p>
                     Access is scoped to the seat a person holds, and the institution or
-                    organization owns its records &mdash; not Tenure, and not the
+                    organization owns its records, not Tenure, and not the
                     individuals who pass through a seat. One limit worth stating plainly:
                     an account with an institution-level membership can currently read
                     every organization that institution stewards, so administrative
@@ -287,7 +287,7 @@ export default function PrivacyPage() {
               {
                 key: "Security",
                 title: "Security",
-                blurb: "Encryption, access, backups — including the retention window that is one day.",
+                blurb: "Encryption, access, backups, including the retention window that is one day.",
                 children: (
                   <div className="legal">
                     <p>
@@ -322,13 +322,13 @@ export default function PrivacyPage() {
                     <li>
                     {/*
                     There is no anonymization or user-deletion routine in the deploying
-                    app — a repo-wide search for one returns only integration-test
+                    app, a repo-wide search for one returns only integration-test
                     fixture cleanup. Stating it as an available control implied a
                     self-service or automated path that does not exist.
                     */}
                     <strong>Your personal account details</strong>{" "}
-                    &mdash; name, email,
-                    profile &mdash; can be removed or anonymized on request. There is no
+, name, email,
+                    profile, can be removed or anonymized on request. There is no
                     self-service control for this and no automated routine behind it: we
                     do it by hand, and assignments and audit rows that reference you are
                     kept.
@@ -346,14 +346,14 @@ export default function PrivacyPage() {
                     product working as designed: a seat carrying history refuses
                     deletion, and an outgoing officer is moved to alumni rather than
                     removed. If a departing treasurer could delete the budget decisions
-                    they made, the record would not survive turnover &mdash; which is
+                    they made, the record would not survive turnover, which is
                     the entire point of Tenure.
                     </li>
                     </ul>
                     <p>
                     So: access is revoked, history is retained. If you need a specific
                     entry corrected or removed for a legal reason, contact us and we will
-                    work with your organization&rsquo;s leadership on it &mdash; but we
+                    work with your organization&rsquo;s leadership on it, but we
                     will not quietly delete institutional history at the request of one
                     person who is leaving. The{" "}
                     <a href="/trust">security page</a>{" "}

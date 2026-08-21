@@ -161,7 +161,7 @@ export function SiteHeader() {
       {/*
           THE SHELL SITS ON THE SAME RAILS AS THE CONTENT. When the page container
           widened to 1360px with 40px margins, this kept `max-w-6xl px-5 sm:px-8`
-          — so the logo sat at x=176 while the sections beneath it started at
+, so the logo sat at x=176 while the sections beneath it started at
           x=40. The nav floated in from the edges like a different document.
 
           60px of height rather than 68 is cohere.com's measurement: a fixed bar
@@ -199,8 +199,8 @@ export function SiteHeader() {
                   not come from. The a11y suite called it as "Shift+Tab must
                   retrace the forward order", which is exactly what it was.
 
-                  Opening is now an explicit act — hover for a pointer, the
-                  chevron button for a keyboard — so the set of focusable things
+                  Opening is now an explicit act, hover for a pointer, the
+                  chevron button for a keyboard, so the set of focusable things
                   does not change as a side effect of moving through them.
                 */}
                 <div
@@ -261,7 +261,7 @@ export function SiteHeader() {
 
         <div className="hidden min-w-0 items-center gap-3 lg:flex">
           {/* On /contact the CTA would otherwise link to the page it is already
-              on — a dead control in the most prominent slot on the site. There it
+              on, a dead control in the most prominent slot on the site. There it
               becomes an in-page jump to the request composer instead. */}
           {pathname === "/contact" ? (
             <Button href="#request" size="sm" arrow>
@@ -324,7 +324,7 @@ export function SiteHeader() {
                     the four rows were byte-identical in the open panel: the
                     desktop ribbon shows where you are with an underline, and the
                     phone panel showed nothing at all. `aria-current` was already
-                    set — so a screen-reader user was told the current page and a
+                    set, so a screen-reader user was told the current page and a
                     sighted phone user was not, which is the wrong way round for a
                     marker that costs one class.
 
@@ -373,7 +373,7 @@ export function SiteHeader() {
         on the reference. It is also the click target that closes the menu, which
         is the behaviour people reach for before they look for Escape.
 
-        `aria-hidden` because it is a surface, not a control with a name — the
+        `aria-hidden` because it is a surface, not a control with a name, the
         keyboard route out is Escape, which the sheet handles.
       */}
       <div
@@ -463,7 +463,7 @@ function MegaSheet({
         {/*
           COLUMNS ARE FIXED-WIDTH AND PACKED LEFT, not three equal thirds of the
           container. Measured on the reference, its three column heads sit at
-          x=40, 336 and 608 — roughly 272px apiece, occupying a little over half
+          x=40, 336 and 608, roughly 272px apiece, occupying a little over half
           the sheet and leaving the right side empty. Spread across 1360px the
           same content reads as a sitemap; packed, it reads as a menu, and the
           empty right half is what tells you the sheet is a surface rather than a

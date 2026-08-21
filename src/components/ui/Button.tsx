@@ -41,7 +41,7 @@ const base =
 const variants: Record<Variant, string> = {
   /*
     NO GLOW. This carried a 30px coloured drop shadow in the accent hue, which is
-    a 2021 SaaS tell — cohere.com's buttons have no shadow at all, on any surface.
+    a 2021 SaaS tell, cohere.com's buttons have no shadow at all, on any surface.
     A solid fill is already the strongest element on a white page; lighting it
     from behind only makes it look like it is trying.
   */
@@ -56,7 +56,7 @@ const variants: Record<Variant, string> = {
     SOLID white pill rather than a translucent glass one. Cohere puts exactly
     this on top of a photograph: white fill, near-black label, no border, no
     blur. Glass depends on what is behind it, which over a photograph means its
-    label contrast is unknowable — the thing a scrim exists to prevent.
+    label contrast is unknowable, the thing a scrim exists to prevent.
   */
   light:
     // `text-ink-deep`, NOT `text-ink`. Inside `[class*="bg-band"]` the stylesheet
@@ -144,8 +144,8 @@ export function Button({
       Next resolves "#platform" against the current route, so the hero's
       "See the platform" button made the home page prefetch ITSELF: Lighthouse's
       network log showed three ?_rsc= requests for "/" starting at ~1.28s, the
-      largest 42,583 B — byte-for-byte the page the browser was already
-      displaying — competing for Slow-4G bandwidth well inside the LCP window.
+      largest 42,583 B, byte-for-byte the page the browser was already
+      displaying, competing for Slow-4G bandwidth well inside the LCP window.
 
       Nothing is lost by dropping to a plain anchor: the smooth scroll is CSS.
     */

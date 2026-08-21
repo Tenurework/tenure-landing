@@ -58,7 +58,7 @@ function FinanceCard() {
                 It was decoration. The row already shows a cleared
                 reimbursement, and the approval mechanism is explained in words
                 elsewhere on the page. Motion should explain a state change, not
-                be a permanent tax — so this one is gone.
+                be a permanent tax, so this one is gone.
               */}
               <span className="flex h-[1.15rem] w-[4.6rem] items-center justify-center rounded-full bg-grove-soft text-mark font-medium text-grove-deep">
                 Approved
@@ -86,7 +86,7 @@ function HandoffCard() {
         <Zone className="right-0" label="Incoming" />
 
         {/* The trace the record leaves behind. Without it the OUTGOING zone rests
-            as an empty dashed rectangle — 29% of the card showing nothing, which
+            as an empty dashed rectangle, 29% of the card showing nothing, which
             reads as a diagram that failed to render rather than as a handoff that
             completed. It also states the actual mechanism: the seat keeps its
             history, so the outgoing term is not blanked. */}
@@ -113,8 +113,8 @@ function HandoffCard() {
 
         {/*
           Moves once and stays. This used to run `opacity: [0,1,1,1,0]` on an
-          infinite loop, so the card’s text was fully transparent — and below
-          WCAG AA — for part of every cycle, forever. Contrast applies to text
+          infinite loop, so the card’s text was fully transparent, and below
+          WCAG AA, for part of every cycle, forever. Contrast applies to text
           as presented, so a permanent fade loop is a permanent contrast
           failure, not a rendering detail.
 

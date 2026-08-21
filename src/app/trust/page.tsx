@@ -42,7 +42,7 @@ const GROUPS: Group[] = [
       "Each institution’s record is separated at the database-client layer, not by convention in each query.",
     controls: [
       {
-        title: "Tenant filter attached to the database client — directly on 22 of 41 models",
+        title: "Tenant filter attached to the database client, directly on 22 of 41 models",
         status: "ci",
         body: "The tenant scope is applied by the data-access layer rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real database across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
       },
@@ -92,12 +92,12 @@ const GROUPS: Group[] = [
       {
         title: "Append-only audit trail, allows and denials",
         status: "ci",
-        body: "Privileged actions append an audit row, and refusals are recorded as well as successes — which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
+        body: "Privileged actions append an audit row, and refusals are recorded as well as successes, which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
       },
       {
         title: "Decisions record the deciding seat",
         status: "live",
-        body: "Each approval step permanently records who decided, the seat they held at that moment, what the request moved from and to, and — where a backup approver acted — that it was done on another seat’s behalf.",
+        body: "Each approval step permanently records who decided, the seat they held at that moment, what the request moved from and to, and, where a backup approver acted, that it was done on another seat’s behalf.",
       },
     ],
   },
@@ -158,12 +158,12 @@ const GROUPS: Group[] = [
         //
         // Three call sites reach the model, not one. Summarisation sends document
         // contents; Draft Assist sends the user's instruction.
-        body: "Answer synthesis runs on a managed model service inside our own cloud account. It authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
+        body: "Answer synthesis runs on a managed model service inside our own cloud account. It authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist, so some of your record does leave our own infrastructure at those moments.",
       },
       {
         title: "Retrieval quality",
         status: "validating",
-        body: "Retrieval is keyword matching over five record kinds — knowledge cards, document titles and descriptions, approvals, events and organization records. Answers link the records they came from.",
+        body: "Retrieval is keyword matching over five record kinds, knowledge cards, document titles and descriptions, approvals, events and organization records. Answers link the records they came from.",
       },
       {
         title: "Behaviour when the model is unavailable",
@@ -191,7 +191,7 @@ const GROUPS: Group[] = [
         // pool carries a 12-character policy, TOTP is available and recovery
         // runs to a verified email. Understating your own security to an
         // institution is not caution, it is just a different inaccuracy.
-        body: "Accounts live in a managed identity service and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a the identity service account is not access to an organization, which is decided from the roster.",
+        body: "Accounts live in a managed identity service and each person signs in with their own email and password, a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions, holding a the identity service account is not access to an organization, which is decided from the roster.",
       },
       {
         title: "Multi-factor authentication",
@@ -258,7 +258,7 @@ export default function TrustPage() {
 
       <Section tone="canvas" backdrop="light" divide={false}>
         <Container>
-          {/* Status vocabulary — defined once, up front. It is the key to the
+          {/* Status vocabulary, defined once, up front. It is the key to the
               whole page, so it stays expanded and above the dossier rather than
               becoming one more thing to open. */}
           <Panel>
@@ -294,7 +294,7 @@ export default function TrustPage() {
             Native <details>, deliberately: see the note in components/ui/Dossier.tsx.
             Ctrl+F has to find "SOC 2" and "backup retention" inside a collapsed
             section, and claims.spec.ts has to be able to audit every word of this
-            page — content held in React state that is not rendered would make the
+            page, content held in React state that is not rendered would make the
             ratchet pass by saying nothing at all.
           */}
           <Reveal delay={0.08} className="mt-6">
@@ -348,7 +348,7 @@ export default function TrustPage() {
                 {site.email.security}
               </a>
               . It reaches both founders directly. We will confirm receipt and
-              tell you what we are doing about it — we do not have a bug bounty,
+              tell you what we are doing about it, we do not have a bug bounty,
               and we will not argue with you about severity.
             </p>
             <p className="mt-3 leading-relaxed text-text-secondary measure">
@@ -402,7 +402,7 @@ export default function TrustPage() {
               <span className="font-medium text-text">
                 There is no company to contract with yet.
               </span>{" "}
-              Tenure is not an incorporated entity &mdash; it is two people, named
+              Tenure is not an incorporated entity, it is two people, named
               on the <a href="/story" className="text-accent-text underline underline-offset-4 hover:text-accent">story page</a>.
               That means no corporate liability shield, no professional indemnity
               or cyber insurance, and nobody who can sign an institutional

@@ -122,7 +122,7 @@ const DATASETS: Record<DatasetKey, Dataset> = {
       `TransactionType` in the deploying schema is ALLOCATION | SPEND |
       REIMBURSEMENT | ADJUSTMENT, and `LedgerKind` is SPEND | REIMBURSEMENT |
       ADJUSTMENT. There is no income type, and a repo-wide grep for "dues" or
-      "paid" returns nothing — there is no per-member payment tracking anywhere
+      "paid" returns nothing, there is no per-member payment tracking anywhere
       in the schema.
 
       So the two rows that used to open this ledger were both unbuildable: a
@@ -209,7 +209,7 @@ function Badge({
 /*
   A REAL BALANCE, NOT A WAVE.
 
-  This was `[38, 52, 46, 60, 54, 70, 64, 82, 78, 96]` — a perfectly alternating
+  This was `[38, 52, 46, 60, 54, 70, 64, 82, 78, 96]`, a perfectly alternating
   zig-zag climbing at a constant rate, drawn through a bezier smoother so it came
   out as a sine wave. Nothing about it was a treasury: balances do not oscillate
   every week and they do not rise on a ruler. It read as a decorative squiggle
@@ -227,7 +227,7 @@ function Badge({
 
   So the shape is legible: a flat carry-over, one large arrival, a slow bleed of
   small spending, and a deposit that visibly costs more than a month of it. The
-  small unexplained wiggles between them are the point as well — real series are
+  small unexplained wiggles between them are the point as well, real series are
   never smooth, and a chart with no noise is a chart nobody measured.
 
   Straight segments, not curves. Interpolating between weekly closes invents
@@ -308,7 +308,7 @@ function AreaChart({ reduce }: { reduce: boolean | null }) {
         transition={{ duration: reduce ? 0 : 0.6, delay: reduce ? 0 : 0.35 }}
       />
       {/* pathLength is an SVG attribute animation, part of the core animation
-          feature set — not a layout or drag feature — so it survives domAnimation. */}
+          feature set, not a layout or drag feature, so it survives domAnimation. */}
       <m.path
         d={line}
         fill="none"
@@ -677,14 +677,14 @@ export function DashboardMock({
         whileInView={tilt ? { rotateX: 2, rotateY: -5, y: 0, opacity: 1 } : { opacity: 1, y: 0 }}
         /*
           NO HOVER FLATTEN. The mock used to rotate to flat when pointed at, and
-          measured, that moved the module rail 36px across and 44px down — while
+          measured, that moved the module rail 36px across and 44px down, while
           the visitor was reaching for a control inside it.
 
           Worse, `click()` scrolls its target into view, which changes what the
           pointer is over, which flips the hover state, which starts the rotation
           again: the geometry oscillated and never settled. Playwright reported
           "element is not stable" and could not land a click at all, which is the
-          automated form of a real complaint — the button you are aiming at moves
+          automated form of a real complaint, the button you are aiming at moves
           when you approach it.
 
           The resting angle after `whileInView` is rotateX 2 / rotateY -5, which
@@ -793,8 +793,7 @@ export function DashboardMock({
               <m.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
             {/* Module-independent: the caption used to interpolate the active module,
-                so it promised answers "about the finance" and "about the members" —
-                the two kinds that are not in the search corpus at all. */}
+                so it promised answers "about the finance" and "about the members",                 the two kinds that are not in the search corpus at all. */}
             <p className="text-meta leading-relaxed text-ink-soft measure">Search the decisions, events and records this seat has filed.</p>
             <div className="space-y-1.5">
               {data.asks[active].map((a) => (

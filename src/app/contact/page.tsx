@@ -36,7 +36,7 @@ const EXPECT = [
   },
   {
     title: "You leave knowing the roadmap",
-    body: "What is shipped, what is in validation and what is scheduled — separated, on the call, in writing afterwards.",
+    body: "What is shipped, what is in validation and what is scheduled, separated, on the call, in writing afterwards.",
   },
 ];
 
@@ -68,8 +68,8 @@ export default function ContactPage() {
             The layout was `lg:grid-cols-[1.1fr_0.9fr]` with `items-start`: the
             left column held one 255px card and the right stacked two of roughly
             400px each. That left about 700px of empty white below the primary
-            call to action — the most important card on the page, ending in a void
-            — and two columns whose cards lined up at the top and nowhere else.
+            call to action, the most important card on the page, ending in a void
+, and two columns whose cards lined up at the top and nowhere else.
             Uneven column weights plus `items-start` guarantees ragged bottoms.
 
             Two equal columns that STRETCH to a shared height, then one full-width
@@ -79,7 +79,7 @@ export default function ContactPage() {
           */}
           <div className="grid items-stretch gap-6 lg:grid-cols-2 lg:gap-8">
             {/* The composer. `id` is the target of the header CTA when the
-                visitor is already on /contact — see SiteHeader. `scroll-mt`
+                visitor is already on /contact, see SiteHeader. `scroll-mt`
                 clears the fixed header so the panel is not tucked under it. */}
             <Panel className="flex h-full flex-col scroll-mt-24" id="request">
               <PanelBar

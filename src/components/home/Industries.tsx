@@ -103,8 +103,7 @@ export function Industries() {
       </Container>
 
       {/*
-        FULL-BLEED. The row starts on the page rail and runs off the right edge —
-        `rail-pad` keeps its first card level with the heading at every viewport,
+        FULL-BLEED. The row starts on the page rail and runs off the right edge,         `rail-pad` keeps its first card level with the heading at every viewport,
         including the wide ones where a centred container no longer touches the
         page margin.
       */}
@@ -112,7 +111,7 @@ export function Industries() {
         <div
           ref={railRef}
           role="region"
-          aria-label="Industries Tenure is built for — scroll horizontally for more"
+          aria-label="Industries Tenure is built for, scroll horizontally for more"
           tabIndex={0}
           className="no-scrollbar rail-pad snap-x snap-mandatory overflow-x-auto pb-2"
         >
@@ -151,7 +150,7 @@ export function Industries() {
 
       <Container className="mt-8">
         {/*
-          The track is decorative — `aria-hidden` — because the scroll region it
+          The track is decorative, `aria-hidden`, because the scroll region it
           reports on is already announced, focusable and arrow-key operable. A
           second announced progressbar would be a duplicate control that cannot
           be operated.

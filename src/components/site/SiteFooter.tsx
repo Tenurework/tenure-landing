@@ -12,7 +12,7 @@ export function SiteFooter() {
       {/*
         `pb-12` is the fix for a rule cutting through a link. The column block had
         top padding and none at the bottom, and the bottom bar below it draws its
-        own `border-t` — so on a wide viewport the Explore column's last item
+        own `border-t`, so on a wide viewport the Explore column's last item
         ("About") sat exactly on that line, with the rule crossing the text.
       */}
       <div className="relative z-10 mx-auto w-full max-w-[90rem] px-4 pb-12 pt-16 sm:px-6 sm:pb-14 sm:pt-20 lg:px-10">
@@ -50,7 +50,7 @@ export function SiteFooter() {
                 {/*
                   No children: fall through to site.ctaLabel. site.ts retired
                   "Contact Sales" because it oversold a two-founder company and set
-                  the wrong expectation for who picks up — but this call site passed
+                  the wrong expectation for who picks up, but this call site passed
                   the literal string and overrode the decision on all eight routes.
                 */}
                 <ContactSalesLink className="group inline-flex items-center gap-1.5 text-body text-inverse transition-colors hover:text-grove-bright">
@@ -68,9 +68,7 @@ export function SiteFooter() {
 
                 Neither the ribbon nor this footer contained one: /contact was
                 reachable only behind a green button labelled "Book a
-                walkthrough", so a visitor looking for a way to reach a human —
-                or scanning a footer for the word every other site puts there —
-                found nothing. It goes here rather than in the four-item ribbon,
+                walkthrough", so a visitor looking for a way to reach a human,                 or scanning a footer for the word every other site puts there,                 found nothing. It goes here rather than in the four-item ribbon,
                 which has no room and whose labels name the question a visitor
                 arrived with, not the pages that exist.
               */}
@@ -115,7 +113,7 @@ export function SiteFooter() {
             ))}
             <span aria-hidden className="h-3 w-px bg-line-dark" />
             {/*
-              MARKS, NOT WORDS — and only the two that exist. "LinkedIn / X" set
+              MARKS, NOT WORDS, and only the two that exist. "LinkedIn / X" set
               in body copy read as two more footer links competing with Privacy
               and Terms; a glyph is recognised without being read. Each keeps a
               visually-hidden label, because an icon-only link with no accessible

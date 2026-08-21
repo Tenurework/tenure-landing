@@ -16,7 +16,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
 
       This read "Mostly no, and we will tell you exactly where", then spent three
       sentences on a Slack connector that is built but unreachable and seventeen
-      catalog entries awaiting credentials — two thirds of the answer describing
+      catalog entries awaiting credentials, two thirds of the answer describing
       things a reader cannot use. A visitor asking whether Tenure replaces their
       tools wants to know what it does with the files they already have.
 
@@ -52,7 +52,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
       <>
         {/*
           claims.ts defines a claim’s `qualification` as the limits that must travel
-          with it WHEREVER it appears, and C-003/C-004 both list "/" — but the home
+          with it WHEREVER it appears, and C-003/C-004 both list "/", but the home
           page carried the headline and left both numbers on /trust, so this read as
           blanket enforcement. The numbers travel now.
         */}
@@ -69,7 +69,7 @@ const ITEMS: { q: string; a: ReactNode }[] = [
   },
   {
     q: "What does it cost?",
-    a: "Pricing is per portfolio, not per organization: one budget line covers every organization a body stewards, whether that is a university office, a national association or a nonprofit with regional chapters. A single organization is priced on its own. Nothing is published as a figure yet — the planned Fall 2026 pilot is free for its term, and anything beyond it would be a written agreement rather than an update to a page.",
+    a: "Pricing is per portfolio, not per organization: one budget line covers every organization a body stewards, whether that is a university office, a national association or a nonprofit with regional chapters. A single organization is priced on its own. Nothing is published as a figure yet, the planned Fall 2026 pilot is free for its term, and anything beyond it would be a written agreement rather than an update to a page.",
   },
 ];
 
@@ -79,7 +79,7 @@ export function Faq() {
 
       <Container className="relative">
         <Reveal>
-          {/* Was text-display — the single word "FAQ" was set larger than every
+          {/* Was text-display, the single word "FAQ" was set larger than every
               section heading on the page, so the loudest type on the home page
               was its least informative word. */}
           <h2 className="font-display text-h2 text-ink sm:text-h2-lg">

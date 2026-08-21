@@ -96,7 +96,7 @@ export function AiOnboarding() {
               // `text-ink` / `text-ink-soft` resolve to the inverse ramp here. That
               // is deliberate — a section dropped onto a band is correct by default,
               // and cannot regress when someone adds a `text-ink-faint` inside one.
-              lead="An incoming holder gets read-only access to the seat’s record before their term begins, then searches it — and gets an answer built from what past holders filed as they worked, with the records it came from linked."
+              lead="An incoming holder gets read-only access to the seat’s record before their term begins, then searches it, and gets an answer built from what past holders filed as they worked, with the records it came from linked."
             />
 
             <ul className="mt-7 space-y-3">
@@ -193,21 +193,21 @@ export function AiOnboarding() {
           the contents of a text document when a summary is requested, and the
           instruction typed into Draft Assist.
 
-          "every answer links its sources" is deliberately not written — citation
+          "every answer links its sources" is deliberately not written, citation
           is an instruction in the system prompt with no post-hoc verification, and
           the chat route calls the model even when retrieval matched nothing.
           `forbiddenPhrases` blocks the absolute form.
         */}
         <Reveal delay={0.1}>
           <p className="mx-auto mt-10 max-w-3xl border-t border-line-dark pt-6 text-center text-body-sm leading-relaxed text-inverse/65">
-            {/* NOT "every answer links" — the chat route calls the model even when
+            {/* NOT "every answer links", the chat route calls the model even when
                 retrieval matched nothing, so the absolute form is false and the
                 register blocks it. This is the claim the code actually supports. */}
             Tenure AI is given only records you can already open, and answers link
             the records they came from. Text goes to the model service, inside our
             own cloud account, for three things: the records retrieved for a question,
             a text document someone asks to summarize, and an instruction typed into
-            Draft Assist. Your records stay yours &mdash; they are never used to train
+            Draft Assist. Your records stay yours, they are never used to train
             a model.{" "}
             <Link
               href="/trust"

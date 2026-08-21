@@ -10,7 +10,7 @@ export const site = {
 
   tagline: "The operating system that keeps the memory when the people change.",
   description:
-    "Tenure is the system of record for organizations where people rotate faster than knowledge transfers — universities, nonprofits and NGOs, small and mid-sized businesses, associations and chapters. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next holder inherits the record instead of rebuilding it.",
+    "Tenure is the system of record for organizations where people rotate faster than knowledge transfers, universities, nonprofits and NGOs, small and mid-sized businesses, associations and chapters. Finance, events, approvals, members, documents and institutional memory attach to the durable seat, not the person holding it, so the next holder inherits the record instead of rebuilding it.",
 
   /**
    * One conversion phrase, used everywhere.
@@ -132,16 +132,15 @@ export const site = {
     THE TOP RIBBON, AND WHAT OPENS UNDER IT.
 
     NO PANEL'S TRAILING LINK POINTS AT /contact. Two of them did, and on /contact
-    itself that is a control that navigates to the page you are already reading —
-    the same dead-control defect the header CTA already guards against, which is
+    itself that is a control that navigates to the page you are already reading,     the same dead-control defect the header CTA already guards against, which is
     why the interaction suite caught it. The trailing link is an OVERVIEW, in the
     reference's sense of "Models Overview ->": somewhere further into the subject,
     not the conversion path. The conversion path is the pill on the right of the
     bar, and it is there on every route.
 
     Every destination in `menu` is a route or an anchor that already exists. A
-    dropdown is the easiest place on a site to invent structure — four tidy
-    columns of links to pages nobody built — and a menu whose items 404 is worse
+    dropdown is the easiest place on a site to invent structure, four tidy
+    columns of links to pages nobody built, and a menu whose items 404 is worse
     than no menu. Where a panel has only two real places to send you, it sends
     you to two.
 
@@ -264,7 +263,7 @@ export const site = {
   /*
     LINKEDIN ONLY. The X handle was listed in the footer and published to search
     engines through `sameAs`, which asserts to Google that the profile is ours.
-    There is one account today, so there is one link here — a dead social icon
+    There is one account today, so there is one link here, a dead social icon
     costs more trust than an absent one.
   */
   socials: {
@@ -342,7 +341,7 @@ export const site = {
       value: 0,
       suffix: "",
       label: "records deleted at offboarding",
-      sub: "a seat carrying history refuses deletion — access is revoked, the record is not",
+      sub: "a seat carrying history refuses deletion, access is revoked, the record is not",
       claimId: "C-011",
     },
     {

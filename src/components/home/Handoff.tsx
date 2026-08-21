@@ -137,7 +137,7 @@ export function Handoff() {
   /*
     THE `id` EXISTS SO THE RIBBON MENU CAN LINK HERE. Its "how a handoff works"
     entry first pointed at `#how`, which belonged to a HowItWorks section that had
-    been cut from /product and was rendered by no page at all — a dead fragment
+    been cut from /product and was rendered by no page at all, a dead fragment
     the link test caught before it shipped. This is the section that actually
     answers the question.
   */
@@ -189,7 +189,7 @@ export function Handoff() {
 
                     Below `md` this had no column count at all, so all five cells
                     went full width and each seat became nine stacked lines with
-                    its column label above it — the four labels printed sixteen
+                    its column label above it, the four labels printed sixteen
                     times down the list. Measured: 1,835px, 2.17 mobile screens,
                     the tallest section on the site and the single largest reason
                     home ran 16 mobile screens against 10 on desktop.
@@ -249,7 +249,7 @@ export function Handoff() {
                 draws the two dividers without three nested borders. */}
             {/* Three across at every width. Stacked on a phone these cost ~350px to
                 say three short numbers, and each is one line of value plus one of
-                note — there is room for three columns at 390px. */}
+                note, there is room for three columns at 390px. */}
             <div className="grid grid-cols-3 gap-px border-t border-line bg-line">
               {STANDING.map((st) => (
                 <div key={st.label} className="bg-cloud px-3 py-4 sm:px-6">

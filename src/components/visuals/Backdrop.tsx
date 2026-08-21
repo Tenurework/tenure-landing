@@ -61,14 +61,14 @@ export function Backdrop({
     NOTHING GOES BEHIND A SECTION.
 
     Measured off cohere.com: the page is white. There is no wash, no grid, no
-    grain — 2,312 of its rendered nodes sit on plain white or #FAFAFA, and every
+    grain, 2,312 of its rendered nodes sit on plain white or #FAFAFA, and every
     piece of colour on the page arrives inside a photograph or a dark product
     surface. That is the discipline this component used to work against.
 
     What was here was already the restrained version: one large radial at 7%
     accent, a cool counterweight, a 120px drafting grid under product sections,
     and a grain layer over everything. Individually defensible, and collectively
-    a permanent tint over every pixel of the site — the faint grid was visible in
+    a permanent tint over every pixel of the site, the faint grid was visible in
     every screenshot, which is exactly the "backdrop" quality the brief kept
     calling immature. A gradient behind a section is a decoration standing in for
     a composition.

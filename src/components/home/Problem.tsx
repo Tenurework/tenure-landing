@@ -98,10 +98,10 @@ export function Problem() {
                 icons carry the distinction, so a header row would be noise. */}
             <div className="hidden gap-6 border-b border-line px-6 py-2.5 md:grid md:grid-cols-2">
               <span className="label-mono text-mark text-brand-coral">
-                Without Tenure &mdash; the handoff today
+                Without Tenure, the handoff today
               </span>
               <span className="label-mono text-mark text-grove">
-                With Tenure &mdash; the seat remembers
+                With Tenure, the seat remembers
               </span>
             </div>
 

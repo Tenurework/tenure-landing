@@ -71,16 +71,16 @@ const STEPS: Step[] = [
 
 /* Each line is a mechanism, not a restatement of the heading. */
 const AFFIRMATIONS = [
-  "The next holder shadows the seat before their term starts — read-only, knowledge cards included",
+  "The next holder shadows the seat before their term starts, read-only, knowledge cards included",
   "The outgoing holder becomes alumni: the record stays on the seat, the access does not",
   "Tenure AI answers from that record, with its sources linked",
 ];
 
 /** The three states, stated once for the whole site. */
 const LIFECYCLE: { label: string; when: string; tone: "shadow" | "active" | "alumni" }[] = [
-  { label: "Shadow", when: "before the term — read-only", tone: "shadow" },
-  { label: "Active", when: "during it — the same access, now write", tone: "active" },
-  { label: "Alumni", when: "after it — record stays, access does not", tone: "alumni" },
+  { label: "Shadow", when: "before the term, read-only", tone: "shadow" },
+  { label: "Active", when: "during it, the same access, now write", tone: "active" },
+  { label: "Alumni", when: "after it, record stays, access does not", tone: "alumni" },
 ];
 
 const TONE = {
@@ -141,7 +141,7 @@ export function SeatMechanism() {
   /*
     NO TIMER ANY MORE. This used to advance through the three terms on a 3.4s
     `setInterval`, which meant the section showed a third of its own argument at
-    rest and the reader had to wait for the rest — with a pause button, because
+    rest and the reader had to wait for the rest, with a pause button, because
     WCAG 2.2.2 requires one for anything that moves on its own.
 
     The terms are stacked instead: all three are on the page, and SCROLLING is
@@ -158,8 +158,7 @@ export function SeatMechanism() {
             /*
               `min-w-0` on the grid children, and it is a real fix rather than a
               guard. A grid item's automatic minimum size is its MIN-CONTENT, not
-              zero, so any child that cannot wrap — an occupant row, a mono label —
-              props the whole column open and the page scrolls sideways. At 320px
+              zero, so any child that cannot wrap, an occupant row, a mono label,               props the whole column open and the page scrolls sideways. At 320px
               this section measured 407px wide.
 
               It did that before this commit too. `overflow: hidden` on Section was
@@ -240,13 +239,13 @@ export function SeatMechanism() {
               Each card is `position: sticky` at a top offset 18px below the one
               before it, so scrolling pulls the next term up over the last and
               leaves its header peeking. The pile that builds at the top IS the
-              argument — the record accrues, the people do not.
+              argument, the record accrues, the people do not.
 
               TWO THINGS THIS DEPENDS ON, both easy to get wrong:
 
               1. No ancestor may have `overflow: hidden`. Section sets it by
                  default for bleeds, and it silently disables sticky in every
-                 descendant — the cards simply scroll away and nothing errors.
+                 descendant, the cards simply scroll away and nothing errors.
                  This section overrides it.
               2. Each card needs a fixed height, or a tall card would cover the
                  next one's landing point and the stack would never separate.

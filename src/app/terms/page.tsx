@@ -24,7 +24,7 @@ export default function TermsPage() {
         {/*
           THE LEGAL TEXT IS A DOSSIER, NOT A WALL.
 
-          This page was one unbroken run of 14 <h2> sections — 5.7 desktop
+          This page was one unbroken run of 14 <h2> sections, 5.7 desktop
           viewports and nearly nine on a phone, for fewer words than /trust fits
           into 3.6. /trust and /pilot were compacted with `Dossier` and these two
           were not, which left the site’s two longest-per-word pages using the one
@@ -32,7 +32,7 @@ export default function TermsPage() {
 
           Not one word is cut. Native <details> keeps every sentence in the DOM,
           so Ctrl+F still finds a clause inside a collapsed section and
-          claims.spec.ts can still audit the whole page — the two reasons
+          claims.spec.ts can still audit the whole page, the two reasons
           Dossier.tsx is not a JavaScript rail.
 
           The founder-draft warning stays ABOVE the accordion and outside it. It
@@ -84,9 +84,9 @@ export default function TermsPage() {
                   <div className="legal">
                     <p>
                     Tenure is the system of record for organizations where
-                    leadership turns over faster than knowledge does &mdash; universities,
+                    leadership turns over faster than knowledge does, universities,
                     nonprofits and NGOs, small and mid-sized businesses, associations and
-                    chapters &mdash; offered through a pilot and early access. It
+                    chapters, offered through a pilot and early access. It
                     keeps an organization&rsquo;s operations, finance, events,
                     members, documents, and institutional memory, in one place, so
                     the role persists even as the people in it rotate. Because the
@@ -112,7 +112,7 @@ export default function TermsPage() {
                     liability anyway would have been both unfair and unenforceable.
 
                     The specifics of the pilot sign-in mechanism are deliberately not
-                    published here — see C-023 — but the consequence of it belongs in the
+                    published here, see C-023, but the consequence of it belongs in the
                     operative document rather than only in a security page’s caveat.
                     */}
                     <p>
@@ -288,7 +288,7 @@ export default function TermsPage() {
                     The pilot is free. No fees, subscription or usage charges are payable
                     for it, and there are no taxes to pass on because there is nothing to
                     invoice. If Tenure ever charges an organization, that will require a
-                    separate written agreement signed in advance &mdash; it will not
+                    separate written agreement signed in advance, it will not
                     appear by way of an update to this page.
                     </p>
                   </div>
@@ -362,7 +362,7 @@ export default function TermsPage() {
                     <strong>Assignment.</strong>{" "}
                     Neither side may assign these terms
                     without the other&rsquo;s written consent, except that we may assign
-                    them to a legal entity we form to operate Tenure &mdash; which,
+                    them to a legal entity we form to operate Tenure, which,
                     given that no such entity exists yet, is a foreseeable event rather
                     than a hypothetical.
                     </li>

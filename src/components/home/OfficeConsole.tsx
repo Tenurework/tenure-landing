@@ -235,7 +235,7 @@ export function OfficeConsole() {
               <span className="text-gradient">everyone else&rsquo;s</span>.
             </>
           }
-          lead="Every organization you steward on one screen: who holds which seat, what is pending, what got denied — and a console whose navigation is derived from the capabilities your own seat actually holds."
+          lead="Every organization you steward on one screen: who holds which seat, what is pending, what got denied, and a console whose navigation is derived from the capabilities your own seat actually holds."
         />
 
         <Reveal delay={0.14} className="mt-7">
@@ -296,13 +296,13 @@ export function OfficeConsole() {
                   <Pane label="Organizations">
                     <p className="text-body leading-relaxed text-ink-soft measure">
                       Every organization on one record, with how much of its seat map
-                      is actually filled &mdash; which is the number that predicts
+                      is actually filled, which is the number that predicts
                       whether a handoff will go well.
                     </p>
                     {/*
                       THE RATIO IS THE REAL ONE, AND IT USED TO BE INVERTED.
 
-                      These three rows read 8/7, 12/12 and 6/6 — twenty-five of
+                      These three rows read 8/7, 12/12 and 6/6, twenty-five of
                       twenty-six seats held, a portfolio with essentially nothing
                       wrong with it. The seeded roster this whole section is drawn
                       from is 209 seats with 106 filled and 103 VACANT (C-014's own
@@ -369,7 +369,7 @@ export function OfficeConsole() {
                     </div>
                     {/*
                       C-037's limit used to be restated here, beside the mock, in
-                      full — "nothing prevents it and no second party is required".
+                      full, "nothing prevents it and no second party is required".
                       It is set out control by control on Security, which is where
                       somebody assessing an override control is reading. Repeating
                       it under the illustration made the strongest governance
@@ -383,7 +383,7 @@ export function OfficeConsole() {
                     <p className="text-body leading-relaxed text-ink-soft measure">
                       Sixteen named capabilities across three strictly nested tiers.
                       A director inherits everything staff can do, and staff
-                      everything an advisor can do &mdash; so the tiers are drawn as
+                      everything an advisor can do, so the tiers are drawn as
                       containment rather than as three separate bars.
                     </p>
                     <TierNest
