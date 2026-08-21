@@ -38,7 +38,7 @@ export default function PrivacyPage() {
               nothing, but an institution must not mistake a founder draft for a
               reviewed instrument. */}
           <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
-            <strong className="font-semibold">Current practice, not a negotiated instrument.</strong>{" "}
+            <strong className="font-medium">Current practice, not a negotiated instrument.</strong>{" "}
             Tenure is operated by its founders and is not yet incorporated, so this
             notice states how information is handled today rather than forming part
             of a signed agreement. An institution&rsquo;s deployment terms are

@@ -21,7 +21,7 @@ function FinanceCard() {
           live
         </span>
       </div>
-      <p className="mt-3 font-mono text-h3 font-semibold text-ink">
+      <p className="mt-3 font-mono text-h3 text-ink">
         $12,400{" "}
         <span className="text-body-sm font-normal text-text-secondary">/ $18,000</span>
       </p>
@@ -208,7 +208,7 @@ export function ProductAtWork() {
             <Eyebrow>Tenure at work</Eyebrow>
           </Reveal>
           <Reveal delay={0.06}>
-            <h2 className="font-display mt-5 text-h2 leading-[1.08] tracking-[-0.03em] text-ink sm:text-display-sm lg:text-display-sm">
+            <h2 className="font-display mt-5 text-h2 text-ink sm:text-display-sm lg:text-display-sm">
               Not a pitch deck. The mechanics,{" "}
               <span className="text-grove">exactly as they work</span>.
             </h2>
@@ -231,7 +231,7 @@ export function ProductAtWork() {
             >
               <Reveal className={cn(i % 2 === 1 && "lg:order-2")}>
                 <Eyebrow>{f.eyebrow}</Eyebrow>
-                <h3 className="font-display mt-4 text-h3 leading-[1.1] tracking-[-0.02em] text-ink sm:text-h2">
+                <h3 className="font-display mt-4 text-h3 text-ink sm:text-h2">
                   {f.title}
                 </h3>
                 <p className="mt-4 text-title-sm leading-relaxed text-ink-soft measure">{f.body}</p>

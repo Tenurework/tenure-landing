@@ -116,7 +116,7 @@ function Occupant({
     >
       <span
         className={cn(
-          "flex h-7 w-7 items-center justify-center rounded-full font-mono text-mark font-semibold",
+          "flex h-7 w-7 items-center justify-center rounded-full font-mono text-mark",
           TONE[status],
         )}
       >
@@ -359,7 +359,7 @@ export function SeatMechanism() {
                         <p className="label-mono text-mark text-grove-deep">
                           Institutional memory on this seat
                         </p>
-                        <p className="font-display text-title font-semibold tnum text-grove-deep">
+                        <p className="font-display text-title tnum text-grove-deep">
                           {step.records}
                         </p>
                       </div>
@@ -393,7 +393,7 @@ export function SeatMechanism() {
                       <div className="flex items-center gap-2">
                         <Logo className="h-4 w-4 text-grove" />
                         {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
-                        <span className="text-meta font-semibold text-ink">
+                        <span className="text-meta text-ink">
                           Ask this seat
                         </span>
                       </div>

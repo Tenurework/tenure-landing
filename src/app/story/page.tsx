@@ -58,7 +58,7 @@ export default function StoryPage() {
               <Eyebrow index="01">Why Tenure exists</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 text-ink sm:text-h2-lg">
                 Every fall, the same{" "}
                 <span className="text-grove">cold start</span>.
               </h2>
@@ -94,7 +94,7 @@ export default function StoryPage() {
             </Reveal>
 
             <Reveal delay={0.24}>
-              <blockquote className="mt-8 border-l-2 border-grove pl-5 font-display text-title font-semibold leading-snug tracking-[-0.02em] text-ink sm:text-h3">
+              <blockquote className="mt-8 border-l-2 border-grove pl-5 font-display text-title leading-snug text-ink sm:text-h3">
                 The role should keep what it knows, even after the people who
                 built it have graduated.
               </blockquote>
@@ -111,7 +111,7 @@ export default function StoryPage() {
               <Eyebrow index="02">Founders</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 text-ink sm:text-h2-lg">
                 The people building the{" "}
                 <span className="text-grove">record</span>.
               </h2>
@@ -124,7 +124,7 @@ export default function StoryPage() {
                 <div className="flex h-full flex-col rounded-2xl border border-line bg-cloud p-7 shadow-[var(--shadow-sm)] transition hover:-translate-y-0.5 hover:shadow-[var(--shadow-md)]">
                   <span
                     aria-hidden
-                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-grove-soft font-display text-title-sm font-semibold text-grove-deep"
+                    className="flex h-12 w-12 items-center justify-center rounded-xl bg-grove-soft font-display text-title-sm text-grove-deep"
                   >
                     {f.name.charAt(0)}
                   </span>
@@ -162,7 +162,7 @@ export default function StoryPage() {
               </Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-5 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+              <h2 className="font-display mt-5 text-h2 text-inverse sm:text-h2-lg">
                 Serve any organization where people rotate faster than{" "}
                 <span className="text-grove-bright">knowledge transfers</span>.
               </h2>
@@ -187,7 +187,7 @@ export default function StoryPage() {
               <Eyebrow index="04">Where it stands</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 text-ink sm:text-h2-lg">
                 Where it{" "}
                 <span className="text-grove">stands</span>.
               </h2>

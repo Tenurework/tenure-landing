@@ -56,7 +56,7 @@ export function PageHeader({
           viewport on its own. Bigger type in a narrower box is not emphasis, it
           is a column of syllables.
 
-          `leading-[1.05] tracking-[-0.035em]` are gone with it: both now ride on
+          `leading-[1.05]` are gone with it: both now ride on
           the size token, which is the whole reason the token carries them.
         */}
         <h1 className="font-display mx-auto mt-6 max-w-[70rem] text-display-sm text-ink sm:text-display">

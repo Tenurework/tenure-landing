@@ -70,7 +70,7 @@ export function PanelBar({
           </span>
         )}
         <div className="min-w-0">
-          <p className="font-display text-body font-semibold text-ink">{title}</p>
+          <p className="font-display text-body text-ink">{title}</p>
           {meta && <p className="font-mono text-mark text-ink-faint">{meta}</p>}
         </div>
       </div>

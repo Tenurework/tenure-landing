@@ -125,7 +125,7 @@ export function AiOnboarding() {
                       />
                     </svg>
                   </span>
-                  <span className="font-display text-body-sm font-semibold text-inverse">
+                  <span className="font-display text-body-sm text-inverse">
                     Ask Tenure
                   </span>
                 </div>

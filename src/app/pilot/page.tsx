@@ -783,7 +783,7 @@ export default function PilotPage() {
               <div className="relative">
                 <div className="max-w-2xl">
                   <p className="label-mono text-grove-bright">03 · The decision</p>
-                  <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+                  <h2 className="font-display mt-4 text-h2 text-inverse sm:text-h2-lg">
                     The next step is a{" "}
                     <span className="text-grove-bright">conversation</span>, and then
                     a document.

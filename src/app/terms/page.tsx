@@ -40,7 +40,7 @@ export default function TermsPage() {
         */}
         <div className="mx-auto max-w-3xl pb-16">
           <div className="mb-8 rounded-xl border border-line bg-warning-subtle px-5 py-4 text-body leading-relaxed text-warning">
-            <strong className="font-semibold">Early access terms.</strong>{" "}
+            <strong className="font-medium">Early access terms.</strong>{" "}
             Tenure is operated by its founders and is not yet incorporated. These
             terms cover early access and the Fall 2026 deployment; an
             institution&rsquo;s agreement is negotiated separately. Write to{" "}

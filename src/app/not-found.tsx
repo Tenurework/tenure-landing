@@ -22,7 +22,7 @@ export default function NotFound() {
     <Container>
       <div className="flex min-h-[60vh] flex-col justify-center py-24">
         <p className="label-mono">Error 404</p>
-        <h1 className="mt-4 max-w-2xl font-display text-h2-lg leading-[1.08] tracking-tight text-text sm:text-display">
+        <h1 className="mt-4 max-w-2xl font-display text-h2-lg tracking-tight text-text sm:text-display">
           That page moved on.
         </h1>
         <p className="mt-5 max-w-xl text-title-sm leading-relaxed text-text-secondary measure">

@@ -80,7 +80,7 @@ export function Hero() {
 
             {/*
               Leading, tracking and weight now ride on the size token, so the
-              hand-set `leading-[1.02] tracking-[-0.035em] font-semibold` that
+              hand-set `leading-[1.02]` that
               used to sit here are gone — at 96px they were tuned for a 42px
               headline and fought the step they were applied to.
 

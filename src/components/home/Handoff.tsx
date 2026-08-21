@@ -261,7 +261,7 @@ export function Handoff() {
                     </span>
                     <span className="label-mono text-mark">{st.label}</span>
                   </div>
-                  <p className="mt-2 font-display text-lead font-semibold tnum text-ink sm:mt-2.5 sm:text-title-sm">
+                  <p className="mt-2 font-display text-lead tnum text-ink sm:mt-2.5 sm:text-title-sm">
                     {st.value}
                   </p>
                   <p className="text-caption leading-snug text-ink-soft sm:text-caption">{st.note}</p>

@@ -179,7 +179,7 @@ function Stat({ k, v, sub }: { k: string; v: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-paper/40 px-3 py-2.5">
       <p className="label-mono text-mark">{k}</p>
-      <p className="mt-1 font-mono text-body font-semibold tnum text-ink">{v}</p>
+      <p className="mt-1 font-mono text-body tnum text-ink">{v}</p>
       {sub && <p className="text-mark text-grove">{sub}</p>}
     </div>
   );
@@ -373,7 +373,7 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
         <div className="flex items-end justify-between">
           <div>
             <p className="label-mono text-mark">Treasury balance</p>
-            <p className="mt-1 font-mono text-h3 font-semibold tnum text-ink">$12,400</p>
+            <p className="mt-1 font-mono text-h3 tnum text-ink">$12,400</p>
             <p className="flex items-center gap-1 text-meta font-medium text-grove">
               <Mark d={MARK.rise} className="h-[0.72em] w-[0.72em] fill-current" />
               $1,300 · 11.7% this month
@@ -484,7 +484,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
               <div className="flex flex-col items-center gap-1">
                 <m.span
                   className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full border text-mark font-semibold",
+                    "flex h-6 w-6 items-center justify-center rounded-full border text-mark",
                     i < active && "border-grove bg-grove text-on-accent",
                     i === active && "border-brand-gold bg-warning-subtle text-warning",
                     i > active && "border-line bg-cloud text-ink-faint",
@@ -550,7 +550,7 @@ function MembersView() {
         </div>
         {roster.map((m, i) => (
           <div key={m.n} className={cn("flex items-center gap-2 px-3 py-2 text-meta", i > 0 && "border-t border-line")}>
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-mark font-semibold text-grove-deep">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-mark text-grove-deep">
               {m.n.split(" ").map((p) => p[0]).join("")}
             </span>
             <span className="flex-1 truncate text-ink">{m.n}</span>
@@ -703,7 +703,7 @@ export function DashboardMock({
         <div className="flex items-center justify-between gap-3 border-b border-line bg-paper/60 px-4 py-2.5">
           <div className="flex items-center gap-2.5">
             <Logo className="h-5 w-5 text-grove" />
-            <span className="font-display text-body-sm font-semibold text-ink">Tenure</span>
+            <span className="font-display text-body-sm text-ink">Tenure</span>
             <span className="hidden text-ink-faint sm:inline">/</span>
             <span className="hidden text-caption text-ink-soft sm:inline">{data.org}</span>
           </div>
@@ -746,7 +746,7 @@ export function DashboardMock({
           {/* main, animates on module switch */}
           <div className="min-h-[19.5rem] p-4 sm:p-5">
             <div className="mb-3 flex items-center justify-between">
-              <p className="font-display text-title-sm font-semibold text-ink">{active}</p>
+              <p className="font-display text-title-sm text-ink">{active}</p>
               {/*
                 A real control, not a status label. WCAG 2.2.2 (Level A)
                 requires a way to pause anything that auto-updates for more
@@ -789,7 +789,7 @@ export function DashboardMock({
               <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-cloud shadow-[var(--shadow-sm)]">
                 <Logo className="h-3.5 w-3.5 text-grove" />
               </span>
-              <span className="text-caption font-semibold text-ink">Tenure AI</span>
+              <span className="text-caption text-ink">Tenure AI</span>
               <m.span className="ml-auto h-1.5 w-1.5 rounded-full bg-grove" initial={{ opacity: 1 }} animate={reduce ? undefined : { opacity: [1, 0.3, 1] }} transition={reduce ? undefined : { duration: 2, repeat: Infinity }} />
             </div>
             {/* Module-independent: the caption used to interpolate the active module,

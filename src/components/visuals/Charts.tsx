@@ -278,7 +278,7 @@ export function GateRail({
             <div className="flex flex-col items-center gap-1">
               <span
                 className={cn(
-                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-mark font-semibold",
+                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-mark",
                   done && "border-grove bg-grove text-on-accent",
                   here && "border-brand-gold bg-warning-subtle text-warning",
                   !done && !here && "border-line bg-cloud text-ink-faint",

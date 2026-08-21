@@ -76,14 +76,14 @@ function Tile({ metric, zero }: { metric: Metric; zero: boolean }) {
     */
     <div className="flex h-full flex-col">
       <div className="flex items-baseline gap-1">
-        <span className="font-display text-display-sm font-semibold leading-none tracking-[-0.04em] tnum text-grove-bright sm:text-display">
+        <span className="font-display text-display-sm leading-none tnum text-grove-bright sm:text-display">
           <NumberFlow
             value={value}
             transformTiming={{ duration: 1200, easing: "cubic-bezier(.22,1,.36,1)" }}
           />
         </span>
         {metric.suffix && (
-          <span className="font-display text-h3 font-semibold text-grove-bright sm:text-h2">
+          <span className="font-display text-h3 text-grove-bright sm:text-h2">
             {metric.suffix}
           </span>
         )}
@@ -176,7 +176,7 @@ export function MetricsBand() {
             reader reaches it.
           */}
           <Eyebrow className="text-inverse/75">Counted, not projected</Eyebrow>
-          <h2 className="font-display mt-5 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+          <h2 className="font-display mt-5 text-h2 text-inverse sm:text-h2-lg">
             Every number here is counted from the{" "}
             <span className="text-grove-bright">code that ships</span>.
           </h2>

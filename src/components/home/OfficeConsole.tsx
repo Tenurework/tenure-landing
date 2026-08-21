@@ -417,7 +417,7 @@ export function OfficeConsole() {
                         >
                           <div className="flex flex-wrap items-center justify-between gap-2">
                             <div className="flex items-center gap-2.5">
-                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove-soft font-mono text-meta font-semibold text-grove-deep">
+                              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-grove-soft font-mono text-meta text-grove-deep">
                                 {s.n}
                               </span>
                               <p className="text-body font-medium text-ink">
