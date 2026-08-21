@@ -111,29 +111,6 @@ export function Section({
     none: "",
   }[tone];
 
-  /*
-    The ramp, as a complete class literal per (from -> tone) pair.
-
-    Tailwind v4 finds class names by scanning source text, so a gradient built by
-    interpolating a token name emits no CSS and the ramp silently does nothing.
-    Every pair that actually occurs on this site is spelled out; anything else
-    falls through to no ramp, which is the honest default.
-  */
-  const RAMP: Record<string, string> = {
-    "canvas>subtle": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
-    "canvas>surface": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
-    "surface>canvas": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
-    "surface>subtle": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
-    "subtle>canvas": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
-    "subtle>surface": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
-    "band>canvas": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
-    "band>subtle": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
-    "band>surface": "bg-[linear-gradient(to_bottom,var(--inverse),transparent)]",
-    "canvas>band": "bg-[linear-gradient(to_bottom,var(--canvas),transparent)]",
-    "subtle>band": "bg-[linear-gradient(to_bottom,var(--surface-subtle),transparent)]",
-    "surface>band": "bg-[linear-gradient(to_bottom,var(--surface),transparent)]",
-  };
-  const ramp = from && from !== tone ? RAMP[`${from}>${tone}`] : undefined;
 
   /*
     A RULE BETWEEN TWO IDENTICAL FILLS IS LINE NOISE.
@@ -182,10 +159,21 @@ export function Section({
 
         1. A hairline that FADES OUT before it reaches either edge, so the line
            reads as a join rather than as a border drawn around a box.
-        2. A short gradient ramp in the incoming fill, so the two tones meet over
-           ~64px instead of in one row. It is `currentColor`-free and uses the
-           section's own fill token, so it inverts with the theme like everything
-           else.
+        THE RAMP IS GONE, and removing it is the point of this change. It faded
+        the incoming fill over ~64px so two tones met gradually, and against a
+        near-black band that produced a visible grey smudge at the top of the
+        section — it read as a rendering artifact, not as a join.
+
+        The reasoning it was built on ("a hard horizontal step is the most
+        template-looking thing a long page can do") does not survive contact with
+        the reference. cohere.com steps from white to a full-bleed photograph to
+        near-black with no blend anywhere, and it does not read as a stack of
+        slabs, because the sections differ compositionally rather than only in
+        fill. Softening a boundary is what you do when the two sides are the same
+        kind of thing; the fix for slab-stacking is to stop stacking slabs.
+
+        What remains is the hairline, which still fades at both ends so it reads
+        as a join rather than a border drawn around a box.
       */}
       {showDivider && (
         <>
@@ -198,12 +186,6 @@ export function Section({
                 : "bg-[linear-gradient(90deg,transparent,var(--border)_16%,var(--border)_84%,transparent)]",
             )}
           />
-          {ramp && (
-            <div
-              aria-hidden
-              className={cn("pointer-events-none absolute inset-x-0 top-0 -z-10 h-20", ramp)}
-            />
-          )}
         </>
       )}
       {backdrop && <Backdrop variant={backdrop} />}
