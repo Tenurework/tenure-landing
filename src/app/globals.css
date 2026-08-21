@@ -59,9 +59,21 @@
     This is a 1.6% step down with a trace of warmth — invisible as a colour,
     decisive as a ground. Cards stay at true white so they still lift off it.
   */
+  /*
+    THREE STEPS THAT ARE ACTUALLY THREE STEPS.
+
+    These were 98.4 / 100 / 98.3 — so `canvas` and `surface-subtle` were the same
+    colour to a tenth of a percent, and the alternation between them was invisible.
+    Measured down the home page, adjacent sections differed by about two lightness
+    points, which is why the boundaries between them read as no boundary at all.
+
+    A partition does not need a rule if the two surfaces genuinely differ. 100 /
+    98.4 / 96.4 is a visible step at every join and still nowhere near grey — the
+    darkest of the three is lighter than most sites' "white".
+  */
   --canvas: oklch(98.4% 0.0025 95);
   --surface: oklch(100% 0 0);
-  --surface-subtle: oklch(98.3% 0 0);       /* #FAFAFA, the only grey band     */
+  --surface-subtle: oklch(96.4% 0.0035 95);
   --surface-elevated: oklch(100% 0 0);
 
   /* Inverse surfaces. Cohere's dark UI sits at rgb(23,23,28) — near-black with
@@ -75,7 +87,10 @@
      the old ink carried a 253-hue navy cast that tinted every word on the site. */
   --text: oklch(26.5% 0 0);
   --text-secondary: oklch(50% 0.015 290);
-  --text-muted: oklch(55% 0.012 290);
+  /* Deepened with `surface-subtle`. Muted text sat at 4.39:1 on the new alt
+     surface — the tone step below has to be paid for by the text that lands on
+     it, not waived. */
+  --text-muted: oklch(53% 0.013 290);
   --text-inverse: oklch(98% 0 0);
 
   /* Selection tint: strong enough to read as a mark, light enough to keep the
