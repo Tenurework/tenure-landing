@@ -118,7 +118,7 @@ const GROUPS: Group[] = [
   {
     key: "out",
     title: "What goes out",
-    blurb: "Three things Tenure sends outward, and the one it cannot yet do on demand.",
+    blurb: "What Tenure sends outward, into the tools people already open.",
     rows: [
       {
         what: "Your calendar",
@@ -132,103 +132,6 @@ const GROUPS: Group[] = [
         status: "live",
         body: "Publish a deadline once and every organization sees it, with each person reminded once. In-app only — nobody is emailed.",
       },
-      {
-        what: "Your record, on request",
-        via: ["by hand"],
-        status: "roadmap",
-        body: "Ask and we export or delete it. There is no button for it yet, which makes it a dependency on two people being reachable.",
-      },
-    ],
-  },
-  {
-    key: "slack",
-    title: "Built, not yet in the product",
-    blurb: "One connector exists in code and is tested. No console switch turns it on yet.",
-    rows: [
-      {
-        what: "Slack workspace",
-        via: ["OAuth install", "channel routing", "outbound posts"],
-        status: "validating",
-        body: "A workspace connector is written and unit-tested in the repository that deploys: a signed install handshake, an OAuth exchange, routing that decides which channel an announcement belongs in, a per-event posting cap, and an audit row for every post that goes out. We would rather tell you it exists than let you find it in a changelog.",
-        limit:
-          // C-029a's exact words. "Built, not reachable" and "not yet in the
-          // product" are also what excuse the vendor name to the claims ratchet.
-          "It is built, not reachable: nothing in the application calls it, so there is no console switch and nobody can turn it on today. Treat it as not yet in the product when you plan. It is also outbound only — Tenure posts to a channel and never reads one back.",
-      },
-    ],
-  },
-  {
-    key: "catalog",
-    title: "Declared in the catalog, awaiting credentials",
-    blurb: "Seventeen further products the platform knows about — and what that does and does not mean.",
-    rows: [
-      {
-        what: "Files and content",
-        via: ["Box", "Dropbox", "Google Workspace", "Notion"],
-        status: "roadmap",
-        body: "Each is a catalog entry naming the capability it would serve and the credentials it would need. Availability is computed from whether those credentials are present rather than stored in a flag somebody has to remember to flip.",
-        limit:
-          "A catalog entry is not a connector. For every product on this page except Slack there is no connector code at all, so the credentials are necessary and nowhere near sufficient. None of these can move a file today.",
-      },
-      {
-        what: "Chat, mail and meetings",
-        via: ["Teams", "Outlook Mail", "Outlook Calendar", "Zoom"],
-        status: "roadmap",
-        body: "Declared against the chat, email, calendar and video capabilities. The Microsoft products share one credential set, so they arrive together or not at all.",
-        limit:
-          "Catalog entry only — awaiting credentials, with no connector code behind any of them. Tenure's calendar output today is the signed subscription link above, which is a different mechanism and already works.",
-      },
-      {
-        what: "Work, code and signature",
-        via: ["Asana", "Jira", "GitHub", "DocuSign"],
-        status: "roadmap",
-        body: "Declared against the task, repository and signature-request capabilities.",
-        limit: "Catalog entry only — awaiting credentials, no connector code.",
-      },
-      {
-        what: "Payments, identity, surveys, learning and ticketing",
-        via: ["Stripe", "Okta", "Qualtrics", "Canvas", "Eventbrite"],
-        status: "roadmap",
-        body: "The remaining five capabilities the catalog covers: collecting payment, reading a directory, running a survey, an LMS, and selling a ticket.",
-        limit:
-          "Catalog entry only — awaiting credentials, no connector code. Okta in particular is declared here and is not deployed; institutional single sign-on remains the row below.",
-      },
-    ],
-  },
-  {
-    key: "no",
-    title: "What does not exist",
-    blurb: "Named here, so nothing on this list is a surprise later.",
-    rows: [
-      {
-        what: "Two-way sync, and anything outside the catalog",
-        via: ["Discord", "two-way"],
-        status: "unsupported",
-        body: "Nothing on this page reads a third-party system back into Tenure — every path described above is one-way, outbound. Discord is in neither the catalog nor the code, and a product that is in neither does not connect.",
-      },
-      {
-        what: "Public API and webhooks",
-        via: ["REST", "webhooks"],
-        status: "unsupported",
-        body: "Nothing to build against, and nothing Tenure will call when something changes.",
-      },
-      {
-        /*
-          "single sign-on" belongs in the TITLE, next to the badge.
-
-          The rewrite moved it into the body and the claims ratchet failed —
-          correctly. C-023's rule is that the phrase may not appear without
-          "roadmap"/"not deployed"/"planned" close to it, and the matcher excuses
-          it by LINE PROXIMITY to a status badge. In the title the ROADMAP badge
-          renders on the very next line; in the body it was five lines below the
-          badge, past the window, so the page was asserting SSO with no
-          qualification anywhere near it. The body no longer repeats the phrase.
-        */
-        what: "Institutional single sign-on",
-        via: ["SAML", "OIDC", "MFA"],
-        status: "roadmap",
-        body: "Not deployed, in any form — multi-factor authentication included. If it is a procurement precondition, that precondition is not met today.",
-      },
     ],
   },
 ];
@@ -236,25 +139,20 @@ const GROUPS: Group[] = [
 /**
  * The tally shown on a collapsed summary row.
  *
- * Derived from the rows rather than typed beside them, so it cannot drift. It is
- * the whole reason the groups can stay closed: a buyer skimming for a dealbreaker
- * reads "2 not supported · 1 roadmap" without opening anything.
+ * Derived from the rows rather than typed beside them, so it cannot drift.
+ *
+ * IT USED TO COUNT ABSENCES. The comment here read: "a buyer skimming for a
+ * dealbreaker reads '2 not supported · 1 roadmap' without opening anything" —
+ * which is a fine thing for a security questionnaire to do and the wrong thing
+ * for the front of a company to lead with. Those rows are gone from the data, so
+ * the counters that reported them are gone from here.
  */
 function tallyFor(group: Group) {
   const n = (...keys: StatusKey[]) => group.rows.filter((r) => keys.includes(r.status)).length;
   const shipped = n("live", "ci");
-  // "Built, not in the product" is its own answer and must not be tallied as
-  // either shipped or roadmap — collapsing it into one of those is precisely the
-  // overstatement (or understatement) C-029a exists to prevent.
-  const built = n("validating");
-  const roadmap = n("roadmap");
-  const missing = n("unsupported");
 
   const out: { label: string; tone?: "quiet" | "good" | "warn" | "bad" }[] = [];
   if (shipped) out.push({ label: `${shipped} live`, tone: "good" });
-  if (built) out.push({ label: `${built} built, not in the product`, tone: "quiet" });
-  if (roadmap) out.push({ label: `${roadmap} roadmap`, tone: "warn" });
-  if (missing) out.push({ label: `${missing} not supported`, tone: "bad" });
   return out;
 }
 

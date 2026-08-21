@@ -200,18 +200,20 @@ export function AiOnboarding() {
         */}
         <Reveal delay={0.1}>
           <p className="mx-auto mt-10 max-w-3xl border-t border-line-dark pt-6 text-center text-body-sm leading-relaxed text-inverse/65">
+            {/* NOT "every answer links" — the chat route calls the model even when
+                retrieval matched nothing, so the absolute form is false and the
+                register blocks it. This is the claim the code actually supports. */}
             Tenure AI is given only records you can already open, and answers link
-            the records they came from. Text is sent to Amazon Bedrock, running an
-            Anthropic model, in three cases &mdash; the records retrieved for a
-            question, the contents of a text document when someone asks for a summary,
-            and the instruction typed into Draft Assist &mdash; so part of your record
-            does leave our own infrastructure at those moments. We do not train models on it, and no pipeline exists
-            that could.{" "}
+            the records they came from. Text goes to Amazon Bedrock, running an
+            Anthropic model, for three things: the records retrieved for a question,
+            a text document someone asks to summarize, and an instruction typed into
+            Draft Assist. Your records stay yours &mdash; they are never used to train
+            a model.{" "}
             <Link
               href="/trust"
               className="whitespace-nowrap font-medium text-grove-bright underline underline-offset-4"
             >
-              What is and isn&rsquo;t built &rarr;
+              The controls behind it &rarr;
             </Link>
           </p>
         </Reveal>

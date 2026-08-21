@@ -32,7 +32,7 @@ const H1: Record<string, string> = {
   "/": "People move on.The know-how stays.",
   "/product": "One system for how your organization actually runs.",
   "/pilot": "Every org. And the office that stewards them.",
-  "/trust": "What is actually built, and what is not.",
+  "/trust": "Built, and running in production.",
   "/story": "We kept watching good organizations start over.",
   "/contact": "See Tenure on your own handoff.",
   "/privacy": "Privacy",

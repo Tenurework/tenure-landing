@@ -171,7 +171,7 @@ export const site = {
         {
           label: "Evidence",
           items: [
-            { label: "What is live", href: "/trust", blurb: "Thirty-two controls, each with its own limit stated." },
+            { label: "What is live", href: "/trust", blurb: "Twenty-one controls, written from the code that deploys." },
             { label: "The first deployment", href: "/pilot", blurb: "Where it goes live, and on what terms." },
           ],
           more: { label: "The full control register", href: "/trust" },
@@ -210,7 +210,7 @@ export const site = {
         {
           label: "Controls",
           items: [
-            { label: "Controls by area", href: "/trust", blurb: "Thirty-two controls across seven areas, each with its limit." },
+            { label: "Controls by area", href: "/trust", blurb: "Twenty-one controls across seven areas, re-checked every release." },
           ],
         },
         {

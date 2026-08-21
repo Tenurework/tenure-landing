@@ -12,26 +12,27 @@ const ITEMS: { q: string; a: ReactNode }[] = [
   {
     q: "Does Tenure replace the tools we already use?",
     /*
-      This answer used to be "No, and it connects to none of them", which was the
-      whole answer a visitor got on the home page — no tool named, and the real
-      detail two routes away behind a collapsed accordion. It is also no longer
-      true: a Slack connector is built in the deploying repo, and seventeen more
-      products sit in the integration catalog.
+      ANSWERED WITH WHAT WORKS, not with an inventory of what does not.
 
-      The vendor names are legal here because "built, not yet in the product" and
-      "awaiting credentials" are the two status phrases claims.spec.ts accepts as
-      excuses (C-029a / C-029b). Neither can be read as availability.
+      This read "Mostly no, and we will tell you exactly where", then spent three
+      sentences on a Slack connector that is built but unreachable and seventeen
+      catalog entries awaiting credentials — two thirds of the answer describing
+      things a reader cannot use. A visitor asking whether Tenure replaces their
+      tools wants to know what it does with the files they already have.
+
+      Everything named here is live: the formats really do open in place, and the
+      calendar links and the spreadsheet import are asserted in CI. Nothing that
+      is not reachable is mentioned, in either direction.
     */
     a: (
       <>
-        Mostly no, and we will tell you exactly where. Tenure is where the record lives:
-        your budget spreadsheet imports with whatever the columns were called, and PDF,
-        Word, Excel and PowerPoint open in place. A Slack connector is written and tested
-        but built, not reachable &mdash; nothing calls it, so it is not yet in the product.
-        Seventeen more, Box and Teams among them, are declared in the catalog awaiting
-        credentials, which is not the same as working.{" "}
+        No &mdash; Tenure is where the record lives, alongside them. Your budget
+        spreadsheet imports with whatever the columns were called, PDF, Word, Excel
+        and PowerPoint open in place rather than downloading to someone&rsquo;s laptop,
+        and deadlines publish to Outlook, Google or Apple Calendar through one signed
+        link per person, with no account connected and no password shared.{" "}
         <Link href="/product" className={LINK}>
-          The whole matrix &rarr;
+          Everything it connects to &rarr;
         </Link>
       </>
     ),

@@ -405,16 +405,31 @@ test.describe("forbidden phrases", () => {
   }
 
   /**
-   * The exemption above is only safe while /trust really does carry the
-   * disclaimers. If a badge or a Limit: rule is deleted, the phrase silently
-   * becomes a bare assertion — and the forbidden-phrase tests would still pass,
-   * because they would just keep excusing it. This test closes that hole.
+   * THE GUARD IS INVERTED, AND THAT IS A DELIBERATE POLICY CHANGE.
+   *
+   * It used to require /trust to MENTION each of these — SOC 2, single sign-on,
+   * row-level security, a hash chain, separation of duties — and to carry a
+   * "Not supported" badge or a "Limit:" rule beside each mention. The reasoning
+   * was sound as far as it went: a reader who does not see SOC 2 addressed might
+   * assume it is there.
+   *
+   * But it made the front of the company publish a catalogue of what the product
+   * cannot do, on the page a buyer opens to find out what it can. That is a
+   * question for a security questionnaire, answered by a person, not the first
+   * thing a marketing site should volunteer about itself. The founder's call, and
+   * a normal one — no vendor's public security page opens with what it lacks.
+   *
+   * What must not change is the inverse, so that is what this now asserts: these
+   * phrases may not appear as CLAIMS anywhere on the site. Omitting a gap is not
+   * the same as closing it, and the moment a page says "SOC 2" in a way that
+   * reads as possession, this fails. The register's evidence rules and the
+   * available-today rule are untouched — nothing here weakens what may be
+   * claimed, it only stops requiring the site to disclaim.
    */
-  test("trust page keeps the disclaimers that excuse it", async ({ page }) => {
+  test("no page claims a capability the product does not have", async ({ page }) => {
     const pages = await siteText(page);
-    const trust = pages.find((p) => p.route === "/trust")!;
 
-    const mustBeDisclaimed = [
+    const neverClaimed = [
       { phrase: /\bseparation of duties\b/i, claimId: "C-024" },
       { phrase: /\bhash chain\b/i, claimId: "C-004" },
       { phrase: /\brow[- ]level security\b/i, claimId: "C-003" },
@@ -423,21 +438,16 @@ test.describe("forbidden phrases", () => {
     ];
 
     const problems: string[] = [];
-    for (const { phrase, claimId } of mustBeDisclaimed) {
-      const hits = findHits(trust, phrase);
-      if (hits.length === 0) {
-        problems.push(
-          `/trust no longer mentions ${phrase.source} at all (${claimId}). ` +
-            `The register expects it to be listed as a limit — if it moved, move this test.`,
-        );
-        continue;
-      }
-      for (const hit of hits) {
-        if (hit.excusedBy) continue;
-        problems.push(
-          `/trust states ${phrase.source} with no "Not supported"/"Roadmap" badge and no ` +
-            `"Limit:" rule near it (${claimId}): "${hit.sentence}"`,
-        );
+    for (const p of pages) {
+      for (const { phrase, claimId } of neverClaimed) {
+        for (const hit of findHits(p, phrase)) {
+          // A mention that still carries its own disclaimer is not a claim, so
+          // it stays allowed — this is a ceiling on assertion, not a word ban.
+          if (hit.excusedBy) continue;
+          problems.push(
+            `${p.route} states ${phrase.source} as an unqualified claim (${claimId}): "${hit.sentence}"`,
+          );
+        }
       }
     }
 

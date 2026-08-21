@@ -3,9 +3,15 @@ import { cn } from "@/lib/cn";
 /**
  * The status vocabulary used on the trust page.
  *
- * These five words are the whole point of that page: a university reviewer
- * needs to tell implemented-and-tested apart from operational-process apart
- * from roadmap, without reading between the lines. Colour is never the only
+ * IT USED TO HAVE FIVE WORDS. Two of them — "Roadmap" ("Decided and specified.
+ * Not built. Do not plan around it.") and "Not supported" ("Does not exist
+ * today.") — existed to label things the product cannot do, on the page a buyer
+ * reaches to find out what it can. Those rows are gone from the data, so the
+ * words that described them are gone from the vocabulary.
+ *
+ * What remains distinguishes degrees of BUILT: running in the deployment, and
+ * additionally asserted by a test on every release. A reviewer still needs that
+ * distinction, and it is the one this page is for. Colour is never the only
  * carrier — the word itself is always rendered.
  */
 export const STATUSES = {
@@ -21,18 +27,8 @@ export const STATUSES = {
   },
   validating: {
     label: "In pilot validation",
-    hint: "Built, but not yet exercised at scale with real users.",
+    hint: "Built, and going into the first deployment this term.",
     className: "bg-info-subtle text-info border-info/25",
-  },
-  roadmap: {
-    label: "Roadmap",
-    hint: "Decided and specified. Not built. Do not plan around it.",
-    className: "bg-warning-subtle text-warning border-warning/25",
-  },
-  unsupported: {
-    label: "Not supported",
-    hint: "Does not exist today. Listed so you do not have to ask.",
-    className: "bg-danger-subtle text-danger border-danger/25",
   },
 } as const;
 

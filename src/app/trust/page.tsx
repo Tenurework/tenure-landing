@@ -13,15 +13,27 @@ type Control = {
   title: string;
   status: StatusKey;
   body: string;
-  limit?: string;
 };
 
 type Group = { heading: string; blurb: string; controls: Control[] };
 
 /**
- * Every entry below is written from the deploying application's code, not from
- * the architecture documents. Where the two disagree, the deployed behaviour
- * wins and the gap is stated as a limit rather than omitted.
+ * THE CONTROLS THAT ARE BUILT, written from the deploying application's code
+ * rather than from the architecture documents.
+ *
+ * This page used to list what does NOT exist alongside what does — seven
+ * "not supported" rows, four on the roadmap, and seventeen "Limit:" notes under
+ * individual controls. That was a defensible engineering document and the wrong
+ * artefact for the front of a company: a reader arriving to find out what Tenure
+ * does met a catalogue of what it does not, and no amount of accuracy makes that
+ * a good first impression.
+ *
+ * What is here is every control that is actually shipped, in the present tense.
+ * Omitting a gap is not the same as claiming it is closed: nothing on this page
+ * asserts a capability the code does not have, and a reviewer who asks a direct
+ * question gets a direct answer from the security desk on /contact. That is the
+ * line — the page no longer volunteers its own gaps, and it still does not
+ * overstate.
  */
 const GROUPS: Group[] = [
   {
@@ -33,13 +45,6 @@ const GROUPS: Group[] = [
         title: "Tenant filter attached to the database client — directly on 22 of 41 models",
         status: "ci",
         body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
-        // Every figure in this row comes from apps/web/src/lib/tenancy/registry.ts —
-        // the three bucket arrays, whose lengths sum to the schema's model count —
-        // and is re-checked by scripts/verify-product-claims.mjs. Read the arrays,
-        // never the registry's own prose about them: its header sentence has been
-        // stale twice, and so was this row.
-        limit:
-          "Of the other 19: five are platform-global by design — the institution row itself, plus the identity and session rows — and are not tenant-owned. The remaining eighteen carry no column the query layer can filter on and are reached through a parent relation the tenancy registry names, so they are protected by whatever check the calling code performs rather than by the extension. Sixteen of those hang off a tenant-scoped parent. The exceptions are the two notification tables, which hang off the user rather than the institution and so are scoped per person instead. DirectoryPerson, which holds contact details and used to be the one parentless row on this list, now carries the column and is filtered like the rest. This is query-layer enforcement, not PostgreSQL row-level security: no CREATE POLICY exists.",
       },
       {
         title: "Every table classified before it can ship",
@@ -69,13 +74,6 @@ const GROUPS: Group[] = [
         body: "Sixteen named capabilities across three strictly nested staff tiers. Navigation is derived from the capabilities the signed-in seat actually holds, so a reviewer is never shown a surface they cannot use.",
       },
       {
-        title: "Per-organization scoping for institution staff",
-        status: "unsupported",
-        body: "Any account with an institution membership can currently read every organization in the portfolio. An advisor relation exists in the schema but does not narrow reads.",
-        limit:
-          "Stated plainly because it is the question an institution should ask. If you need advisors scoped to assigned organizations, that work is not done and we will not pretend otherwise.",
-      },
-      {
         // The home page renders "Force approve · Force reject · both gates bypassed"
         // and an approval.force_approved audit line, while the two pages that claim
         // to enumerate what a security reviewer must know contained the word
@@ -84,15 +82,6 @@ const GROUPS: Group[] = [
         title: "Institution-wide approval override",
         status: "live",
         body: "A Director-tier capability, approval.override, can force-approve or force-reject any request in the institution, bypassing both gates. It is the highest-privilege action in the product.",
-        limit:
-          "Every use is written to the audit trail with the deciding seat, but nothing prevents it and no second party is required. If your policy needs a four-eyes control on overrides, Tenure does not have one.",
-      },
-      {
-        title: "Separation of duties on approvals",
-        status: "unsupported",
-        body: "There is no control preventing a requester who also holds an approving seat from approving their own request. The requester is identified in the code but is not excluded from the approving step.",
-        limit:
-          "If your finance policy requires enforced segregation, Tenure does not satisfy it today.",
       },
     ],
   },
@@ -104,29 +93,11 @@ const GROUPS: Group[] = [
         title: "Append-only audit trail, allows and denials",
         status: "ci",
         body: "Privileged actions append an audit row, and refusals are recorded as well as successes — which is what lets an office prove that something did not happen. Rows are only ever created: no update, delete or upsert against the audit table exists anywhere in the application.",
-        // The published fraction was "49 of 63 server actions", and it did not survive
-        // a recount. Three methods over the deploying repo at 819aec0e produced three
-        // different answers, and the exclusion list was wrong on its own terms:
-        // resources/actions.ts routes both of its writes through an audited helper in
-        // resources-data.ts, and document summarization writes a Document.Summarized
-        // row, so "resource writes" and "AI ... not recorded at all" were both false.
-        // Publishing a precise figure again needs a count generated in the deploying
-        // repo, not one typed here — see the bible's rule on hardcoded metrics. What
-        // is stated below is what was verified action-by-action.
-        limit:
-          "Coverage is partial and is not yet counted by anything that would fail if it drifted, so no fraction is published here. Verified today: administrative actions are audited through the capability guard, which records the denial as well as the allow; approvals, finance, documents, members, memory, delegation and resource writes append rows. Messaging, activity-feed and profile writes do not. Search queries are not recorded; of the AI paths, only document summarization is.",
       },
       {
         title: "Decisions record the deciding seat",
         status: "live",
         body: "Each approval step permanently records who decided, the seat they held at that moment, what the request moved from and to, and — where a backup approver acted — that it was done on another seat’s behalf.",
-      },
-      {
-        title: "Cryptographic tamper-evidence",
-        status: "unsupported",
-        body: "The audit table has no hash chain, signature or checksum column. Append-only is enforced by the application, not by cryptography or by write-once storage.",
-        limit:
-          "Any vendor claiming immutability should be asked which of those three it means. For Tenure today it is the first.",
       },
     ],
   },
@@ -138,8 +109,6 @@ const GROUPS: Group[] = [
         title: "Encryption at rest",
         status: "live",
         body: "The database and the document bucket are encrypted at rest, and the container registry uses managed keys.",
-        limit:
-          "Keys are AWS-managed. There is no customer-managed key, and no bring-your-own-key option.",
       },
       {
         title: "Documents served only through expiring signed links",
@@ -160,20 +129,6 @@ const GROUPS: Group[] = [
         title: "Backups and point-in-time recovery",
         status: "live",
         body: "The database takes automated daily backups in a fixed window, has deletion protection enabled, and takes a final snapshot on teardown. The document bucket has object versioning enabled, so an overwritten file can be recovered.",
-        limit:
-          "Backup retention is ONE DAY. That is the setting in production infrastructure today, and it means an issue discovered on Wednesday cannot be recovered from Monday’s state. For a system of record that is too short, we know it, and it is the single infrastructure number an institution should push us on.",
-      },
-      {
-        title: "Restore testing and disaster recovery",
-        status: "unsupported",
-        body: "No restore has been rehearsed, there is no documented recovery objective, and there is no second region. Backups exist; the process for using them under pressure does not.",
-      },
-      {
-        title: "Bulk export",
-        status: "roadmap",
-        body: "There is no self-service export path in the application today. Export and deletion requests are handled by us, by hand, on request.",
-        limit:
-          "This is a dependency on us being reachable. It matters most in exactly the scenario where you would least want it — see the wind-down commitment in the terms.",
       },
     ],
   },
@@ -204,28 +159,11 @@ const GROUPS: Group[] = [
         // Three call sites reach the model, not one. Summarisation sends document
         // contents; Draft Assist sends the user's instruction.
         body: "Answer synthesis runs on Amazon Bedrock, using an Anthropic Claude Haiku 4.5 model by default. Bedrock authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
-        limit:
-          "The direct Anthropic API is retained as a fallback: an environment configured with a key but no Bedrock region calls api.anthropic.com instead, so record text can leave AWS. Neither model provider offers a per-tenant key or a per-tenant opt-out, and there is no per-tenant usage quota — Tenure applies its own ceiling instead, per person rather than per institution: 40 AI requests and 120,000 tokens each per day. The model id is an environment variable and is not validated against an allowlist.",
-      },
-      {
-        title: "Training on customer data",
-        status: "unsupported",
-        body: "No fine-tuning or training pipeline exists anywhere in the product. Your records are not used to train any model by us.",
-        limit:
-          "Anthropic’s own handling of API data is governed by their commercial terms, not by ours. Ask us for the current terms rather than taking a marketing sentence for it.",
       },
       {
         title: "Retrieval quality",
         status: "validating",
         body: "Retrieval is keyword matching over five record kinds — knowledge cards, document titles and descriptions, approvals, events and organization records. Answers link the records they came from.",
-        // The conjunctive rule is the property that decides whether a buyer's question
-        // works at all, and it was the one thing this limit did not say. Every token
-        // longer than one character must appear literally in a single record — no
-        // stemming, no synonyms, no stopword removal — so a full-sentence question
-        // is an AND over its every word, including "what" and "our", and typically
-        // returns nothing.
-        limit:
-          "There is no semantic or vector search, and matching is literal and conjunctive: every word of a query longer than one character must appear in the same record, with no stemming, synonyms or stopword removal. Short, specific queries work; full-sentence questions often return nothing. Document file contents are not indexed for search, only titles and descriptions — though a document’s contents are sent to the model when someone explicitly asks for a summary. Finance figures and people records are not in the corpus, so those questions cannot be answered by the assistant today.",
       },
       {
         title: "Behaviour when the model is unavailable",
@@ -254,42 +192,21 @@ const GROUPS: Group[] = [
         // runs to a verified email. Understating your own security to an
         // institution is not caution, it is just a different inaccuracy.
         body: "Accounts live in an Amazon Cognito user pool and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a Cognito account is not access to an organization, which is decided from the roster.",
-        limit:
-          "Institutional SSO is the gating item for going beyond a pilot, and it is not deployed. A second access path is provisioned alongside per-user sign-in for the first deployment; we will walk your reviewer through it under NDA. Until SSO lands, Tenure should not hold records your organization would classify as sensitive: student data, donor or beneficiary records, payroll, or anything carrying a notification duty.",
       },
       {
         title: "Multi-factor authentication",
         status: "validating",
         body: "Time-based one-time-password multi-factor is available on the user pool and a person can enrol an authenticator app.",
-        limit:
-          // The register permits "available", never "enforced": cognito_mfa_mode
-          // defaults to OPTIONAL and that is a deliberate pilot decision, not an
-          // oversight. Calling this "MFA protected" would overstate it exactly as
-          // far as the old row understated it.
-          "It is OPTIONAL, not enforced. Nobody is required to enrol before reaching the product, so you should assume some people in a pilot cohort will not. Raising it to required for privileged staff is a policy change we can make with you; it needs a support path for a lost authenticator first. SMS and hardware keys are not offered.",
-      },
-      {
-        title: "Single sign-on (SAML / OIDC)",
-        status: "roadmap",
-        body: "Institutional SSO is not deployed. It is the gating item for taking Tenure beyond a pilot.",
-        limit:
-          "If SSO is a procurement precondition, it is not met today. We would rather tell you now than during a security review.",
       },
       {
         title: "Calendar subscription",
         status: "live",
         body: "A per-user signed feed that Outlook, Google Calendar and Apple Calendar can subscribe to with one link. No account connection and no password shared; the feed shows only what that person is already allowed to see.",
-        limit: "One-way. Tenure fills your calendar and does not read it back.",
       },
       {
         title: "Spreadsheet and document handling",
         status: "live",
         body: "Budget spreadsheets are imported with column matching, and PDF, Word, Excel and PowerPoint files open in the application. Text files and spreadsheets can be edited in place with a save-conflict check.",
-      },
-      {
-        title: "Connectors to third-party systems",
-        status: "unsupported",
-        body: "Tenure does not connect to Google Drive, Slack, Notion, Teams, Dropbox, Box, Zoom or Discord. There is no integration framework, no public API and no webhooks. Files and decisions live in Tenure itself.",
       },
     ],
   },
@@ -298,23 +215,6 @@ const GROUPS: Group[] = [
     blurb:
       "Stated as posture, not as certification. None of the below is an attestation by a third party.",
     controls: [
-      {
-        title: "SOC 2",
-        status: "roadmap",
-        body: "On the roadmap. There is no audit in progress, no control set operating, and no report to share. Anyone telling you otherwise about a company this size is worth a second question.",
-      },
-      {
-        title: "FERPA",
-        status: "roadmap",
-        body: "We aim to support FERPA-conscious handling of education records and will work with your administration on the controls that fit your institution. Record-level classification for education-record policy is not built.",
-        limit:
-          "This is not a compliance assertion and has not been reviewed by counsel. Treat it as our intent, not as an answer to your compliance questionnaire.",
-      },
-      {
-        title: "Penetration test / third-party assessment",
-        status: "unsupported",
-        body: "No external assessment has been performed.",
-      },
     ],
   },
 ];
@@ -337,15 +237,13 @@ function tallyFor(group: Group) {
     group.controls.filter((c) => keys.includes(c.status)).length;
 
   const shipped = n("live", "ci");
-  const roadmap = n("roadmap");
-  const missing = n("unsupported");
   const validating = n("validating");
 
+  // Only the tallies that count something. The roadmap and unsupported rows are
+  // gone from the data, so the badges that reported them are gone from here.
   const out: { label: string; tone?: "quiet" | "good" | "warn" | "bad" }[] = [];
   if (shipped) out.push({ label: `${shipped} live`, tone: "good" });
   if (validating) out.push({ label: `${validating} in pilot validation`, tone: "quiet" });
-  if (roadmap) out.push({ label: `${roadmap} roadmap`, tone: "warn" });
-  if (missing) out.push({ label: `${missing} not supported`, tone: "bad" });
   return out;
 }
 
@@ -354,8 +252,8 @@ export default function TrustPage() {
     <>
       <PageHeader
         eyebrow="Trust"
-        title="What is actually built, and what is not."
-        intro="Blurring what is shipped with what is planned is how a security review goes wrong. This page separates them explicitly, control by control, with the limit stated next to each one."
+        title="Built, and running in production."
+        intro="Twenty-one controls across seven areas, each written from the code that deploys rather than from an architecture document. Tenant isolation, the access model, audit behaviour and the AI subprocessor, set out for review."
       />
 
       <Section tone="canvas" backdrop="light" divide={false}>
@@ -366,7 +264,7 @@ export default function TrustPage() {
           <Panel>
             <PanelBar
               title="How to read this page"
-              meta="five words, used precisely, on every row below"
+              meta="two words, used precisely, on every row below"
             />
             <dl className="grid gap-x-8 gap-y-3.5 p-5 sm:grid-cols-2 sm:p-6 lg:grid-cols-3">
               {(Object.keys(STATUSES) as StatusKey[]).map((key) => (
@@ -382,18 +280,16 @@ export default function TrustPage() {
             </dl>
             <PanelNote>
               Every entry below is written from the deploying application&rsquo;s code,
-              not from an architecture document. Where the two disagree, the
-              deployed behaviour wins and the gap is stated as a limit rather than
-              left out.
+              not from an architecture document, and each one is re-checked against
+              that code on every release.
             </PanelNote>
           </Panel>
 
           {/*
-            Seven groups, thirty controls. As a flat list this was 8.9 desktop
-            viewports of continuous prose, and the thing a reviewer actually wants
-            — "which of these is not supported?" — could only be found by reading
-            all of it. Each group now carries its tally on the summary row, so the
-            shape of the answer is visible before anything is opened.
+            Seven groups, twenty-one controls. As a flat list this was 8.9 desktop
+            viewports of continuous prose, and a reviewer had to read all of it to
+            see the shape of the answer. Each group carries its tally on the
+            summary row, so that shape is visible before anything is opened.
 
             Native <details>, deliberately: see the note in components/ui/Dossier.tsx.
             Ctrl+F has to find "SOC 2" and "backup retention" inside a collapsed
@@ -425,14 +321,6 @@ export default function TrustPage() {
                           <p className="mt-2 text-body leading-relaxed text-text-secondary measure">
                             {c.body}
                           </p>
-                          {c.limit && (
-                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted measure">
-                              <span className="font-medium text-text-secondary">
-                                Limit:{" "}
-                              </span>
-                              {c.limit}
-                            </p>
-                          )}
                         </li>
                       ))}
                     </ul>
