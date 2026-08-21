@@ -48,24 +48,34 @@ export function Hero() {
       <Backdrop variant="grid" />
 
       {/*
-        THE HERO BREAKS OUT 64px PAST THE BODY CONTAINER, and the side-by-side
-        split now starts at `xl` rather than `lg`. Both are consequences of one
-        measurement.
+        THE HERO STACKS. It is the only composition the arithmetic allows.
 
-        Inside `max-w-6xl` the mock's own min-content (695px, of which it bleeds
-        6vw off the right edge) leaves the copy a 447px column. "The know-how" is
-        held on one line and measures 7.8px wide for every 1px of font-size, so
-        447px caps the headline at ~57px — under the `display` step, in the
-        layout that is supposed to be the largest type on the site.
+        Side by side, three things share the container: the headline, a 32px gap,
+        and the mock. "The know-how" is held on one line and measures 7.8px wide
+        for every 1px of font-size; the binding line is actually "People move on."
+        at 578px. The mock's own min-content is 695px. That is ~1,247px of demand
+        against an 1,088px container, and no arrangement of the two closes a
+        159px gap.
 
-        At `lg` it is worse: a 1024px viewport leaves the copy 335px, which is
-        narrower than a phone. That range now stacks, which is what a 335px
-        column was always asking for.
+        I tried three. Widening the hero's own container 64px fit the type and put
+        the hero's left edge 64px left of every section beneath it — two adjacent
+        left edges that nearly line up look like a mistake, because they are one.
+        Pinning the copy track and letting the mock bleed past the page margin fit
+        the type and cut the assistant panel mid-word at 1440, which reads as a
+        rendering fault rather than a deliberate crop. Stepping the headline down
+        to 72px bought 48px of the 159 and made the largest type on the site
+        smaller on the widest screens.
+
+        Stacked, the headline gets the full 1,088px measure — enough for 96px, the
+        top of the scale, in two lines instead of three — and the mock is shown
+        whole. Nothing is clipped, nothing is misaligned, and the section is the
+        same shape at every width, which is why the breakpoint juggling above is
+        gone rather than tuned.
       */}
-      <Container className="relative xl:max-w-[80rem]">
-        <div className="grid items-center gap-10 xl:grid-cols-[minmax(0,49%)_1fr] xl:gap-8">
+      <Container className="relative">
+        <div className="grid gap-12">
           {/* LEFT, editorial copy */}
-          <div className="relative z-10 max-w-xl text-center xl:max-w-none xl:text-left">
+          <div className="relative z-10">
             <p className="label-mono">The system of record for organizations that rotate</p>
 
             {/*
@@ -99,7 +109,7 @@ export function Hero() {
               4% more width. `text-hero` stays in the scale for a headline that
               owns the full measure; it is not a size this layout can hold.
             */}
-            <h1 className="font-display mt-5 text-display-sm text-ink sm:text-display">
+            <h1 className="font-display mt-5 text-display-sm text-ink sm:text-display lg:text-hero">
               <span className="block">People move on.</span>
               <span className="block">
                 <span className="whitespace-nowrap">The know-how</span>{" "}
@@ -117,13 +127,13 @@ export function Hero() {
               a hero that explains the whole product has not decided what the
               product is.
             */}
-            <p className="mx-auto mt-6 max-w-md text-lead text-ink-soft xl:mx-0">
+            <p className="mt-6 max-w-xl text-lead text-ink-soft">
               Budgets, vendors, approvals and the reasoning behind them attach to
               the <span className="font-medium text-ink">seat</span>, not to
               whoever is holding it this year.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 xl:justify-start">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <ContactSales size="lg" arrow />
               <Button href="#platform" variant="secondary" size="lg">
                 See the platform
@@ -140,7 +150,7 @@ export function Hero() {
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
                 mechanism, which C-023 forbids. */}
-            <p className="mx-auto mt-4 max-w-md text-caption leading-relaxed text-ink-faint xl:mx-0">
+            <p className="mt-4 max-w-xl text-caption leading-relaxed text-ink-faint">
               Already using Tenure?{" "}
               <Link
                 href="/contact"
@@ -169,7 +179,7 @@ export function Hero() {
               anyway — the conflict they announced is in its Calendar panel and the
               cleared approval is in its Approvals panel. Removing them takes out a
               component, a class of overlap bug, and one more piece of repetition. */}
-          <div className="relative pt-2 xl:-mr-[6vw] xl:pt-0">
+          <div className="relative min-w-0">
             <DashboardMock tilt auto className="relative z-0" />
             <MockCaption />
           </div>
