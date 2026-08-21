@@ -103,10 +103,17 @@ export function Section({
   className?: string;
   children: ReactNode;
 }) {
+  /*
+    EVERY SECTION IS PLASTERED, not just the panels that opted in. The texture was
+    on three surfaces on the home page and nowhere else, so /product, /pilot,
+    /trust and the rest stayed perfectly flat and the site looked like two
+    different products. `wall` costs one repeating data URI shared by every
+    section on every route.
+  */
   const fill = {
-    canvas: "bg-paper",
-    surface: "bg-cloud",
-    subtle: "bg-sand",
+    canvas: "bg-paper wall",
+    surface: "bg-cloud wall",
+    subtle: "bg-sand wall",
     /*
       A GRADED DARK SECTION, not a flat rectangle. `bg-band` stays because the
       stylesheet keys its inverse-text scope off that class name; `matte

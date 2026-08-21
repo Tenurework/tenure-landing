@@ -191,7 +191,7 @@ accounts are set up in advance for a named person, so there
             sit. Rounded and inset so the ground reads as a stage, with the mock
             lifted on its own shadow above it.
           */}
-          <div className="matte matte-iris matte-coarse relative min-w-0 overflow-hidden rounded-3xl px-4 pb-4 pt-8 sm:px-8 sm:pb-6 sm:pt-12">
+          <div className="matte matte-iris relative min-w-0 overflow-hidden rounded-3xl px-4 pb-4 pt-8 sm:px-8 sm:pb-6 sm:pt-12">
             <DashboardMock tilt auto className="relative z-0" />
             <MockCaption />
           </div>

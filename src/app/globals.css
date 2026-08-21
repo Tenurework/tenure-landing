@@ -620,65 +620,50 @@
    Every variant is high-lightness by construction, so dark ink on it clears
    contrast without the checker needing to resolve a gradient it cannot parse.
    --------------------------------------------------------------------------- */
-@utility matte {
-  /*
-    THE GRAIN IS A BACKGROUND LAYER, NOT A PSEUDO-ELEMENT — and the first attempt
-    here is worth recording because it looked correct and painted nothing.
+/*
+  THE WALL. Two turbulence layers, multiplied over whatever colour a surface has.
 
-    It was an `::after` at `z-index: -1` inside a parent with `isolation: isolate`.
-    Isolation creates a stacking context, so a negative z-index child is painted
-    behind the parent's OWN background rather than behind its content: the noise
-    went under the gradient and disappeared. Raising it above the background would
-    have put it over the text instead, tinting every word.
+  WHY TWO. One layer of fine noise is film grain: even, mechanical, and at page
+  scale it averages into flatness — which is exactly what the first four attempts
+  at this produced. An uneven wall is not grain, it is MOTTLE: large soft patches
+  where the plaster took the colour differently, with a finer tooth over the top.
+  So the coarse layer runs at 0.02 base frequency on a 420px tile, and the fine
+  one at 0.8 on 110px. The two tile lengths are deliberately not multiples of each
+  other, so the repeat never lines up into a visible checkerboard.
 
-    Stacking the noise as the first background layer with `background-blend-mode`
-    avoids the problem entirely — it sits between the gradients and the content,
-    which is the only place it belongs, and needs no extra element.
+  WHY MULTIPLY, AND WHY THE NOISE IS LIGHT. Measured across five blend modes:
+  `soft-light` — which this used for three commits — is invisible on a light
+  ground, and `overlay` and `hard-light` are nearly so. `multiply` is the only one
+  that reads, but multiplying by mid-grey noise drags the whole field toward
+  cement. So both layers are transfer-shifted to a light mean (0.58-0.66 with a
+  narrow slope): they darken a little and vary a lot, which is texture rather than
+  dirt.
 
-    TWO CORRECTIONS AFTER LOOKING AT IT NEXT TO THE REFERENCE:
-
-    1. The radials used to fade to transparent by 55-58%, so most of a panel was
-       the pale base colour and only the corners carried hue. The result read as
-       "white with a tint near the edge" rather than as a coloured field. They now
-       run to 88-92%, which is what makes the whole surface the colour.
-
-    2. The noise was too fine and too faint to survive at panel scale. A single
-       high-frequency octave reads as a screen artefact; the texture that reads as
-       PAPER is coarser and layered, so this is 0.65 base frequency over 5 octaves
-       at higher opacity. Grain is not a finishing touch on these surfaces — it is
-       the thing that stops a CSS gradient looking like a CSS gradient, because an
-       8-bit display bands a smooth ramp into visible stripes and noise is what
-       dithers them away.
-
-    `soft-light` rather than `multiply`: multiply drags the whole field toward the
-    noise's own value and the panel goes muddy. Soft-light modulates around the
-    mid-point, which is what makes it read as stock rather than as dirt.
-  */
-  background-color: var(--matte-base, oklch(97% 0.006 95));
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.85'/%3E%3C/svg%3E"),
-    radial-gradient(120% 100% at 8% 0%, var(--matte-a) 0%, transparent 90%),
-    radial-gradient(115% 120% at 100% 100%, var(--matte-b) 0%, transparent 88%);
-  background-size: 160px 160px, auto, auto;
-  background-repeat: repeat, no-repeat, no-repeat;
-  background-blend-mode: soft-light, normal, normal;
+  Every value here was chosen by rendering a grid of the alternatives side by side
+  and looking at them, not by reasoning about blend-mode formulae.
+*/
+@utility wall {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncG type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncB type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23t)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)'/%3E%3C/svg%3E");
+  background-size: 110px 110px, 420px 420px;
+  background-repeat: repeat, repeat;
+  background-blend-mode: multiply, multiply;
 }
 
 /*
-  A HEAVIER GRAIN, for the large surfaces.
-
-  The same noise reads differently at different sizes: over a 26rem card it is
-  clearly a texture, and over the hero's full-width ground the tile repeats so
-  many times that it averages out into flatness. This raises the opacity and
-  drops the tile to 110px so the structure survives at that scale. Same layer
-  order, same blend — only the density changes.
+  A matte surface is the wall plus a two-point gradient carrying the hue. The
+  radials run to 88-92% rather than fading out by half, so the whole panel is the
+  colour instead of a white field with tinted corners.
 */
-@utility matte-coarse {
+@utility matte {
+  background-color: var(--matte-base, oklch(97% 0.006 95));
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncG type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncB type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23t)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)'/%3E%3C/svg%3E"),
     radial-gradient(120% 100% at 8% 0%, var(--matte-a) 0%, transparent 90%),
     radial-gradient(115% 120% at 100% 100%, var(--matte-b) 0%, transparent 88%);
-  background-size: 110px 110px, auto, auto;
+  background-size: 110px 110px, 420px 420px, auto, auto;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-blend-mode: multiply, multiply, normal, normal;
 }
 
 /* Sage — the house hue. Green toward eucalyptus, never toward mint. */

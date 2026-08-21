@@ -45,6 +45,7 @@
     "eslint-config-next": "16.2.9",
     "lighthouse": "^13.4.1",
     "playwright": "^1.61.1",
+    "simple-icons": "^16.28.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

@@ -33,3 +33,19 @@ substation, an out-of-focus pink server blur, a bland budget-clinic corridor, an
 a masked motion-blurred volunteer shot. Each read as dated stock. The set rule is
 simple architecture or infrastructure, one clear subject, no posed people facing
 camera.
+
+Resolutions raised 2026-08-21. The eight industry frames were 1400x1050, which is
+under a 26rem card at 2x, and the closing band's photograph was 1600x900 behind a
+full-bleed section — visibly soft on any modern display. All eight are re-cut from
+their originals (several are 6000-7000px wide at source) to 2800x2100, and the
+closing band is now 3840x2160.
+
+admin-boardroom.jpg          empty boardroom, glazed partitions     pexels 260689
+  Replaced a 1600x900 frame. Chosen against five alternatives on a contact sheet:
+  the rejected ones were posed groups facing camera, which the set rule below
+  excludes and which read as dated stock. An empty room also happens to be the
+  argument the section makes — the room persists, the people in it rotate.
+
+These are origin files, not what a visitor downloads: next/image re-encodes and
+resizes per request, so the large sources cost repository size rather than page
+weight.
