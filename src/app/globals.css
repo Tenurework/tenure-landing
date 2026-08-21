@@ -623,6 +623,20 @@
   has agreed on for a century. It caps rather than sets, so text already sitting
   in a narrow column is untouched.
 */
+/*
+  A SCROLLER WITHOUT A SCROLLBAR. The affordance is the crop — a card cut by the
+  right edge — not a grey track under the row. `scrollbar-width: none` covers
+  Firefox, the pseudo-element covers WebKit, and neither removes the scrolling
+  itself: wheel, trackpad, touch, and the arrow keys on the focused region all
+  still work.
+*/
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility measure {
   max-width: 68ch;
 }

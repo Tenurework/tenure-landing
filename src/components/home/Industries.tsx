@@ -16,6 +16,21 @@ import { site } from "@/lib/site";
  * A grid shows all eight at once, which is the whole point of the claim: the
  * seat model is not a university thing.
  *
+ * IT IS NOW A SIDE-SCROLL, and that is measured rather than fashionable.
+ * cohere.com carries exactly one horizontal scroller on its home page — a
+ * snap-mandatory flex row 3,140px wide inside a 1,440px viewport, with the same
+ * 40px page margin as everything else. It is the one device the page uses to
+ * say "there is more of this than fits", and it earns the claim by letting the
+ * next card sit half-visible at the right edge instead of announcing a count.
+ *
+ * A four-across grid of eight tiles said the opposite: two tidy rows, complete,
+ * nothing beyond. Eight sectors in a row that runs off the edge reads as a list
+ * that continues, which is the actual argument.
+ *
+ * THE SCROLLER IS A KEYBOARD REGION. A `tabIndex={0}` container with a name is
+ * what makes an overflow area reachable without a pointer; without it the arrow
+ * keys never reach the content and eight tiles become one.
+ *
  * WHY PHOTOGRAPHY, AND WHY IT IS GRADED. The site had almost no imagery, and a
  * page of type and drawn UI cards is most of why it read as a template. But
  * eight photographs from eight shoots read as a stock library unless they are
@@ -35,7 +50,7 @@ import { site } from "@/lib/site";
  */
 export function Industries() {
   return (
-    <Section from="canvas" tone="subtle" backdrop="light">
+    <Section from="canvas" tone="surface" backdrop="light">
       <Container>
         <SectionHead
           align="center"
@@ -48,81 +63,64 @@ export function Industries() {
           }
           lead="Turnover is scheduled in some industries and constant in others. The mechanism does not change: attach the record to the seat, and whoever holds it next starts from it."
         />
+      </Container>
 
-        <Reveal delay={0.1} className="mt-9">
-          <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {/*
+        FULL-BLEED, not container-bound. The row starts at the page margin and
+        runs off the right edge — the crop IS the message. Padding rather than a
+        container is what lets the first card line up with the heading above it
+        while the last one is free to leave.
+      */}
+      <Reveal delay={0.1} className="mt-12">
+        {/*
+          THE SCROLL REGION IS THE WRAPPER, NOT THE LIST.
+
+          `role="region"` on the <ul> replaced its implicit `list` role, which
+          orphaned all eight <li> children — axe reported eight serious
+          "list item parent element has a role that is not role=list"
+          violations, and a screen reader would have announced the group as an
+          unstructured region with no item count. An ARIA role does not add to an
+          element, it replaces what the element already was.
+
+          So the div scrolls and carries the name; the list stays a list.
+        */}
+        <div
+          role="region"
+          aria-label="Industries Tenure is built for — scroll horizontally for more"
+          tabIndex={0}
+          className={
+            // `scroll-p*` has to mirror the padding. Snap alignment measures from
+            // the scrollport's content edge, so `snap-start` pulled the first card
+            // flush to x=0 and left scrollLeft sitting at 40 — the page margin was
+            // applied and then immediately scrolled away.
+            "no-scrollbar snap-x snap-mandatory overflow-x-auto px-4 pb-2 " +
+            "scroll-pl-4 sm:px-6 sm:scroll-pl-6 lg:px-10 lg:scroll-pl-10"
+          }
+        >
+          <ul className="flex gap-4">
             {site.industries.map((ind) => (
-              <li key={ind.key}>
-                <article className="group relative isolate flex h-full min-h-[22rem] flex-col justify-end overflow-hidden rounded-lg">
-                  <Image
-                    src={ind.photo}
-                    alt={ind.alt}
-                    fill
-                    sizes="(min-width: 1024px) 22vw, (min-width: 640px) 44vw, 88vw"
-                    className="industry-photo object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
-                  />
-                  {/*
-                    The scrim, in two stops rather than one flat wash: a full-tile
-                    tint that unifies eight different exposures, and a stronger
-                    bottom ramp under the type. Measured white-on-scrim at the
-                    label baseline clears 4.5:1 on the brightest of the eight.
-                  */}
-                  {/*
-                    THE TINT, which unifies eight exposures into one set. It is a
-                    sibling, so the contrast walker in a11y.spec.ts cannot see it
-                    — it resolves a text node's backdrop by climbing ANCESTORS.
-                    That is fine here because this layer only ever darkens: it
-                    makes the real contrast better than anything measured
-                    without it.
-                  */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 bg-[linear-gradient(to_top,color-mix(in_oklab,var(--inverse-deep)_55%,transparent),color-mix(in_oklab,var(--inverse-deep)_22%,transparent))]"
-                  />
-                  {/*
-                    THE CAPTION PANEL IS A SOLID TOKEN, and that is a
-                    correctness decision rather than a stylistic one.
+              <li
+                key={ind.key}
+                className="w-[19rem] shrink-0 snap-start sm:w-[22rem] lg:w-[26rem]"
+              >
+                <article className="group relative isolate flex h-full flex-col overflow-hidden rounded-2xl bg-band-deep">
+                  <div className="relative aspect-[4/3] overflow-hidden">
+                    <Image
+                      src={ind.photo}
+                      alt={ind.alt}
+                      fill
+                      sizes="(min-width: 1024px) 26rem, (min-width: 640px) 22rem, 19rem"
+                      className="industry-photo object-cover transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                    />
+                  </div>
 
-                    Two earlier attempts failed the contrast gate for the same
-                    underlying reason. As an absolutely-positioned SIBLING the
-                    scrim was invisible to the walker, which climbs ancestors —
-                    it resolved white type against the section's cream and
-                    reported 1.11:1 on a tile measuring 5.32:1 in reality. Moving
-                    the gradient onto the ancestor did not help either, because
-                    the walker cannot parse `color-mix()` — the same limitation
-                    globals.css already records against check-contrast.mjs.
-
-                    A checker that cannot see the thing protecting the text is
-                    not a checker you can ship behind, and the honest fix is not
-                    to exempt the tile: it is to give the type a backdrop that is
-                    unambiguous to a machine AND unconditional in reality. An
-                    opaque token is both. White on --inverse-deep is ~15:1, and
-                    it holds whatever photograph is swapped in behind it — which
-                    a gradient over an unknown image never truly does.
-
-                    The photo fades into the panel through the sibling ramp
-                    above, so the join reads as one surface rather than a card
-                    with a caption bar stuck on it.
-                  */}
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-x-0 bottom-[8.5rem] h-28 bg-[linear-gradient(to_top,var(--inverse-deep),transparent)]"
-                  />
-                  <div className="relative bg-band-deep p-5">
-                    {/*
-                      `text-title` (20.8px) rather than `text-title-sm`, and the
-                      reason is measured rather than aesthetic. At 18.4px
-                      semibold the label sits just under WCAG's large-text
-                      threshold, so it owes 4.5:1 — and over the brightest four
-                      photographs it measured 4.00-4.06:1. Above 18.66px bold it
-                      is large text and owes 3:1, and the strengthened scrim
-                      takes every tile past 4.5:1 regardless. It also simply
-                      reads better at this scale.
-                    */}
-                    <h3 className="font-display text-title tracking-tight text-inverse">
-                      {ind.label}
-                    </h3>
-                    <p className="mt-2 text-caption leading-relaxed text-inverse/80">
+                  {/* The caption sits on a solid surface, never on the photograph.
+                      White type over an image the component cannot measure is a
+                      contrast failure waiting for the wrong photo; the walker that
+                      checks it climbs ancestors and cannot see a sibling scrim. */}
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="font-display text-title text-inverse">{ind.label}</h3>
+                    <p className="mt-2 text-body-sm leading-relaxed text-inverse/75">
                       {ind.line}
                     </p>
                   </div>
@@ -130,8 +128,8 @@ export function Industries() {
               </li>
             ))}
           </ul>
-        </Reveal>
-      </Container>
+        </div>
+      </Reveal>
     </Section>
   );
 }

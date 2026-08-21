@@ -39,17 +39,32 @@ const base =
  * already verified, and its boundary is the fill itself, not a line.
  */
 const variants: Record<Variant, string> = {
-  primary:
-    "bg-grove text-on-accent hover:bg-grove-bright active:translate-y-px " +
-    "shadow-[0_12px_30px_-12px_color-mix(in_oklab,var(--accent)_70%,transparent)] " +
-    "hover:shadow-[0_18px_40px_-14px_color-mix(in_oklab,var(--accent-hover)_75%,transparent)]",
+  /*
+    NO GLOW. This carried a 30px coloured drop shadow in the accent hue, which is
+    a 2021 SaaS tell — cohere.com's buttons have no shadow at all, on any surface.
+    A solid fill is already the strongest element on a white page; lighting it
+    from behind only makes it look like it is trying.
+  */
+  primary: "bg-grove text-on-accent hover:bg-grove-bright active:translate-y-px",
   secondary:
     "bg-cloud text-ink border border-border-strong hover:border-ink-soft hover:bg-sand/60 " +
     "shadow-[var(--shadow-sm)]",
   outline:
     "border border-grove-deep text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove-bright",
+  /*
+    `light` is the button for dark and photographic surfaces, and it is now a
+    SOLID white pill rather than a translucent glass one. Cohere puts exactly
+    this on top of a photograph: white fill, near-black label, no border, no
+    blur. Glass depends on what is behind it, which over a photograph means its
+    label contrast is unknowable — the thing a scrim exists to prevent.
+  */
   light:
-    "bg-cloud/10 text-inverse border border-inverse/25 backdrop-blur-sm hover:bg-cloud/15 hover:border-inverse/40",
+    // `text-ink-deep`, NOT `text-ink`. Inside `[class*="bg-band"]` the stylesheet
+    // re-points `--text` to `--text-inverse` so that ordinary copy on a dark
+    // surface is light by default — which silently turned this pill's label
+    // white on its own white fill, at 1.06:1. `--inverse-deep` is a surface
+    // token and is not re-pointed, so it stays near-black wherever it lands.
+    "bg-cloud text-ink-deep hover:bg-cloud/90 active:translate-y-px",
   ghost: "text-ink-soft hover:text-ink",
 };
 
