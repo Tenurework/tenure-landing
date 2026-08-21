@@ -107,7 +107,14 @@ export function Section({
     canvas: "bg-paper",
     surface: "bg-cloud",
     subtle: "bg-sand",
-    band: "bg-band text-inverse",
+    /*
+      A GRADED DARK SECTION, not a flat rectangle. `bg-band` stays because the
+      stylesheet keys its inverse-text scope off that class name; `matte
+      matte-deep` layers two low-chroma radials and film grain over it. Flat
+      near-black is the single most static surface a page can have, and this site
+      has three of them.
+    */
+    band: "bg-band matte matte-deep text-inverse",
     none: "",
   }[tone];
 

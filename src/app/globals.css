@@ -677,9 +677,19 @@
   --matte-b: oklch(95.5% 0.010 220);
 }
 
-/* Deep — the same construction inverted, for dark sections. */
+/*
+  Deep — the same construction inverted, for dark sections.
+
+  ITS BASE IS `--inverse` ITSELF, and that is deliberate rather than lazy. The
+  stylesheet re-points every text token inside `[class*="bg-band"]` so copy on a
+  dark surface is light by default, which means a band CANNOT drop `bg-band` in
+  favour of a gradient class — it would keep its dark background and lose all of
+  its white text. So the two classes are applied together, and both set a
+  background-colour. Making them the same value by construction means it does not
+  matter which one wins the cascade.
+*/
 @utility matte-deep {
-  --matte-base: oklch(19% 0.014 265);
+  --matte-base: var(--inverse);
   --matte-a: oklch(27% 0.055 168);
   --matte-b: oklch(23% 0.050 275);
   /* On a dark ground soft-light lifts rather than sinks, so the noise reads as
