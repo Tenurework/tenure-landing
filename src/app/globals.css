@@ -620,95 +620,84 @@
    Every variant is high-lightness by construction, so dark ink on it clears
    contrast without the checker needing to resolve a gradient it cannot parse.
    --------------------------------------------------------------------------- */
-/*
-  THE WALL. Two turbulence layers, multiplied over whatever colour a surface has.
+/* ---------------------------------------------------------------------------
+   MATTE GRADIENT FIELDS.
 
-  WHY TWO. One layer of fine noise is film grain: even, mechanical, and at page
-  scale it averages into flatness — which is exactly what the first four attempts
-  at this produced. An uneven wall is not grain, it is MOTTLE: large soft patches
-  where the plaster took the colour differently, with a finer tooth over the top.
-  So the coarse layer runs at 0.02 base frequency on a 420px tile, and the fine
-  one at 0.8 on 110px. The two tile lengths are deliberately not multiples of each
-  other, so the repeat never lines up into a visible checkerboard.
+   WHAT THIS IS FOR, after getting it wrong twice. These are GROUNDS: coloured
+   fields that sit inside a section, underneath a product surface, the way the
+   reference puts its interface shots on a saturated gradient. They are not a page
+   texture. I applied an earlier version to every section fill and it turned the
+   whole site into a grey cloud — the canvas lost its off-white and the partitions
+   between sections vanished because every surface carried identical noise.
 
-  WHY MULTIPLY, AND WHY THE NOISE IS LIGHT. Measured across five blend modes:
-  `soft-light` — which this used for three commits — is invisible on a light
-  ground, and `overlay` and `hard-light` are nearly so. `multiply` is the only one
-  that reads, but multiplying by mid-grey noise drags the whole field toward
-  cement. So both layers are transfer-shifted to a light mean (0.58-0.66 with a
-  narrow slope): they darken a little and vary a lot, which is texture rather than
-  dirt.
+   ONE GRAIN LAYER, FINE AND EVEN. The version before this had a second coarse
+   layer at 0.02 base frequency to make "an uneven wall". At field size that reads
+   as blotchy weather, not as material. The reference's grain is uniform and tight
+   — it is film grain over a smooth ramp, and the smoothness of the ramp is the
+   point. So: one layer, 0.85 base frequency on a 140px tile.
 
-  Every value here was chosen by rendering a grid of the alternatives side by side
-  and looking at them, not by reasoning about blend-mode formulae.
-*/
-@utility wall {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncG type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncB type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23t)'/%3E%3C/svg%3E"), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)'/%3E%3C/svg%3E");
-  background-size: 110px 110px, 420px 420px;
-  background-repeat: repeat, repeat;
-  background-blend-mode: multiply, multiply;
-}
+   MULTIPLY, WITH LIGHT-MEAN NOISE, and both halves of that matter. Measured
+   across five blend modes on a light ground, `soft-light`, `overlay` and
+   `hard-light` are all effectively invisible; `multiply` is the only one that
+   reads. But multiplying by mid-grey noise drags the field toward cement, so the
+   noise is transfer-shifted to a 0.62-0.92 range: it darkens a little and varies
+   a lot, which is texture rather than dirt.
 
-/*
-  A matte surface is the wall plus a two-point gradient carrying the hue. The
-  radials run to 88-92% rather than fading out by half, so the whole panel is the
-  colour instead of a white field with tinted corners.
-*/
+   The radials run to 88-92% rather than fading by half, so the whole field
+   carries the hue instead of being a white panel with tinted corners.
+   --------------------------------------------------------------------------- */
 @utility matte {
   background-color: var(--matte-base, oklch(97% 0.006 95));
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='110' height='110'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncG type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncB type='linear' slope='0.26' intercept='0.66'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='110' height='110' filter='url(%23t)'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncG type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncB type='linear' slope='0.38' intercept='0.58'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23m)'/%3E%3C/svg%3E"),
-    radial-gradient(120% 100% at 8% 0%, var(--matte-a) 0%, transparent 90%),
-    radial-gradient(115% 120% at 100% 100%, var(--matte-b) 0%, transparent 88%);
-  background-size: 110px 110px, 420px 420px, auto, auto;
-  background-repeat: repeat, repeat, no-repeat, no-repeat;
-  background-blend-mode: multiply, multiply, normal, normal;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncG type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncB type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E"),
+    radial-gradient(125% 105% at 6% 0%, var(--matte-a) 0%, transparent 92%),
+    radial-gradient(120% 125% at 100% 100%, var(--matte-b) 0%, transparent 88%);
+  background-size: 140px 140px, auto, auto;
+  background-repeat: repeat, no-repeat, no-repeat;
+  background-blend-mode: multiply, normal, normal;
+}
+
+/* Iris — the cool field, and the one closest to the reference's own. */
+@utility matte-iris {
+  --matte-base: oklch(91.5% 0.045 288);
+  --matte-a: oklch(84% 0.100 292);
+  --matte-b: oklch(88.5% 0.070 258);
 }
 
 /* Sage — the house hue. Green toward eucalyptus, never toward mint. */
 @utility matte-sage {
-  --matte-base: oklch(93.5% 0.030 160);
-  --matte-a: oklch(88% 0.072 164);
-  --matte-b: oklch(91% 0.048 128);
-}
-
-/* Iris — the cool counterweight, for surfaces that must not read as "money". */
-@utility matte-iris {
-  --matte-base: oklch(92.5% 0.035 288);
-  --matte-a: oklch(86.5% 0.085 290);
-  --matte-b: oklch(90% 0.060 258);
+  --matte-base: oklch(92.5% 0.038 160);
+  --matte-a: oklch(86.5% 0.085 164);
+  --matte-b: oklch(90% 0.055 128);
 }
 
 /* Clay — warm, for anything about people and handover rather than systems. */
 @utility matte-clay {
-  --matte-base: oklch(93.5% 0.032 68);
-  --matte-a: oklch(88.5% 0.070 52);
-  --matte-b: oklch(91.5% 0.048 95);
+  --matte-base: oklch(92.5% 0.040 66);
+  --matte-a: oklch(87% 0.082 50);
+  --matte-b: oklch(90.5% 0.055 95);
 }
 
 /* Ash — the quiet one. Reads as paper stock, not as a colour choice. */
 @utility matte-ash {
-  --matte-base: oklch(95% 0.010 250);
-  --matte-a: oklch(90.5% 0.024 252);
-  --matte-b: oklch(93% 0.018 220);
+  --matte-base: oklch(94.5% 0.012 250);
+  --matte-a: oklch(89.5% 0.030 252);
+  --matte-b: oklch(92% 0.022 218);
 }
 
 /*
   Deep — the same construction inverted, for dark sections.
 
-  ITS BASE IS `--inverse` ITSELF, and that is deliberate rather than lazy. The
-  stylesheet re-points every text token inside `[class*="bg-band"]` so copy on a
-  dark surface is light by default, which means a band CANNOT drop `bg-band` in
-  favour of a gradient class — it would keep its dark background and lose all of
-  its white text. So the two classes are applied together, and both set a
-  background-colour. Making them the same value by construction means it does not
-  matter which one wins the cascade.
+  ITS BASE IS `--inverse` ITSELF, deliberately. The stylesheet re-points every
+  text token inside `[class*="bg-band"]`, so a band cannot drop that class in
+  favour of a gradient one without keeping a dark background and losing all of
+  its white text. Both classes are applied together and both set a background
+  colour; making them identical by construction means cascade order is moot.
 */
 @utility matte-deep {
   --matte-base: var(--inverse);
-  --matte-a: oklch(29% 0.060 168);
-  --matte-b: oklch(25% 0.055 278);
+  --matte-a: oklch(30% 0.065 168);
+  --matte-b: oklch(26% 0.060 278);
 }
 
 /*

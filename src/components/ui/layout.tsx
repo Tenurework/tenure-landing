@@ -104,23 +104,23 @@ export function Section({
   children: ReactNode;
 }) {
   /*
-    EVERY SECTION IS PLASTERED, not just the panels that opted in. The texture was
-    on three surfaces on the home page and nowhere else, so /product, /pilot,
-    /trust and the rest stayed perfectly flat and the site looked like two
-    different products. `wall` costs one repeating data URI shared by every
-    section on every route.
+    SECTIONS ARE FLAT OFF-WHITE, and the attempt to texture them is reverted.
+
+    I put a two-layer plaster mottle on every section fill. It made the page look
+    like a grey cloud had settled over it: the canvas lost its off-white, the
+    partitions between sections disappeared because every surface carried the same
+    noise, and the effect read as a rendering fault rather than as a material.
+
+    The reference does not do this. Its texture lives on ARTWORK — saturated
+    gradient fields and 3D renders sitting inside a section — never on the section
+    itself. The page around that artwork is plain. So the grain moves back to the
+    grounds under the product surfaces, which is the one place it was working, and
+    the canvas is a clean off-white again.
   */
   const fill = {
-    canvas: "bg-paper wall",
-    surface: "bg-cloud wall",
-    subtle: "bg-sand wall",
-    /*
-      A GRADED DARK SECTION, not a flat rectangle. `bg-band` stays because the
-      stylesheet keys its inverse-text scope off that class name; `matte
-      matte-deep` layers two low-chroma radials and film grain over it. Flat
-      near-black is the single most static surface a page can have, and this site
-      has three of them.
-    */
+    canvas: "bg-paper",
+    surface: "bg-cloud",
+    subtle: "bg-sand",
     band: "bg-band matte matte-deep text-inverse",
     none: "",
   }[tone];
