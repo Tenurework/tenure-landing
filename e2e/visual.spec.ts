@@ -20,7 +20,7 @@ import { site } from "../src/lib/site";
  * Four surfaces animate forever on a timer, and each one would put a different
  * frame in the baseline on every run:
  *
- *   SeatMechanism      setInterval 3400ms, rotates through three terms
+ *   SeatMechanism      no timer — the three terms are a sticky stack, revealed by scroll
  *   DashboardMock      setInterval 4200ms, rotates through the hero's modules
  *   AuditTrailDemo     setInterval 3600ms, prepends a new audit row
  *   ProductAtWork      infinite opacity/position keyframe loops

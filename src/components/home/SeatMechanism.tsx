@@ -1,19 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
-// AnimatePresence still comes from motion/react — it is not a `motion.*` element
-// and has no lazy-feature variant. Only the animated elements move to `m`.
-import { AnimatePresence, LazyMotion, domAnimation, useReducedMotion } from "motion/react";
-import * as m from "motion/react-m";
+// NO MOTION IMPORTS. The rotating panel needed LazyMotion, domAnimation,
+// AnimatePresence and `m` elements to cross-fade one term into the next. The
+// stack does the same job with `position: sticky` and the scroll the reader is
+// already doing, so the whole motion runtime leaves this section with it.
 import { Container, Section, SectionHead } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
-import { Panel, PanelBar } from "@/components/ui/Panel";
-import { Logo } from "@/components/brand/Logo";
-import { MemoryCurve } from "@/components/visuals/Charts";
 import { cn } from "@/lib/cn";
 import { useOnScreen } from "@/lib/use-on-screen";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 /**
  * The differentiator, and the one section on this page that is protected from
@@ -73,9 +68,6 @@ const STEPS: Step[] = [
   },
 ];
 
-/** The accrual series, derived from the same data the panel rotates through, so
- *  the curve and the counter can never disagree. */
-const CURVE = STEPS.map((s) => ({ label: s.term, value: s.records }));
 
 /* Each line is a mechanism, not a restatement of the heading. */
 const AFFIRMATIONS = [
@@ -143,32 +135,42 @@ function Occupant({
 }
 
 export function SeatMechanism() {
-  const reduce = useReducedMotion();
-  const [i, setI] = useState(0);
-  const [paused, setPaused] = useState(false);
   const { ref: sectionRef, onScreen } = useOnScreen<HTMLDivElement>();
-  const step = STEPS[i];
+  void onScreen;
 
-  // Gated on visibility as well as reduced motion and hover. This had no viewport
-  // check and — unlike DashboardMock — not even a backgrounded-tab check, so it
-  // re-rendered the section and restarted a digit animation every 3.4 seconds for
-  // the life of the page. Measured at roughly 615 ms of style and layout.
-  useEffect(() => {
-    if (reduce || paused || !onScreen) return;
-    const id = setInterval(() => setI((v) => (v + 1) % STEPS.length), 3400);
-    return () => clearInterval(id);
-  }, [reduce, paused, onScreen]);
+  /*
+    NO TIMER ANY MORE. This used to advance through the three terms on a 3.4s
+    `setInterval`, which meant the section showed a third of its own argument at
+    rest and the reader had to wait for the rest — with a pause button, because
+    WCAG 2.2.2 requires one for anything that moves on its own.
+
+    The terms are stacked instead: all three are on the page, and SCROLLING is
+    what reveals them. That removes the timer, the pause control, the hover-pause,
+    the visibility gate that existed only to stop the timer burning ~615ms of
+    style and layout per page-life, and the whole class of "did I miss one".
+  */
 
   return (
-    <LazyMotion features={domAnimation} strict>
-      <Section from="canvas" tone="canvas" backdrop="light" className="lg:pb-24">
+      <Section from="canvas" tone="canvas" backdrop="light" className="overflow-visible lg:pb-24">
         <Container>
           <div
             ref={sectionRef}
-            className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14"
+            /*
+              `min-w-0` on the grid children, and it is a real fix rather than a
+              guard. A grid item's automatic minimum size is its MIN-CONTENT, not
+              zero, so any child that cannot wrap — an occupant row, a mono label —
+              props the whole column open and the page scrolls sideways. At 320px
+              this section measured 407px wide.
+
+              It did that before this commit too. `overflow: hidden` on Section was
+              clipping it, so the reflow test passed while a phone-width reader
+              still lost 87px of every row. Removing the clip for `position:
+              sticky` is what surfaced it.
+            */
+            className="grid items-start gap-10 [&>*]:min-w-0 lg:grid-cols-2 lg:gap-14"
           >
             {/* LEFT, the thesis */}
-            <div className="max-w-xl lg:pt-4">
+            <div className="max-w-xl lg:sticky lg:top-24 lg:pt-4">
               <SectionHead
                 eyebrow="Why Tenure is different"
                 title={
@@ -206,155 +208,86 @@ export function SeatMechanism() {
                   </Reveal>
                 ))}
               </ul>
+
+              {/*
+                THE LIFECYCLE LEGEND MOVED HERE rather than being deleted with the
+                panel that used to hold it. It is the one place on the site where
+                Shadow / Active / Alumni are defined, and it belongs with the
+                thesis rather than inside an illustration of it.
+              */}
+              <dl className="mt-7 space-y-1.5 border-t border-line pt-5">
+                {LIFECYCLE.map((l) => (
+                  <div key={l.label} className="flex items-baseline gap-3">
+                    <dt
+                      className={cn(
+                        "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-mark uppercase tracking-wide",
+                        TONE[l.tone],
+                      )}
+                    >
+                      {l.label}
+                    </dt>
+                    <dd className="text-body-sm leading-relaxed text-ink-soft measure">
+                      {l.when}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            {/* RIGHT, the living seat: one panel, three regions */}
-            <Reveal delay={0.08}>
-              <Panel
-                className="relative"
-                // Hover pause is a convenience, not the accessible control: the
-                // button in the bar below is what WCAG 2.2.2 requires.
-              >
-                <div
-                  onMouseEnter={() => setPaused(true)}
-                  onMouseLeave={() => setPaused(false)}
-                >
-                  <PanelBar
-                    icon={
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        aria-hidden
-                      >
-                        <path d="M6 19v-3M18 19v-3M5 16h14M7 16v-5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5M9 9V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
-                      </svg>
-                    }
-                    title="VP Finance & Operations"
-                    meta="durable seat · SCC-VP-FINA-OPER"
-                    aside={
-                      <div className="flex items-center gap-1.5">
-                        {/* WCAG 2.2.2: this rotated every 3.4s and could only be
-                            paused with a mouse. */}
-                        {!reduce && (
-                          <button
-                            type="button"
-                            onClick={() => setPaused((v) => !v)}
-                            aria-pressed={paused}
-                            aria-label={
-                              paused
-                                ? "Resume the term walkthrough"
-                                : "Pause the term walkthrough"
-                            }
-                            className="mr-1 inline-flex h-6 min-w-6 items-center justify-center rounded-md font-mono text-mark text-text-secondary hover:text-ink"
-                          >
-                            <svg
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth={1.8}
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              aria-hidden
-                              className="h-3 w-3"
-                            >
-                              <path
-                                d={paused ? "M8 5l11 7-11 7z" : "M9 5v14M15 5v14"}
-                                className={paused ? "fill-current" : undefined}
-                              />
-                            </svg>
-                          </button>
-                        )}
-                        {STEPS.map((s, idx) => (
-                          <button
-                            key={s.term}
-                            type="button"
-                            aria-label={`Term ${s.term}`}
-                            aria-pressed={idx === i}
-                            onClick={() => {
-                              setI(idx);
-                              setPaused(true);
-                            }}
-                            // The dot stays 6px; the TARGET is 24x24. These
-                            // measured 6x6 CSS px against the WCAG 2.2 SC 2.5.8
-                            // minimum, the smallest controls on the site.
-                            className="group/dot flex h-6 min-w-6 items-center justify-center"
-                          >
-                            <span
-                              aria-hidden
-                              className={cn(
-                                "block h-1.5 rounded-full transition-all",
-                                idx === i
-                                  ? "w-6 bg-grove"
-                                  : "w-1.5 bg-line group-hover/dot:bg-grove/40",
-                              )}
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    }
-                  />
+            {/*
+              RIGHT: THE TERMS, STACKED.
 
-                  <div className="p-4 sm:p-5">
-                    {/* occupant timeline */}
+              Each card is `position: sticky` at a top offset 18px below the one
+              before it, so scrolling pulls the next term up over the last and
+              leaves its header peeking. The pile that builds at the top IS the
+              argument — the record accrues, the people do not.
+
+              TWO THINGS THIS DEPENDS ON, both easy to get wrong:
+
+              1. No ancestor may have `overflow: hidden`. Section sets it by
+                 default for bleeds, and it silently disables sticky in every
+                 descendant — the cards simply scroll away and nothing errors.
+                 This section overrides it.
+              2. Each card needs a fixed height, or a tall card would cover the
+                 next one's landing point and the stack would never separate.
+
+              The matte grade runs ash -> clay -> sage across the three, so the
+              stack reads as accumulation rather than as three copies.
+            */}
+            <div className="lg:pl-2">
+              {STEPS.map((step, idx) => (
+                <div
+                  key={step.term}
+                  className="sticky"
+                  style={{ top: `${88 + idx * 18}px` }}
+                >
+                  <div
+                    className={cn(
+                      "matte mb-5 flex h-[23rem] flex-col rounded-2xl border border-line p-5 shadow-[0_18px_50px_-30px_oklch(20%_0.02_260/0.45)] sm:p-6",
+                      ["matte-ash", "matte-clay", "matte-sage"][idx],
+                    )}
+                  >
                     <div className="flex items-baseline justify-between">
-                      <p className="label-mono text-mark">
-                        Occupant · term {step.term}
-                      </p>
+                      <p className="label-mono text-mark">Term {step.term}</p>
                       <span className="font-mono text-mark text-ink-faint">
-                        the person rotates
+                        {idx === 0 ? "the person rotates" : `handoff ${idx}`}
                       </span>
                     </div>
-                    <AnimatePresence mode="wait">
-                      <m.div
-                        key={step.term}
-                        className="mt-2.5 space-y-2"
-                        initial={reduce ? false : { opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={reduce ? undefined : { opacity: 0, y: -8 }}
-                        transition={{ duration: reduce ? 0 : 0.3, ease: EASE }}
-                      >
-                        <Occupant name={step.active} status="active" />
-                        <Occupant name={step.shadow} status="shadow" />
-                        {step.alumni.slice(-1).map((a) => (
-                          <Occupant key={a} name={a} status="alumni" />
-                        ))}
-                        {step.alumni.length > 1 && (
-                          <p className="pl-1 font-mono text-mark text-ink-faint">
-                            + {step.alumni.length - 1} more alumni on this seat
-                          </p>
-                        )}
-                      </m.div>
-                    </AnimatePresence>
 
-                    {/* The lifecycle legend. Absorbed from Handoff’s "Shadow
-                        access" block, which said the same three things in three
-                        cards under a headline AiOnboarding also used verbatim. */}
-                    <dl className="mt-3 space-y-1 border-t border-line pt-3">
-                      {LIFECYCLE.map((l) => (
-                        <div key={l.label} className="flex items-baseline gap-2">
-                          <dt
-                            className={cn(
-                              "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-mark font-medium uppercase tracking-wide",
-                              TONE[l.tone],
-                            )}
-                          >
-                            {l.label}
-                          </dt>
-                          <dd className="text-meta leading-relaxed text-ink-soft measure">
-                            {l.when}
-                          </dd>
-                        </div>
+                    <div className="mt-3 space-y-2">
+                      <Occupant name={step.active} status="active" />
+                      <Occupant name={step.shadow} status="shadow" />
+                      {step.alumni.slice(-1).map((a) => (
+                        <Occupant key={a} name={a} status="alumni" />
                       ))}
-                    </dl>
+                      {step.alumni.length > 1 && (
+                        <p className="pl-1 font-mono text-mark text-ink-faint">
+                          + {step.alumni.length - 1} more alumni on this seat
+                        </p>
+                      )}
+                    </div>
 
-                    {/* the accruing record */}
-                    <div className="mt-4 rounded-2xl border border-grove/20 bg-grove-mist/60 p-3.5">
+                    <div className="mt-auto border-t border-line pt-3">
                       <div className="flex items-baseline justify-between">
                         <p className="label-mono text-mark text-grove-deep">
                           Institutional memory on this seat
@@ -366,65 +299,21 @@ export function SeatMechanism() {
                       <p className="text-mark text-ink-soft">
                         records, carried across every handoff
                       </p>
-                      <MemoryCurve points={CURVE} className="mt-2" />
-                      {/* popLayout is safe under domAnimation: PopChild measures in
-                          getSnapshotBeforeUpdate and injects an absolute-positioning
-                          rule rather than using layout projection. Verified in the
-                          installed source, not assumed. */}
-                      <AnimatePresence mode="popLayout">
-                        <m.div
-                          key={step.fresh.t}
-                          className="mt-2 flex items-center gap-2 rounded-lg border border-grove/25 bg-cloud px-2.5 py-1.5"
-                          initial={reduce ? false : { opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={reduce ? undefined : { opacity: 0, x: 10 }}
-                          transition={{ duration: reduce ? 0 : 0.3, ease: EASE }}
-                        >
-                          <span className="rounded border border-grove/25 bg-grove-soft px-1 py-0.5 font-mono text-mark uppercase text-grove-deep">
-                            + {step.fresh.tag}
-                          </span>
-                          <span className="text-meta text-ink">{step.fresh.t}</span>
-                        </m.div>
-                      </AnimatePresence>
-                    </div>
-
-                    {/* ask this seat */}
-                    <div className="mt-3 rounded-2xl border border-line bg-surface-subtle p-3.5">
-                      <div className="flex items-center gap-2">
-                        <Logo className="h-4 w-4 text-grove" />
-                        {/* Not "ask anything": C-007 limits retrieval to five record kinds. */}
-                        <span className="text-meta text-ink">
-                          Ask this seat
+                      <div className="mt-2.5 flex items-center gap-2 rounded-lg border border-grove/25 bg-surface/70 px-2.5 py-1.5">
+                        <span className="rounded bg-grove-soft px-1.5 py-0.5 font-mono text-mark text-grove-deep">
+                          {step.fresh.tag}
+                        </span>
+                        <span className="truncate text-caption text-ink-soft">
+                          {step.fresh.t}
                         </span>
                       </div>
-                      {/*
-                        A keyword query, not a sentence. This read "Who did we use
-                        for catering, and why did we switch?" — eleven terms, and
-                        search.ts:39 requires EVERY one of them to appear literally
-                        in a single record ("who", "did", "we", "and" included), with
-                        no stemming or stopword removal. In practice it returns
-                        nothing, and with zero sources the route never calls the
-                        model at all.
-                      */}
-                      <p className="mt-2 rounded-xl rounded-br-sm bg-cloud px-3 py-2 text-caption text-ink-soft ring-1 ring-line">
-                        catering vendor
-                      </p>
-                      <p className="mt-2 rounded-xl rounded-bl-sm bg-grove-soft/70 px-3 py-2 text-caption leading-relaxed text-ink">
-                        Prestige Catering. Marcus renegotiated after the &rsquo;25 gala
-                        ran over &mdash; the vendor card and the approval behind it are
-                        attached.
-                        <span className="ml-1 whitespace-nowrap font-mono text-mark text-grove-deep">
-                          3 sources ↗
-                        </span>
-                      </p>
                     </div>
                   </div>
                 </div>
-              </Panel>
-            </Reveal>
+              ))}
+            </div>
           </div>
         </Container>
       </Section>
-    </LazyMotion>
   );
 }
