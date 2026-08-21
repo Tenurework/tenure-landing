@@ -559,6 +559,93 @@ const PANEL_MARKER = {
   Memory: "carried across 3 terms",
 } as const;
 
+/**
+ * THE HEADLINE MUST NOT OUTGROW THE COLUMN THAT HOLDS IT.
+ *
+ * This shipped once and was nearly missed. "The know-how" is held on a single
+ * line by `whitespace-nowrap`, and an unbreakable run cannot wrap out of trouble
+ * — at the 96px step it measured 749px inside a 447px column and spilled 173px
+ * to the right, directly across the product mock, at every desktop width.
+ *
+ * Nothing failed in an obvious way. Contrast passed, links passed, the page
+ * looked plausible in a screenshot because the overflowing words landed on a
+ * pale surface. The only symptom was a click test timing out with "<span>The
+ * know-how</span> intercepts pointer events" — the headline had swallowed the
+ * mock's controls. A layout bug reached the visitor disguised as a flaky test.
+ *
+ * So the overflow is asserted directly, in the terms the bug actually had:
+ * the headline's own box against the box of the column it lives in.
+ */
+test.describe("hero headline", () => {
+  test("no line overflows the column it sits in", async ({ page }) => {
+    await page.goto("/");
+    await hydrated(page);
+
+    const overflow = await page.evaluate(() => {
+      const h1 = document.querySelector("h1");
+      if (!h1) return { error: "no h1" };
+      const col = h1.parentElement;
+      if (!col) return { error: "h1 has no parent" };
+      const colBox = col.getBoundingClientRect();
+      // Every element that draws its own run of text inside the headline.
+      const runs = [...h1.querySelectorAll("span")].filter(
+        (el) => !el.querySelector("span"),
+      );
+      const worst = runs
+        .map((el) => {
+          const b = el.getBoundingClientRect();
+          return {
+            text: (el.textContent ?? "").trim().slice(0, 24),
+            past: Math.round(Math.max(b.right - colBox.right, colBox.left - b.left)),
+          };
+        })
+        .sort((a, b) => b.past - a.past)[0];
+      return { worst, runs: runs.length };
+    });
+
+    expect(overflow.error).toBeUndefined();
+    expect(overflow.runs).toBeGreaterThan(0);
+    // Sub-pixel rounding is tolerated; a word crossing the edge is not.
+    expect(
+      overflow.worst!.past,
+      `"${overflow.worst!.text}" overflows the headline column by ${overflow.worst!.past}px`,
+    ).toBeLessThanOrEqual(1);
+  });
+
+  test("the headline never covers the product mock", async ({ page }) => {
+    test.skip(
+      (page.viewportSize()?.width ?? 0) < 640,
+      "the module rail is hidden below the sm breakpoint",
+    );
+
+    await page.goto("/");
+    await hydrated(page);
+
+    // Asked as the visitor asks it: is the control under my pointer the control
+    // I am pointing at, or something drawn on top of it?
+    const reachable = await page.evaluate(() => {
+      const rail = [...document.querySelectorAll("aside")].find((a) =>
+        a.querySelector("button[aria-pressed]"),
+      );
+      if (!rail) return { error: "no module rail" };
+      return {
+        blocked: [...rail.querySelectorAll("button")]
+          .map((btn) => {
+            const b = btn.getBoundingClientRect();
+            const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+            return hit?.closest("button") === btn
+              ? null
+              : `${(btn.textContent ?? "").trim()} is covered by <${hit?.tagName.toLowerCase()}> "${(hit?.textContent ?? "").trim().slice(0, 24)}"`;
+          })
+          .filter(Boolean),
+      };
+    });
+
+    expect(reachable.error).toBeUndefined();
+    expect(reachable.blocked).toEqual([]);
+  });
+});
+
 test.describe("product mock", () => {
   test("the module controls change the rendered panel", async ({ page }, testInfo) => {
     test.skip(

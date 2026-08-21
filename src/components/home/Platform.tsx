@@ -89,7 +89,7 @@ function Chips({ items }: { items: readonly string[] }) {
 function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div>
-      <p className="label-mono text-mark-xs">{label}</p>
+      <p className="label-mono text-mark">{label}</p>
       <div className="mt-2">{children}</div>
     </div>
   );
@@ -116,7 +116,7 @@ const MODULES: Module[] = [
             <p className="text-caption leading-relaxed text-ink">
               Held against the Spring Gala booking: $1,500, refundable to 14 days out.
             </p>
-            <span className="mt-1.5 inline-block font-mono text-mark-xs uppercase text-grove-deep">
+            <span className="mt-1.5 inline-block font-mono text-mark uppercase text-grove-deep">
               2 records ↗
             </span>
           </div>
@@ -244,7 +244,7 @@ const MODULES: Module[] = [
           ].map((r) => (
             <li key={r.t} className="rounded-lg border border-line bg-paper/50 p-2.5">
               <div className="flex items-center gap-1.5">
-                <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
+                <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark uppercase tracking-wide text-ink-faint">
                   {r.tag}
                 </span>
                 <span className="text-caption text-ink">{r.t}</span>
@@ -282,7 +282,7 @@ const MODULES: Module[] = [
               key={r.s}
               className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5 rounded-lg border border-line bg-paper/50 px-2.5 py-2"
             >
-              <span className="rounded-md bg-surface-subtle px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-text-secondary">
+              <span className="rounded-md bg-surface-subtle px-1.5 py-0.5 font-mono text-mark font-medium uppercase tracking-wide text-text-secondary">
                 {r.s}
               </span>
               <span className="text-caption text-ink">{r.n}</span>
@@ -519,7 +519,7 @@ export function Platform() {
                 <h3 className="font-display text-title-sm font-semibold text-ink">
                   {mod.label}
                 </h3>
-                <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
+                <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-mark uppercase tracking-wide text-ink-faint">
                   {mod.cluster}
                 </span>
               </div>

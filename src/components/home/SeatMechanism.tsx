@@ -132,7 +132,7 @@ function Occupant({
       </span>
       <span
         className={cn(
-          "rounded-full px-2 py-0.5 font-mono text-mark-xs uppercase tracking-wide",
+          "rounded-full px-2 py-0.5 font-mono text-mark uppercase tracking-wide",
           TONE[status],
         )}
       >
@@ -303,7 +303,7 @@ export function SeatMechanism() {
                   <div className="p-4 sm:p-5">
                     {/* occupant timeline */}
                     <div className="flex items-baseline justify-between">
-                      <p className="label-mono text-mark-xs">
+                      <p className="label-mono text-mark">
                         Occupant · term {step.term}
                       </p>
                       <span className="font-mono text-mark text-ink-faint">
@@ -340,7 +340,7 @@ export function SeatMechanism() {
                         <div key={l.label} className="flex items-baseline gap-2">
                           <dt
                             className={cn(
-                              "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-mark-xs font-medium uppercase tracking-wide",
+                              "w-16 shrink-0 rounded-md px-1.5 py-0.5 text-center font-mono text-mark font-medium uppercase tracking-wide",
                               TONE[l.tone],
                             )}
                           >
@@ -356,7 +356,7 @@ export function SeatMechanism() {
                     {/* the accruing record */}
                     <div className="mt-4 rounded-2xl border border-grove/20 bg-grove-mist/60 p-3.5">
                       <div className="flex items-baseline justify-between">
-                        <p className="label-mono text-mark-xs text-grove-deep">
+                        <p className="label-mono text-mark text-grove-deep">
                           Institutional memory on this seat
                         </p>
                         <p className="font-display text-title font-semibold tnum text-grove-deep">
@@ -380,7 +380,7 @@ export function SeatMechanism() {
                           exit={reduce ? undefined : { opacity: 0, x: 10 }}
                           transition={{ duration: reduce ? 0 : 0.3, ease: EASE }}
                         >
-                          <span className="rounded border border-grove/25 bg-grove-soft px-1 py-0.5 font-mono text-mark-xs uppercase text-grove-deep">
+                          <span className="rounded border border-grove/25 bg-grove-soft px-1 py-0.5 font-mono text-mark uppercase text-grove-deep">
                             + {step.fresh.tag}
                           </span>
                           <span className="text-meta text-ink">{step.fresh.t}</span>

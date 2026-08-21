@@ -278,7 +278,7 @@ export function GateRail({
             <div className="flex flex-col items-center gap-1">
               <span
                 className={cn(
-                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-mark-xs font-semibold",
+                  "flex h-6 w-6 items-center justify-center rounded-full border font-mono text-mark font-semibold",
                   done && "border-grove bg-grove text-on-accent",
                   here && "border-brand-gold bg-warning-subtle text-warning",
                   !done && !here && "border-line bg-cloud text-ink-faint",
@@ -286,7 +286,7 @@ export function GateRail({
               >
                 {done ? "✓" : i + 1}
               </span>
-              <span className="whitespace-nowrap text-mark-xs text-ink-faint">{s}</span>
+              <span className="whitespace-nowrap text-mark text-ink-faint">{s}</span>
             </div>
             {i < stages.length - 1 && (
               <span

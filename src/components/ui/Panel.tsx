@@ -105,7 +105,7 @@ export function PanelRail({
         className,
       )}
     >
-      <p className="label-mono px-2 pb-2 text-mark-xs">{label}</p>
+      <p className="label-mono px-2 pb-2 text-mark">{label}</p>
       {children}
     </div>
   );

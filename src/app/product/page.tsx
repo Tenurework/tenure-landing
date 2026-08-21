@@ -235,7 +235,7 @@ export default function ProductPage() {
                         <h3 className="font-display text-body font-semibold text-ink">
                           {r.t}
                         </h3>
-                        <span className="label-mono text-mark-xs">{r.n}</span>
+                        <span className="label-mono text-mark">{r.n}</span>
                       </div>
                       <p className="mt-1.5 text-body leading-relaxed text-ink-soft">
                         {r.d}
@@ -297,7 +297,7 @@ export default function ProductPage() {
                 {QA.map((x) => (
                   <div key={x.q} className="space-y-2">
                     <div className="rounded-xl border border-line bg-paper/60 px-3.5 py-2.5">
-                      <p className="label-mono text-mark-xs">You searched</p>
+                      <p className="label-mono text-mark">You searched</p>
                       {/*
                         Keyword-shaped, not a sentence: retrieval is an AND over
                         every query token longer than one character, with no

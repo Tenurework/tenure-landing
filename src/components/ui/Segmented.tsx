@@ -177,7 +177,7 @@ export function RailList({
               )}
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
               {item.hint ? (
-                <span className="shrink-0 rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
+                <span className="shrink-0 rounded-md border border-line bg-paper/60 px-1.5 py-0.5 font-mono text-mark uppercase tracking-wide text-ink-faint">
                   {item.hint}
                 </span>
               ) : (

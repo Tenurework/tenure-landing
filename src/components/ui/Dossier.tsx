@@ -131,7 +131,7 @@ export function Dossier({
                       <span
                         key={t.label}
                         className={cn(
-                          "rounded-md border px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
+                          "rounded-md border px-1.5 py-0.5 font-mono text-mark font-medium uppercase tracking-wide",
                           TALLY_TONE[t.tone ?? "quiet"],
                         )}
                       >

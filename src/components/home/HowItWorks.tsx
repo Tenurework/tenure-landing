@@ -110,7 +110,7 @@ export function HowItWorks() {
                       <h3 className="font-display text-lead font-semibold text-ink">
                         {step.title}
                       </h3>
-                      <span className="label-mono text-mark-xs">{step.n}</span>
+                      <span className="label-mono text-mark">{step.n}</span>
                     </div>
                     <p className="mt-1.5 text-body leading-relaxed text-ink-soft">
                       {step.body}

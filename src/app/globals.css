@@ -252,21 +252,88 @@
     0.05rem in the body range; the largest single shift anywhere is a display
     heading, and those were already inconsistent between routes.
   */
-  --text-mark-xs: 0.55rem;
-  --text-mark: 0.62rem;
-  --text-meta: 0.72rem;
-  --text-caption: 0.8rem;
-  --text-body-sm: 0.88rem;
-  --text-body: 0.95rem;
-  --text-lead: 1.05rem;
-  --text-title-sm: 1.15rem;
-  --text-title: 1.3rem;
-  --text-h3: 1.55rem;
-  --text-h2: 1.9rem;
-  --text-h2-lg: 2.3rem;
-  --text-display-sm: 2.65rem;
-  --text-display: 3.15rem;
-  --text-hero: 3.8rem;
+  /*
+    THE SCALE MOVED UP ONE AND A HALF STEPS, 2026-08-20, and that is the single
+    most mechanical reason the site read as an MVP.
+
+    Measured against the references it is sold beside: the hero topped out at
+    60.8px where Cohere runs 96px, section headings at 36.8px against 60px, and
+    body at 15.2px when no enterprise site ships body text under 16px. Nothing
+    was wrong with any individual value — the whole page simply sat below the
+    register its buyers read all day, and small type reads as a small company.
+
+    Every step is now a whole pixel at the default root size, and the display
+    steps are fluid rather than stepping at breakpoints: a headline that jumps
+    16px at exactly 640px announces the breakpoint. `vi` follows the writing
+    mode, and every clamp keeps a rem term — a bare-vw clamp ignores the user's
+    own font-size setting, which is an accessibility failure rather than a
+    styling choice.
+
+    SIZE, LEADING, TRACKING AND WEIGHT ARRIVE TOGETHER. Tailwind v4 reads the
+    companion tokens below, so roughly three hundred call sites inherit correct
+    leading and tracking from the size alone. That is what lets the blanket
+    `.font-display { letter-spacing }` rule go: tracking is a function of size,
+    and a heading that wants different tracking is asking for a different step.
+  */
+  --text-mark: 0.6875rem;
+  --text-mark--line-height: 1.45;
+  --text-mark--letter-spacing: 0.06em;
+
+  --text-meta: 0.75rem;
+  --text-meta--line-height: 1.4;
+  --text-meta--letter-spacing: 0.04em;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.45;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.5;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: -0.005em;
+
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.55;
+  --text-lead--letter-spacing: -0.01em;
+
+  --text-title-sm: 1.25rem;
+  --text-title-sm--line-height: 1.4;
+  --text-title-sm--letter-spacing: -0.015em;
+
+  --text-title: 1.5rem;
+  --text-title--line-height: 1.3;
+  --text-title--letter-spacing: -0.025em;
+
+  --text-h3: 1.75rem;
+  --text-h3--line-height: 1.25;
+  --text-h3--letter-spacing: -0.03em;
+  --text-h3--font-weight: 600;
+
+  --text-h2: clamp(2rem, 1.82rem + 0.75vi, 2.5rem);
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.035em;
+  --text-h2--font-weight: 600;
+
+  --text-h2-lg: clamp(2.5rem, 2.24rem + 1.13vi, 3.25rem);
+  --text-h2-lg--line-height: 1.1;
+  --text-h2-lg--letter-spacing: -0.04em;
+  --text-h2-lg--font-weight: 600;
+
+  --text-display-sm: clamp(2.75rem, 2.31rem + 1.88vi, 4rem);
+  --text-display-sm--line-height: 1.05;
+  --text-display-sm--letter-spacing: -0.045em;
+  --text-display-sm--font-weight: 700;
+
+  --text-display: clamp(3.25rem, 2.63rem + 2.63vi, 5rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.05em;
+  --text-display--font-weight: 700;
+
+  --text-hero: clamp(3.5rem, 2.62rem + 3.76vi, 6rem);
+  --text-hero--line-height: 1;
+  --text-hero--letter-spacing: -0.05em;
+  --text-hero--font-weight: 700;
 
   /* Radius */
   /*
@@ -385,13 +452,32 @@
     text-decoration: none;
   }
 
+  /*
+    THE DISPLAY VOICE, OUT OF ONE FAMILY.
+
+    This used to force -0.025em onto every display element, and twenty call sites
+    then overrode it with disagreeing arbitrary values — which guarantees that a
+    heading forgetting to override is WRONG rather than merely different.
+    Tracking is a function of size and now rides on the size token.
+
+    Weight is deliberately not set here either: a 16px panel title and a 96px
+    headline both carry .font-display, and a blanket weight would make the small
+    one bold. The separation the reference sites buy with a second typeface is
+    bought here with the size ramp, the tracking ramp and one alternate set.
+  */
   .font-display {
-    letter-spacing: -0.025em;
+    font-feature-settings: "ss02" 1;
   }
 
   .tnum {
+    /*
+      `font-variant-numeric` only. The `font-feature-settings` line that sat here
+      was dead by construction — it is the lower-level property and wins for the
+      same element, so one of the two declarations never applied. Worse, it is
+      not additive: it resets every feature not listed, so a .tnum inside a
+      .font-display would silently clobber the ss02 above.
+    */
     font-variant-numeric: tabular-nums;
-    font-feature-settings: "tnum" 1, "cv01" 1;
   }
 }
 

@@ -47,32 +47,83 @@ export function Hero() {
     <section className="relative isolate overflow-hidden pt-24 sm:pt-28">
       <Backdrop variant="grid" />
 
-      <Container className="relative">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,45%)_1fr] lg:gap-8">
+      {/*
+        THE HERO BREAKS OUT 64px PAST THE BODY CONTAINER, and the side-by-side
+        split now starts at `xl` rather than `lg`. Both are consequences of one
+        measurement.
+
+        Inside `max-w-6xl` the mock's own min-content (695px, of which it bleeds
+        6vw off the right edge) leaves the copy a 447px column. "The know-how" is
+        held on one line and measures 7.8px wide for every 1px of font-size, so
+        447px caps the headline at ~57px — under the `display` step, in the
+        layout that is supposed to be the largest type on the site.
+
+        At `lg` it is worse: a 1024px viewport leaves the copy 335px, which is
+        narrower than a phone. That range now stacks, which is what a 335px
+        column was always asking for.
+      */}
+      <Container className="relative xl:max-w-[80rem]">
+        <div className="grid items-center gap-10 xl:grid-cols-[minmax(0,49%)_1fr] xl:gap-8">
           {/* LEFT, editorial copy */}
-          <div className="relative z-10 max-w-xl text-center lg:text-left">
+          <div className="relative z-10 max-w-xl text-center xl:max-w-none xl:text-left">
             <p className="label-mono">The system of record for organizations that rotate</p>
 
-            <h1 className="font-display mt-5 text-display-sm font-semibold leading-[1.02] tracking-[-0.035em] text-ink sm:text-display lg:text-hero">
+            {/*
+              Leading, tracking and weight now ride on the size token, so the
+              hand-set `leading-[1.02] tracking-[-0.035em] font-semibold` that
+              used to sit here are gone — at 96px they were tuned for a 42px
+              headline and fought the step they were applied to.
+
+              "The know-how" is held together with `whitespace-nowrap`, NOT with
+              a non-breaking hyphen. At the new scale the browser broke the line
+              at the ordinary hyphen and rendered "The know-" over "how stays." —
+              a hyphenated stump is the most amateur thing a large headline can
+              do, and it only appeared once the type was big enough to matter.
+              U+2011 fixes it visually but changes the codepoint, so the headline
+              would no longer match "know-how" for search, copy-paste or any test
+              asserting the page's own words. A CSS break rule costs nothing and
+              keeps the text ASCII.
+
+              THE SIZE IS CAPPED AT `text-display`, and holding the line together
+              is exactly why. An unbreakable phrase cannot be sized past the
+              column that holds it: "The know-how" measures 7.8px wide for every
+              1px of font-size, so at the 96px `text-hero` step it wanted 749px
+              inside a 576px column. It did not wrap — it could not — so it spilled
+              173px to the right, across the product mock, at every desktop width
+              measured (1024/1280/1440/1600). The headline was sitting ON TOP of
+              the interface it was introducing, and the only reason it was caught
+              is that the overlapping text swallowed the pointer events meant for
+              the mock's module rail.
+
+              So the two-column hero gets the `display` step and the column gets
+              4% more width. `text-hero` stays in the scale for a headline that
+              owns the full measure; it is not a size this layout can hold.
+            */}
+            <h1 className="font-display mt-5 text-display-sm text-ink sm:text-display">
               <span className="block">People move on.</span>
               <span className="block">
-                The know-how <span className="text-gradient">stays.</span>
+                <span className="whitespace-nowrap">The know-how</span>{" "}
+                <span className="text-gradient">stays.</span>
               </span>
             </h1>
 
             {/* Opens on the image, not the abstraction: the reader is the person
                 staring at the empty folder. The image is now sector-neutral —
                 a treasurer graduating is one instance of it, not the whole of it. */}
-            <p className="mx-auto mt-5 max-w-lg text-lead leading-relaxed text-ink-soft sm:text-title-sm lg:mx-0">
-              Someone leaves, and the budget, the vendors and the reasons leave
-              with them. Tenure attaches the money, the events, the approvals and
-              what the last holder learned to the{" "}
-              <span className="font-medium text-ink">seat</span>{" "}
-              rather than the person in it &mdash; so the next one opens a record instead
-              of an empty folder.
+            {/*
+              Cut from five lines to two. At 42px the old lead was a paragraph
+              under a headline; at 96px it is a caption, and it has to behave like
+              one. Everything removed is said properly by the sections below —
+              a hero that explains the whole product has not decided what the
+              product is.
+            */}
+            <p className="mx-auto mt-6 max-w-md text-lead text-ink-soft xl:mx-0">
+              Budgets, vendors, approvals and the reasoning behind them attach to
+              the <span className="font-medium text-ink">seat</span>, not to
+              whoever is holding it this year.
             </p>
 
-            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+            <div className="mt-7 flex flex-wrap items-center justify-center gap-3 xl:justify-start">
               <ContactSales size="lg" arrow />
               <Button href="#platform" variant="secondary" size="lg">
                 See the platform
@@ -89,7 +140,7 @@ export function Hero() {
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
                 mechanism, which C-023 forbids. */}
-            <p className="mx-auto mt-4 max-w-md text-caption leading-relaxed text-ink-faint lg:mx-0">
+            <p className="mx-auto mt-4 max-w-md text-caption leading-relaxed text-ink-faint xl:mx-0">
               Already using Tenure?{" "}
               <Link
                 href="/contact"
@@ -118,7 +169,7 @@ export function Hero() {
               anyway — the conflict they announced is in its Calendar panel and the
               cleared approval is in its Approvals panel. Removing them takes out a
               component, a class of overlap bug, and one more piece of repetition. */}
-          <div className="relative pt-2 lg:-mr-[10vw] lg:pt-0 xl:-mr-[6vw]">
+          <div className="relative pt-2 xl:-mr-[6vw] xl:pt-0">
             <DashboardMock tilt auto className="relative z-0" />
             <MockCaption />
           </div>

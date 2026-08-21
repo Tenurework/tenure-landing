@@ -129,7 +129,7 @@ const STANDING: { label: string; value: string; note: string; icon: ReactNode }[
  */
 function ColumnLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="label-mono mb-0.5 block text-mark-xs md:hidden">{children}</span>
+    <span className="label-mono mb-0.5 block text-mark md:hidden">{children}</span>
   );
 }
 
@@ -166,11 +166,11 @@ export function Handoff() {
 
             {/* column heads, wide screens only */}
             <div className="hidden gap-4 border-b border-line px-6 py-2.5 md:grid md:grid-cols-[1.4fr_1fr_1.2fr_0.5fr_1fr]">
-              <span className="label-mono text-mark-xs">Seat</span>
-              <span className="label-mono text-mark-xs">Holds it now</span>
-              <span className="label-mono text-mark-xs">Held it last term</span>
-              <span className="label-mono text-mark-xs">Cards</span>
-              <span className="label-mono text-mark-xs">Shadowing in</span>
+              <span className="label-mono text-mark">Seat</span>
+              <span className="label-mono text-mark">Holds it now</span>
+              <span className="label-mono text-mark">Held it last term</span>
+              <span className="label-mono text-mark">Cards</span>
+              <span className="label-mono text-mark">Shadowing in</span>
             </div>
 
             <ul>
@@ -204,7 +204,7 @@ export function Handoff() {
                     {s.holder ? (
                       <p className="text-body-sm text-ink">{s.holder}</p>
                     ) : (
-                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-danger">
+                      <span className="inline-flex rounded-md border border-brand-coral/30 bg-danger-subtle px-2 py-0.5 font-mono text-mark font-medium uppercase tracking-wide text-danger">
                         Vacant
                       </span>
                     )}
@@ -224,7 +224,7 @@ export function Handoff() {
                     <ColumnLabel>Shadowing in</ColumnLabel>
                     {s.shadow ? (
                       <span className="inline-flex items-center gap-2">
-                        <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide text-warning">
+                        <span className="rounded-md bg-warning-subtle px-1.5 py-0.5 font-mono text-mark font-medium uppercase tracking-wide text-warning">
                           Shadow
                         </span>
                         <span className="text-caption text-ink-soft">{s.shadow}</span>
@@ -252,7 +252,7 @@ export function Handoff() {
                     <span className="hidden h-8 w-8 items-center justify-center rounded-lg bg-grove-soft text-grove sm:inline-flex">
                       {st.icon}
                     </span>
-                    <span className="label-mono text-mark-xs">{st.label}</span>
+                    <span className="label-mono text-mark">{st.label}</span>
                   </div>
                   <p className="mt-2 font-display text-lead font-semibold tnum text-ink sm:mt-2.5 sm:text-title-sm">
                     {st.value}

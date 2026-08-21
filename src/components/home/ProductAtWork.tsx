@@ -92,7 +92,7 @@ function HandoffCard() {
             history, so the outgoing term is not blanked. */}
         <div className="absolute bottom-3 left-[3.5%] z-0 w-[40%] rounded-lg border border-dashed border-line bg-paper/40 p-2">
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-text-secondary">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark uppercase text-text-secondary">
               Kept
             </span>
             <span className="truncate text-meta text-text-secondary">
@@ -104,7 +104,7 @@ function HandoffCard() {
         {/* a record already inherited, so the incoming side is never empty */}
         <div className="absolute bottom-3 right-[3.5%] z-0 w-[40%] rounded-lg border border-line bg-paper/70 p-2">
           <div className="flex items-center gap-1.5">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-text-secondary">
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark uppercase text-text-secondary">
               Lead
             </span>
             <span className="truncate text-meta text-ink-soft">Wegmans · ’24</span>
@@ -133,7 +133,7 @@ function HandoffCard() {
                 enforced from the product enum (claims.ts creatableCardTypes) and
                 rendered on this same page; "Deal" is not one of them, so a card
                 tagged with it was a kind the product cannot make. */}
-            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-mark-xs uppercase text-grove-deep">
+            <span className="rounded border border-grove/30 bg-grove-soft px-1 py-0.5 font-mono text-mark uppercase text-grove-deep">
               Vendor
             </span>
             <span className="text-meta text-ink">Halden Catering renewal</span>
@@ -162,7 +162,7 @@ function Zone({
         className,
       )}
     >
-      <p className="font-mono text-mark-xs uppercase tracking-[0.14em] text-text-secondary">
+      <p className="font-mono text-mark uppercase tracking-[0.14em] text-text-secondary">
         {label}
       </p>
     </div>

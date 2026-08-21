@@ -180,7 +180,7 @@ function Pane({ label, children }: { label: string; children: ReactNode }) {
     <div className="p-5 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h3 className="font-display text-title-sm font-semibold text-ink">{label}</h3>
-        <span className="label-mono text-mark-xs">institution-wide</span>
+        <span className="label-mono text-mark">institution-wide</span>
       </div>
       <div className="mt-4">{children}</div>
     </div>
@@ -207,7 +207,7 @@ function Row({
       </span>
       <span
         className={cn(
-          "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
+          "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark font-medium uppercase tracking-wide",
           tone === "good" && "bg-grove-soft text-grove-deep",
           tone === "warn" && "bg-warning-subtle text-warning",
           tone === "quiet" && "bg-surface-subtle text-text-secondary",
@@ -347,7 +347,7 @@ export function OfficeConsole() {
                             $4,200 · Student Culture Council · SCC-VP-EVEN-PART
                           </p>
                         </div>
-                        <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-mark-xs font-medium text-warning">
+                        <span className="rounded-md bg-warning-subtle px-2 py-0.5 font-mono text-mark font-medium text-warning">
                           6 days in gate 1
                         </span>
                       </div>
@@ -426,7 +426,7 @@ export function OfficeConsole() {
                             </div>
                             <span
                               className={cn(
-                                "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark-xs font-medium uppercase tracking-wide",
+                                "shrink-0 rounded-md px-2 py-0.5 font-mono text-mark font-medium uppercase tracking-wide",
                                 CHIP[s.tone],
                               )}
                             >

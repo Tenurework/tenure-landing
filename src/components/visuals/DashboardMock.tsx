@@ -178,7 +178,7 @@ const DATASETS: Record<DatasetKey, Dataset> = {
 function Stat({ k, v, sub }: { k: string; v: string; sub?: string }) {
   return (
     <div className="rounded-xl border border-line bg-paper/40 px-3 py-2.5">
-      <p className="label-mono text-mark-xs">{k}</p>
+      <p className="label-mono text-mark">{k}</p>
       <p className="mt-1 font-mono text-body font-semibold tnum text-ink">{v}</p>
       {sub && <p className="text-mark text-grove">{sub}</p>}
     </div>
@@ -194,7 +194,7 @@ function Badge({
   return (
     <span
       className={cn(
-        "rounded-full px-1.5 py-0.5 font-mono text-mark-xs font-medium",
+        "rounded-full px-1.5 py-0.5 font-mono text-mark font-medium",
         tone === "grove" && "bg-grove-soft text-grove-deep",
         tone === "amber" && "bg-warning-subtle text-warning",
         tone === "coral" && "bg-danger-subtle text-danger",
@@ -258,7 +258,7 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
       <div className="rounded-xl border border-line bg-paper/40 p-3.5">
         <div className="flex items-end justify-between">
           <div>
-            <p className="label-mono text-mark-xs">Treasury balance</p>
+            <p className="label-mono text-mark">Treasury balance</p>
             <p className="mt-1 font-mono text-h3 font-semibold tnum text-ink">$12,400</p>
             <p className="flex items-center gap-1 text-meta font-medium text-grove">
               <Mark d={MARK.rise} className="h-[0.72em] w-[0.72em] fill-current" />
@@ -270,7 +270,7 @@ function FinanceView({ reduce, data }: { reduce: boolean | null; data: Dataset }
         <AreaChart reduce={reduce} />
       </div>
       <div className="mt-3">
-        <p className="label-mono text-mark-xs">Budget by category</p>
+        <p className="label-mono text-mark">Budget by category</p>
         <div className="mt-1.5 flex h-2.5 w-full overflow-hidden rounded-full">
           {cats.map((c) => (
             <m.span key={c.label} style={{ backgroundColor: c.color }} initial={{ width: "0%" }} animate={{ width: `${c.pct}%` }} transition={{ duration: reduce ? 0 : 0.8, ease: EASE, delay: 0.2 }} />
@@ -361,7 +361,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
     <>
       <div className="rounded-xl border border-line bg-paper/40 p-3.5">
         <div className="flex items-center justify-between">
-          <p className="label-mono text-mark-xs">Spring Gala · approval chain</p>
+          <p className="label-mono text-mark">Spring Gala · approval chain</p>
           <Badge tone="amber">Pending OSE</Badge>
         </div>
         <div className="mt-3.5 flex items-center">
@@ -370,7 +370,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
               <div className="flex flex-col items-center gap-1">
                 <m.span
                   className={cn(
-                    "flex h-6 w-6 items-center justify-center rounded-full border text-mark-xs font-semibold",
+                    "flex h-6 w-6 items-center justify-center rounded-full border text-mark font-semibold",
                     i < active && "border-grove bg-grove text-on-accent",
                     i === active && "border-brand-gold bg-warning-subtle text-warning",
                     i > active && "border-line bg-cloud text-ink-faint",
@@ -381,7 +381,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
                 >
                   {i < active ? "✓" : i + 1}
                 </m.span>
-                <span className="text-mark-xs text-ink-faint">{s}</span>
+                <span className="text-mark text-ink-faint">{s}</span>
               </div>
               {i < APPROVAL_STEPS.length - 1 && (
                 <div className="mx-1 h-[2px] flex-1 overflow-hidden rounded-full bg-line">
@@ -404,7 +404,7 @@ function ApprovalsView({ reduce }: { reduce: boolean | null }) {
       <div className="mt-3 space-y-1.5">
         {queue.map((q) => (
           <div key={q.t} className="flex items-center gap-2 rounded-lg border border-line bg-paper/40 px-3 py-2 text-meta">
-            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase text-ink-faint">{q.tag}</span>
+            <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark uppercase text-ink-faint">{q.tag}</span>
             <span className="flex-1 truncate text-ink">{q.t}</span>
             <Badge tone={q.tone}>{q.at}</Badge>
           </div>
@@ -429,18 +429,18 @@ function MembersView() {
         <Stat k="Shadowing" v="3" sub="onboarding" />
       </div>
       <div className="mt-3 overflow-hidden rounded-xl border border-line">
-        <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">
+        <div className="flex items-center gap-2 border-b border-line bg-paper/40 px-3 py-1.5 font-mono text-mark uppercase tracking-wide text-ink-faint">
           <span className="flex-1">Member</span>
           <span className="w-24">Seat</span>
           <span className="w-16">Status</span>
         </div>
         {roster.map((m, i) => (
           <div key={m.n} className={cn("flex items-center gap-2 px-3 py-2 text-meta", i > 0 && "border-t border-line")}>
-            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-mark-xs font-semibold text-grove-deep">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-grove-soft font-mono text-mark font-semibold text-grove-deep">
               {m.n.split(" ").map((p) => p[0]).join("")}
             </span>
             <span className="flex-1 truncate text-ink">{m.n}</span>
-            <span className="w-24 truncate font-mono text-mark-xs text-ink-soft">{m.seat}</span>
+            <span className="w-24 truncate font-mono text-mark text-ink-soft">{m.seat}</span>
             <span className={cn("w-16", m.y === "Shadow" ? "text-brand-gold" : "text-grove")}>{m.y}</span>
           </div>
         ))}
@@ -464,7 +464,7 @@ function MemoryView({ data }: { data: Dataset }) {
         {recs.map((r) => (
           <div key={r.t} className="rounded-lg border border-line bg-paper/40 p-2.5">
             <div className="flex items-center gap-1.5">
-              <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark-xs uppercase tracking-wide text-ink-faint">{r.tag}</span>
+              <span className="rounded border border-line bg-cloud px-1 py-0.5 font-mono text-mark uppercase tracking-wide text-ink-faint">{r.tag}</span>
               <span className="text-caption text-ink">{r.t}</span>
             </div>
             <p className="mt-1 font-mono text-mark text-ink-faint">↳ inherited from {r.from}</p>
@@ -507,6 +507,20 @@ export function DashboardMock({
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModuleKey>(initialModule);
   const [paused, setPaused] = useState(false);
+  /**
+   * Whether the visitor has taken control of the tour.
+   *
+   * `paused` is a HOVER state and is released by `onMouseLeave`, which meant an
+   * explicit choice did not survive the pointer moving away: click "Memory",
+   * move the mouse, and 4.2 seconds later the tour yanked you to a module you
+   * did not ask for. A control that undoes the visitor's last action is worse
+   * than no control.
+   *
+   * Selecting a module ends the tour for the life of the page. It is a
+   * demonstration, and the moment somebody drives it themselves it has done its
+   * job.
+   */
+  const [tourOver, setTourOver] = useState(false);
   const { ref: frameRef, onScreen } = useOnScreen<HTMLDivElement>();
   const View = VIEWS[active];
   const data = DATASETS[dataset];
@@ -520,7 +534,7 @@ export function DashboardMock({
   // visibility was measured at ~438 ms of style and layout on its own, and ~1,053 ms
   // together with SeatMechanism's timer.
   useEffect(() => {
-    if (!auto || reduce || paused || !onScreen) return;
+    if (!auto || reduce || paused || tourOver || !onScreen) return;
     const id = setInterval(() => {
       // Checked per tick, not once: a gate evaluated when the effect runs would
       // strand the tour permanently if the page happened to start backgrounded.
@@ -528,7 +542,7 @@ export function DashboardMock({
       setActive((cur) => NAV[(NAV.indexOf(cur) + 1) % NAV.length]);
     }, 4200);
     return () => clearInterval(id);
-  }, [auto, reduce, paused, onScreen]);
+  }, [auto, reduce, paused, tourOver, onScreen]);
 
   return (
     <div
@@ -547,9 +561,29 @@ export function DashboardMock({
         // still animated in, which is the part that reads as motion.
         initial={tilt ? { rotateX: 7, rotateY: -12, y: 36, opacity: 1 } : { opacity: 1, y: 16 }}
         whileInView={tilt ? { rotateX: 2, rotateY: -5, y: 0, opacity: 1 } : { opacity: 1, y: 0 }}
-        whileHover={tilt && !reduce ? { rotateX: 0, rotateY: 0, scale: 1.004 } : undefined}
+        /*
+          NO HOVER FLATTEN. The mock used to rotate to flat when pointed at, and
+          measured, that moved the module rail 36px across and 44px down — while
+          the visitor was reaching for a control inside it.
+
+          Worse, `click()` scrolls its target into view, which changes what the
+          pointer is over, which flips the hover state, which starts the rotation
+          again: the geometry oscillated and never settled. Playwright reported
+          "element is not stable" and could not land a click at all, which is the
+          automated form of a real complaint — the button you are aiming at moves
+          when you approach it.
+
+          The resting angle after `whileInView` is rotateX 2 / rotateY -5, which
+          is subtle enough to read comfortably without flattening. The dramatic
+          tilt is an ENTRANCE state, not a resting one, so nothing is lost by
+          leaving the surface still. A decorative transform does not get to move
+          interactive controls.
+        */
         viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: reduce ? 0 : tilt ? 1 : 0.6, ease: EASE }}
+        transition={{
+          duration: reduce ? 0 : tilt ? 1 : 0.6,
+          ease: EASE,
+        }}
       >
         {/* top bar */}
         <div className="flex items-center justify-between gap-3 border-b border-line bg-paper/60 px-4 py-2.5">
@@ -575,7 +609,11 @@ export function DashboardMock({
               <button
                 key={n}
                 type="button"
-                onClick={() => { setActive(n); setPaused(true); }}
+                onClick={() => {
+                  setActive(n);
+                  setPaused(true);
+                  setTourOver(true);
+                }}
                 aria-pressed={n === active}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-2 py-1.5 text-left text-caption transition-colors",
@@ -587,7 +625,7 @@ export function DashboardMock({
               </button>
             ))}
             <div className="my-2 h-px bg-line" />
-            <p className="px-2 pb-1 font-mono text-mark-xs uppercase tracking-wider text-ink-faint">Term</p>
+            <p className="px-2 pb-1 font-mono text-mark uppercase tracking-wider text-ink-faint">Term</p>
             <span className="px-2 text-meta text-ink-soft">{data.term}</span>
           </aside>
 
