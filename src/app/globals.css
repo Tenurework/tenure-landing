@@ -664,7 +664,7 @@
 @utility matte {
   background-color: var(--matte-base, oklch(97% 0.006 95));
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncG type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncB type='linear' slope='0.30' intercept='0.62'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.46' intercept='0.50'/%3E%3CfeFuncG type='linear' slope='0.46' intercept='0.50'/%3E%3CfeFuncB type='linear' slope='0.46' intercept='0.50'/%3E%3CfeFuncA type='linear' slope='0' intercept='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23g)'/%3E%3C/svg%3E"),
     radial-gradient(125% 105% at 6% 0%, var(--matte-a) 0%, transparent 92%),
     radial-gradient(120% 125% at 100% 100%, var(--matte-b) 0%, transparent 88%);
   background-size: 140px 140px, auto, auto;

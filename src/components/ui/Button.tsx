@@ -47,7 +47,14 @@ const variants: Record<Variant, string> = {
   */
   primary: "bg-grove text-on-accent hover:bg-grove-bright active:translate-y-px",
   secondary:
-    "bg-cloud text-ink border border-border-strong hover:border-ink-soft hover:bg-sand/60 " +
+    // `text-ink-deep`, NOT `text-ink` — the same trap the `light` variant fell
+    // into. Inside `[class*="bg-band"]` the stylesheet re-points `--text` to
+    // `--text-inverse` so ordinary copy on a dark surface is light by default,
+    // which turned this button's label white on its own white fill at 1.06:1.
+    // It only surfaced when PageHeader gained a photographic (band) variant and
+    // these buttons landed inside one. `--inverse-deep` is a surface token and is
+    // never re-pointed.
+    "bg-cloud text-ink-deep border border-border-strong hover:border-ink-soft hover:bg-sand/60 " +
     "shadow-[var(--shadow-sm)]",
   outline:
     "border border-grove-deep text-grove-deep bg-grove-mist/40 hover:bg-grove-soft hover:border-grove-bright",

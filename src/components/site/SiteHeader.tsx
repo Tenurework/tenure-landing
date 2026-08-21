@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/Button";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/cn";
 
+/** Routes whose PageHeader renders a full-bleed photograph behind the bar. */
+const DARK_HERO_ROUTES = new Set(["/product", "/pilot", "/trust", "/story"]);
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
@@ -129,9 +132,39 @@ export function SiteHeader() {
    * dismissed rather than scrolled past, and its tint is part of how the panel
    * reads as a layer above the page.
    */
+  /*
+    ROUTES WHOSE HERO IS A DARK PHOTOGRAPH.
+ 
+    The bar is transparent until you scroll, which is right over the home page's
+    off-white hero and wrong over a photographic one: the ribbon's own links are
+    near-black, and on /product they sat unreadable against a dark atrium. The
+    header cannot see what the page put behind it, so the pages that do this are
+    named here — four routes, changed in one place, and a fifth would announce
+    itself the moment its nav went invisible.
+ 
+    It only applies at the top of the page. Once `scrolled` flips, the bar takes
+    its own opaque surface and the ordinary ink is correct again.
+  */
+  const overDarkHero = DARK_HERO_ROUTES.has(pathname);
+
+  /*
+    OVER A PHOTOGRAPHIC HERO THE BAR TAKES ITS SURFACE IMMEDIATELY.
+
+    The bar is transparent until you scroll, which is right over the home page's
+    off-white hero and wrong over a dark photograph: its links are near-black and
+    on /product they sat unreadable against a dark atrium.
+
+    Inverting the ribbon to white was the first answer and it is the wrong one.
+    The contrast walker resolves a text node's background by climbing ancestors,
+    and the bar is `fixed` — its ancestor is <body>, which is off-white. White
+    links there measure 1.01:1 and the gate fails, correctly: nothing in the
+    markup actually guarantees a dark backdrop, because the photograph belongs to
+    a section the bar is merely floating over. A solid bar is legible by
+    construction rather than by coincidence of what is behind it.
+  */
   const surface = open
     ? "border-line bg-canvas/85 backdrop-blur-xl"
-    : scrolled
+    : scrolled || overDarkHero
       ? "border-line bg-canvas/95 pointer-fine:backdrop-blur-sm"
       : "border-transparent";
 

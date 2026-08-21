@@ -1,7 +1,6 @@
 import { Container, Eyebrow, SECTION_BAND, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
-import { AboutArt } from "@/components/visuals/hero-art/AboutArt";
 import { CtaBand } from "@/components/site/CtaBand";
 import { site } from "@/lib/site";
 import { pageMetadata } from "@/lib/metadata";
@@ -35,7 +34,7 @@ export default function StoryPage() {
   return (
     <>
       <PageHeader
-        art={<AboutArt />}
+        photo={{ src: "/photos/hero-about.jpg" }}
         eyebrow="Our story"
         title={
           <>

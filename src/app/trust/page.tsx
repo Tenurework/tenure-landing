@@ -1,7 +1,6 @@
 import { Container, SECTION_TIGHT, Section } from "@/components/ui/layout";
 import { Reveal } from "@/components/ui/Reveal";
 import { PageHeader } from "@/components/site/PageHeader";
-import { SecurityArt } from "@/components/visuals/hero-art/SecurityArt";
 import { Dossier, type DossierItem } from "@/components/ui/Dossier";
 import { Panel, PanelBar, PanelNote } from "@/components/ui/Panel";
 import { StatusBadge, STATUSES, type StatusKey } from "@/components/ui/StatusBadge";
@@ -252,7 +251,7 @@ export default function TrustPage() {
   return (
     <>
       <PageHeader
-        art={<SecurityArt />}
+        photo={{ src: "/photos/hero-security.jpg" }}
         eyebrow="Trust"
         title="Built, and running in production."
         intro="Twenty-one controls across seven areas, each written from the code that deploys rather than from an architecture document. Tenant isolation, the access model, audit behaviour and the AI subprocessor, set out for review."

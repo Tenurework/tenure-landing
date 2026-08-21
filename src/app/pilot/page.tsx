@@ -3,7 +3,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
-import { PilotArt } from "@/components/visuals/hero-art/PilotArt";
 import { Dossier } from "@/components/ui/Dossier";
 import { Panel, PanelBar, PanelNote } from "@/components/ui/Panel";
 import { Backdrop } from "@/components/visuals/Backdrop";
@@ -375,7 +374,7 @@ export default function PilotPage() {
   return (
     <>
       <PageHeader
-        art={<PilotArt />}
+        photo={{ src: "/photos/hero-pilot.jpg" }}
         eyebrow="Fall 2026 pilot"
         title={
           <>

@@ -76,7 +76,7 @@ export default function HomePage() {
       <AiOnboarding />
       <OfficeConsole />
       <Faq />
-      <CtaBand />
+      <CtaBand photo />
     </>
   );
 }

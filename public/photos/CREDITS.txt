@@ -49,3 +49,23 @@ admin-boardroom.jpg          empty boardroom, glazed partitions     pexels 26068
 These are origin files, not what a visitor downloads: next/image re-encodes and
 resizes per request, so the large sources cost repository size rather than page
 weight.
+
+Sub-page headers, added 2026-08-21. Pexels License. One 3840x1720 frame per
+route, chosen for what the page argues rather than for what its title depicts,
+and checked against the industries set so nothing repeats anywhere on the site.
+
+hero-platform.jpg   an atrium from below            pexels 2096578
+  Many identical floors resolving into one structure. Rejected the obvious
+  alternative, an empty lecture theatre, because the industries rail already
+  carries one.
+hero-security.jpg   a city block grid from above    pexels 1105766
+  Blocks separated from their neighbours, each complete, none sharing a wall.
+  Rejected glass towers from below: industry-finance is already that shot.
+hero-pilot.jpg      cranes over a building going up pexels 439416
+  A deployment under way rather than a metaphor for one.
+hero-about.jpg      a curved library interior       pexels 1319854
+  Accumulation that outlasts its readers, which is the page's whole argument.
+
+The closing band's photograph is now opt-in and only the home page passes it.
+It used to render on every route that reuses CtaBand, so /product ended with the
+home page's boardroom - the most memorable frame on the site, repeated.

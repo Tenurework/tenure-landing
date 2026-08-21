@@ -5,7 +5,6 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Button } from "@/components/ui/Button";
 import { ContactSales } from "@/components/ui/ContactSales";
 import { PageHeader } from "@/components/site/PageHeader";
-import { PlatformArt } from "@/components/visuals/hero-art/PlatformArt";
 import { CtaBand } from "@/components/site/CtaBand";
 import { MockCaption, Panel, PanelBar, PanelNote, PanelTag } from "@/components/ui/Panel";
 import { DashboardMock } from "@/components/visuals/DashboardMock";
@@ -138,7 +137,7 @@ export default function ProductPage() {
   return (
     <>
       <PageHeader
-        art={<PlatformArt />}
+        photo={{ src: "/photos/hero-platform.jpg" }}
         eyebrow="The platform"
         title={
           <>

@@ -29,12 +29,29 @@ import { site } from "@/lib/site";
 export function CtaBand({
   title,
   sub = "See Tenure on your organization’s real handoff. A short walkthrough: we’ll show you exactly what carries forward.",
+  photo = false,
 }: {
   title?: ReactNode;
   sub?: string;
+  /**
+   * WHETHER THIS BAND CARRIES THE PHOTOGRAPH, and it defaults to NO.
+   *
+   * This component is reused at the foot of several routes and used to render
+   * the same boardroom on every one of them. On /product that put the home
+   * page's closing image at the bottom of a second page — the most memorable
+   * frame on the site, repeated, which is the fastest way to make a site feel
+   * smaller than it is.
+   *
+   * The home page keeps it. Every other route now has its own photograph in its
+   * header, so its closing band is the near-black field instead: no repetition
+   * within a page, and none across the site.
+   */
+  photo?: boolean;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-band py-28 sm:py-36">
+    <section className="relative isolate overflow-hidden bg-band matte matte-deep py-28 sm:py-36">
+      {photo && (
+        <>
       <Image
         src="/photos/admin-boardroom.jpg"
         alt=""
@@ -53,6 +70,8 @@ export function CtaBand({
         aria-hidden
         className="absolute inset-0 bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--inverse-deep)_55%,transparent),color-mix(in_oklab,var(--inverse-deep)_20%,transparent)_45%,color-mix(in_oklab,var(--inverse-deep)_65%,transparent))]"
       />
+        </>
+      )}
 
       <Container className="relative text-center">
         <Reveal>
