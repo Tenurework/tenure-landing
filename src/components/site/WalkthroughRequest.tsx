@@ -325,7 +325,7 @@ export function WalkthroughRequest() {
               >
                 Request a demo
               </h2>
-              <p id={descId} className="mt-1 text-body-sm leading-relaxed text-ink-soft">
+              <p id={descId} className="mt-1 text-body-sm leading-relaxed text-ink-soft measure">
                 Tell us what you want to see and we will open exactly that. Every
                 field is optional.
               </p>
@@ -527,7 +527,7 @@ export function WalkthroughRequest() {
             */}
             <p
               aria-live="polite"
-              className="text-caption leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[17rem]"
+              className="text-caption leading-relaxed text-ink-faint sm:ml-auto sm:max-w-[17rem] measure"
             >
               {handed ? (
                 <>

@@ -47,7 +47,7 @@ export function PageHeader({
           {title}
         </h1>
         {intro && (
-          <p className="mx-auto mt-6 max-w-2xl text-title-sm leading-relaxed text-ink-soft">
+          <p className="mx-auto mt-6 max-w-2xl text-title-sm leading-relaxed text-ink-soft measure">
             {intro}
           </p>
         )}

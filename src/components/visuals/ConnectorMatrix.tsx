@@ -298,9 +298,9 @@ export function ConnectorMatrix() {
                   </div>
 
                   <div>
-                    <p className="text-body leading-relaxed text-ink-soft">{r.body}</p>
+                    <p className="text-body leading-relaxed text-ink-soft measure">{r.body}</p>
                     {r.limit && (
-                      <p className="mt-2.5 border-l-2 border-border-strong pl-3.5 text-body-sm leading-relaxed text-ink-faint">
+                      <p className="mt-2.5 border-l-2 border-border-strong pl-3.5 text-body-sm leading-relaxed text-ink-faint measure">
                         <span className="font-medium text-ink-soft">Limit: </span>
                         {r.limit}
                       </p>

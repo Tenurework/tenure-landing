@@ -681,14 +681,14 @@ export function DashboardMock({
             {/* Module-independent: the caption used to interpolate the active module,
                 so it promised answers "about the finance" and "about the members" —
                 the two kinds that are not in the search corpus at all. */}
-            <p className="text-meta leading-relaxed text-ink-soft">Search the decisions, events and records this seat has filed.</p>
+            <p className="text-meta leading-relaxed text-ink-soft measure">Search the decisions, events and records this seat has filed.</p>
             <div className="space-y-1.5">
               {data.asks[active].map((a) => (
                 <span key={a} className="block rounded-lg border border-line bg-cloud px-2.5 py-1.5 text-meta text-ink-soft">{a}</span>
               ))}
             </div>
             <div className="mt-auto rounded-lg border border-grove/25 bg-cloud p-2.5">
-              <p className="text-meta leading-relaxed text-ink-soft">Answers link the records, files, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
+              <p className="text-meta leading-relaxed text-ink-soft measure">Answers link the records, files, and decisions behind them.<span className="text-grove-deep"> ↗</span></p>
             </div>
           </aside>
         </div>

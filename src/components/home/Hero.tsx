@@ -150,7 +150,7 @@ export function Hero() {
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
                 mechanism, which C-023 forbids. */}
-            <p className="mt-4 max-w-xl text-caption leading-relaxed text-ink-faint">
+            <p className="mt-4 max-w-xl text-caption leading-relaxed text-ink-faint measure">
               Already using Tenure?{" "}
               <Link
                 href="/contact"

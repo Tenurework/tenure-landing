@@ -524,7 +524,7 @@ export function Platform() {
                 </span>
               </div>
               <div className="mt-2 grid gap-x-10 gap-y-4 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
-                <p className="text-body leading-relaxed text-ink-soft">
+                <p className="text-body leading-relaxed text-ink-soft measure">
                   {mod.body}
                 </p>
                 <div className="max-w-xl">{mod.detail}</div>

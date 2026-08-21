@@ -168,7 +168,8 @@ export function PanelNote({
         className,
       )}
     >
-      {children}
+      {/* The rule and the tint span the panel; the sentence does not. */}
+      <div className="measure">{children}</div>
     </div>
   );
 }

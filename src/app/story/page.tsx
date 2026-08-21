@@ -65,7 +65,7 @@ export default function StoryPage() {
             </Reveal>
 
             <Reveal delay={0.12}>
-              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft measure">
                 At Simon, we watched it up close. A capable board spends a year
                 building real things, sponsor relationships, an events
                 playbook, a budget that finally works, then hands all of
@@ -74,7 +74,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.16}>
-              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft measure">
                 So the next team starts from memory and guesswork. Sponsor
                 contacts go cold because no one knew they existed. The same
                 mistakes get repeated, not from carelessness, but because
@@ -84,7 +84,7 @@ export default function StoryPage() {
               </p>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="mt-5 text-lead leading-relaxed text-ink-soft">
+              <p className="mt-5 text-lead leading-relaxed text-ink-soft measure">
                 None of that is a people problem. It&rsquo;s a memory problem.
                 Institutional knowledge shouldn&rsquo;t depend on whether one
                 person remembered to write it down on the way out. It
@@ -138,7 +138,7 @@ export default function StoryPage() {
                       answers for and nothing else — no biography, credentials,
                       employer, education or photograph is published, because
                       none of that has been verified. */}
-                  <p className="mt-4 text-body leading-relaxed text-ink-soft">
+                  <p className="mt-4 text-body leading-relaxed text-ink-soft measure">
                     {f.focus}
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function StoryPage() {
               </h2>
             </Reveal>
             <Reveal delay={0.12}>
-              <p className="mt-6 text-lead leading-relaxed text-ink-soft">
+              <p className="mt-6 text-lead leading-relaxed text-ink-soft measure">
                 Tenure&rsquo;s first deployment is {site.pilot.season}, with
                 Simon&rsquo;s Office of Student Engagement &mdash; the
                 organizations it stewards and the office&rsquo;s own oversight

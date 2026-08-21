@@ -25,7 +25,7 @@ export default function NotFound() {
         <h1 className="mt-4 max-w-2xl font-display text-h2-lg leading-[1.08] tracking-tight text-text sm:text-display">
           That page moved on.
         </h1>
-        <p className="mt-5 max-w-xl text-title-sm leading-relaxed text-text-secondary">
+        <p className="mt-5 max-w-xl text-title-sm leading-relaxed text-text-secondary measure">
           The link is broken or the page no longer exists. The record, at least,
           is still where you left it.
         </p>

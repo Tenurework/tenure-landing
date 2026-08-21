@@ -202,7 +202,7 @@ export function SeatMechanism() {
                         />
                       </svg>
                     </span>
-                    <span className="text-body leading-relaxed text-ink-soft">{a}</span>
+                    <span className="text-body leading-relaxed text-ink-soft measure">{a}</span>
                   </Reveal>
                 ))}
               </ul>
@@ -346,7 +346,7 @@ export function SeatMechanism() {
                           >
                             {l.label}
                           </dt>
-                          <dd className="text-meta leading-relaxed text-ink-soft">
+                          <dd className="text-meta leading-relaxed text-ink-soft measure">
                             {l.when}
                           </dd>
                         </div>

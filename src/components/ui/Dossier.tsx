@@ -139,7 +139,7 @@ export function Dossier({
                       </span>
                     ))}
                   </div>
-                  <p className="mt-1 text-body-sm leading-relaxed text-ink-soft">
+                  <p className="mt-1 text-body-sm leading-relaxed text-ink-soft measure">
                     {item.blurb}
                   </p>
                 </div>

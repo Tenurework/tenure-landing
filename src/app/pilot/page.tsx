@@ -371,12 +371,12 @@ function ProvidesCard({
       <h3 className="font-display text-title font-semibold tracking-tight text-text">
         {heading}
       </h3>
-      <p className="mt-2 text-body leading-relaxed text-text-muted">{sub}</p>
+      <p className="mt-2 text-body leading-relaxed text-text-muted measure">{sub}</p>
       <dl className="mt-7 space-y-6 border-t border-line pt-7">
         {items.map((item) => (
           <div key={item.t}>
             <dt className="text-body font-medium text-text">{item.t}</dt>
-            <dd className="mt-1.5 text-body leading-relaxed text-text-secondary">
+            <dd className="mt-1.5 text-body leading-relaxed text-text-secondary measure">
               {item.d}
             </dd>
           </div>
@@ -461,7 +461,7 @@ export default function PilotPage() {
                     ].join(" ")}
                   >
                     <dt className="label-mono">{row.k}</dt>
-                    <dd className="mt-1.5 text-body leading-relaxed text-text-secondary">
+                    <dd className="mt-1.5 text-body leading-relaxed text-text-secondary measure">
                       {row.v}
                     </dd>
                   </div>
@@ -521,11 +521,11 @@ export default function PilotPage() {
                             <h3 className="font-display text-lead font-semibold tracking-tight text-text">
                               {p.who}
                             </h3>
-                            <p className="mt-1 font-mono text-meta leading-relaxed text-text-muted">
+                            <p className="mt-1 font-mono text-meta leading-relaxed text-text-muted measure">
                               {p.seat}
                             </p>
                           </div>
-                          <p className="text-body leading-relaxed text-text-secondary">
+                          <p className="text-body leading-relaxed text-text-secondary measure">
                             {p.ask}
                           </p>
                         </li>
@@ -574,11 +574,11 @@ export default function PilotPage() {
                             {x.item}
                           </h3>
                           <div>
-                            <p className="text-body leading-relaxed text-text-secondary">
+                            <p className="text-body leading-relaxed text-text-secondary measure">
                               <span className="font-medium text-text">Shape: </span>
                               {x.shape}
                             </p>
-                            <p className="mt-1.5 text-body leading-relaxed text-text-secondary">
+                            <p className="mt-1.5 text-body leading-relaxed text-text-secondary measure">
                               <span className="font-medium text-text">
                                 Who does the work:{" "}
                               </span>
@@ -598,7 +598,7 @@ export default function PilotPage() {
                   tally: [{ label: "not dates", tone: "warn" }],
                   children: (
                     <>
-                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary measure">
                         There <em>is</em> a new system to learn. It is where the
                         work happens, or the record does not fill, and no page on
                         this site is going to tell you otherwise. What there is not
@@ -617,7 +617,7 @@ export default function PilotPage() {
                             </span>
                             <div>
                               <h3 className="text-body font-medium text-text">{s.t}</h3>
-                              <p className="mt-1 text-body leading-relaxed text-text-secondary">
+                              <p className="mt-1 text-body leading-relaxed text-text-secondary measure">
                                 {s.d}
                               </p>
                             </div>
@@ -635,14 +635,14 @@ export default function PilotPage() {
                   tally: [{ label: "no SLA", tone: "warn" }],
                   children: (
                     <>
-                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary measure">
                         You would work directly with {site.founders[0].name} and{" "}
                         {site.founders[1].name}{" "}
                         for the whole pilot. One address reaches both of us, and we answer the same day, most days
                         &mdash; which is a description of how we work, not a service
                         level anyone has agreed to.
                       </p>
-                      <p className="mt-3 max-w-3xl text-body leading-relaxed text-text-secondary">
+                      <p className="mt-3 max-w-3xl text-body leading-relaxed text-text-secondary measure">
                         What that buys you: the people who wrote the code are the
                         people who answer, and what your office needs shapes what
                         gets built next. What it costs you: there is no ticket
@@ -658,7 +658,7 @@ export default function PilotPage() {
                               aria-hidden
                               className="mt-[0.45rem] h-2 w-2 shrink-0 rounded-[3px] bg-accent"
                             />
-                            <span className="text-body leading-relaxed text-text-secondary">
+                            <span className="text-body leading-relaxed text-text-secondary measure">
                               {s}
                             </span>
                           </li>
@@ -681,7 +681,7 @@ export default function PilotPage() {
                   ],
                   children: (
                     <>
-                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary measure">
                         The parts an office and its security reviewer should hear
                         from us before they hear from anyone else.{" "}
                         <a
@@ -699,11 +699,11 @@ export default function PilotPage() {
                             <h3 className="font-display text-lead font-semibold tracking-tight text-text">
                               {h.t}
                             </h3>
-                            <p className="mt-2 text-body leading-relaxed text-text-secondary">
+                            <p className="mt-2 text-body leading-relaxed text-text-secondary measure">
                               {h.d}
                             </p>
                             {h.limit && (
-                              <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted">
+                              <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted measure">
                                 <span className="font-medium text-text-secondary">
                                   Limit:{" "}
                                 </span>
@@ -727,7 +727,7 @@ export default function PilotPage() {
                   ],
                   children: (
                     <>
-                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary">
+                      <p className="max-w-3xl text-body leading-relaxed text-text-secondary measure">
                         Every line below is a target, not a result. No pilot has
                         run, nothing here has been measured, and any outcome number
                         on this page would be invented. Each one is countable from
@@ -747,13 +747,13 @@ export default function PilotPage() {
                             <h3 className="mt-2.5 text-body font-medium leading-snug text-text">
                               {m.t}
                             </h3>
-                            <p className="mt-1.5 text-body-sm leading-relaxed text-text-secondary">
+                            <p className="mt-1.5 text-body-sm leading-relaxed text-text-secondary measure">
                               {m.d}
                             </p>
                           </li>
                         ))}
                       </ul>
-                      <p className="mt-5 max-w-2xl text-body leading-relaxed text-text-muted">
+                      <p className="mt-5 max-w-2xl text-body leading-relaxed text-text-muted measure">
                         A measure that cannot be counted out of the record does not
                         go on the list. If we miss one, you get the number rather
                         than the narrative.

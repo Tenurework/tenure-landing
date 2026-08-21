@@ -47,7 +47,7 @@ export function SupportedBy() {
         </Reveal>
 
         <Reveal delay={0.06}>
-          <p className="mx-auto mt-6 max-w-2xl text-center text-caption leading-relaxed text-ink-faint">
+          <p className="mx-auto mt-6 max-w-2xl text-center text-caption leading-relaxed text-ink-faint measure">
             Tenure was founded at Simon Business School, University of Rochester,
             and is supported by Startup Wednesday.
           </p>

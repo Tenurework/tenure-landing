@@ -234,7 +234,7 @@ export function ProductAtWork() {
                 <h3 className="font-display mt-4 text-h3 font-semibold leading-[1.1] tracking-[-0.02em] text-ink sm:text-h2">
                   {f.title}
                 </h3>
-                <p className="mt-4 text-title-sm leading-relaxed text-ink-soft">{f.body}</p>
+                <p className="mt-4 text-title-sm leading-relaxed text-ink-soft measure">{f.body}</p>
               </Reveal>
               <Reveal delay={0.1} className={cn(i % 2 === 1 && "lg:order-1")}>
                 {f.visual}

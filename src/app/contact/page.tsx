@@ -72,7 +72,7 @@ export default function ContactPage() {
                 meta="composed here, sent from your own mail app"
               />
               <div className="p-5 sm:p-7">
-                <p className="max-w-lg leading-relaxed text-ink-soft">
+                <p className="max-w-lg leading-relaxed text-ink-soft measure">
                   Tell us what kind of organization you run and which parts of
                   Tenure you want to see. We open exactly those, on a live
                   workspace, and answer what sits where on the roadmap.
@@ -90,7 +90,7 @@ export default function ContactPage() {
               <Panel>
                 <PanelBar title="Write to us directly" meta="every address reaches an owner" />
                 <div className="p-5 sm:p-7">
-                  <p className="text-body leading-relaxed text-ink-soft">
+                  <p className="text-body leading-relaxed text-ink-soft measure">
                     No form and no routing queue. Pick the desk that matches what
                     you need.
                   </p>
@@ -136,7 +136,7 @@ export default function ContactPage() {
                       <h2 className="font-display text-body font-semibold tracking-tight text-ink">
                         {item.title}
                       </h2>
-                      <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft">
+                      <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft measure">
                         {item.body}
                       </p>
                     </li>

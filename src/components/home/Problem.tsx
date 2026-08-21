@@ -113,7 +113,7 @@ export function Problem() {
                 >
                   <div className="flex items-start gap-3">
                     <Cross />
-                    <span className="text-body leading-relaxed text-ink-faint">
+                    <span className="text-body leading-relaxed text-ink-faint measure">
                       {row.lost}
                     </span>
                   </div>

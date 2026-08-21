@@ -590,6 +590,23 @@
   filter: saturate(0.62) contrast(1.06) brightness(0.96) sepia(0.06);
 }
 
+/*
+  A LINE LENGTH, because 88 of them did not have one.
+
+  Measured across the eight routes at 1440px, 88 of 263 leaf text blocks ran past
+  90 characters per line, and the worst — the "Limit:" notes on /trust and /pilot
+  — reached 148. Long measures are the quiet reason dense pages feel unedited:
+  the eye loses the start of the next line, so a page that is merely thorough
+  reads as a wall.
+
+  68ch lands around 75 characters for this face, inside the 45-75 that typography
+  has agreed on for a century. It caps rather than sets, so text already sitting
+  in a narrow column is untouched.
+*/
+@utility measure {
+  max-width: 68ch;
+}
+
 @utility panel {
   background: var(--surface);
   border: 1px solid var(--border);

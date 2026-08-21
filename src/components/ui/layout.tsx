@@ -257,7 +257,7 @@ export function SectionHead({
       </Reveal>
       {lead && (
         <Reveal delay={0.1}>
-          <p className="mt-3.5 text-lead leading-relaxed text-ink-soft sm:text-lead">
+          <p className="mt-3.5 text-lead leading-relaxed text-ink-soft sm:text-lead measure">
             {lead}
           </p>
         </Reveal>

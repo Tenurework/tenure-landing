@@ -112,7 +112,7 @@ export function HowItWorks() {
                       </h3>
                       <span className="label-mono text-mark">{step.n}</span>
                     </div>
-                    <p className="mt-1.5 text-body leading-relaxed text-ink-soft">
+                    <p className="mt-1.5 text-body leading-relaxed text-ink-soft measure">
                       {step.body}
                     </p>
                   </div>

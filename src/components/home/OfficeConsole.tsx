@@ -264,7 +264,7 @@ export function OfficeConsole() {
               <div className="min-h-[19rem]">
                 {pane === "overview" && (
                   <Pane label="Overview">
-                    <p className="text-body leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft measure">
                       What needs a decision, across every organization at once. The
                       queue is the home screen because it is the only thing an
                       overseeing body opens a console to see.
@@ -294,7 +294,7 @@ export function OfficeConsole() {
 
                 {pane === "organizations" && (
                   <Pane label="Organizations">
-                    <p className="text-body leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft measure">
                       Every organization on one record, with how much of its seat map
                       is actually filled &mdash; which is the number that predicts
                       whether a handoff will go well.
@@ -322,7 +322,7 @@ export function OfficeConsole() {
 
                 {pane === "people" && (
                   <Pane label="People">
-                    <p className="text-body leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft measure">
                       People are listed by the seat they hold, not by an account.
                       Someone with no seat has no access, and someone who has left
                       appears here as alumni rather than disappearing.
@@ -380,7 +380,7 @@ export function OfficeConsole() {
 
                 {pane === "capabilities" && (
                   <Pane label="Capabilities">
-                    <p className="text-body leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft measure">
                       Sixteen named capabilities across three strictly nested tiers.
                       A director inherits everything staff can do, and staff
                       everything an advisor can do &mdash; so the tiers are drawn as
@@ -394,7 +394,7 @@ export function OfficeConsole() {
                         { label: "Advisor", count: 1 },
                       ]}
                     />
-                    <p className="mt-3.5 text-caption leading-relaxed text-ink-faint">
+                    <p className="mt-3.5 text-caption leading-relaxed text-ink-faint measure">
                       Navigation follows the capabilities the signed-in seat holds,
                       so a reviewer is never shown a surface they cannot use. The
                       capability guard writes an audit row for the denial as well as
@@ -405,7 +405,7 @@ export function OfficeConsole() {
 
                 {pane === "succession" && (
                   <Pane label="Succession">
-                    <p className="text-body leading-relaxed text-ink-soft">
+                    <p className="text-body leading-relaxed text-ink-soft measure">
                       The body above hands off too. You keep every power until your
                       named successor accepts.
                     </p>
@@ -433,7 +433,7 @@ export function OfficeConsole() {
                               {s.chip}
                             </span>
                           </div>
-                          <p className="mt-2 text-body-sm leading-relaxed text-ink-soft">
+                          <p className="mt-2 text-body-sm leading-relaxed text-ink-soft measure">
                             {s.body}
                           </p>
                         </li>

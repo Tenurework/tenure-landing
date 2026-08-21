@@ -237,7 +237,7 @@ export default function ProductPage() {
                         </h3>
                         <span className="label-mono text-mark">{r.n}</span>
                       </div>
-                      <p className="mt-1.5 text-body leading-relaxed text-ink-soft">
+                      <p className="mt-1.5 text-body leading-relaxed text-ink-soft measure">
                         {r.d}
                       </p>
                     </div>
@@ -278,7 +278,7 @@ export default function ProductPage() {
                       />
                     </svg>
                   </span>
-                  <p className="text-body leading-relaxed text-ink-soft">
+                  <p className="text-body leading-relaxed text-ink-soft measure">
                     <span className="font-medium text-ink">{p.t}.</span> {p.d}
                   </p>
                 </Reveal>
@@ -310,7 +310,7 @@ export default function ProductPage() {
                       </p>
                     </div>
                     <div className="rounded-xl border border-grove/25 bg-grove-soft/50 px-3.5 py-3">
-                      <p className="text-body-sm leading-relaxed text-ink-soft">
+                      <p className="text-body-sm leading-relaxed text-ink-soft measure">
                         {x.a}{" "}
                         <span className="whitespace-nowrap font-medium text-grove-deep">
                           {x.src} ↗

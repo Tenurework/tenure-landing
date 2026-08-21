@@ -374,7 +374,7 @@ export default function TrustPage() {
                   <dt className="pt-0.5">
                     <StatusBadge status={key} />
                   </dt>
-                  <dd className="text-body-sm leading-relaxed text-text-secondary">
+                  <dd className="text-body-sm leading-relaxed text-text-secondary measure">
                     {STATUSES[key].hint}
                   </dd>
                 </div>
@@ -422,11 +422,11 @@ export default function TrustPage() {
                             </h3>
                             <StatusBadge status={c.status} />
                           </div>
-                          <p className="mt-2 text-body leading-relaxed text-text-secondary">
+                          <p className="mt-2 text-body leading-relaxed text-text-secondary measure">
                             {c.body}
                           </p>
                           {c.limit && (
-                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted">
+                            <p className="mt-2.5 border-l-2 border-border-strong pl-4 text-body-sm leading-relaxed text-text-muted measure">
                               <span className="font-medium text-text-secondary">
                                 Limit:{" "}
                               </span>
@@ -451,7 +451,7 @@ export default function TrustPage() {
             <h2 className="font-display text-title font-semibold tracking-tight text-text">
               Security issues, in both directions
             </h2>
-            <p className="mt-3 leading-relaxed text-text-secondary">
+            <p className="mt-3 leading-relaxed text-text-secondary measure">
               To report one: email{" "}
               <a
                 href={`mailto:${site.email.security}`}
@@ -463,7 +463,7 @@ export default function TrustPage() {
               tell you what we are doing about it — we do not have a bug bounty,
               and we will not argue with you about severity.
             </p>
-            <p className="mt-3 leading-relaxed text-text-secondary">
+            <p className="mt-3 leading-relaxed text-text-secondary measure">
               And in the other direction, which an earlier version of this page
               left out entirely: if we become aware of an incident affecting your
               organization&rsquo;s records,{" "}
@@ -475,7 +475,7 @@ export default function TrustPage() {
               before telling you something happened. That commitment is written
               into the <a href="/terms" className="text-accent-text underline underline-offset-4 hover:text-accent">terms</a>.
             </p>
-            <p className="mt-3 leading-relaxed text-text-secondary">
+            <p className="mt-3 leading-relaxed text-text-secondary measure">
               The full subprocessor list — AWS including Bedrock, Anthropic and Vercel,
               with what each one touches and where — is on the{" "}
               <a href="/privacy" className="text-accent-text underline underline-offset-4 hover:text-accent">
@@ -488,7 +488,7 @@ export default function TrustPage() {
             <h2 className="font-display text-title font-semibold tracking-tight text-text">
               Documents
             </h2>
-            <p className="mt-3 leading-relaxed text-text-secondary">
+            <p className="mt-3 leading-relaxed text-text-secondary measure">
               The{" "}
               <a
                 href="/privacy"
@@ -507,7 +507,7 @@ export default function TrustPage() {
               by counsel. They are published because an institution deserves to
               see the current position, not because they are finished.
             </p>
-            <p className="mt-3 leading-relaxed text-text-secondary">
+            <p className="mt-3 leading-relaxed text-text-secondary measure">
               <span className="font-medium text-text">
                 There is no company to contract with yet.
               </span>{" "}

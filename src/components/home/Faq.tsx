@@ -102,7 +102,7 @@ export function Faq() {
                   </summary>
                   <div className="ml-auto mt-3 flex w-fit max-w-lg items-start gap-3 rounded-2xl rounded-tr-md bg-grove-soft px-5 py-3.5">
                     <Logo className="mt-0.5 h-4 w-4 shrink-0 text-grove" />
-                    <p className="text-body leading-relaxed text-ink-soft">{item.a}</p>
+                    <p className="text-body leading-relaxed text-ink-soft measure">{item.a}</p>
                   </div>
                 </details>
               </Reveal>
