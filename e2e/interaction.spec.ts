@@ -621,6 +621,17 @@ test.describe("hero headline", () => {
     await page.goto("/");
     await hydrated(page);
 
+    // THE RAIL HAS TO BE ON SCREEN BEFORE ANY OF THIS MEANS ANYTHING.
+    // `elementFromPoint` is viewport-relative and returns null for coordinates
+    // outside it, which this guard was reporting as "covered by <undefined>" —
+    // a false positive the moment the mock moved down the page. Scrolling first
+    // keeps the question the one it was written to ask.
+    await page
+      .locator("aside")
+      .filter({ has: page.locator("button[aria-pressed]") })
+      .first()
+      .scrollIntoViewIfNeeded();
+
     // Asked as the visitor asks it: is the control under my pointer the control
     // I am pointing at, or something drawn on top of it?
     const reachable = await page.evaluate(() => {
@@ -632,7 +643,14 @@ test.describe("hero headline", () => {
         blocked: [...rail.querySelectorAll("button")]
           .map((btn) => {
             const b = btn.getBoundingClientRect();
-            const hit = document.elementFromPoint(b.x + b.width / 2, b.y + b.height / 2);
+            const x = b.x + b.width / 2;
+            const y = b.y + b.height / 2;
+            // Off-screen is unmeasurable, not blocked — say so rather than
+            // reporting a phantom `<undefined>` as an occluding element.
+            if (y < 0 || y > window.innerHeight || x < 0 || x > window.innerWidth) {
+              return `${(btn.textContent ?? "").trim()} is off screen and could not be hit-tested`;
+            }
+            const hit = document.elementFromPoint(x, y);
             return hit?.closest("button") === btn
               ? null
               : `${(btn.textContent ?? "").trim()} is covered by <${hit?.tagName.toLowerCase()}> "${(hit?.textContent ?? "").trim().slice(0, 24)}"`;

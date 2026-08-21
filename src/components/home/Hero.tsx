@@ -179,7 +179,22 @@ export function Hero() {
               anyway — the conflict they announced is in its Calendar panel and the
               cleared approval is in its Approvals panel. Removing them takes out a
               component, a class of overlap bug, and one more piece of repetition. */}
-          <div className="relative min-w-0">
+          {/*
+            THE MOCK SITS ON A GROUND, not on the page.
+
+            It floated on plain white, which is the one place a product surface
+            cannot be: a light interface on a white page has no edge, so the thing
+            the hero exists to show reads as part of the document rather than as a
+            screen. Every reference hero puts its product on something — a
+            photograph, a saturated field — and lets the surface overlap it.
+
+            `matte-iris` rather than the house green: the mock is already full of
+            green, and a green ground under a green interface flattens both. The
+            cool field is what gives the chart and the accent chips somewhere to
+            sit. Rounded and inset so the ground reads as a stage, with the mock
+            lifted on its own shadow above it.
+          */}
+          <div className="matte matte-iris relative min-w-0 overflow-hidden rounded-3xl px-4 pb-4 pt-8 sm:px-8 sm:pb-6 sm:pt-12">
             <DashboardMock tilt auto className="relative z-0" />
             <MockCaption />
           </div>
