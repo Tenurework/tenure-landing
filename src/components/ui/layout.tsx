@@ -241,23 +241,33 @@ export function SectionHead({
   const centred = align === "center";
   return (
     <div className={cn(centred ? "mx-auto max-w-2xl text-center" : "max-w-2xl", className)}>
+      {/*
+        ONE MOVEMENT PER SECTION, not three staggered ones.
+
+        This was a Reveal around each of the eyebrow, the heading and the lead, at
+        0s / 0.05s / 0.1s. Every section on the site uses this head, so the home
+        page rendered 46 separately animating elements and scrolling it played a
+        cascade — the heading arriving after its own eyebrow, the lead after that.
+        Measured on cohere.com, six elements animate on entry for the entire page.
+
+        A stagger is a way of drawing attention to a sequence. Applied to every
+        heading on a long page it stops meaning anything and starts reading as a
+        template effect, which is the opposite of what it was reaching for. The
+        head now moves as the one block it visually is.
+      */}
       <Reveal>
         <Eyebrow index={index} className={centred ? "justify-center" : undefined}>
           {eyebrow}
         </Eyebrow>
-      </Reveal>
-      <Reveal delay={0.05}>
-        <h2 className="font-display mt-3 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg lg:text-h2-lg">
+        <h2 className="font-display mt-3 text-h2 text-ink sm:text-h2-lg">
           {title}
         </h2>
-      </Reveal>
-      {lead && (
-        <Reveal delay={0.1}>
-          <p className="mt-3.5 text-lead leading-relaxed text-ink-soft sm:text-lead measure">
+        {lead && (
+          <p className="mt-4 text-lead leading-relaxed text-ink-soft measure">
             {lead}
           </p>
-        </Reveal>
-      )}
+        )}
+      </Reveal>
       {children}
     </div>
   );
