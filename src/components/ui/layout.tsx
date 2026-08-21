@@ -56,11 +56,11 @@ export function Container({
  * 72px against 48px puts the boundary at ~120px, which is where the sites this
  * one is measured against sit. Nothing is cut to buy it — this is padding only.
  */
-export const SECTION = "py-16 sm:py-20";
+export const SECTION = "py-20 sm:py-28";
 /** For a section that follows a related one and should read as continuous. */
-export const SECTION_TIGHT = "py-12 sm:py-14";
+export const SECTION_TIGHT = "py-16 sm:py-20";
 /** For the two closing bands, which carry one idea and no supporting detail. */
-export const SECTION_BAND = "py-20 sm:py-24";
+export const SECTION_BAND = "py-24 sm:py-32";
 
 /**
  * A section, its backdrop and its rhythm as one element.
@@ -247,7 +247,14 @@ export function SectionHead({
 }) {
   const centred = align === "center";
   return (
-    <div className={cn(centred ? "mx-auto max-w-2xl text-center" : "max-w-2xl", className)}>
+    /*
+      THE HEAD GETS 56rem, NOT 42. At `max-w-2xl` a section heading occupied 672px
+      of a 1,360px container — the copy sat in the middle third of a wide page and
+      every section read as a narrow column with margins on both sides. The lead
+      keeps its own `measure` cap, so the paragraph stays readable while the
+      heading is free to use the width it was given.
+    */
+    <div className={cn(centred ? "mx-auto max-w-4xl text-center" : "max-w-4xl", className)}>
       {/*
         ONE MOVEMENT PER SECTION, not three staggered ones.
 

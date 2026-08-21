@@ -262,7 +262,7 @@ export function SeatMechanism() {
                 >
                   <div
                     className={cn(
-                      "matte mb-5 flex h-[23rem] flex-col rounded-2xl border border-line p-5 shadow-[0_18px_50px_-30px_oklch(20%_0.02_260/0.45)] sm:p-6",
+                      "matte matte-coarse mb-5 flex h-[23rem] flex-col rounded-2xl border border-line p-5 shadow-[0_18px_50px_-30px_oklch(20%_0.02_260/0.45)] sm:p-6",
                       ["matte-ash", "matte-clay", "matte-sage"][idx],
                     )}
                   >

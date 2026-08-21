@@ -157,6 +157,12 @@ export function Handoff() {
         />
 
         <Reveal delay={0.14} className="mt-7">
+          {/* A GROUND UNDER THE SURFACE. The panel is a drawn interface, and a
+              drawn interface sitting straight on a section reads as part of the
+              document rather than as a screen. Each product surface takes a
+              different matte hue, so the page changes colour as it descends
+              instead of repeating one field. */}
+          <div className="matte matte-clay matte-coarse rounded-3xl p-3 sm:p-5">
           <Panel>
             <PanelBar
               icon={
@@ -269,6 +275,7 @@ export function Handoff() {
               ))}
             </div>
           </Panel>
+          </div>
         </Reveal>
       </Container>
     </Section>

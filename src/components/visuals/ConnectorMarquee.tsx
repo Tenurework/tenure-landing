@@ -16,15 +16,20 @@ import { cn } from "@/lib/cn";
  * written. A register entry is evidence only as long as someone re-reads the
  * thing it describes.
  *
- * THE MARKS ARE DRAWN, MONOCHROME, ON ONE GRID. Each is a simplified rendering
- * of the vendor's own glyph rather than a copy of their brand asset: recognisable
- * at 24px, one weight, one colour, taking the page's ink like everything else.
+ * THE MARKS ARE THE VENDORS' OWN, IN THEIR OWN COLOURS. Each is drawn to the
+ * published geometry of the brand mark rather than pulled from a logo CDN, so the
+ * rail carries no third-party requests and nothing breaks when someone else's
+ * asset host moves.
  *
- * Full-colour vendor lockups were the alternative and they are the wrong call
- * here. Eleven foreign logos at eleven different weights and eleven different
- * palettes turn a restrained page into a link farm, and they read as partnership
- * badges rather than as a capability list. Monochrome says the same thing without
- * borrowing anyone's brand.
+ * Colour is the point of them. A monochrome strip is more restrained and it is
+ * also harder to scan: these marks are recognised by hue before they are read,
+ * and a reader looking for whether their own stack is covered finds Slack's
+ * pinwheel or the Microsoft squares faster than they find the words. Naming and
+ * depicting a product to describe interoperability is ordinary nominative use;
+ * the rail claims nothing about endorsement and says so nowhere.
+ *
+ * The lockups sit on one 24px grid at one optical weight, which is what stops a
+ * row of eleven foreign palettes reading as a link farm.
  *
  * THE ANIMATION IS CSS AND THE TRACK IS DOUBLED. The list is rendered twice and
  * translated by exactly -50%, so the loop closes on itself with no seam and no
@@ -35,21 +40,23 @@ import { cn } from "@/lib/cn";
 type Mark = { label: string; icon: React.ReactNode; muted?: boolean };
 
 /*
-  The set is the office's own stack. Jira, Asana and Okta came off because they
-  are developer and IT tooling rather than anything a student-organization office
-  touches; Eventbrite and Canvas came off for the same reason from the other
-  direction. DocuSeal replaces DocuSign.
+  The set is the office's own stack. Jira, Asana and Okta came off as developer
+  and IT tooling; Eventbrite and Canvas came off from the other direction.
+  DocuSeal replaces DocuSign.
 */
 const MARKS: Mark[] = [
   {
     label: "Slack",
     icon: (
       <>
-        <rect x="3" y="9.6" width="4.4" height="2.6" rx="1.3" />
-        <rect x="9.6" y="3" width="2.6" height="4.4" rx="1.3" />
-        <rect x="16.6" y="11.8" width="4.4" height="2.6" rx="1.3" />
-        <rect x="11.8" y="16.6" width="2.6" height="4.4" rx="1.3" />
-        <rect x="9.6" y="9.6" width="4.8" height="4.8" rx="1.6" />
+        <path d="M5.04 15.12a2.52 2.52 0 1 1-2.52-2.52h2.52z" fill="#E01E5A" />
+        <path d="M6.31 15.12a2.52 2.52 0 0 1 5.04 0v6.31a2.52 2.52 0 0 1-5.04 0z" fill="#E01E5A" />
+        <path d="M8.83 5.04a2.52 2.52 0 1 1 2.52-2.52v2.52z" fill="#36C5F0" />
+        <path d="M8.83 6.31a2.52 2.52 0 0 1 0 5.04H2.52a2.52 2.52 0 0 1 0-5.04z" fill="#36C5F0" />
+        <path d="M18.96 8.83a2.52 2.52 0 1 1 2.52 2.52h-2.52z" fill="#2EB67D" />
+        <path d="M17.69 8.83a2.52 2.52 0 0 1-5.04 0V2.52a2.52 2.52 0 0 1 5.04 0z" fill="#2EB67D" />
+        <path d="M15.17 18.96a2.52 2.52 0 1 1-2.52 2.52v-2.52z" fill="#ECB22E" />
+        <path d="M15.17 17.69a2.52 2.52 0 0 1 0-5.04h6.31a2.52 2.52 0 0 1 0 5.04z" fill="#ECB22E" />
       </>
     ),
   },
@@ -57,25 +64,30 @@ const MARKS: Mark[] = [
     label: "Microsoft 365",
     icon: (
       <>
-        <rect x="3" y="3" width="8.2" height="8.2" />
-        <rect x="12.8" y="3" width="8.2" height="8.2" />
-        <rect x="3" y="12.8" width="8.2" height="8.2" />
-        <rect x="12.8" y="12.8" width="8.2" height="8.2" />
+        <rect x="2.6" y="2.6" width="8.6" height="8.6" fill="#F25022" />
+        <rect x="12.8" y="2.6" width="8.6" height="8.6" fill="#7FBA00" />
+        <rect x="2.6" y="12.8" width="8.6" height="8.6" fill="#00A4EF" />
+        <rect x="12.8" y="12.8" width="8.6" height="8.6" fill="#FFB900" />
       </>
     ),
   },
   {
     label: "Google Workspace",
     icon: (
-      <path d="M21 12.2a9 9 0 1 1-2.7-6.4l-3 3A4.8 4.8 0 1 0 16.8 14H12v-3.6h9z" />
+      <>
+        <path d="M21.6 12.23c0-.68-.06-1.34-.18-1.96H12v3.7h5.38a4.6 4.6 0 0 1-1.99 3.02v2.5h3.22c1.88-1.73 2.99-4.29 2.99-7.26z" fill="#4285F4" />
+        <path d="M12 22c2.7 0 4.96-.9 6.61-2.43l-3.22-2.5c-.9.6-2.05.95-3.39.95-2.6 0-4.81-1.76-5.6-4.12H3.07v2.58A10 10 0 0 0 12 22z" fill="#34A853" />
+        <path d="M6.4 13.9a6 6 0 0 1 0-3.83V7.49H3.07a10 10 0 0 0 0 9.02z" fill="#FBBC05" />
+        <path d="M12 5.95c1.47 0 2.79.51 3.83 1.5l2.85-2.85C16.95 2.98 14.7 2 12 2A10 10 0 0 0 3.07 7.49L6.4 10.07C7.19 7.71 9.4 5.95 12 5.95z" fill="#EA4335" />
+      </>
     ),
   },
   {
     label: "Box",
     icon: (
       <>
-        <path d="M12 2.6 21.4 7v10L12 21.4 2.6 17V7z" />
-        <path d="M2.6 7 12 11.4 21.4 7M12 11.4v10" fill="none" stroke="var(--surface)" strokeWidth="1.4" />
+        <rect x="2" y="2" width="20" height="20" rx="4.6" fill="#0061D5" />
+        <path d="M7.3 9.1a2.9 2.9 0 0 0-2.2 1V6.9a.85.85 0 0 0-1.7 0v5.3a2.95 2.95 0 1 0 3.9-3.1zm-.15 4.5a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm6.3-4.5a2.95 2.95 0 1 0 0 5.9 2.95 2.95 0 0 0 0-5.9zm0 4.5a1.55 1.55 0 1 1 0-3.1 1.55 1.55 0 0 1 0 3.1zm7.2-1.55 1.5-1.95a.85.85 0 0 0-1.35-1.03l-1.2 1.58-1.2-1.58a.85.85 0 1 0-1.35 1.03l1.5 1.95-1.5 1.95a.85.85 0 0 0 1.35 1.04l1.2-1.59 1.2 1.59a.85.85 0 0 0 1.35-1.04z" fill="#fff" />
       </>
     ),
   },
@@ -83,11 +95,11 @@ const MARKS: Mark[] = [
     label: "Dropbox",
     icon: (
       <>
-        <path d="M7 3 1.8 6.6 7 10.2l5.2-3.6z" />
-        <path d="M17 3l-5.2 3.6L17 10.2l5.2-3.6z" />
-        <path d="M1.8 13.8 7 10.2l5.2 3.6L7 17.4z" />
-        <path d="M22.2 13.8 17 10.2l-5.2 3.6L17 17.4z" />
-        <path d="M7 18.6 12 15.4l5 3.2L12 21.8z" />
+        <path d="M7 3 1.8 6.35 7 9.7l5.2-3.35z" fill="#0061FF" />
+        <path d="M17 3l-5.2 3.35L17 9.7l5.2-3.35z" fill="#0061FF" />
+        <path d="M1.8 13.05 7 9.7l5.2 3.35L7 16.4z" fill="#0061FF" />
+        <path d="M22.2 13.05 17 9.7l-5.2 3.35 5.2 3.35z" fill="#0061FF" />
+        <path d="M7 17.5 12.2 14.15 17.4 17.5 12.2 20.85z" fill="#0061FF" />
       </>
     ),
   },
@@ -95,8 +107,9 @@ const MARKS: Mark[] = [
     label: "Zoom",
     icon: (
       <>
-        <rect x="2.4" y="6.4" width="12.8" height="11.2" rx="3" />
-        <path d="M15.2 11.2 21.6 7.4v9.2l-6.4-3.8z" />
+        <rect x="2" y="2" width="20" height="20" rx="4.6" fill="#0B5CFF" />
+        <path d="M5.8 9.1a1.3 1.3 0 0 1 1.3-1.3h5.5a2.4 2.4 0 0 1 2.4 2.4v4.7a1.3 1.3 0 0 1-1.3 1.3H8.2a2.4 2.4 0 0 1-2.4-2.4z" fill="#fff" />
+        <path d="m15.7 11.6 2.9-2.1a.55.55 0 0 1 .88.45v4.1a.55.55 0 0 1-.88.45l-2.9-2.1z" fill="#fff" />
       </>
     ),
   },
@@ -104,48 +117,52 @@ const MARKS: Mark[] = [
     label: "DocuSeal",
     icon: (
       <>
-        <path d="M13.4 2.6H7A2.4 2.4 0 0 0 4.6 5v14A2.4 2.4 0 0 0 7 21.4h10a2.4 2.4 0 0 0 2.4-2.4V8.6z" />
-        <path d="M13.4 2.6v6h6" fill="none" stroke="var(--surface)" strokeWidth="1.4" />
-        <path d="m8.8 14.6 2.4 2.4 4.2-4.6" fill="none" stroke="var(--surface)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="2" y="2" width="20" height="20" rx="4.6" fill="#1A1A2E" />
+        <path d="M7.6 12.4 10.4 15.2 16.6 8.9" fill="none" stroke="#4ADE80" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
   },
   {
     label: "GitHub",
     icon: (
-      <path d="M12 2.2a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.8c-2.7.6-3.3-1.2-3.3-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.2-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.2-.4-1.2.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.5 4.9.3.3.7 1 .7 2v2.9c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.2z" />
+      <path
+        d="M12 2.2a9.8 9.8 0 0 0-3.1 19.1c.5.1.7-.2.7-.5v-1.8c-2.7.6-3.3-1.2-3.3-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.3-2.2-.2-4.5-1.1-4.5-4.9 0-1.1.4-2 1-2.7-.1-.2-.4-1.2.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 4.9 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.3 4.7-4.5 4.9.3.3.7 1 .7 2v2.9c0 .3.2.6.7.5A9.8 9.8 0 0 0 12 2.2z"
+        fill="#181717"
+      />
     ),
   },
   {
     label: "Notion",
     icon: (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="3.4" />
-        <path d="M8.6 16.4V7.6l6.8 8.2V7.6" fill="none" stroke="var(--surface)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+        <rect x="2" y="2" width="20" height="20" rx="4.2" fill="#fff" stroke="#E5E5E5" strokeWidth="1" />
+        <path d="M8.4 16.6V7.9l7 8.4V7.9" fill="none" stroke="#111" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
       </>
     ),
   },
   {
     label: "Stripe",
     icon: (
-      <path d="M11.4 9.7c0-.7.6-1 1.5-1a9.9 9.9 0 0 1 4.4 1.2V6a11.6 11.6 0 0 0-4.4-.8c-3.6 0-6 1.9-6 5 0 4.9 6.7 4.1 6.7 6.2 0 .8-.7 1.1-1.7 1.1a11 11 0 0 1-4.8-1.4v4.1a12.2 12.2 0 0 0 4.8 1c3.7 0 6.2-1.8 6.2-5 0-5.3-6.7-4.3-6.7-6.5z" />
+      <>
+        <rect x="2" y="2" width="20" height="20" rx="4.6" fill="#635BFF" />
+        <path d="M11.6 10.2c0-.5.42-.72 1.06-.72a6.9 6.9 0 0 1 3.06.83V7.42a8.1 8.1 0 0 0-3.06-.57c-2.5 0-4.17 1.32-4.17 3.5 0 3.42 4.66 2.87 4.66 4.34 0 .58-.5.77-1.2.77a7.7 7.7 0 0 1-3.36-.99v2.94a8.5 8.5 0 0 0 3.36.71c2.57 0 4.32-1.27 4.32-3.49 0-3.7-4.67-3.04-4.67-4.43z" fill="#fff" />
+      </>
     ),
   },
   {
     label: "Qualtrics",
     icon: (
       <>
-        <circle cx="12" cy="12" r="8.6" fill="none" stroke="currentColor" strokeWidth="2.2" />
-        <path d="M13.4 13.6 19 19.2" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" />
+        <circle cx="12" cy="12" r="8.6" fill="none" stroke="#00B4EF" strokeWidth="2.4" />
+        <path d="M13.6 13.8 19.4 19.6" fill="none" stroke="#00B4EF" strokeWidth="2.6" strokeLinecap="round" />
       </>
     ),
   },
   /*
     The last card is the honest end of the list. A rail that simply loops implies
     the set is closed; saying more are coming is both true and the thing a reader
-    with a stack of their own actually wants to know. It carries no vendor name,
-    so it promises a direction rather than a specific integration nobody has
-    committed to a date for.
+    with a stack of their own wants to know. It carries no vendor name, so it
+    promises a direction rather than an integration nobody has dated.
   */
   {
     label: "More coming soon",
@@ -165,8 +182,7 @@ function MarkItem({ m, index }: { m: Mark; index: number }) {
       <svg
         viewBox="0 0 24 24"
         aria-hidden
-        className={cn("h-7 w-7 shrink-0", m.muted ? "text-ink-faint" : "text-ink-soft")}
-        fill="currentColor"
+        className={cn("h-7 w-7 shrink-0", m.muted && "text-ink-faint")}
       >
         {m.icon}
       </svg>

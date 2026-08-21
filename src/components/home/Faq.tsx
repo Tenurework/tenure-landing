@@ -68,8 +68,24 @@ const ITEMS: { q: string; a: ReactNode }[] = [
     ),
   },
   {
+    q: "What happens when someone leaves mid-term?",
+    a: "The seat is what holds the work, so nothing has to be reassembled. The departing person moves to alumni: their access ends, and the budget, vendors, approvals and decisions filed against that seat stay exactly where they were. Whoever takes the seat next opens the same record on their first day.",
+  },
+  {
+    q: "How long does it take to get started?",
+    a: "Onboarding runs live with your office rather than as documentation and a login. Accounts are created in advance against named people, the first import from your existing drives is done together, and the seat map is built before the first rotation so the record has something to attach to.",
+  },
+  {
+    q: "Can the office see across every organization it stewards?",
+    a: "Yes, and that is the point of the console. Staff work through sixteen capabilities across three strictly nested tiers, and the tier decides which actions are offered at all. Approvals show which seat decided, what the request moved from and to, and how long it has been sitting.",
+  },
+  {
+    q: "What happens to our records if we stop using Tenure?",
+    a: "They are your organization's records, not ours. The account is exported on request in full, and the seat model is what makes that coherent rather than a folder dump: everything is already attached to the position it belongs to.",
+  },
+  {
     q: "What does it cost?",
-    a: "Pricing is per portfolio, not per organization: one budget line covers every organization a body stewards, whether that is a university office, a national association or a nonprofit with regional chapters. A single organization is priced on its own. Nothing is published as a figure yet, the planned Fall 2026 pilot is free for its term, and anything beyond it would be a written agreement rather than an update to a page.",
+    a: "Pricing is per portfolio, not per organization: one budget line covers every organization a body stewards, whether that is a university office, a national association or a nonprofit with regional chapters. A single organization is priced on its own. Figures are set in a written agreement rather than published on a page, and the first deployment term runs free.",
   },
 ];
 
@@ -87,7 +103,7 @@ export function Faq() {
           </h2>
         </Reveal>
 
-        <div className="mt-7 max-w-3xl border-t border-line/70 pt-6">
+        <div className="mt-9 max-w-4xl border-t border-line/70 pt-8">
           <div className="flex flex-col gap-3.5">
             {ITEMS.map((item, i) => (
               <Reveal as="div" key={item.q} delay={Math.min(i * 0.05, 0.3)}>
