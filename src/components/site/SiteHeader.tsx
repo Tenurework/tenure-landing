@@ -45,7 +45,7 @@ export function SiteHeader() {
   };
   const closeMenu = () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setMenu(null), 120);
+    closeTimer.current = setTimeout(() => setMenu(null), 220);
   };
   useEffect(() => () => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
@@ -137,6 +137,19 @@ export function SiteHeader() {
 
   return (
     <header
+      // THE HOVER REGION IS THE WHOLE HEADER, not the <nav>.
+      //
+      // `onMouseLeave` used to sit on <nav>, and the sheets render as siblings of
+      // it at header level. Travelling from a ribbon item down into the panel
+      // therefore crossed a strip of header belonging to neither — the pointer
+      // left the nav, armed the close, and the sheet shut before anything in it
+      // could be clicked. Measured: ~180ms to cross, against a 120ms timer.
+      //
+      // Hanging the handler on the header makes that strip part of the same
+      // region, so the timer never arms while the pointer is anywhere in the
+      // menu. The sheet keeps its own enter/leave as well, which is what lets it
+      // close when the pointer leaves downward into the page.
+      onMouseLeave={closeMenu}
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300",
         // `relative` is implied by `fixed`, but the sheet below positions against
@@ -160,7 +173,6 @@ export function SiteHeader() {
         <nav
           aria-label="Main"
           className="relative hidden items-center gap-0.5 lg:flex"
-          onMouseLeave={closeMenu}
           onBlur={(e) => {
             // Only close when focus leaves the whole nav, not when it moves
             // between the trigger and the links inside its own panel.
@@ -380,6 +392,13 @@ export function SiteHeader() {
           item={item}
           open={menu === item.label}
           onClose={() => setMenu(null)}
+          // THE SHEET MUST CANCEL THE PENDING CLOSE. It renders at header level,
+          // outside <nav>, so moving the pointer down from a ribbon item into the
+          // panel LEAVES the nav — which armed the 120ms close and shut the sheet
+          // before anything in it could be clicked. Re-opening on enter cancels
+          // that timer; leaving the sheet arms it again.
+          onPointerEnter={() => openMenu(item.label)}
+          onPointerLeave={closeMenu}
         />
       ))}
     </header>
@@ -414,10 +433,14 @@ function MegaSheet({
   item,
   open,
   onClose,
+  onPointerEnter,
+  onPointerLeave,
 }: {
   item: (typeof site.nav)[number];
   open: boolean;
   onClose: () => void;
+  onPointerEnter: () => void;
+  onPointerLeave: () => void;
 }) {
   const groups = item.groups;
   if (!groups) return null;
@@ -425,6 +448,8 @@ function MegaSheet({
   return (
     <div
       id={`nav-panel-${item.label}`}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
       onKeyDown={(e) => {
         if (e.key === "Escape") onClose();
       }}

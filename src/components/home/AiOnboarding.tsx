@@ -204,8 +204,8 @@ export function AiOnboarding() {
                 retrieval matched nothing, so the absolute form is false and the
                 register blocks it. This is the claim the code actually supports. */}
             Tenure AI is given only records you can already open, and answers link
-            the records they came from. Text goes to Amazon Bedrock, running an
-            Anthropic model, for three things: the records retrieved for a question,
+            the records they came from. Text goes to the model service, inside our
+            own cloud account, for three things: the records retrieved for a question,
             a text document someone asks to summarize, and an instruction typed into
             Draft Assist. Your records stay yours &mdash; they are never used to train
             a model.{" "}

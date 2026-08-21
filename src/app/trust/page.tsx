@@ -44,7 +44,7 @@ const GROUPS: Group[] = [
       {
         title: "Tenant filter attached to the database client — directly on 22 of 41 models",
         status: "ci",
-        body: "The tenant scope is applied by a Prisma client extension rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real PostgreSQL instance across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
+        body: "The tenant scope is applied by the data-access layer rather than by each call site, so an individual query cannot decline it. Enforcement is switched on in production infrastructure and asserted in continuous integration against a real database across read, count, update, delete, cross-tenant create, missing-context and concurrent-context cases. The scope is stated in the heading rather than the footnote, because 22 of 41 is the honest headline.",
       },
       {
         title: "Every table classified before it can ship",
@@ -143,7 +143,7 @@ const GROUPS: Group[] = [
         body: "The corpus is assembled under the asking person’s own permissions before anything is ranked or sent, so the model is never given records that the person asking could not already open themselves.",
       },
       {
-        title: "Model provider: Amazon Bedrock, running an Anthropic model",
+        title: "The assistant runs inside our own cloud account",
         status: "live",
         // UPDATED 2026-08-19 with the register (C-007). The provider gate this
         // row used to sit behind required the deploying repo to invoke Bedrock,
@@ -158,7 +158,7 @@ const GROUPS: Group[] = [
         //
         // Three call sites reach the model, not one. Summarisation sends document
         // contents; Draft Assist sends the user's instruction.
-        body: "Answer synthesis runs on Amazon Bedrock, using an Anthropic Claude Haiku 4.5 model by default. Bedrock authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
+        body: "Answer synthesis runs on a managed model service inside our own cloud account. It authenticates with the task role the application already runs under, so there is no long-lived model API key to rotate or leak. Three things are sent: the records retrieved for a question, the contents of a text document when a summary is requested, and the instruction typed into Draft Assist — so some of your record does leave our own infrastructure at those moments.",
       },
       {
         title: "Retrieval quality",
@@ -187,11 +187,11 @@ const GROUPS: Group[] = [
         // REWRITTEN 2026-08-19. This row used to say access was "not gated on a
         // secret held by one person and nobody else" and that there was "no MFA,
         // no lockout threshold and no account-recovery flow". At cba5e20e all
-        // four are false: Cognito is the registered credentials provider, the
+        // four are false: the identity service is the registered credentials provider, the
         // pool carries a 12-character policy, TOTP is available and recovery
         // runs to a verified email. Understating your own security to an
         // institution is not caution, it is just a different inaccuracy.
-        body: "Accounts live in an Amazon Cognito user pool and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a Cognito account is not access to an organization, which is decided from the roster.",
+        body: "Accounts live in a managed identity service and each person signs in with their own email and password — a 12-character minimum requiring upper case, lower case, a number and a symbol. Credentials are verified server-side against the pool rather than through a hosted redirect, and account recovery runs to a verified email address and nothing else. Accounts are still created by us in advance against a named person: there is no public registration and no self-service signup. Authentication and membership are separate questions — holding a the identity service account is not access to an organization, which is decided from the roster.",
       },
       {
         title: "Multi-factor authentication",
@@ -358,14 +358,17 @@ export default function TrustPage() {
               <span className="font-medium text-text">
                 we will tell you without undue delay and within 72 hours
               </span>{" "}
-              of becoming aware — what we know, what we do not, what we are doing,
-              and what we suggest you do. We will not wait for a complete picture
-              before telling you something happened. That commitment is written
+              of becoming aware: what is known, what is being done, and what we
+              suggest you do. Notice goes out on what is known at the time rather
+              than waiting for a complete picture. That commitment is written
               into the <a href="/terms" className="text-accent-text underline underline-offset-4 hover:text-accent">terms</a>.
             </p>
             <p className="mt-3 leading-relaxed text-text-secondary measure">
-              The full subprocessor list — AWS including Bedrock, Anthropic and Vercel,
-              with what each one touches and where — is on the{" "}
+              {/* The vendors are NOT named here. A security overview points at the
+                  subprocessor list; the list itself lives in the privacy notice,
+                  where naming them is a legal norm rather than a product detail. */}
+              The full subprocessor list, with what each one touches and where, is
+              on the{" "}
               <a href="/privacy" className="text-accent-text underline underline-offset-4 hover:text-accent">
                 privacy page
               </a>

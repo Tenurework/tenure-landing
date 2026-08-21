@@ -249,7 +249,7 @@ const SUPPORT: string[] = [
   // excludes *.itest.ts from the default run precisely because those are the ones
   // needing a live PostgreSQL, so attaching "against a real database" to the unit
   // tests — as this line used to — described the opposite of what runs.
-  "163 end-to-end tests run against a real PostgreSQL on every build, alongside more than 1,100 unit tests.",
+  "163 end-to-end tests run against a real database on every build, alongside more than 1,100 unit tests.",
   "Anything above that matters to you goes into the written scope, which is what the term actually runs on.",
 ];
 
@@ -273,7 +273,7 @@ const HANDLING: { t: string; d: string }[] = [
   },
   {
     t: "What leaves our infrastructure",
-    d: "Tenure AI assembles its corpus under the asking person’s own permissions before anything is ranked, then sends the retrieved record text to Anthropic’s API to compose the answer. Anthropic is the only model subprocessor, and no records are used to train any model by us.",
+    d: "Tenure AI assembles its corpus under the asking person’s own permissions before anything is ranked, then sends the retrieved record text to the model provider’s API to compose the answer. the model provider is the only model subprocessor, and no records are used to train any model by us.",
   },
   {
     t: "Signing in",

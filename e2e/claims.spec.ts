@@ -1308,13 +1308,31 @@ test.describe("AI provider gate", () => {
     ).toBeGreaterThan(0);
   });
 
-  test("/privacy and /trust disclose that record text leaves for the model provider", async ({
+  /**
+   * THE NAMED DISCLOSURE LIVES ON /privacy, NOT ON THE MARKETING PAGES.
+   *
+   * This used to require both /privacy AND /trust to name the model provider and
+   * the platform it runs on. Naming a vendor stack on a product page is a
+   * different act from naming it in a privacy notice: the first tells a visitor
+   * what Tenure is built out of, which is the company's own information to
+   * withhold, and the second is a subprocessor disclosure that buyers and data
+   * protection law both expect to find.
+   *
+   * So the requirement moves rather than relaxes. /privacy must still name every
+   * subprocessor and still say plainly that record text leaves for the model
+   * provider — nothing about the substance of the disclosure changed, and the
+   * "name one, name both" ratchet above still applies to EVERY page, so no page
+   * can name one provider and let a reader infer the other path does not exist.
+   * /trust still has to say that record text goes to a model service; it just
+   * describes it rather than branding it.
+   */
+  test("/privacy names the subprocessors and says record text leaves for them", async ({
     page,
   }) => {
     const pages = await siteText(page);
     const problems: string[] = [];
 
-    for (const route of ["/privacy", "/trust"]) {
+    for (const route of ["/privacy"]) {
       const text = pages.find((p) => p.route === route)!;
 
       if (!/\bAnthropic\b/.test(text.flat)) {
@@ -1349,6 +1367,29 @@ test.describe("AI provider gate", () => {
     }
 
     expect(problems, report(problems)).toHaveLength(0);
+  });
+
+  /**
+   * The security page still owes a reader the FACT, without the brand names: that
+   * record text is sent to a model service outside the application. Dropping the
+   * vendor names must not quietly drop the disclosure with them, which is exactly
+   * the failure mode a "remove the vendor names" instruction invites.
+   */
+  test("/trust still discloses that record text goes to a model service", async ({ page }) => {
+    const pages = await siteText(page);
+    const trust = pages.find((p) => p.route === "/trust")!;
+
+    const discloses =
+      /\btext\s+goes\s+to\b/i.test(trust.flat) ||
+      /\b(?:is|are)\s+(?:sent|passed|transmitted)\s+to\b/i.test(trust.flat) ||
+      /\bmodel\s+service\b/i.test(trust.flat) ||
+      /\bmodel\s+provider\b/i.test(trust.flat);
+
+    expect(
+      discloses,
+      "/trust no longer says that record text reaches a model service (C-007). " +
+        "The vendor names were removed from this page on purpose; the disclosure was not.",
+    ).toBe(true);
   });
 });
 
