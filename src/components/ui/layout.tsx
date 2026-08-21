@@ -11,7 +11,7 @@ export function Container({
   children: ReactNode;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-6xl px-5 sm:px-8", className)}>
+    <div className={cn("mx-auto w-full max-w-[85rem] px-4 sm:px-6 lg:px-10", className)}>
       {children}
     </div>
   );
@@ -42,11 +42,11 @@ export function Container({
  * 72px against 48px puts the boundary at ~120px, which is where the sites this
  * one is measured against sit. Nothing is cut to buy it — this is padding only.
  */
-export const SECTION = "py-14 sm:py-[4.5rem]";
+export const SECTION = "py-16 sm:py-20";
 /** For a section that follows a related one and should read as continuous. */
-export const SECTION_TIGHT = "py-10 sm:py-12";
+export const SECTION_TIGHT = "py-12 sm:py-14";
 /** For the two closing bands, which carry one idea and no supporting detail. */
-export const SECTION_BAND = "py-12 sm:py-14";
+export const SECTION_BAND = "py-20 sm:py-24";
 
 /**
  * A section, its backdrop and its rhythm as one element.
@@ -251,7 +251,7 @@ export function SectionHead({
         </Eyebrow>
       </Reveal>
       <Reveal delay={0.05}>
-        <h2 className="font-display mt-3 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg lg:text-h2-lg">
+        <h2 className="font-display mt-3 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg lg:text-h2-lg">
           {title}
         </h2>
       </Reveal>

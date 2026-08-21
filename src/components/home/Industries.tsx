@@ -119,7 +119,7 @@ export function Industries() {
                       takes every tile past 4.5:1 regardless. It also simply
                       reads better at this scale.
                     */}
-                    <h3 className="font-display text-title font-semibold tracking-tight text-inverse">
+                    <h3 className="font-display text-title tracking-tight text-inverse">
                       {ind.label}
                     </h3>
                     <p className="mt-2 text-caption leading-relaxed text-inverse/80">

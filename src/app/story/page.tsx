@@ -58,7 +58,7 @@ export default function StoryPage() {
               <Eyebrow index="01">Why Tenure exists</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 Every fall, the same{" "}
                 <span className="text-grove">cold start</span>.
               </h2>
@@ -111,7 +111,7 @@ export default function StoryPage() {
               <Eyebrow index="02">Founders</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 The people building the{" "}
                 <span className="text-grove">record</span>.
               </h2>
@@ -128,7 +128,7 @@ export default function StoryPage() {
                   >
                     {f.name.charAt(0)}
                   </span>
-                  <h3 className="mt-6 font-display text-title font-semibold text-ink">
+                  <h3 className="mt-6 font-display text-title text-ink">
                     {f.name}
                   </h3>
                   <p className="mt-1.5 label-mono">{f.role}</p>
@@ -162,7 +162,7 @@ export default function StoryPage() {
               </Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+              <h2 className="font-display mt-5 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
                 Serve any organization where people rotate faster than{" "}
                 <span className="text-grove-bright">knowledge transfers</span>.
               </h2>
@@ -187,7 +187,7 @@ export default function StoryPage() {
               <Eyebrow index="04">Where it stands</Eyebrow>
             </Reveal>
             <Reveal delay={0.06}>
-              <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+              <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
                 Where it{" "}
                 <span className="text-grove">stands</span>.
               </h2>

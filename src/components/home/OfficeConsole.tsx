@@ -179,7 +179,7 @@ function Pane({ label, children }: { label: string; children: ReactNode }) {
   return (
     <div className="p-5 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h3 className="font-display text-title-sm font-semibold text-ink">{label}</h3>
+        <h3 className="font-display text-title-sm text-ink">{label}</h3>
         <span className="label-mono text-mark">institution-wide</span>
       </div>
       <div className="mt-4">{children}</div>

@@ -124,7 +124,7 @@ export function Dossier({
                       A heading inside a summary is well-supported: the summary
                       keeps its button role and the heading stays in the outline.
                     */}
-                    <h2 className="font-display text-lead font-semibold tracking-tight text-ink">
+                    <h2 className="font-display text-lead tracking-tight text-ink">
                       {item.title}
                     </h2>
                     {item.tally?.map((t) => (

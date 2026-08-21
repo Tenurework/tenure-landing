@@ -80,7 +80,7 @@ export function Faq() {
           {/* Was text-display — the single word "FAQ" was set larger than every
               section heading on the page, so the loudest type on the home page
               was its least informative word. */}
-          <h2 className="font-display text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
+          <h2 className="font-display text-h2 leading-[1.1] tracking-[-0.03em] text-ink sm:text-h2-lg">
             Questions we get asked first
           </h2>
         </Reveal>

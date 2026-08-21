@@ -44,34 +44,37 @@
 :root {
   color-scheme: light;
 
-  /* Surfaces */
-  --canvas: oklch(97.6% 0.006 85);          /* warm paper                     */
-  --surface: oklch(100% 0 0);               /* cards                          */
-  --surface-subtle: oklch(94.2% 0.012 85);  /* cream alternating sections     */
+  /* Surfaces.
+     Measured off cohere.com: the page is pure white and every surface tint is
+     NEUTRAL. The old canvas was a warm cream at oklch(97.6% 0.006 85), which is
+     what made the site read as a warm editorial brochure rather than a product
+     — warmth is a strong stylistic claim and it was applied to every pixel by
+     default. Colour now enters the page through photography only. */
+  --canvas: oklch(100% 0 0);
+  --surface: oklch(100% 0 0);
+  --surface-subtle: oklch(98.3% 0 0);       /* #FAFAFA, the only grey band     */
   --surface-elevated: oklch(100% 0 0);
 
-  /* Inverse surfaces — the deep navy bands used as a light-theme device.
-     In dark mode these become *elevated* rather than inverted, so the page
-     keeps its rhythm instead of turning into a flat sheet of black. */
-  --inverse: oklch(23.5% 0.042 253);
-  --inverse-deep: oklch(19.5% 0.040 253);
-  --inverse-raised: oklch(28.5% 0.048 253);
+  /* Inverse surfaces. Cohere's dark UI sits at rgb(23,23,28) — near-black with
+     the faintest violet, not a navy. A navy band is a colour statement; this is
+     an absence of one. */
+  --inverse: oklch(19.5% 0.006 285);
+  --inverse-deep: oklch(15% 0.005 285);
+  --inverse-raised: oklch(25% 0.007 285);
 
-  /* Text */
-  --text: oklch(24% 0.045 253);
-  --text-secondary: oklch(45% 0.032 253);
-  /* Must clear 4.5:1 on the *darkest* light surface (surface-subtle), not just
-     on white — the old #8a97a4 managed only 2.98:1 anywhere. */
-  --text-muted: oklch(51.5% 0.028 253);
-  --text-inverse: oklch(97.6% 0.006 85);    /* on inverse surfaces            */
+  /* Text. rgb(33,33,33) is Cohere's body colour and it is chromatically neutral;
+     the old ink carried a 253-hue navy cast that tinted every word on the site. */
+  --text: oklch(26.5% 0 0);
+  --text-secondary: oklch(50% 0.015 290);
+  --text-muted: oklch(55% 0.012 290);
+  --text-inverse: oklch(98% 0 0);
 
-  /* Lines. `border` is a decorative hairline; `border-strong` is load-bearing
-     (it can be the only thing marking a control boundary) and so is held to
-     the 3:1 non-text requirement. */
-  --border: oklch(90.5% 0.012 80);
-  --border-subtle: oklch(93.5% 0.010 80);
-  --border-strong: oklch(55% 0.018 80);
-  --border-inverse: oklch(33% 0.045 253);
+  /* Lines. #F2F2F2 hairlines: present when you look for them, invisible when you
+     do not. `border-strong` still carries the 3:1 non-text requirement. */
+  --border: oklch(95.2% 0 0);
+  --border-subtle: oklch(97.2% 0 0);
+  --border-strong: oklch(60% 0 0);
+  --border-inverse: oklch(30% 0.006 285);
 
   /* Accent — dark forest green */
   --accent: oklch(47.5% 0.105 158);         /* solid fills; carries white text */
@@ -275,15 +278,32 @@
     `.font-display { letter-spacing }` rule go: tracking is a function of size,
     and a heading that wants different tracking is asking for a different step.
   */
-  --text-mark: 0.6875rem;
-  --text-mark--line-height: 1.45;
-  --text-mark--letter-spacing: 0.06em;
+  /*
+    EIGHT SIZES, ALL AT WEIGHT 400.
+
+    Measured off cohere.com at 1440px: the whole site uses 12/14/16/18/24/32/48/96
+    and essentially one weight. Of ~530 rendered text nodes, 517 are weight 400 —
+    the h1 at 96px included. Only a handful of 12-14px labels reach 500.
+
+    That single fact is most of the distance between the two sites. Tenure was
+    setting display type at 700 with -0.05em tracking, which is a poster voice:
+    it shouts, and at 96px it shouts in a way that reads as a startup announcing
+    itself. A 96px headline at weight 400 with -0.02em is the same size and an
+    entirely different register — it trusts the words and the space around them.
+
+    Line height follows the size, as it should: 1.0 at 96px, 1.5 at 16px.
+    Tracking is NORMAL below 24px. The old scale tightened body copy to -0.005em
+    and leads to -0.01em, which does nothing but cost legibility at reading size.
+  */
+  --text-mark: 0.75rem;
+  --text-mark--line-height: 1.4;
+  --text-mark--letter-spacing: 0.04em;
 
   --text-meta: 0.75rem;
   --text-meta--line-height: 1.4;
-  --text-meta--letter-spacing: 0.04em;
+  --text-meta--letter-spacing: 0.02em;
 
-  --text-caption: 0.8125rem;
+  --text-caption: 0.875rem;
   --text-caption--line-height: 1.45;
 
   --text-body-sm: 0.875rem;
@@ -291,49 +311,49 @@
 
   --text-body: 1rem;
   --text-body--line-height: 1.5;
-  --text-body--letter-spacing: -0.005em;
 
   --text-lead: 1.125rem;
-  --text-lead--line-height: 1.55;
-  --text-lead--letter-spacing: -0.01em;
+  --text-lead--line-height: 1.45;
 
   --text-title-sm: 1.25rem;
-  --text-title-sm--line-height: 1.4;
-  --text-title-sm--letter-spacing: -0.015em;
+  --text-title-sm--line-height: 1.35;
+  --text-title-sm--letter-spacing: -0.01em;
+  --text-title-sm--font-weight: 400;
 
   --text-title: 1.5rem;
   --text-title--line-height: 1.3;
-  --text-title--letter-spacing: -0.025em;
+  --text-title--letter-spacing: -0.01em;
+  --text-title--font-weight: 400;
 
-  --text-h3: 1.75rem;
-  --text-h3--line-height: 1.25;
-  --text-h3--letter-spacing: -0.03em;
-  --text-h3--font-weight: 600;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 400;
 
-  --text-h2: clamp(2rem, 1.82rem + 0.75vi, 2.5rem);
-  --text-h2--line-height: 1.15;
-  --text-h2--letter-spacing: -0.035em;
-  --text-h2--font-weight: 600;
+  --text-h2: 2rem;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.015em;
+  --text-h2--font-weight: 400;
 
-  --text-h2-lg: clamp(2.5rem, 2.24rem + 1.13vi, 3.25rem);
-  --text-h2-lg--line-height: 1.1;
-  --text-h2-lg--letter-spacing: -0.04em;
-  --text-h2-lg--font-weight: 600;
+  --text-h2-lg: clamp(2rem, 1.66rem + 1.5vi, 3rem);
+  --text-h2-lg--line-height: 1.15;
+  --text-h2-lg--letter-spacing: -0.02em;
+  --text-h2-lg--font-weight: 400;
 
-  --text-display-sm: clamp(2.75rem, 2.31rem + 1.88vi, 4rem);
-  --text-display-sm--line-height: 1.05;
-  --text-display-sm--letter-spacing: -0.045em;
-  --text-display-sm--font-weight: 700;
+  --text-display-sm: clamp(2rem, 1.66rem + 1.5vi, 3rem);
+  --text-display-sm--line-height: 1.15;
+  --text-display-sm--letter-spacing: -0.02em;
+  --text-display-sm--font-weight: 400;
 
-  --text-display: clamp(3.25rem, 2.63rem + 2.63vi, 5rem);
-  --text-display--line-height: 1.02;
-  --text-display--letter-spacing: -0.05em;
-  --text-display--font-weight: 700;
+  --text-display: clamp(2.5rem, 1.79rem + 3.13vi, 4rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 400;
 
-  --text-hero: clamp(3.5rem, 2.62rem + 3.76vi, 6rem);
+  --text-hero: clamp(3rem, 1.5rem + 6.25vi, 6rem);
   --text-hero--line-height: 1;
-  --text-hero--letter-spacing: -0.05em;
-  --text-hero--font-weight: 700;
+  --text-hero--letter-spacing: -0.02em;
+  --text-hero--font-weight: 400;
 
   /* Radius */
   /*
@@ -346,12 +366,12 @@
     `rounded-full` is untouched: it is correct on avatars, status dots and pill
     tags, which is a different job from a card corner.
   */
-  --radius-sm: 6px;
+  --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 14px;
-  --radius-xl: 18px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-2xl: 22px;
-  --radius-3xl: 28px;
+  --radius-3xl: 22px;
 
   /* Motion */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);

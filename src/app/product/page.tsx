@@ -232,7 +232,7 @@ export default function ProductPage() {
                     </span>
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <h3 className="font-display text-body font-semibold text-ink">
+                        <h3 className="font-display text-body text-ink">
                           {r.t}
                         </h3>
                         <span className="label-mono text-mark">{r.n}</span>

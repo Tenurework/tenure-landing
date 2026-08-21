@@ -23,7 +23,7 @@ export function CtaBand({
 
       <Container className="relative text-center">
         <Reveal>
-          <h2 className="font-display mx-auto max-w-2xl text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+          <h2 className="font-display mx-auto max-w-2xl text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
             {title ?? (
               <>
                 Run the org. Hand it off.{" "}

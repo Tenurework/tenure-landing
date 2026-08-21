@@ -1,4 +1,3 @@
-import { cn } from "@/lib/cn";
 
 /**
  * THE SECTION BACKDROP: LIGHT, STRUCTURE, VOID. Three variants, no ornament.
@@ -58,42 +57,28 @@ export function Backdrop({
   variant?: BackdropVariant;
   className?: string;
 }) {
-  return (
-    <div
-      aria-hidden
-      className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}
-    >
-      {variant !== "band" && (
-        <>
-          {/*
-            ONE light source, large and off-centre. A single wide radial at very
-            low chroma reads as illumination; the three overlapping washes this
-            replaced read as three coloured blobs, because that is what they were.
-          */}
-          <div className="absolute -top-[38%] right-[-14%] h-[64rem] w-[64rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--accent)_7%,transparent),transparent_62%)]" />
-          {/* A cool counterweight at the opposite corner, weaker still, so the
-              field has direction instead of a hotspot. */}
-          <div className="absolute bottom-[-32%] left-[-18%] h-[48rem] w-[48rem] rounded-full bg-[radial-gradient(circle,color-mix(in_oklab,var(--text)_4%,transparent),transparent_66%)]" />
-        </>
-      )}
+  /*
+    NOTHING GOES BEHIND A SECTION.
 
-      {variant === "grid" && (
-        <div className="absolute inset-0 text-ink/[0.045] hairline-grid [--grid:120px] [mask-image:linear-gradient(to_bottom,black,transparent_72%)]" />
-      )}
+    Measured off cohere.com: the page is white. There is no wash, no grid, no
+    grain — 2,312 of its rendered nodes sit on plain white or #FAFAFA, and every
+    piece of colour on the page arrives inside a photograph or a dark product
+    surface. That is the discipline this component used to work against.
 
-      {variant === "band" && (
-        <>
-          <div className="absolute inset-0 [background:radial-gradient(70%_68%_at_28%_8%,color-mix(in_oklab,var(--accent)_16%,transparent),transparent_68%)]" />
-          <div className="absolute inset-0 text-inverse/[0.035] hairline-grid [--grid:120px] [mask-image:linear-gradient(to_bottom,black,transparent_78%)]" />
-        </>
-      )}
+    What was here was already the restrained version: one large radial at 7%
+    accent, a cool counterweight, a 120px drafting grid under product sections,
+    and a grain layer over everything. Individually defensible, and collectively
+    a permanent tint over every pixel of the site — the faint grid was visible in
+    every screenshot, which is exactly the "backdrop" quality the brief kept
+    calling immature. A gradient behind a section is a decoration standing in for
+    a composition.
 
-      {/* Grain last, over everything: what stops a large gradient banding on an
-          8-bit display. It is the one texture that survives at this tier because
-          it is felt rather than seen. */}
-      <div
-        className={cn("absolute inset-0 grain", variant === "band" ? "opacity-[0.09]" : "opacity-[0.055]")}
-      />
-    </div>
-  );
+    The variants stay in the signature because thirty-nine call sites name them
+    and because `band` still tells a section to invert; they simply no longer
+    paint anything. Contrast now comes from the sections themselves: full-bleed
+    photography, a near-black band, and white.
+  */
+  void variant;
+  void className;
+  return null;
 }

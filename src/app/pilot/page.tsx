@@ -368,7 +368,7 @@ function ProvidesCard({
 }) {
   return (
     <div className="h-full rounded-2xl border border-line bg-surface p-6 shadow-[var(--shadow-sm)] sm:p-8">
-      <h3 className="font-display text-title font-semibold tracking-tight text-text">
+      <h3 className="font-display text-title tracking-tight text-text">
         {heading}
       </h3>
       <p className="mt-2 text-body leading-relaxed text-text-muted measure">{sub}</p>
@@ -518,7 +518,7 @@ export default function PilotPage() {
                           className="grid gap-2 lg:grid-cols-[0.8fr_1.6fr] lg:gap-8"
                         >
                           <div>
-                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead tracking-tight text-text">
                               {p.who}
                             </h3>
                             <p className="mt-1 font-mono text-meta leading-relaxed text-text-muted measure">
@@ -570,7 +570,7 @@ export default function PilotPage() {
                           key={x.item}
                           className="grid gap-2 lg:grid-cols-[1fr_1.5fr] lg:gap-8"
                         >
-                          <h3 className="font-display text-lead font-semibold leading-snug tracking-tight text-text">
+                          <h3 className="font-display text-lead leading-snug tracking-tight text-text">
                             {x.item}
                           </h3>
                           <div>
@@ -696,7 +696,7 @@ export default function PilotPage() {
                       <ul className="mt-5 grid gap-x-10 gap-y-6 lg:grid-cols-2">
                         {HANDLING.map((h) => (
                           <li key={h.t}>
-                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead tracking-tight text-text">
                               {h.t}
                             </h3>
                             <p className="mt-2 text-body leading-relaxed text-text-secondary measure">
@@ -783,7 +783,7 @@ export default function PilotPage() {
               <div className="relative">
                 <div className="max-w-2xl">
                   <p className="label-mono text-grove-bright">03 · The decision</p>
-                  <h2 className="font-display mt-4 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+                  <h2 className="font-display mt-4 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
                     The next step is a{" "}
                     <span className="text-grove-bright">conversation</span>, and then
                     a document.

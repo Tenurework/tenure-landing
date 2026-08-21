@@ -43,7 +43,7 @@ export function PageHeader({
           not a candidate for LCP.
         */}
         <Eyebrow className="justify-center">{eyebrow}</Eyebrow>
-        <h1 className="font-display mx-auto mt-6 max-w-3xl text-display-sm font-semibold leading-[1.05] tracking-[-0.035em] text-ink sm:text-display lg:text-hero">
+        <h1 className="font-display mx-auto mt-6 max-w-3xl text-display-sm leading-[1.05] tracking-[-0.035em] text-ink sm:text-display lg:text-hero">
           {title}
         </h1>
         {intro && (

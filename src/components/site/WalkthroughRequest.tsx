@@ -321,7 +321,7 @@ export function WalkthroughRequest() {
             <div>
               <h2
                 id={titleId}
-                className="font-display text-title font-semibold tracking-tight text-ink"
+                className="font-display text-title tracking-tight text-ink"
               >
                 Request a demo
               </h2>

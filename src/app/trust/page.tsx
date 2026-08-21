@@ -417,7 +417,7 @@ export default function TrustPage() {
                       {group.controls.map((c) => (
                         <li key={c.title}>
                           <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                            <h3 className="font-display text-lead font-semibold tracking-tight text-text">
+                            <h3 className="font-display text-lead tracking-tight text-text">
                               {c.title}
                             </h3>
                             <StatusBadge status={c.status} />
@@ -448,7 +448,7 @@ export default function TrustPage() {
         <Container>
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
-            <h2 className="font-display text-title font-semibold tracking-tight text-text">
+            <h2 className="font-display text-title tracking-tight text-text">
               Security issues, in both directions
             </h2>
             <p className="mt-3 leading-relaxed text-text-secondary measure">
@@ -485,7 +485,7 @@ export default function TrustPage() {
             </p>
           </div>
           <div>
-            <h2 className="font-display text-title font-semibold tracking-tight text-text">
+            <h2 className="font-display text-title tracking-tight text-text">
               Documents
             </h2>
             <p className="mt-3 leading-relaxed text-text-secondary measure">

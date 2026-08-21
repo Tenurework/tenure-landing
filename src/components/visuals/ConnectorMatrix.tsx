@@ -280,7 +280,7 @@ export function ConnectorMatrix() {
                         when a "Not supported"/"Roadmap" marker — or an explicit
                         "does not connect" sentence — sits within a couple of lines. */}
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display text-body font-semibold tracking-tight text-ink">
+                      <h3 className="font-display text-body tracking-tight text-ink">
                         {r.what}
                       </h3>
                       <StatusBadge status={r.status} />

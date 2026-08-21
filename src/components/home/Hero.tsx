@@ -44,7 +44,7 @@ import { MockCaption } from "@/components/ui/Panel";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden pt-24 sm:pt-28">
+    <section className="relative isolate overflow-hidden pt-28 sm:pt-40">
       <Backdrop variant="grid" />
 
       {/*
@@ -73,9 +73,9 @@ export function Hero() {
         gone rather than tuned.
       */}
       <Container className="relative">
-        <div className="grid gap-12">
+        <div className="grid gap-16">
           {/* LEFT, editorial copy */}
-          <div className="relative z-10">
+          <div className="relative z-10 mx-auto max-w-4xl text-center">
             <p className="label-mono">The system of record for organizations that rotate</p>
 
             {/*
@@ -133,7 +133,7 @@ export function Hero() {
               whoever is holding it this year.
             </p>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3">
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
               <ContactSales size="lg" arrow />
               <Button href="#platform" variant="secondary" size="lg">
                 See the platform
@@ -150,7 +150,7 @@ export function Hero() {
                 inside what /trust already publishes (accounts are created in
                 advance, there is no self-service signup) and names no sign-in
                 mechanism, which C-023 forbids. */}
-            <p className="mt-4 max-w-xl text-caption leading-relaxed text-ink-faint measure">
+            <p className="mx-auto mt-6 max-w-xl text-caption leading-relaxed text-ink-faint">
               Already using Tenure?{" "}
               <Link
                 href="/contact"

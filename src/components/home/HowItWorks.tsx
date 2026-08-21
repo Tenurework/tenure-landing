@@ -107,7 +107,7 @@ export function HowItWorks() {
                   </div>
                   <div className="pb-1">
                     <div className="flex items-baseline gap-2">
-                      <h3 className="font-display text-lead font-semibold text-ink">
+                      <h3 className="font-display text-lead text-ink">
                         {step.title}
                       </h3>
                       <span className="label-mono text-mark">{step.n}</span>

@@ -176,7 +176,7 @@ export function MetricsBand() {
             reader reaches it.
           */}
           <Eyebrow className="text-inverse/75">Counted, not projected</Eyebrow>
-          <h2 className="font-display mt-5 text-h2 font-semibold leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
+          <h2 className="font-display mt-5 text-h2 leading-[1.1] tracking-[-0.03em] text-inverse sm:text-h2-lg">
             Every number here is counted from the{" "}
             <span className="text-grove-bright">code that ships</span>.
           </h2>

@@ -516,7 +516,7 @@ export function Platform() {
                 one thing a tab control must never do. */}
             <div className="min-h-[12.5rem] p-5 sm:p-6">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h3 className="font-display text-title-sm font-semibold text-ink">
+                <h3 className="font-display text-title-sm text-ink">
                   {mod.label}
                 </h3>
                 <span className="rounded-full border border-line bg-paper/70 px-2 py-0.5 font-mono text-mark uppercase tracking-wide text-ink-faint">

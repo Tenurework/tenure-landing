@@ -133,7 +133,7 @@ export default function ContactPage() {
                       key={item.title}
                       className="border-b border-line-soft px-5 py-4 last:border-b-0 sm:px-7"
                     >
-                      <h2 className="font-display text-body font-semibold tracking-tight text-ink">
+                      <h2 className="font-display text-body tracking-tight text-ink">
                         {item.title}
                       </h2>
                       <p className="mt-1.5 text-body-sm leading-relaxed text-ink-soft measure">
